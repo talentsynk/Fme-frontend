@@ -1,12 +1,15 @@
+
+// authentication root-layout
+
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Skills database platform",
-  description: "This is a skills database platform powered by coderina",
+  title: "authentication layout",
+  description: "authentication process powered by coderina",
 };
 
-export default function RootLayout({
+export default function AuthRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
