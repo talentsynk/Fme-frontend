@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 No configuration or complicated folder structures, just the files you need to build your app:
 
 ```
-Wordfixr
+Fme-frontend
 ├── node_modules
 ├── public
 │   ├── favicon.svg
@@ -68,6 +68,12 @@ Wordfixr
             ├── mda-components
         ├── stc
             ├── stc-components
+    ├── customHooks
+        ├── customHooks
+    ├── redux
+        ├── hooks
+    ├── utils
+├── .env.local
 ├── .gitignore
 ├── package.json
 ├── README.md
