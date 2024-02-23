@@ -16,9 +16,64 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Folder Structure
+No configuration or complicated folder structures, just the files you need to build your app:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+Wordfixr
+├── node_modules
+├── public
+│   ├── favicon.svg
+│   └── assets
+      ├── fme
+      ├── mda
+      ├── stc
+└── src
+    ├── app
+       ├── (auth)
+          ├── login
+              ├── page.tsx
+          ├── register
+              ├── page.tsx
+          ├── recovery
+              ├── page.tsx
+          ├── layout.tsx
+          ├── style.tsx
+       ├── (dashboard)
+          ├── fme
+              ├── settings
+                  ├── page.tsx
+              ├── support
+                  ├── page.tsx
+              ├── page.tsx
+          ├── mda
+              ├── settings
+                  ├── page.tsx
+              ├── support
+                  ├── page.tsx
+              ├── page.tsx
+          ├── stc
+              ├── settings
+                  ├── page.tsx
+              ├── support
+                  ├── page.tsx
+              ├── page.tsx
+          ├── layout.tsx
+          ├── style.tsx
+    ├── components
+        ├── icons
+        ├── fme
+            ├── fme-components
+        ├── mda
+            ├── mda-components
+        ├── stc
+            ├── stc-components
+├── .gitignore
+├── package.json
+├── README.md
+├── next.config.ts
+```
+
 
 ## Learn More
 
