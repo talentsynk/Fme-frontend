@@ -1,7 +1,10 @@
+
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap');
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Satoshi', sans-serif;
 }
 
 button{

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Head from "next/head";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Skills database platform",
@@ -13,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body >{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
