@@ -80,7 +80,7 @@ export const SidebarStyles = styled.div`
     cursor: pointer;
   }
 `;
-interface ILinkcompStyle {
+export interface ILinkcompStyle {
   $isSelected: boolean;
 }
 export const LinkCompStyles = styled.div<ILinkcompStyle>`
@@ -91,6 +91,7 @@ export const LinkCompStyles = styled.div<ILinkcompStyle>`
     gap: 0.75rem;
   }
   border-radius: 0.25rem;
+  transition: 0.35s;
   padding: 0.75rem 1rem;
   align-self: stretch;
   p {
@@ -99,13 +100,16 @@ export const LinkCompStyles = styled.div<ILinkcompStyle>`
     font-style: normal;
     font-weight: 400;
     line-height: 1.25rem; /* 142.857% */
+    transition: 0.25s;
   }
   ${(props) =>
     props.$isSelected &&
     css`
       background: #e7f6ec;
+      transition: 0.35s;
       p{
         color: var(--Primary-Color, #00932e);
+        transition: 0.25s;
       }
     `}
 `;

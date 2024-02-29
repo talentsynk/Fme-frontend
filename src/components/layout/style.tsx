@@ -20,7 +20,6 @@ export const GenericDashboardLayoutStyle = styled.main`
         .header {
           grid-column: 2/3;
           grid-row: 1/2;
-          border: 2px solid #000;
         }
         .ctrl{
           position: relative;

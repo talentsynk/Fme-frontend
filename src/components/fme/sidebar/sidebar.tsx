@@ -43,7 +43,7 @@ export const DashboardSidebar = () => {
       </div>
       <div className="btm">
         <div className="btm-links">
-        {PageLinks.map(
+        {pageLinks.map(
             (ele, index) =>
               index >= 5 && (
                 <LinkComp
