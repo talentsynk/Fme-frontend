@@ -26,7 +26,7 @@ export const DesktopDropdownLinks: IDesktopDropdown[] = [
     textColor: "#111",
     activeState: <ActivePfIcon />,
     activeTextColor: "#FFFFFF",
-    isSelected: true,
+    isSelected: false,
   },
   {
     id : "2",

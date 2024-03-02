@@ -11,6 +11,11 @@ import {
 } from "./data";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { CalendarIcon } from "@/components/icons/sidebar";
+import { AngleDown } from "@/components/icons/header";
+import { formatDate } from "@/utils/formatDate";
 
 export const DashboardHeader = () => {
   const [links, setLinks] = useState(DesktopDropdownLinks);
@@ -58,10 +63,74 @@ export const DashboardHeader = () => {
   );
 };
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 export const CalendarComponent = () => {
+  const [startDate, setStartDate] = useState<Value>(new Date());
+  const [endDate, setEndDate] = useState<Value>(new Date());
+
+  const [showCalendar1, setShowCalendar1] = useState(false);
+  const [showCalendar2, setShowCalendar2] = useState(false);
+
+  const handleSearch =()=>{
+    if (startDate !== null && endDate !== null){
+      setShowCalendar1(false);
+      setShowCalendar2(false);
+    }
+  }
   return (
     <CalendarComponentStyle>
-      <p>Calendar Component</p>
+      <div className="head">
+        <CalendarIcon />
+        <div className="date">
+          <p>{startDate && formatDate(startDate.toLocaleString())}</p>
+          <p>-</p>
+          <p>{endDate && formatDate(endDate.toLocaleString())}</p>
+        </div>
+        <AngleDown />
+      </div>
+      <div className="calendar-dd">
+        <div className="pick-date">
+          <span className="st">Start Date</span>
+          <div
+            className="select"
+            onClick={() => setShowCalendar1(!showCalendar1)}
+          >
+            <p>{startDate && formatDate(startDate.toLocaleString())}</p>
+            <CalendarIcon />
+          </div>
+        </div>
+        <div className="pick-date">
+          <span className="st">End Date</span>
+          <div className="select" onClick={() => setShowCalendar2(!showCalendar2)}>
+          <p>{endDate && formatDate(endDate.toLocaleString())}</p>
+            <CalendarIcon />
+          </div>
+        </div>
+        <div className="btn">
+          <button type="button" onClick={handleSearch}>Continue</button>
+        </div>
+      </div>
+      {showCalendar1 && (
+        <div className="calendar">
+          <Calendar
+            onChange={setStartDate}
+            value={startDate}
+            onClickDay={() => setShowCalendar1(false)}
+          />
+        </div>
+      )}
+      {showCalendar2 && (
+        <div className="calendar">
+          <Calendar
+          onChange={setEndDate}
+          value={endDate}
+          onClickDay={() => setShowCalendar2(false)}
+           />
+        </div>
+      )}
     </CalendarComponentStyle>
   );
 };

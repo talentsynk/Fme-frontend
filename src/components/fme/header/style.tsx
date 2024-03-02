@@ -56,7 +56,121 @@ export const DashboardHeaderStyle = styled.header`
 `;
 
 export const CalendarComponentStyle = styled.div`
-  border: 2px solid #000;
+  // border: 2px solid #000;
+  z-index: 5;
+  position: relative;
+  .calendar {
+    position: absolute;
+    right: 0;
+    top: 750%;
+    width: 100%;
+    .react-calendar {
+      border-radius: 0.5rem;
+      border: 1px solid var(--Secondary-Gray-2, #e0e2e7);
+      background: #fff;
+      abbr[title] {
+        text-decoration: none;
+       }
+      /* style */
+      box-shadow: 0px 37px 44px 0px rgba(185, 185, 185, 0.1);
+      .react-calendar__tile--now {
+        background: #00932E;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 0.25rem;
+      }
+    }
+
+  }
+  .x {
+    position: relative;
+  }
+  .calendar-dd {
+    position: absolute;
+    width: 100%;
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0px 37px 44px 0px rgba(185, 185, 185, 0.1);
+    border-radius: 0.5rem;
+    border: 1px solid #e0e2e7;
+    background: #fff;
+    .pick-date {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      .st {
+        color: var(--Grey-900, var(--text-style, #101928));
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1.25rem; /* 142.857% */
+      }
+    }
+    .select {
+      cursor: pointer;
+      border-radius: 0.375rem;
+      display: flex;
+      background: var(--Shade-White, #fff);
+      width: 100%;
+      border: 2px solid #000;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--Grey-300, #d0d5dd);
+      background: var(--Shade-White, #fff);
+      p {
+        color: var(--Grey-900, var(--text-style, #101928));
+        font-feature-settings: "cv04" on, "cv03" on;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem; /* 142.857% */
+      }
+    }
+    .btn {
+      width: 100%;
+      margin-top: 0.5rem;
+      button {
+        width: 100%;
+        height: 3rem;
+        border-radius: 0.625rem;
+        background: #00932e;
+        color: var(
+          --color-set-type-white-primary,
+          var(--Neutrals-Colors-100, #fff)
+        );
+        text-align: center;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.5rem; /* 150% */
+      }
+    }
+  }
+  .head {
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e0e2e7;
+    display: flex;
+    padding: 0.5rem 0.625rem;
+    align-items: center;
+    .date {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      p {
+        color: var(--Grey-700, #344054);
+        text-align: center;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 1.25rem; /* 142.857% */
+      }
+    }
+  }
 `;
 
 interface IDesktopDropdownLinkStyle extends ILinkcompStyle {
@@ -92,7 +206,7 @@ export const DesktopDropdownLinkStyle = styled.div<IDesktopDropdownLinkStyle>`
         color: ${props.activetextcolor
           ? props.activetextcolor
           : props.textcolor};
-          transition: 0.25s;
+        transition: 0.25s;
       }
     `}
 `;

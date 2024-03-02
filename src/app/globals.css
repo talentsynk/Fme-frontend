@@ -7,9 +7,10 @@
   font-family: 'Satoshi', sans-serif;
 }
 
-button{
+button, input{
   border: 0;
   outline: 0;
+  cursor: pointer;
 }
 a{
   text-decoration: none;
