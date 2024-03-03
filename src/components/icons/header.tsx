@@ -1,3 +1,5 @@
+import styled, { css } from "styled-components";
+
 export const PfIcon = () => {
   return (
     <svg
@@ -74,7 +76,7 @@ export const ActivePfIcon = () => {
 //
 export const AngleDown = () => {
   return (
-    <svg
+      <svg
       xmlns="http://www.w3.org/2000/svg"
       width="20"
       height="20"
@@ -88,3 +90,21 @@ export const AngleDown = () => {
     </svg>
   );
 };
+export interface ISelectedcompStyle {
+  $isSelected: boolean;
+}
+
+export const AngleDownStyles = styled.div<ISelectedcompStyle>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg{
+    transition: 0.25s;
+  }
+  ${props => props.$isSelected && css`
+    svg{
+      transform: rotate(180deg);
+      transition: 0.25s;
+    }
+  `}
+`

@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { CalendarIcon } from "@/components/icons/sidebar";
-import { AngleDown } from "@/components/icons/header";
+import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import { formatDate } from "@/utils/formatDate";
 
 export const DashboardHeader = () => {
@@ -74,45 +74,64 @@ export const CalendarComponent = () => {
   const [showCalendar1, setShowCalendar1] = useState(false);
   const [showCalendar2, setShowCalendar2] = useState(false);
 
-  const handleSearch =()=>{
-    if (startDate !== null && endDate !== null){
-      setShowCalendar1(false);
-      setShowCalendar2(false);
+  const [showCalendarDropdown, setShowCalendarDropdown] = useState(false);
+
+  const handleSearch = () => {
+    if (startDate !== null && endDate !== null) {
+      //@ts-ignore
+      const diff = endDate - startDate;
+      if ( diff > 0){
+        // do the search or whatever
+        console.log(diff);
+        setShowCalendarDropdown(false);
+      }
     }
-  }
+  };
   return (
     <CalendarComponentStyle>
-      <div className="head">
+      <div
+        className="head"
+        onClick={() => setShowCalendarDropdown(!showCalendarDropdown)}
+      >
         <CalendarIcon />
         <div className="date">
           <p>{startDate && formatDate(startDate.toLocaleString())}</p>
           <p>-</p>
           <p>{endDate && formatDate(endDate.toLocaleString())}</p>
         </div>
+        <AngleDownStyles $isSelected={showCalendarDropdown}>
         <AngleDown />
+        </AngleDownStyles>
       </div>
-      <div className="calendar-dd">
-        <div className="pick-date">
-          <span className="st">Start Date</span>
-          <div
-            className="select"
-            onClick={() => setShowCalendar1(!showCalendar1)}
-          >
-            <p>{startDate && formatDate(startDate.toLocaleString())}</p>
-            <CalendarIcon />
+      {showCalendarDropdown && (
+        <div className="calendar-dd">
+          <div className="pick-date">
+            <span className="st">Start Date</span>
+            <div
+              className="select"
+              onClick={() => setShowCalendar1(!showCalendar1)}
+            >
+              <p>{startDate && formatDate(startDate.toLocaleString())}</p>
+              <CalendarIcon />
+            </div>
+          </div>
+          <div className="pick-date">
+            <span className="st">End Date</span>
+            <div
+              className="select"
+              onClick={() => setShowCalendar2(!showCalendar2)}
+            >
+              <p>{endDate && formatDate(endDate.toLocaleString())}</p>
+              <CalendarIcon />
+            </div>
+          </div>
+          <div className="btn">
+            <button type="button" onClick={handleSearch}>
+              Continue
+            </button>
           </div>
         </div>
-        <div className="pick-date">
-          <span className="st">End Date</span>
-          <div className="select" onClick={() => setShowCalendar2(!showCalendar2)}>
-          <p>{endDate && formatDate(endDate.toLocaleString())}</p>
-            <CalendarIcon />
-          </div>
-        </div>
-        <div className="btn">
-          <button type="button" onClick={handleSearch}>Continue</button>
-        </div>
-      </div>
+      )}
       {showCalendar1 && (
         <div className="calendar">
           <Calendar
@@ -125,10 +144,12 @@ export const CalendarComponent = () => {
       {showCalendar2 && (
         <div className="calendar">
           <Calendar
-          onChange={setEndDate}
-          value={endDate}
-          onClickDay={() => setShowCalendar2(false)}
-           />
+            onChange={setEndDate}
+            value={endDate}
+            //@ts-ignore
+            minDate={new Date(startDate)}
+            onClickDay={() => setShowCalendar2(false)}
+          />
         </div>
       )}
     </CalendarComponentStyle>

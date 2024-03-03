@@ -68,12 +68,16 @@ export const CalendarComponentStyle = styled.div`
       border-radius: 0.5rem;
       border: 1px solid var(--Secondary-Gray-2, #e0e2e7);
       background: #fff;
+      transition: 0.25s;
       abbr[title] {
         text-decoration: none;
        }
       /* style */
       box-shadow: 0px 37px 44px 0px rgba(185, 185, 185, 0.1);
       .react-calendar__tile--now {
+        background: #E7F6EC;
+      }
+      .react-calendar__tile--active{
         background: #00932E;
         color: #fff;
         font-weight: 700;
@@ -88,6 +92,7 @@ export const CalendarComponentStyle = styled.div`
   .calendar-dd {
     position: absolute;
     width: 100%;
+    transition: 0.25s;
     margin-top: 0.75rem;
     display: flex;
     flex-direction: column;
@@ -157,6 +162,7 @@ export const CalendarComponentStyle = styled.div`
     display: flex;
     padding: 0.5rem 0.625rem;
     align-items: center;
+    cursor: pointer;
     .date {
       display: flex;
       align-items: center;

@@ -85,6 +85,9 @@ export interface ILinkcompStyle {
 }
 export const LinkCompStyles = styled.div<ILinkcompStyle>`
   cursor: pointer;
+  // &:hover{
+  //   background: #E7F6EC;
+  // }
   .li {
     display: flex;
     align-items: center;

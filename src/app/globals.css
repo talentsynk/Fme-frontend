@@ -18,3 +18,7 @@ a{
 img{
   object-fit: cover;
 }
+
+.br{
+  border: 2px solid #000;
+}

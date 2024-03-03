@@ -28,7 +28,7 @@ export const GenericDashboardLayoutStyle = styled.main`
         .main {
           grid-column: 2/3;
           grid-row: 2/3;
-          padding: 0.75rem;
+          padding: 0.75rem 1.5rem 3.75rem 1.35rem;
           height: 150vh;
           background: #F9FAFB;
         }
