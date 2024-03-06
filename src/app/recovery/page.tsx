@@ -9,12 +9,16 @@ import {
 } from "./style";
 import Image from "next/image";
 import { EmailIcon } from "@/components/icons/recovery";
+import { BackBtn } from "@/components/recovery/recovery";
 
 export default function AccountRecovery() {
+  const backFunc = () => {
+    console.log("go back");
+  };
   return (
     <>
       <Head>
-        <title>dashboard</title>
+        <title>account recovery</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
@@ -30,37 +34,39 @@ export default function AccountRecovery() {
           </CoatOfArm>
 
           <div className="form">
-          <FormStyles>
-            <div className="backbtn">Backbtn here</div>
-            <div className="form-head">
-              <h3>Reset Password</h3>
-              <p>
-                Enter your e-mail address and instructions would be sent on how
-                to reset your password
-              </p>
-            </div>
-            <div className="form-input">
-              <div className="form-ele">
-                <span>Email</span>
-                <div className="inp">
-                  <input type="email" name="email" id="" />
-                  <div className="abs">
-                    <EmailIcon />
-                  </div>
-                </div>
-                <p className="error-msg">
-                  The e-mail is not registered on this portal
+            <FormStyles>
+              <div className="backbtn">
+                <BackBtn backFunction={backFunc} />
+              </div>
+              <div className="form-head">
+                <h3>Reset Password</h3>
+                <p>
+                  Enter your e-mail address and instructions would be sent on
+                  how to reset your password
                 </p>
               </div>
-            </div>
-            <div className="btn">
-              <button type="submit">Send mail</button>
-            </div>
-          </FormStyles>
+              <div className="form-input">
+                <div className="form-ele">
+                  <span>E-mail address</span>
+                  <div className="inp">
+                    <input type="email" name="email" id="" placeholder="Enter Password" />
+                    <div className="abs">
+                      <EmailIcon />
+                    </div>
+                  </div>
+                  <p className="error-msg">
+                    The e-mail is not registered on this portal
+                  </p>
+                </div>
+              </div>
+              <div className="btn">
+                <button type="submit">Send mail</button>
+              </div>
+            </FormStyles>
           </div>
         </div>
 
-        <div className="pc">
+        <div className="flex">
           <p>Powered by</p>
           <CoderinaLogo>
             <Image

@@ -1,33 +1,54 @@
 import styled from "styled-components";
 
 export const RecoveryPageStyles = styled.div`
-  border: 2px solid #000;
   width: 100%;
-  .head{
+  min-height: 100vh;
+  .head {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items :center;
+    align-items: center;
   }
   background: #e7f6ec;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  .form{
-    width: 50%;
-    border: 2px solid #000;
+  .form {
+    width: 60%;
+  }
+  .flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    p {
+      color: #000;
+      font-size: 0.9375rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.25rem; /* 133.333% */
+    }
   }
   @media (max-width: 500px) {
-    .form{
-        width: 100%;
+    .form {
+      width: 92%;
+    }
+  }
+  @media (min-width: 998px) {
+    .form {
+      width: 35%;
+    }
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    .flex {
+      margin-top: 5%;
     }
   }
 `;
 
 export const CoatOfArm = styled.div`
-  border: 2px solid #000;
   img {
     width: 5rem;
     height: 5rem;
@@ -35,13 +56,12 @@ export const CoatOfArm = styled.div`
   @media (max-width: 998px) {
     img {
       width: 3.8125rem;
-      height: 2.875rem;
+      height: 3.875rem;
     }
   }
 `;
 
 export const CoderinaLogo = styled.div`
-  border: 2px solid #000;
   @media (max-width: 998px) {
     img {
       width: 116px;
@@ -50,7 +70,6 @@ export const CoderinaLogo = styled.div`
   }
 `;
 export const FormStyles = styled.div`
-  border: 2px solid #000;
   padding: 2.5rem 2rem;
   width: 100%;
   border-radius: 1rem;
@@ -65,9 +84,28 @@ export const FormStyles = styled.div`
     flex-direction: column;
     gap: 1.5rem;
   }
+  .form-head {
+    h3 {
+      color: #000;
+      font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
+      font-size: 1.5rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 2rem; /* 133.333% */
+      letter-spacing: -0.03rem;
+    }
+    p {
+      color: var(--Office-Brown-700, #645d5d);
+      font-feature-settings: "cv04" on, "cv03" on;
+      font-size: 0.75rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 145%; /* 1.0875rem */
+      letter-spacing: -0.00375rem;
+    }
+  }
   .inp {
     position: relative;
-    border: 2px solid #000;
     input {
       border-radius: 0.375rem;
       border: 1px solid #d0d5dd;
@@ -78,10 +116,14 @@ export const FormStyles = styled.div`
       width: 100%;
     }
   }
-  .abs{
+  input:active,
+  input:focus {
+    border: 1px solid var(--Primary-Color, #00932e);
+  }
+  .abs {
     position: absolute;
     right: 0.4rem;
-    top: 1rem;
+    top: 0.95rem;
   }
   .btn {
     margin-top: 2rem;
@@ -103,8 +145,14 @@ export const FormStyles = styled.div`
     }
   }
   .form-ele {
+    span {
+      color: var(--Grey-900, var(--text-style, #101928));
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.25rem; /* 142.857% */
+    }
     p {
-      font-family: "Satoshi Variable";
       font-size: 0.875rem;
       font-style: normal;
       font-weight: 500;
@@ -118,22 +166,11 @@ export const FormStyles = styled.div`
   .correct {
     color: var(--Success-600, #04802e);
   }
-  .pc {
-    display: flex;
-    align-items: center;
-    border: 2px solid #000;
-    p {
-      color: #000;
-      font-size: 0.9375rem;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 1.25rem; /* 133.333% */
-    }
-  }
+
   @media (max-width: 998px) {
     gap: 1.5rem;
     .form-input {
-      gap: 125rem;
+      gap: 1.25rem;
     }
     .btn {
       margin-top: 1.8rem;
