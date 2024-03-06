@@ -36,7 +36,7 @@ export const DashboardHeader = () => {
         <CalendarComponent />
         <div className="pfp">
           <div className="img" onClick={() => setShowDropdown(!showDropdown)}>
-            <Image src="/images/user.png" width={48} height={48} alt="avatar" />
+            <Image src="/images/user.svg" width={48} height={48} alt="avatar" />
           </div>
           {showDropdown && (
             <div className="dropdown">

@@ -270,12 +270,11 @@ export const FGLogo = () => {
   return (
     <FGLogostyles>
       <Image
-        src="/images/coatofarm.png"
+        src="/images/coatofarm.svg"
         width={61}
         height={46}
         alt="coat of arms"
       />
-      <span>FEDERAL MINISTRY OF EDUCATION</span>
     </FGLogostyles>
   );
 };
@@ -284,13 +283,9 @@ const FGLogostyles = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  span {
-    color: var(--Primary-Color, #00932e);
-    text-align: center;
-    font-size: 6px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 8px; /* 133.333% */
+  img{
+    width: 3.8125rem;
+    height: 5rem;
   }
 `;
 
