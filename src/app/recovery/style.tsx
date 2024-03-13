@@ -102,6 +102,7 @@ export const FormStyles = styled.div`
       font-weight: 500;
       line-height: 145%; /* 1.0875rem */
       letter-spacing: -0.00375rem;
+      margin-top: 0.25rem;
     }
   }
   .inp {
@@ -167,6 +168,33 @@ export const FormStyles = styled.div`
     color: var(--Success-600, #04802e);
   }
 
+  .btm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    p {
+      color: var(--Office-Brown-800, #514a4a);
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.25rem; /* 142.857% */
+    }
+    button {
+      border-radius: 0.375rem;
+      background: #e7f6ec;
+      height: 1.875rem;
+      padding: 0rem 0.625rem;
+      color: var(--Primary-Color, #00932e);
+      text-align: center;
+      font-feature-settings: "cv04" on, "cv01" on, "cv03" on;
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 1.25rem; /* 142.857% */
+    }
+  }
   @media (max-width: 998px) {
     gap: 1.5rem;
     .form-input {
