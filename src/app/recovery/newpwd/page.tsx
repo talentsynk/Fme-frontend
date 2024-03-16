@@ -11,11 +11,17 @@ import Image from "next/image";
 import { BackBtn } from "@/components/recovery/recovery";
 import { EyeIcon } from "@/components/icons/recovery";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AccountRecovery() {
+  const router = useRouter();
   const backFunc = () => {
-    console.log("hello world");
+    router.push("/recovery");
   };
+
+  const [showPwd1, setShowPwd1] = useState(false);
+  const [showPwd2, setShowPwd2] = useState(false);
+  // i need to handle; hide and showing of pwd, strength of first pwd, match
   return (
     <>
       <Head>
@@ -56,12 +62,12 @@ export default function AccountRecovery() {
                         placeholder="Enter Password"
                         id=""
                       />
-                      <div className="abs">
-                        <EyeIcon />
+                      <div className="abs" onClick={() => setShowPwd1(!showPwd1)}>
+                        <EyeIcon isShown={showPwd1} />
                       </div>
                     </div>
                     <p className="error-msg">
-                      The e-mail is not registered on this portal
+                      Password is strong
                     </p>
                   </div>
                   <div className="form-ele">
@@ -73,18 +79,18 @@ export default function AccountRecovery() {
                         id=""
                         placeholder="Confirm Password"
                       />
-                      <div className="abs">
-                        <EyeIcon />
+                      <div className="abs" onClick={() => setShowPwd2(!showPwd2)}>
+                        <EyeIcon isShown={showPwd2} />
                       </div>
                     </div>
                     <p className="error-msg">
-                      The e-mail is not registered on this portal
+                      Password is a match
                     </p>
                   </div>
                 </div>
                 <div className="btn">
                   <button type="submit">
-                    Send mail
+                    Save Password
                   </button>
                 </div>
               </FormStyles>
@@ -99,7 +105,7 @@ export default function AccountRecovery() {
               width={152}
               height={33}
               alt="coderina logo"
-              src="/images/coderina.png"
+              src="/images/coderina.svg"
             />
           </CoderinaLogo>
         </div>

@@ -75,10 +75,15 @@ export const FormStyles = styled.div`
   border-radius: 1rem;
   background: #fff;
   box-shadow: 0px 5px 3px -2px rgba(235, 80, 23, 0.02);
-
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  button:disabled {
+    opacity: 0.6; /* Reduce opacity to indicate disabled state */
+    cursor: not-allowed; /* Change cursor to indicate unclickable */
+  }
+
   .form-input {
     display: flex;
     flex-direction: column;
@@ -125,6 +130,10 @@ export const FormStyles = styled.div`
     position: absolute;
     right: 0.4rem;
     top: 0.95rem;
+    height: fit-content;
+    svg{
+      cursor: pointer;
+    }
   }
   .btn {
     margin-top: 2rem;
@@ -146,6 +155,9 @@ export const FormStyles = styled.div`
     }
   }
   .form-ele {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
     span {
       color: var(--Grey-900, var(--text-style, #101928));
       font-size: 0.875rem;
@@ -158,7 +170,6 @@ export const FormStyles = styled.div`
       font-style: normal;
       font-weight: 500;
       line-height: 1.25rem; /* 142.857% */
-      margin-top: 0.25rem;
     }
   }
   .error-msg {
@@ -166,6 +177,14 @@ export const FormStyles = styled.div`
   }
   .correct {
     color: var(--Success-600, #04802e);
+  }
+  .center{
+    text-align: center;
+  }
+  .inp{
+    .error-bdr{
+      border: 1px solid #EB5017;
+    }
   }
 
   .btm {
