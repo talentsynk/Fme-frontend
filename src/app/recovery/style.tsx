@@ -48,6 +48,12 @@ export const RecoveryPageStyles = styled.div`
   }
 `;
 
+export const NewPwdpageStyles = styled(RecoveryPageStyles)`
+@media (max-width: 500px) {
+   background: url("/public/images/recovery/mobile-bg.svg);
+}
+
+`
 export const CoatOfArm = styled.div`
   img {
     width: 5rem;
@@ -131,7 +137,7 @@ export const FormStyles = styled.div`
     right: 0.4rem;
     top: 0.95rem;
     height: fit-content;
-    svg{
+    svg {
       cursor: pointer;
     }
   }
@@ -172,18 +178,32 @@ export const FormStyles = styled.div`
       line-height: 1.25rem; /* 142.857% */
     }
   }
+  input[type="password"] {
+    color: var(--Grey-900, var(--text-style, #101928));
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.25rem; /* 142.857% */
+  }
+  input[type="password"]::placeholder {
+    color: var(--Grey-400, #98a2b3);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.25rem; /* 142.857% */
+  }
   .error-msg {
     color: var(--Error-500, #cb1a14);
   }
   .correct {
     color: var(--Success-600, #04802e);
   }
-  .center{
+  .center {
     text-align: center;
   }
-  .inp{
-    .error-bdr{
-      border: 1px solid #EB5017;
+  .inp {
+    .error-bdr {
+      border: 1px solid #eb5017;
     }
   }
 

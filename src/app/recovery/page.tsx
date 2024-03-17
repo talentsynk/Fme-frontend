@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { ButtonLoader } from "@/components/recovery/style";
 import { validateEmail } from "@/utils/validateEmail";
 
-interface Ierror {
+export interface Ierror {
   active: boolean;
   text: string;
 }
