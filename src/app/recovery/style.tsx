@@ -33,7 +33,7 @@ export const RecoveryPageStyles = styled.div`
   }
   @media (max-width: 500px) {
     .form {
-      width: 92%;
+      width: 91%;
     }
   }
   @media (min-width: 998px) {
@@ -75,6 +75,7 @@ export const CoderinaLogo = styled.div`
     }
   }
 `;
+
 export const FormStyles = styled.div`
   padding: 2.5rem 2rem;
   width: 100%;
@@ -260,3 +261,30 @@ export const FormStyles = styled.div`
     }
   }
 `;
+
+
+export const ImprovisedStyle = styled.div`
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .btn{
+    width: 100%;
+    margin-top: 0rem;
+  }
+  .form-head{
+    p{
+      font-weight: 400;
+    }
+  }
+  @media (min-width: 998px){
+    .image{
+      img{
+        width: 14.5rem;
+        height: 10.4375rem;
+      }
+    }
+  }
+`

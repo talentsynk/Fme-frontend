@@ -45,8 +45,9 @@ export const OtpCompStyles = styled.div<IError>`
       border: 1px solid #EB5017;
     }
   `}
-  input:focus{
+  input:focus, input:active{
     background: var(--Primary-Color, #00932E);
+    color: #fff;
   }
   input::placeholder{
     text-align: center;
