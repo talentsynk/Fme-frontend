@@ -9,7 +9,11 @@ import {
 } from "../style";
 import Image from "next/image";
 import { BackBtn } from "@/components/recovery/recovery";
-import { EyeIcon } from "@/components/icons/recovery";
+import {
+  CheckedIcon,
+  EyeIcon,
+  FormErrorIcon,
+} from "@/components/icons/recovery";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isStrongPassword } from "@/utils/validatePwd";
@@ -29,6 +33,7 @@ export default function AccountRecovery() {
     text: "",
   });
 
+  // to handle hiding and showing passwords
   const [showPwd1, setShowPwd1] = useState(false);
   const [showPwd2, setShowPwd2] = useState(false);
 
@@ -80,10 +85,11 @@ export default function AccountRecovery() {
       });
     }
   };
-  
-  const handleSubmitPwds =()=>{
+
+  const handleSubmitPwds = () => {
     console.log(pwd1, pwd2);
-  }
+    // call api to save new password
+  };
 
   return (
     <>
@@ -91,7 +97,7 @@ export default function AccountRecovery() {
         <title>New password</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      
+
       <RecoveryPageStyles>
         <div className="head">
           <CoatOfArm>
@@ -117,7 +123,7 @@ export default function AccountRecovery() {
               </div>
               <div className="form-input">
                 <div className="form-ele">
-                  <span>New Password</span>
+                  <label htmlFor="pwd1">New Password</label>
                   <div className="inp">
                     <input
                       type={showPwd1 ? "text" : "password"}
@@ -131,12 +137,23 @@ export default function AccountRecovery() {
                       <EyeIcon isShown={showPwd1} />
                     </div>
                   </div>
-                  <p className={pwd1Error.active ? "error-msg" : "correct"}>
-                    {pwd1Error.text}
-                  </p>
+                  <div
+                    className="def"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                  >
+                    <p className={pwd1Error.active ? "error-msg" : "correct"}>
+                      {pwd1Error.text}
+                    </p>
+                    {pwd1Error.active === false && pwd1Error.text !== "" && (
+                      <CheckedIcon />
+                    )}
+                    {pwd1Error.active === true && <FormErrorIcon />}
+                  </div>
                 </div>
                 <div className="form-ele">
-                  <span>Confirm Password</span>
+                  <label htmlFor="pwd2">Confirm Password</label>
                   <div className="inp">
                     <input
                       type={showPwd2 ? "text" : "password"}
@@ -150,9 +167,20 @@ export default function AccountRecovery() {
                       <EyeIcon isShown={showPwd2} />
                     </div>
                   </div>
-                  <p className={pwd2Error.active ? "error-msg" : "correct"}>
-                    {pwd2Error.text}
-                  </p>
+                  <div
+                    className="def"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                  >
+                    <p className={pwd2Error.active ? "error-msg" : "correct"}>
+                      {pwd2Error.text}
+                    </p>
+                    {pwd2Error.active === false && pwd2Error.text !== "" && (
+                      <CheckedIcon />
+                    )}
+                    {pwd2Error.active === true && <FormErrorIcon />}
+                  </div>
                 </div>
               </div>
               <div className="btn">
@@ -160,9 +188,10 @@ export default function AccountRecovery() {
                   type="submit"
                   onClick={handleSubmitPwds}
                   disabled={
-                    pwd1Error.text == "" && pwd2Error.text == ""
-                      ? true
-                      : pwd1Error.active || pwd2Error.active
+                    pwd1Error.text == "" ||
+                    pwd2Error.text == "" ||
+                    pwd1Error.active ||
+                    pwd2Error.active
                   }
                 >
                   Save Password

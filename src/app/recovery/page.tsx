@@ -129,7 +129,7 @@ export default function AccountRecovery() {
                 </div>
                 <div className="form-input">
                   <div className="form-ele">
-                    <span>E-mail address</span>
+                    <label htmlFor="email">E-mail address</label>
                     <div className="inp">
                       <input
                         type="email"

@@ -58,6 +58,9 @@ export const OtpCompStyles = styled.div<IError>`
     display: flex;
     gap: 1rem;
   }
+  input[type="tel"]:focus::placeholder {
+    color: #fff;
+  }
 `;
 
 export const ButtonLoader = styled.div`

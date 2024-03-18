@@ -141,6 +141,13 @@ export const FormStyles = styled.div`
       cursor: pointer;
     }
   }
+  .def{
+    display: flex;
+    align-items: center;
+    svg{
+      scale: 0.9;
+    }
+  }
   .btn {
     margin-top: 2rem;
     button {
@@ -164,7 +171,7 @@ export const FormStyles = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    span {
+    label {
       color: var(--Grey-900, var(--text-style, #101928));
       font-size: 0.875rem;
       font-style: normal;
