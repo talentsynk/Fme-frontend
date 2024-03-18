@@ -1,10 +1,18 @@
+
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap');
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Satoshi', sans-serif;
 }
 
 button{
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
+input{
   border: 0;
   outline: 0;
 }
@@ -13,4 +21,8 @@ a{
 }
 img{
   object-fit: cover;
+}
+
+.br{
+  border: 2px solid #000;
 }

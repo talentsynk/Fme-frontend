@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Skills database platform",
-  description: "This is a skills database platform powered by coderina",
+  title: "Reset Password",
+  description: "Reset your password here",
 };
 
 export default function RootLayout({

@@ -1,11 +1,9 @@
 
 // dashboard root-layout
 
-
-// authentication root-layout
-
 import type { Metadata } from "next";
 import "../globals.css";
+import { GenericDasboardLayout } from "@/components/layout/dashboardlayout";
 
 export const metadata: Metadata = {
   title: "Dashboard layout",
@@ -19,7 +17,9 @@ export default function DashboardRootLayout({
 }>) {
   return (
     <html lang="en">
-      <body >{children}</body>
+      <GenericDasboardLayout>
+        {children}
+      </GenericDasboardLayout>
     </html>
   );
 }
