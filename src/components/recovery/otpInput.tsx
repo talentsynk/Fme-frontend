@@ -20,10 +20,10 @@ export const OtpComp:React.FC<IOtpComp> = ({setUserOtp, isError}) => {
       <OTPInput
         value={otp}
         onChange={(value) => setOtpValue(value)}
-        numInputs={4}
+        numInputs={5}
         renderInput={(props) => <input {...props} />}
         skipDefaultStyles={true}
-        placeholder="****"
+        placeholder="*****"
         inputType="tel"
       />
     </OtpCompStyles>

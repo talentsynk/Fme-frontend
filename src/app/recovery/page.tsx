@@ -5,6 +5,7 @@ import {
   CoatOfArm,
   CoderinaLogo,
   FormStyles,
+  ImprovisedStyle,
   RecoveryPageStyles,
 } from "./style";
 import Image from "next/image";
@@ -50,16 +51,23 @@ export default function AccountRecovery() {
       setEmailError({ active: false, text: "Valid Email" });
     }
   };
-
+  // sending email loader
+  const [isSendLoading, setIsSendLoading] = useState(false);
   // this function would check using the API provided if the email is in the DB and then send a message, if not in the DB, it returns an error
   const getOtp = () => {
-    setShowOTP(true);
+    if (!emailError.active) {
+      //when there's no error msg
+      setIsSendLoading(true);
+      setTimeout(() => {
+        setIsSendLoading(false);
+        setFormStep(1);
+      }, 2000);
+    }
   };
 
-
-
+  // form steps
+  const [formStep, setFormStep] = useState(0);
   // for otp
-  const [showOTP, setShowOTP] = useState(false);
   const [userOtp, setUserOtp] = useState("");
   const [otpError, setOtpError] = useState<Ierror>({ active: false, text: "" });
 
@@ -81,7 +89,7 @@ export default function AccountRecovery() {
   };
   useEffect(() => {
     if (userOtp.length > 0) {
-      if (userOtp.length < 4) {
+      if (userOtp.length < 5) {
         setOtpError({ active: true, text: "Enter complete OTP digits" });
       } else {
         if (otpRegex.test(userOtp)) {
@@ -115,7 +123,7 @@ export default function AccountRecovery() {
           </CoatOfArm>
 
           <div className="form">
-            {!showOTP && (
+            {formStep == 0 && (
               <FormStyles>
                 <div className="backbtn">
                   <BackBtn backFunction={backToLogin} />
@@ -158,15 +166,52 @@ export default function AccountRecovery() {
                     onClick={getOtp}
                     disabled={!validateEmail(email)}
                   >
-                    Send mail
+                    {isSendLoading ? <ButtonLoader /> : "Send mail"}
                   </button>
                 </div>
               </FormStyles>
             )}
-            {showOTP && (
+            {formStep == 1 && (
               <FormStyles>
                 <div className="backbtn">
-                  <BackBtn backFunction={() => setShowOTP(false)} />
+                  <BackBtn backFunction={() => setFormStep(0)} />
+                </div>
+
+                <ImprovisedStyle>
+                  <div className="image">
+                    <Image
+                      alt="check email image"
+                      width={144}
+                      height={104}
+                      sizes="100vw"
+                      src="/images/recovery/check_email.svg"
+                    />
+                  </div>
+                  <div className="form-head">
+                    <h3>Check your mail</h3>
+                    <p>
+                      A mail has been sent to ${email}. Follow the steps
+                      provided in the email to update your password or
+                      select Log In if you don’t want to change your password at
+                      this time.
+                    </p>
+                  </div>
+                  <div className="btn">
+                    <button type="button" onClick={() => setFormStep(2)}>
+                      Next
+                    </button>
+                  </div>
+                </ImprovisedStyle>
+                <div className="btm">
+                  <p>I Didn’t get the mail?</p>
+                  <button type="button">Resend mail</button>
+                </div>
+              </FormStyles>
+            )}
+            {formStep == 2 && (
+              <FormStyles>
+                <div className="backbtn">
+                  <BackBtn backFunction={() => setFormStep(1)} />
                 </div>
                 <div className="form-head">
                   <h3>Verify your e-mail address</h3>
@@ -196,7 +241,7 @@ export default function AccountRecovery() {
                   <button
                     type="submit"
                     onClick={verifyOtp}
-                    disabled={userOtp.length < 4}
+                    disabled={userOtp.length < 5}
                   >
                     {isLoading ? <ButtonLoader /> : "Verify OTP"}
                   </button>
