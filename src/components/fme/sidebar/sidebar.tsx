@@ -73,7 +73,7 @@ export const DashboardSidebar = () => {
         </div>
         <div className="org">
             <p>Powered by</p>
-            <Image src="/images/coderina.png" width={119} height={26} alt="coderina logo" />
+            <Image src="/images/coderina.svg" width={119} height={26} alt="coderina logo" />
         </div>
       </div>
     </SidebarStyles>
