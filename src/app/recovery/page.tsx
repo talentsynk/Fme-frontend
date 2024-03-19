@@ -30,7 +30,7 @@ const otpRegex: RegExp = /[a-zA-Z]+.*[^a-zA-Z0-9\s]/;
 export default function AccountRecovery() {
   const router = useRouter();
   const backToLogin = () => {
-    router.push("/login");
+    router.push("/admin");
   };
 
   // For Email

@@ -149,7 +149,7 @@ export const FormStyles = styled.div`
       scale: 0.9;
     }
   }
-  .btn {
+  .btn, .btn-m {
     margin-top: 2rem;
     button {
       border-radius: 0.625rem;

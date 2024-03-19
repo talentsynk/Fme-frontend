@@ -1,0 +1,17 @@
+import { ReactNode } from "react";
+import { FMEIcon, MDAIcon } from "../icons/auth";
+
+export interface IAdmin {
+  name: string;
+  icon: ReactNode;
+  isSelected: boolean;
+}
+
+export interface ISelectAdminFunc extends IAdmin {
+  handleSelect: () => void;
+}
+
+export const Admins: IAdmin[] = [
+  { name: "FME", icon: <FMEIcon />, isSelected: true },
+  { name: "MDA", icon: <MDAIcon />, isSelected: false },
+];

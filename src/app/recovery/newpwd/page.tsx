@@ -45,6 +45,8 @@ export default function AccountRecovery() {
     const value = e.target.value;
     setPwd1(value);
     let msg: string | null = isStrongPassword(value);
+
+    // this handles when the password is a match and then pwd1 value changes
     if (pwd2.length > 0) {
       if (pwd2 == value) {
         setPwd2Error({
