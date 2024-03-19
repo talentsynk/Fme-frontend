@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap');
 *{
@@ -25,4 +28,8 @@ img{
 
 .br{
   border: 2px solid #000;
+}
+
+#stc-searchbar{
+  border-width: 2px solid green;
 }
