@@ -9,8 +9,17 @@ export const AuthCardStyle = styled.div`
       display: none;
     }
   }
+  @media (max-width: 500px) {
+    // width: ;
+    .two{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+  }
   @media (min-width: 998px) {
-    width: 85%;
+    width: 80%;   // or 85%
     .flx {
       width: 100%;
       display: flex;
@@ -110,7 +119,7 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   ${(props) =>
     props.$isSelected &&
     css`
-      border: 1px solid var(--Primary-Color, #00932e);
+      border: 2px solid var(--Primary-Color, #00932e);
       background: #e7f6ec;
       p,
       .ic span {

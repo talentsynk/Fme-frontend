@@ -70,7 +70,7 @@ export const AuthLayoutStyles = styled.main`
       gap: 3.375rem;
     }
     .main {
-      border: 2px solid #000;
+      // border: 2px solid #000;
     }
     .mobile {
       display: none;

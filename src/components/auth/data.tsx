@@ -12,6 +12,6 @@ export interface ISelectAdminFunc extends IAdmin {
 }
 
 export const Admins: IAdmin[] = [
-  { name: "FME", icon: <FMEIcon />, isSelected: true },
+  { name: "FME", icon: <FMEIcon />, isSelected: false },
   { name: "MDA", icon: <MDAIcon />, isSelected: false },
 ];

@@ -7,6 +7,8 @@ import {
   AuthCardStyle,
   AuthFormStyles,
 } from "@/components/auth/style";
+import { CreateUserIcon } from "@/components/icons/auth";
+import { EmailIcon, EyeIcon } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
 import Head from "next/head";
 import Image from "next/image";
@@ -18,8 +20,16 @@ export default function Login() {
   const backFunc = () => {
     router.back();
   };
-  const [admins, setAdmins] = useState<IAdmin[] | null>(Admins);
 
+  // handle first state
+  const [admins, setAdmins] = useState<IAdmin[] | null>(Admins);
+  const [adminStatus, setAdminStatus] = useState<string | null>("FME");
+  const handleAdminStatus = () => {
+    const status = admins?.find((ele) => ele.isSelected == true)?.name;
+    if (status) {
+      setAdminStatus(status);
+    }
+  };
   const selectAdmin = (id: string) => {
     const newAdminList = admins?.map((ele) => {
       return { ...ele, isSelected: id === ele.name };
@@ -28,6 +38,12 @@ export default function Login() {
       setAdmins(newAdminList);
     }
   };
+
+  // handle second state
+  // to handle hiding and showing passwords
+  const [showPwd1, setShowPwd1] = useState(false);
+  const [showPwd2, setShowPwd2] = useState(false);
+
   return (
     <>
       <Head>
@@ -56,38 +72,138 @@ export default function Login() {
             />
           </div>
           <div className="two">
-            <AuthFormStyles>
-              <div className="backbtn">
-                <BackBtn backFunction={backFunc} />
-              </div>
-              <div className="form-head">
-                <h3>Welcome to Signup Portal!</h3>
-                <p>
-                  This is the signup portal for both the Federal Ministry of
-                  Education(FME) and Ministry Department& Agencies
-                </p>
-              </div>
-              <div className="form-input">
-                <AdminlistStyle>
-                  {admins?.map((ele, index) => (
-                    <SelectAdminComp
-                      key={index}
-                      name={ele.name}
-                      icon={ele.icon}
-                      isSelected={ele.isSelected}
-                      handleSelect={() => selectAdmin(ele.name)}
-                    />
-                  ))}
-                </AdminlistStyle>
-              </div>
-              <div className="btn">
-                <button type="button">Next</button>
-              </div>
-              <div className="btm">
-                <p>Already have an account?</p>
-                <button type="button" onClick={() => router.push("/admin")}>Sign in</button>
-              </div>
-            </AuthFormStyles>
+            {adminStatus == null && (
+              <AuthFormStyles>
+                <div className="backbtn">
+                  <BackBtn backFunction={backFunc} />
+                </div>
+                <div className="form-head">
+                  <h3>Welcome to Signup Portal!</h3>
+                  <p>
+                    This is the signup portal for both the Federal Ministry of
+                    Education(FME) and Ministry Department& Agencies
+                  </p>
+                </div>
+                <div className="form-input">
+                  <AdminlistStyle>
+                    {admins?.map((ele, index) => (
+                      <SelectAdminComp
+                        key={index}
+                        name={ele.name}
+                        icon={ele.icon}
+                        isSelected={ele.isSelected}
+                        handleSelect={() => selectAdmin(ele.name)}
+                      />
+                    ))}
+                  </AdminlistStyle>
+                </div>
+                <div className="btn">
+                  <button type="button" onClick={handleAdminStatus}>
+                    Next
+                  </button>
+                </div>
+                <div className="btm">
+                  <p>Already have an account?</p>
+                  <button type="button" onClick={() => router.push("/admin")}>
+                    Sign in
+                  </button>
+                </div>
+              </AuthFormStyles>
+            )}
+            {adminStatus !== null && (
+              <form>
+                <AuthFormStyles>
+                  <div className="backbtn">
+                    <BackBtn backFunction={backFunc} text="Previous page" />
+                  </div>
+                  <div className="form-head">
+                    <h3>Welcome to {adminStatus} Signup!</h3>
+                    <p>
+                      This is the signup portal for both the Federal Ministry of
+                      Education(FME) and Ministry Department& Agencies
+                    </p>
+                  </div>
+                  <div className="form-input">
+                    <div className="form-ele">
+                      <label htmlFor="name">Name of {adminStatus}</label>
+                      <div className="inp">
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="Please type in your name here"
+                        />
+                        <div className="abs">
+                          <CreateUserIcon />
+                        </div>
+                      </div>
+                      <p className="error-msg">Name cannot be empty</p>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="email">E-mail address</label>
+                      <div className="inp">
+                        <input
+                          type="email"
+                          name="email"
+                          placeholder="Enter Email Address"
+                        />
+                        <div className="abs">
+                          <EmailIcon />
+                        </div>
+                      </div>
+                      <p className="error-msg">Email cannot be empty</p>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="pwd1">Password</label>
+                      <div className="inp">
+                        <input
+                          type={showPwd1 ? "text" : "password"}
+                          name="pwd1"
+                          placeholder="Enter Password"
+                        />
+                        <div
+                          className="abs"
+                          onClick={() => setShowPwd1(!showPwd1)}
+                        >
+                          <EyeIcon isShown={showPwd1} />
+                        </div>
+                      </div>
+                      <p className="error-msg">Password cannot be empty</p>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="pwd2">Confirm Password</label>
+                      <div className="inp">
+                        <input
+                          type={showPwd2 ? "text" : "password"}
+                          name="pwd2"
+                          placeholder="Confirm Password"
+                        />
+                        <div
+                          className="abs"
+                          onClick={() => setShowPwd2(!showPwd2)}
+                        >
+                          <EyeIcon isShown={showPwd2} />
+                        </div>
+                      </div>
+                      <p className="error-msg">Password cannot a match</p>
+                    </div>
+                  </div>
+                  <div className="btn-m">
+                    <button
+                      type="submit"
+                      onClick={() => console.log("submit form")}
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div className="btm">
+                    <p>Already have an account?</p>
+                    <button type="button" onClick={() => router.push("/admin")}>
+                      Sign in
+                    </button>
+                  </div>
+                </AuthFormStyles>
+              </form>
+            )}
           </div>
         </div>
       </AuthCardStyle>
