@@ -62,6 +62,11 @@ export const AuthFormStyles = styled(FormStyles)`
     justify-content: right;
     align-items: center;
   }
+  .form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
   @media (min-width: 767px) and (max-width: 998px) {
     width: 75%;
     margin: 0 auto;

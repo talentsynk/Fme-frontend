@@ -74,6 +74,10 @@ export default function Login() {
     }
   };
 
+  const goToDashboard = () => {
+    // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
+    router.push("/fme"); //navigate to FME dashboard for now
+  };
   return (
     <>
       <Head>
@@ -170,15 +174,33 @@ export default function Login() {
               </div>
               <div className="right">
                 <LinkStyles>
-                <Link href="/recovery"><p>Forgot Password?</p></Link>
+                  <Link href="/recovery">
+                    <p>Forgot Password?</p>
+                  </Link>
                 </LinkStyles>
               </div>
               <div className="btn-m">
-                <button type="button">Continue</button>
+                <button
+                  type="button"
+                  onClick={goToDashboard}
+                  disabled={
+                    pwdError.text == "" ||
+                    emailError.text == "" ||
+                    pwdError.active !== false ||
+                    emailError.active !== false
+                  }
+                >
+                  Continue
+                </button>
               </div>
               <div className="btm">
                 <p>Don’t have an account?</p>
-                <button type="button" onClick={() => router.push("/admin/signup")}>Sign up</button>
+                <button
+                  type="button"
+                  onClick={() => router.push("/admin/signup")}
+                >
+                  Sign up
+                </button>
               </div>
             </AuthFormStyles>
           </div>

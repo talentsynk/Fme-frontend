@@ -21,9 +21,14 @@ export default function Login() {
     router.back();
   };
 
+  const backToPrev =()=>{
+    setAdmins(Admins);
+    setAdminStatus(null);
+  }
+  
   // handle first state
   const [admins, setAdmins] = useState<IAdmin[] | null>(Admins);
-  const [adminStatus, setAdminStatus] = useState<string | null>("FME");
+  const [adminStatus, setAdminStatus] = useState<string | null>(null);
   const handleAdminStatus = () => {
     const status = admins?.find((ele) => ele.isSelected == true)?.name;
     if (status) {
@@ -39,6 +44,7 @@ export default function Login() {
     }
   };
 
+  // todo: use reacthookform for handling form state, setup redux, add animations to forms & pages
   // handle second state
   // to handle hiding and showing passwords
   const [showPwd1, setShowPwd1] = useState(false);
@@ -98,7 +104,14 @@ export default function Login() {
                   </AdminlistStyle>
                 </div>
                 <div className="btn">
-                  <button type="button" onClick={handleAdminStatus}>
+                  <button
+                    type="button"
+                    onClick={handleAdminStatus}
+                    disabled={
+                      admins?.find((ele) => ele.isSelected == true)
+                        ?.isSelected !== true
+                    }
+                  >
                     Next
                   </button>
                 </div>
@@ -111,18 +124,18 @@ export default function Login() {
               </AuthFormStyles>
             )}
             {adminStatus !== null && (
-              <form>
-                <AuthFormStyles>
-                  <div className="backbtn">
-                    <BackBtn backFunction={backFunc} text="Previous page" />
-                  </div>
-                  <div className="form-head">
-                    <h3>Welcome to {adminStatus} Signup!</h3>
-                    <p>
-                      This is the signup portal for both the Federal Ministry of
-                      Education(FME) and Ministry Department& Agencies
-                    </p>
-                  </div>
+              <AuthFormStyles>
+                <div className="backbtn">
+                  <BackBtn backFunction={backToPrev} text="Previous page" />
+                </div>
+                <div className="form-head">
+                  <h3>Welcome to {adminStatus} Signup!</h3>
+                  <p>
+                    This is the signup portal for both the Federal Ministry of
+                    Education(FME) and Ministry Department& Agencies
+                  </p>
+                </div>
+                <form className="form">
                   <div className="form-input">
                     <div className="form-ele">
                       <label htmlFor="name">Name of {adminStatus}</label>
@@ -195,14 +208,14 @@ export default function Login() {
                       Next
                     </button>
                   </div>
-                  <div className="btm">
-                    <p>Already have an account?</p>
-                    <button type="button" onClick={() => router.push("/admin")}>
-                      Sign in
-                    </button>
-                  </div>
-                </AuthFormStyles>
-              </form>
+                </form>
+                <div className="btm">
+                  <p>Already have an account?</p>
+                  <button type="button" onClick={() => router.push("/admin")}>
+                    Sign in
+                  </button>
+                </div>
+              </AuthFormStyles>
             )}
           </div>
         </div>
