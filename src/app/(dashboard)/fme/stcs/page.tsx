@@ -1,6 +1,8 @@
 
+import AllStcs from "@/components/stc/AllStcs";
 import SearchSection from "@/components/stc/SearchSection";
 import StcCard from "@/components/stc/StcCard";
+import StcTable from "@/components/stc/StcTable";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -44,7 +46,10 @@ export default function Home() {
             <StcCard />
           </div>
           <SearchSection />
+          <AllStcs />
+          <StcTable itemsPerPage={8} />
         </section>
+
       </section>
     );
   }

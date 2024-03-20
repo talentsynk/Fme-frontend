@@ -2,21 +2,30 @@ import { StcDataInterface } from "../(interface)/interface"
 const StcData:StcDataInterface[]=[
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
-        courses:1,
+        courses:10,
         total_students:200,
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:1,
+        id:1,
 },
     {
         name:"AGRICULTURAL SKILLS CENTRE, DAMARE",
-        courses:4,
+        courses:40,
         total_students:300,
         address:"30, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:2,
+        id:2,
+},
+    {
+        name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
+        courses:10,
+        total_students:200,
+        address:"1, Hervbert Way",
+        state:"Lagos",
+        status:"Active",
+        id:3,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -25,7 +34,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:3,
+        id:4,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -34,7 +43,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:4,
+        id:5,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -43,7 +52,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:5,
+        id:6,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -52,7 +61,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:6,
+        id:7,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -61,7 +70,16 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:7,
+        id:8,
+},
+    {
+        name:" OF WORKS AND HOUSING",
+        courses:1,
+        total_students:200,
+        address:"1, Hervbert Way",
+        state:"Lagos",
+        status:"Active",
+        id:9,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -70,7 +88,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:8,
+        id:10,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -79,7 +97,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:9,
+        id:11,
 },
     {
         name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
@@ -88,25 +106,7 @@ const StcData:StcDataInterface[]=[
         address:"1, Hervbert Way",
         state:"Lagos",
         status:"Active",
-        index:10,
-},
-    {
-        name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
-        courses:1,
-        total_students:200,
-        address:"1, Hervbert Way",
-        state:"Lagos",
-        status:"Active",
-        index:11,
-},
-    {
-        name:"FEDERAL MINISTRY OF WORKS AND HOUSING",
-        courses:1,
-        total_students:200,
-        address:"1, Hervbert Way",
-        state:"Lagos",
-        status:"Active",
-        index:12,
+        id:12,
 },
 ]
 

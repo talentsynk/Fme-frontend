@@ -5,5 +5,5 @@ export interface StcDataInterface {
     address: string;
     state: string;
     status: string;
-    index: number;
+    id: number;
 }
