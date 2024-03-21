@@ -5,7 +5,7 @@ import "../globals.css";
 import { GenericDasboardLayout } from "@/components/layout/dashboardlayout";
 
 export const metadata: Metadata = {
-  title: "Dashboard layout",
+  title: "Dashboard",
   description: "skill database platform dashboards powered by coderina",
 };
 
