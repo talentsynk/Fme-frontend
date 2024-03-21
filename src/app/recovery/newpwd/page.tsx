@@ -1,6 +1,5 @@
 "use client";
 import "../../globals.css";
-import Head from "next/head";
 import {
   CoatOfArm,
   CoderinaLogo,
@@ -14,7 +13,7 @@ import {
   EyeIcon,
   FormErrorIcon,
 } from "@/components/icons/recovery";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isStrongPassword } from "@/utils/validatePwd";
 import { Ierror } from "../page";
@@ -88,18 +87,23 @@ export default function AccountRecovery() {
     }
   };
 
-  const handleSubmitPwds = () => {
-    console.log(pwd1, pwd2);
-    // call api to save new password
+  
+  const handleSubmitPwds = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission
+
+    if (
+      !pwd1Error.active &&
+      !pwd2Error.active &&
+      pwd1Error.text !== "" &&
+      pwd2Error.text !== ""
+    ) {
+      // call changePassword API
+      console.log(pwd1,pwd2);
+    }
   };
 
   return (
     <>
-      <Head>
-        <title>New password</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-
       <RecoveryPageStyles>
         <div className="head">
           <CoatOfArm>
@@ -123,6 +127,7 @@ export default function AccountRecovery() {
                   unique password for your account.
                 </p>
               </div>
+              <form className="form" onSubmit={handleSubmitPwds}>
               <div className="form-input">
                 <div className="form-ele">
                   <label htmlFor="pwd1">New Password</label>
@@ -133,26 +138,30 @@ export default function AccountRecovery() {
                       value={pwd1}
                       onChange={handlePwd1Change}
                       placeholder="Enter Password"
+                      autoComplete="new-password"
                       className={pwd1Error.active ? "error-bdr" : ""}
+                      onKeyDown={() =>
+                        setPwd1Error({ active: false, text: "" })
+                      }
                     />
                     <div className="abs" onClick={() => setShowPwd1(!showPwd1)}>
-                      <EyeIcon isShown={showPwd1} />
+                      {pwd1Error.active === false && pwd1Error.text === "" && (
+                        <EyeIcon isShown={showPwd1} />
+                      )}
+                      {pwd1Error.active === false && pwd1Error.text !== "" && (
+                        <CheckedIcon />
+                      )}
+                      {pwd1Error.active === true && <FormErrorIcon />}
                     </div>
                   </div>
-                  <div
-                    className="def"
+                  <p
                     role="alert"
                     aria-live="assertive"
                     aria-atomic="true"
+                    className={pwd1Error.active ? "error-msg" : "correct"}
                   >
-                    <p className={pwd1Error.active ? "error-msg" : "correct"}>
-                      {pwd1Error.text}
-                    </p>
-                    {pwd1Error.active === false && pwd1Error.text !== "" && (
-                      <CheckedIcon />
-                    )}
-                    {pwd1Error.active === true && <FormErrorIcon />}
-                  </div>
+                    {pwd1Error.text}
+                  </p>
                 </div>
                 <div className="form-ele">
                   <label htmlFor="pwd2">Confirm Password</label>
@@ -164,31 +173,34 @@ export default function AccountRecovery() {
                       className={pwd2Error.active ? "error-bdr" : ""}
                       onChange={handlePwd2Change}
                       placeholder="Confirm Password"
+                      autoComplete="new-password"
+                      onKeyDown={() =>
+                        setPwd2Error({ active: false, text: "" })
+                      }
                     />
                     <div className="abs" onClick={() => setShowPwd2(!showPwd2)}>
-                      <EyeIcon isShown={showPwd2} />
+                      {pwd2Error.active === false && pwd2Error.text === "" && (
+                        <EyeIcon isShown={showPwd2} />
+                      )}
+                      {pwd2Error.active === false && pwd2Error.text !== "" && (
+                        <CheckedIcon />
+                      )}
+                      {pwd2Error.active === true && <FormErrorIcon />}
                     </div>
                   </div>
-                  <div
-                    className="def"
+                  <p
                     role="alert"
                     aria-live="assertive"
                     aria-atomic="true"
+                    className={pwd2Error.active ? "error-msg" : "correct"}
                   >
-                    <p className={pwd2Error.active ? "error-msg" : "correct"}>
-                      {pwd2Error.text}
-                    </p>
-                    {pwd2Error.active === false && pwd2Error.text !== "" && (
-                      <CheckedIcon />
-                    )}
-                    {pwd2Error.active === true && <FormErrorIcon />}
-                  </div>
+                    {pwd2Error.text}
+                  </p>
                 </div>
               </div>
-              <div className="btn">
+              <div className="btn-m">
                 <button
                   type="submit"
-                  onClick={handleSubmitPwds}
                   disabled={
                     pwd1Error.text == "" ||
                     pwd2Error.text == "" ||
@@ -199,6 +211,7 @@ export default function AccountRecovery() {
                   Save Password
                 </button>
               </div>
+              </form>
             </FormStyles>
           </div>
         </div>

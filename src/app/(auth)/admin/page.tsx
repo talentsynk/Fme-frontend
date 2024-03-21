@@ -20,14 +20,20 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
+interface IForm {
+  email: string;
+  pwd: string;
+}
 export default function Login() {
   const router = useRouter();
   const backFunc = () => {
     router.push("/");
   };
 
+  // for form
+  const [form, setForm] = useState<IForm>({ email: "", pwd: "" });
   // For Email
   const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<Ierror>({
@@ -44,6 +50,7 @@ export default function Login() {
       setEmailError({ active: true, text: "Invalid email address." });
     } else {
       setEmailError({ active: false, text: "Valid Email" });
+      setForm({...form, email : value});
     }
   };
 
@@ -71,12 +78,23 @@ export default function Login() {
         active: false,
         text: "Password is Strong",
       });
+      setForm({...form,pwd : value});
     }
   };
 
-  const goToDashboard = () => {
+  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission
     // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
-    router.push("/fme"); //navigate to FME dashboard for now
+    if (
+      !emailError.active &&
+      !pwdError.active &&
+      emailError.text !== "" &&
+      pwdError.text !== ""
+    ) {
+      // call signup API
+      console.log(form);
+      router.push("/fme"); //navigate to FME dashboard for now
+    }
   };
   return (
     <>
@@ -117,82 +135,93 @@ export default function Login() {
                   Education(FME) and Ministry Department& Agencies
                 </p>
               </div>
-              <div className="form-input">
-                <div className="form-ele">
-                  <label htmlFor="email">E-mail address</label>
-                  <div className="inp">
-                    <input
-                      type="email"
-                      name="email"
-                      value={email}
-                      onChange={handleEmailChange}
-                      placeholder="Enter Email Address"
-                      className={emailError.active ? "error-bdr" : ""}
-                    />
-                    <div className="abs">
-                      {emailError.active === false &&
-                        emailError.text === "" && <EmailIcon />}
-                      {emailError.active === false &&
-                        emailError.text !== "" && <CheckedIcon />}
-                      {emailError.active === true && <FormErrorIcon />}
+              <form className="form" onSubmit={handleLogin}>
+                <div className="form-input">
+                  <div className="form-ele">
+                    <label htmlFor="email">E-mail address</label>
+                    <div className="inp">
+                      <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                        placeholder="Enter Email Address"
+                        className={emailError.active ? "error-bdr" : ""}
+                        autoComplete="email"
+                      />
+                      <div className="abs">
+                        {emailError.active === false &&
+                          emailError.text === "" && <EmailIcon />}
+                        {emailError.active === false &&
+                          emailError.text !== "" && <CheckedIcon />}
+                        {emailError.active === true && <FormErrorIcon />}
+                      </div>
                     </div>
+                    <p
+                      role="alert"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                      className={emailError.active ? "error-msg" : "correct"}
+                    >
+                      {emailError.text}
+                    </p>
                   </div>
-                  <p className={emailError.active ? "error-msg" : "correct"}>
-                    {emailError.text}
-                  </p>
-                </div>
-                <div className="form-ele">
-                  <label htmlFor="pwd1">New Password</label>
-                  <div className="inp">
-                    <input
-                      type={showPwd ? "text" : "password"}
-                      name="pwd1"
-                      value={pwd}
-                      onChange={handlePwd1Change}
-                      placeholder="Enter Password"
-                      className={pwdError.active ? "error-bdr" : ""}
-                    />
-                    <div className="abs" onClick={() => setShowPwd(!showPwd)}>
-                      <EyeIcon isShown={showPwd} />
+                  <div className="form-ele">
+                    <label htmlFor="pwd">New Password</label>
+                    <div className="inp">
+                      <input
+                        type={showPwd ? "text" : "password"}
+                        name="pwd"
+                        value={pwd}
+                        onChange={handlePwd1Change}
+                        placeholder="Enter Password"
+                        autoComplete="new-password"
+                        className={pwdError.active ? "error-bdr" : ""}
+                        onKeyDown={() =>
+                          setPwdError({ active: false, text: "" })
+                        }
+                      />
+                      <div className="abs" onClick={() => setShowPwd(!showPwd)}>
+                        {pwdError.active === false && pwdError.text === "" && (
+                          <EyeIcon isShown={showPwd} />
+                        )}
+                        {pwdError.active === false && pwdError.text !== "" && (
+                          <CheckedIcon />
+                        )}
+                        {pwdError.active === true && <FormErrorIcon />}
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className="def"
-                    role="alert"
-                    aria-live="assertive"
-                    aria-atomic="true"
-                  >
-                    <p className={pwdError.active ? "error-msg" : "correct"}>
+                    <p
+                      role="alert"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                      className={pwdError.active ? "error-msg" : "correct"}
+                    >
                       {pwdError.text}
                     </p>
-                    {pwdError.active === false && pwdError.text !== "" && (
-                      <CheckedIcon />
-                    )}
-                    {pwdError.active === true && <FormErrorIcon />}
                   </div>
                 </div>
-              </div>
-              <div className="right">
-                <LinkStyles>
-                  <Link href="/recovery">
-                    <p>Forgot Password?</p>
-                  </Link>
-                </LinkStyles>
-              </div>
-              <div className="btn-m">
-                <button
-                  type="button"
-                  onClick={goToDashboard}
-                  disabled={
-                    pwdError.text == "" ||
-                    emailError.text == "" ||
-                    pwdError.active !== false ||
-                    emailError.active !== false
-                  }
-                >
-                  Continue
-                </button>
-              </div>
+                <div className="right">
+                  <LinkStyles>
+                    <Link href="/recovery">
+                      <p>Forgot Password?</p>
+                    </Link>
+                  </LinkStyles>
+                </div>
+                <div className="btn-m">
+                  <button
+                    type="submit"
+                    disabled={
+                      pwdError.text == "" ||
+                      emailError.text == "" ||
+                      pwdError.active !== false ||
+                      emailError.active !== false
+                    }
+                  >
+                    Continue
+                  </button>
+                </div>
+              </form>
               <div className="btm">
                 <p>Don’t have an account?</p>
                 <button

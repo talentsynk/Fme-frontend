@@ -11,7 +11,7 @@ export const AuthCardStyle = styled.div`
   }
   @media (max-width: 500px) {
     // width: ;
-    .two{
+    .two {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -19,7 +19,7 @@ export const AuthCardStyle = styled.div`
     }
   }
   @media (min-width: 998px) {
-    width: 80%;   // or 85%
+    width: 80%; // or 85%
     .flx {
       width: 100%;
       display: flex;
@@ -57,15 +57,10 @@ export const AuthFormStyles = styled(FormStyles)`
   .btn-m {
     margin-top: 0rem;
   }
-  .right{
+  .right {
     display: flex;
     justify-content: right;
     align-items: center;
-  }
-  .form{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
   }
   @media (min-width: 767px) and (max-width: 998px) {
     width: 75%;
@@ -147,7 +142,7 @@ export const AdminlistStyle = styled.div`
 `;
 
 export const LinkStyles = styled.div`
-width: fit-content;
+  width: fit-content;
   p {
     color: var(--Primary-Color, #00932e);
     font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
@@ -156,7 +151,7 @@ width: fit-content;
     font-weight: 700;
     line-height: 1.5rem; /* 150% */
   }
-  a{
+  a {
     width: fit-content;
   }
 `;

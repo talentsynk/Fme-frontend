@@ -61,6 +61,11 @@ export const OtpCompStyles = styled.div<IError>`
     display: flex;
     gap: 1rem;
   }
+  @media (max-width: 500px){
+    div{
+      gap: 0.5rem;
+    }
+  }
   input[type="tel"]:focus::placeholder {
     color: #fff;
   }

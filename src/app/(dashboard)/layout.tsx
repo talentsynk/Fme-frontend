@@ -1,4 +1,3 @@
-
 // dashboard root-layout
 
 import type { Metadata } from "next";
@@ -16,10 +15,8 @@ export default function DashboardRootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <GenericDasboardLayout>
-        {children}
-      </GenericDasboardLayout>
-    </html>
+    <>
+      <GenericDasboardLayout>{children}</GenericDasboardLayout>
+    </>
   );
 }
