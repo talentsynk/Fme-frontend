@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 
-// the first page on the fme dashboard
+// work on UI conversion for this and at the same time do the UI conversion for All-students page
 
 export default function Home() {
     return (
