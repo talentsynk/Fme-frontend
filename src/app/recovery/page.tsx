@@ -30,7 +30,7 @@ const otpRegex: RegExp = /[a-zA-Z]+.*[^a-zA-Z0-9\s]/;
 export default function AccountRecovery() {
   const router = useRouter();
   const backToLogin = () => {
-    router.push("/login");
+    router.push("/admin");
   };
 
   // For Email
@@ -190,7 +190,7 @@ export default function AccountRecovery() {
                   <div className="form-head">
                     <h3>Check your mail</h3>
                     <p>
-                      A mail has been sent to ${email}. Follow the steps
+                      A mail has been sent to {email}. Follow the steps
                       provided in the email to update your password or
                       select Log In if you don’t want to change your password at
                       this time.
@@ -237,7 +237,7 @@ export default function AccountRecovery() {
                     </p>
                   </div>
                 </div>
-                <div className="btn">
+                <div className="btn-m">
                   <button
                     type="submit"
                     onClick={verifyOtp}

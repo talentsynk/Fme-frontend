@@ -4,11 +4,11 @@ import { LinkCompStyles, SidebarStyles } from "./style";
 import { AdminUserIcon, FGLogo, LogoutIcon } from "@/components/icons/sidebar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const DashboardSidebar = () => {
   const [pageLinks, setPageLinks] = useState(PageLinks);
-
+  const router = useRouter();
   const clickLink = (id: string) => {
     const newLinks = pageLinks.map((ele) => {
       return { ...ele, isSelected: ele.id == id };
@@ -16,6 +16,8 @@ export const DashboardSidebar = () => {
     setPageLinks(newLinks);
     console.log(id);
   };
+  useEffect(()=>{
+  },[])
   return (
     <SidebarStyles>
       <div className="top">

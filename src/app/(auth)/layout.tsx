@@ -1,11 +1,11 @@
-
 // authentication root-layout
 
 import type { Metadata } from "next";
 import "../globals.css";
+import { AuthLayout } from "@/components/layout/authlayout";
 
 export const metadata: Metadata = {
-  title: "authentication layout",
+  title: "authentication",
   description: "authentication process powered by coderina",
 };
 
@@ -15,8 +15,8 @@ export default function AuthRootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body >{children}</body>
-    </html>
+    <>
+      <AuthLayout>{children}</AuthLayout>
+    </>
   );
 }
