@@ -3,21 +3,28 @@ import { ILinkFunc, PageLinks } from "./data";
 import { LinkCompStyles, SidebarStyles } from "./style";
 import { AdminUserIcon, FGLogo, LogoutIcon } from "@/components/icons/sidebar";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 export const DashboardSidebar = () => {
   const [pageLinks, setPageLinks] = useState(PageLinks);
-  const router = useRouter();
+  const name = usePathname();
   const clickLink = (id: string) => {
     const newLinks = pageLinks.map((ele) => {
       return { ...ele, isSelected: ele.id == id };
     });
     setPageLinks(newLinks);
-    console.log(id);
   };
   useEffect(()=>{
-  },[])
+    const selected = pageLinks.find(ele => ele.isSelected == true);
+    // if the user types the route
+    if(name != selected?.href){
+      const newLinks = pageLinks.map((ele)=>{
+        return {...ele,isSelected : ele.href == name}
+      });
+      setPageLinks(newLinks);
+    };
+  },[name])
   return (
     <SidebarStyles>
       <div className="top">

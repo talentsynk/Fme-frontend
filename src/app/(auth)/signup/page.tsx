@@ -36,7 +36,7 @@ export default function Login() {
     router.back();
   };
 
-  //
+  // edit this to student / user signup
 
   const backToPrev = () => {
     setAdmins(Admins);

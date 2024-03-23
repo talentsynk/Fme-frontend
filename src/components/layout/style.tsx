@@ -8,7 +8,8 @@ export const GenericDashboardLayoutStyle = styled.main`
   }
   @media (min-width: 998px) {
     display: grid;
-    grid-template-columns: 18% 1fr;
+    width: 100vw;
+    grid-template-columns: 20% 1fr;
     grid-template-rows: 80px 1fr;
     height: 100vh;
     overflow: hidden;

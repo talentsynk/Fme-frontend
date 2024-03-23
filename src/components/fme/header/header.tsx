@@ -33,7 +33,7 @@ export const DashboardHeader = () => {
         <p>Your current overview for activities</p>
       </div>
       <div className="two">
-        <CalendarComponent />
+        {/* <CalendarComponent />  */}
         <div className="pfp">
           <div className="img" onClick={() => setShowDropdown(!showDropdown)}>
             <Image src="/images/user.svg" width={48} height={48} alt="avatar" />

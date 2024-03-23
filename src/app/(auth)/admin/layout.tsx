@@ -1,11 +1,13 @@
+// authentication root-layout
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Students-List",
-  description: "Manage all students",
+  title: "Admin-Login",
+  description: "Login into an Admin Account",
 };
 
-export default function StudentsClientLayout({
+export default function ClientLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
