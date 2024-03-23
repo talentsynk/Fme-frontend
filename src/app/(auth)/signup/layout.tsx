@@ -3,8 +3,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin-Signup",
-  description: "Create an Admin Account",
+  title: "Signup",
+  description: "Signup/Create an Account",
 };
 
 export default function ClientLayout({

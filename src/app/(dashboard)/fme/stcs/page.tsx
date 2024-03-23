@@ -1,11 +1,4 @@
-
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "stcs",
-  description: "FME page for setting STCs",
-};
-
+"use client";
 
 // the first page on the fme dashboard
 
