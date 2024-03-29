@@ -1,36 +1,31 @@
+interface StcTableProps {
+  itemsPerPage: number;
+}
 "use client"
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { StcData } from '@/app/(data)/MockData';
 import { StcDataInterface } from '@/app/(interface)/interface';
-import TableRow from './TableRow';
+import Items from './Items';
+// import TableRow from './TableRow';
 
 
-const Items: React.FC =({ currentItems })=> {
-    return (
-      <>
-        {currentItems &&
-          currentItems.map((item) => (
-            <TableRow key={item?.id} name={item?.name} courses={item?.courses} total_students={item?.total_students} address={item?.address} state={item?.state} status={item?.status} />
-          ))}
-      </>
-    );
-  }
+
   
-  const StcTable =({ itemsPerPage}) => {
+  const StcTable: React.FC<StcTableProps> =({ itemsPerPage}) => {
     const [itemOffset, setItemOffset] = useState(0);
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     const currentItems = StcData.slice(itemOffset, endOffset);
     const pageCount = Math.ceil(StcData.length / itemsPerPage);
-    const handlePageClick = (event) => {
+    const handlePageClick = (event:any) => {
       const newOffset = (event.selected * itemsPerPage) % StcData.length;
       setItemOffset(newOffset);
     };
   
     return (
       <>
-      <table className=' w-full border-collapse'>
+      <table className=' w-full border-collapse mt-4'>
         <thead className=''>
           <tr className=' text-[#344054] bg-[#F9FAFB] border-[#E4E7EC]'>
           <th className='p-2 text-left w-[33.3%] rounded-tl-[10px]'>NAME</th>
@@ -44,8 +39,16 @@ const Items: React.FC =({ currentItems })=> {
         <tbody className=' border-2 border-[#F9FAFB]'>
         <Items currentItems={currentItems} />
         </tbody>
+
       </table>
         <ReactPaginate
+          activeClassName={'item active '}
+          breakClassName={'item break-me '}
+          containerClassName={'pagination'}
+          disabledClassName={'disabled-page'}
+          nextClassName={"item next "}
+          pageClassName={'item pagination-page '}
+          previousClassName={"item previous"}
           breakLabel="..."
           nextLabel="next >"
           onPageChange={handlePageClick}
