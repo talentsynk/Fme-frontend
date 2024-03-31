@@ -104,14 +104,14 @@ export default function Home() {
               )}
             </div>
             <div className="filsort">
-              <button type="button" className="filter">
+              {/* <button type="button" className="filter">
                 <FilterIcon />
                 <span>Filter</span>
               </button>
               <button type="button" className="sort">
                 <SortIcon />
                 <span>Sort</span>
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="pad">

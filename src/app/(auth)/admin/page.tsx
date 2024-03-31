@@ -16,6 +16,7 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
+import { ButtonLoader } from "@/components/recovery/style";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
 import Head from "next/head";
@@ -60,6 +61,9 @@ export default function Login() {
     active: false,
     text: "",
   });
+
+  // login button loader state
+  const [isLoading, setIsLoading] = useState(false);
 
   // handle validation as user types
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +116,13 @@ export default function Login() {
       pwdError.text !== ""
     ) {
       // call signup API
-      console.log(form);
-      router.push("/fme"); //navigate to FME dashboard for now
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        console.log(form);
+        router.push("/fme");
+      }, 2000);
+       //navigate to FME dashboard for now
     }
   };
   return (
@@ -298,7 +307,7 @@ export default function Login() {
                         emailError.active !== false
                       }
                     >
-                      Continue
+                      {isLoading ? <ButtonLoader /> : "Continue"}
                     </button>
                   </div>
                 </form>
