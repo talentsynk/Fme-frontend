@@ -1,12 +1,20 @@
 "use client";
-import { MDATabSwitches } from "@/components/fme/mda/data";
 import {
+  FilterBtns,
+  IMDAData,
+  ISelectedMDA,
+  MDAData,
+  MDATabSwitches,
+  SortItemDropdownList,
+} from "@/components/fme/mda/data";
+import {
+  DropdownOptionsStyle,
+  FilterBtnStyles,
   SearchAndResultStyle,
+  SortOptionsStyle,
   StatListItemStyle,
   StatListStyle,
-  StatusStyles,
   TabSwitchStyle,
-  TableDropdownStyles,
   TableStyles,
   TopStyles,
   WhiteContainer,
@@ -14,33 +22,201 @@ import {
 import {
   ActiveIcon,
   CancelInputIcon,
+  CopyIcon,
   FilterIcon,
   InactiveIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   SortIcon,
-  ThreedotsIcon,
   TotalIcon,
   UploadIcon,
 } from "@/components/icons/fme/mda";
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckboxComp } from "@/components/fme/mda/mda";
-
-// work on UI conversion for this and at the same time do the UI conversion for All-students page
+import { FilterBtnComp, MdaItemComp, TableRow } from "@/components/fme/mda/mda";
+import { MdaDetailModal, NewMdaModal } from "@/components/fme/mda/modals";
+import { Ierror } from "@/app/recovery/page";
+import { sortMDADataAlphabetically } from "@/utils/sortData";
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [mdaTabSwitches, setMDATabSwitches] = useState(MDATabSwitches);
+  const [selectedMdas, setSelectedMdas] = useState<ISelectedMDA[]>();
+
+  // mda data
+  const [mdaList, setMdaList] = useState<IMDAData[] | null>(null);
+  // stores the unchanged mda initial data, this is useful to prevent multiple API calls when no data is changing
+  const [unchangedMdaList, setUnchangedMdaList] = useState<IMDAData[] | null>(
+    null
+  );
+  // for dynamic mda data
+  const [mdaListDuplicate, setMdaListDuplicate] = useState<IMDAData[] | null>(
+    null
+  );
+
   const handleTabSwitch = (tabIndex: number) => {
     const newMdaTabSwitches = mdaTabSwitches.map((ele) => {
       return { ...ele, isSelected: tabIndex == ele.tabIndex };
     });
     setMDATabSwitches(newMdaTabSwitches);
+    // show all mda
+    const sortStatus = sortItemDropdownList.find(
+      (ele) => ele.isSelected == true
+    )?.id;
+    if (tabIndex == 0) {
+      if (sortStatus && mdaList !== null) {
+        const sortedMDAData = sortMDADataAlphabetically(
+          mdaList,
+          sortStatus == "-1"
+        );
+        setMdaListDuplicate(sortedMDAData);
+      } else {
+        setMdaListDuplicate(mdaList);
+      }
+    } else if (tabIndex == 1) {
+      const newMdaList = mdaList?.filter((ele) => ele.isActive);
+      if (newMdaList) {
+        if (sortStatus) {
+          const sortedMDAData = sortMDADataAlphabetically(
+            newMdaList,
+            sortStatus == "-1"
+          );
+          setMdaListDuplicate(sortedMDAData);
+        } else {
+          setMdaListDuplicate(newMdaList);
+        }
+      }
+    } else if (tabIndex == 2) {
+      const newMdaList = mdaList?.filter((ele) => ele.isActive == false);
+      if (newMdaList) {
+        if (sortStatus) {
+          const sortedMDAData = sortMDADataAlphabetically(
+            newMdaList,
+            sortStatus == "-1"
+          );
+          setMdaListDuplicate(sortedMDAData);
+        } else {
+          setMdaListDuplicate(newMdaList);
+        }
+      }
+    }
   };
-  const handleSelect = () => {
-    console.log("I was selected");
+
+  useEffect(() => {
+    setMdaList(MDAData);
+    setMdaListDuplicate(MDAData);
+    setUnchangedMdaList(MDAData);
+  }, []);
+
+  const [showNewMdaFormModal, setShowNewMdaFormModal] = useState(false);
+
+  // for search
+  const [query, setQuery] = useState("");
+  const [queryError, setQueryError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.trim().length < 1) {
+      setQueryError({ active: true, text: "Query cannot be empty" });
+      setQuery(value);
+    } else {
+      setQuery(value);
+      setQueryError({ active: false, text: "Press enter to search" });
+    }
   };
+  
+  const CancelQuerySearch = () => {
+    setQuery("");
+    setQueryError({ active: false, text: "" });
+    // return mdaList and listDuplicate to default - might involve calling the api
+    const sortStatus = sortItemDropdownList.find(
+      (ele) => ele.isSelected == true
+    )?.id;
+    if (sortStatus && unchangedMdaList !== null) {
+      const sortedMDAData = sortMDADataAlphabetically(
+        unchangedMdaList,
+        sortStatus == "-1"
+      );
+      setMdaListDuplicate(sortedMDAData);
+      setMdaList(unchangedMdaList);
+    } else {
+      setMdaListDuplicate(unchangedMdaList);
+      setMdaList(unchangedMdaList);
+    }
+    setShowCancel(false);
+  };
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission
+    // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
+    if (query.trim().length >= 1) {
+      const newMdaList = mdaList?.filter((ele) =>
+        ele.name.toLowerCase().includes(query.toLowerCase())
+      );
+      if (newMdaList && newMdaList.length > 0) {
+        // set sort filter to default;
+        const sortStatus = sortItemDropdownList.find(
+          (ele) => ele.isSelected == true
+        )?.id;
+        if (sortStatus) {
+          const sortedMDAData = sortMDADataAlphabetically(
+            newMdaList,
+            sortStatus == "-1"
+          );
+          setMdaListDuplicate(sortedMDAData);
+          setMdaList(newMdaList);
+        } else {
+          setMdaListDuplicate(newMdaList);
+          setMdaList(newMdaList);
+        }
+      } else {
+        setQueryError({
+          active: true,
+          text: "Name not found! Please check your spelling",
+        });
+      }
+    }
+  };
+  // filter and sort
+  const [filterBtns, setFilterBtns] = useState(FilterBtns);
+  const handleClickFilterBtns = (text: string) => {
+    const newFilterBtns = filterBtns.map((ele) => {
+      return { ...ele, isSelected: ele.text == text };
+    });
+    if (text == "Sort") {
+      setShowSortDropdown(true);
+    } else if (text == "Filter") {
+      setShowFilterDropdown(!showFilterDropdown);
+      setShowSortDropdown(false);
+    }
+    setFilterBtns(newFilterBtns);
+  };
+
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [sortItemDropdownList, setSortItemDropdownList] =
+    useState(SortItemDropdownList);
+  const handleSelectSortDropdownItem = (id: string | undefined) => {
+    if (id) {
+      const newMdaList = sortItemDropdownList.map((ele) => {
+        return { ...ele, isSelected: ele.id === id };
+      });
+      if (id == "1" && mdaListDuplicate !== null) {
+        const sortedMDAData = sortMDADataAlphabetically(mdaListDuplicate);
+        setMdaListDuplicate(sortedMDAData);
+      } else if (id == "-1" && mdaListDuplicate !== null) {
+        const sortedMDAData = sortMDADataAlphabetically(mdaListDuplicate, true);
+        setMdaListDuplicate(sortedMDAData);
+      } else if (id == "0") {
+        setMdaListDuplicate(mdaList);
+      }
+      setSortItemDropdownList(newMdaList);
+      setShowSortDropdown(false);
+    }
+  };
+
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   return (
     <>
       <TopStyles>
@@ -49,7 +225,11 @@ export default function Home() {
           <p>View the MDA Statistics at a go on this page </p>
         </div>
         <div className="buttons">
-          <button type="button" className="add">
+          <button
+            type="button"
+            className="add"
+            onClick={() => setShowNewMdaFormModal(true)}
+          >
             <PlusIcon />
             <span>Add New Mda</span>
           </button>
@@ -89,29 +269,60 @@ export default function Home() {
               <div className="glass">
                 <MagnifyingGlassIcon />
               </div>
-              <input
-                type="text"
-                name="query"
-                id=""
-                placeholder="Search MDAs"
-                onFocus={() => setShowCancel(true)}
-                onBlur={() => setShowCancel(false)}
-              />
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  name="query"
+                  id=""
+                  placeholder="Search MDAs"
+                  value={query}
+                  className={queryError.active ? "error-bdr" : ""}
+                  onChange={handleQueryChange}
+                  onFocus={() => setShowCancel(true)}
+                />
+              </form>
               {showCancel && (
-                <div className="abs">
-                  <CancelInputIcon />
+                <div className="abs" onClick={CancelQuerySearch}>
+                  <CancelInputIcon isError={queryError.active} />
                 </div>
               )}
+              <p className={`msg ${queryError.active ? "error" : "correct"}`}>
+                {queryError.text}
+              </p>
             </div>
             <div className="filsort">
-              <button type="button" className="filter">
-                <FilterIcon />
-                <span>Filter</span>
-              </button>
-              <button type="button" className="sort">
-                <SortIcon />
-                <span>Sort</span>
-              </button>
+              {/* filterBtns includes both Sort & Filter */}
+              {filterBtns.map((ele, index) => (
+                <FilterBtnComp
+                  key={index}
+                  icon={ele.icon}
+                  activeIcon={ele.activeIcon}
+                  text={ele.text}
+                  isSelected={ele.isSelected}
+                  handleFilterFunc={() =>
+                    console.log("I will handle Filter/Sort")
+                  }
+                  handleClick={() => handleClickFilterBtns(ele.text)}
+                />
+              ))}
+              {showSortDropdown && (
+                <SortOptionsStyle>
+                  <div className="options">
+                    {sortItemDropdownList.map((ele, index) => (
+                      <MdaItemComp
+                        key={index}
+                        id={ele.id}
+                        isSelected={ele.isSelected}
+                        text={ele.text}
+                        hasBorder={ele.hasBorder}
+                        handleSelect={() =>
+                          handleSelectSortDropdownItem(ele.id)
+                        }
+                      />
+                    ))}
+                  </div>
+                </SortOptionsStyle>
+              )}
             </div>
           </div>
           <div className="pad">
@@ -123,7 +334,14 @@ export default function Home() {
                   $isSelected={ele.isSelected}
                   onClick={() => handleTabSwitch(ele.tabIndex)}
                 >
-                  <p>{ele.text}</p>
+                  <div className="no">
+                    <p>{ele.text}</p>
+                    {ele.isSelected && mdaListDuplicate && (
+                      <div className="num">
+                        <span>{mdaListDuplicate?.length}</span>
+                      </div>
+                    )}
+                  </div>
                   {ele.isSelected && (
                     <motion.div
                       className="underline"
@@ -134,7 +352,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="pad">
+          <div className="pad scroll">
             <div className="result">
               <TableStyles>
                 <thead>
@@ -145,103 +363,32 @@ export default function Home() {
                     <th>ADDRESS</th>
                     <th>STATE OF MDA</th>
                     <th className="faint">STATUS</th>
-                    
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="flex">
-                      <CheckboxComp
-                        isChecked={false}
-                        handleCheckedAction={handleSelect}
+                  {mdaListDuplicate &&
+                    mdaListDuplicate.map((ele, index) => (
+                      <TableRow
+                        key={index}
+                        isActive={ele.isActive}
+                        name={ele.name}
+                        stcNo={ele.stcNo}
+                        address={ele.address}
+                        studentNo={ele.studentNo}
+                        state={ele.state}
+                        id={ele.id}
                       />
-                      <p>MICT</p>
-                    </td>
-                    <td>
-                      <p>1</p>
-                    </td>
-                    <td>
-                      <p>200</p>
-                    </td>
-                    <td className="address">
-                      <p>1, Herbet Macauly way, Ijanikiiwewyguegwefffhhasgfafsfhfhfhgsfkhskdhghjh</p>
-                    </td>
-                    <td>
-                      <p>LAGOS STATE</p>
-                    </td>
-                    <td className="drop">
-                      <StatusStyles $isActive={true}>Active</StatusStyles>
-                      <TableDropdownStyles>
-                        <div className="head">
-                          <ThreedotsIcon />
-                        </div>
-                      </TableDropdownStyles>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="flex">
-                      <CheckboxComp
-                        isChecked={true}
-                        handleCheckedAction={handleSelect}
-                      />
-                      <p>MICT</p>
-                    </td>
-                    <td>
-                      <p>1</p>
-                    </td>
-                    <td>
-                      <p>200</p>
-                    </td>
-                    <td className="address">
-                      <p>1, Herbet Macauly way, Ijaniki</p>
-                    </td>
-                    <td>
-                      <p>LAGOS STATE</p>
-                    </td>
-                    <td className="drop">
-                      <StatusStyles $isActive={false}>In active</StatusStyles>
-                      <TableDropdownStyles>
-                        <div className="head">
-                          <ThreedotsIcon />
-                        </div>
-                      </TableDropdownStyles>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="flex">
-                      <CheckboxComp
-                        isChecked={true}
-                        handleCheckedAction={handleSelect}
-                      />
-                      <p>MICT</p>
-                    </td>
-                    <td>
-                      <p>1</p>
-                    </td>
-                    <td>
-                      <p>200</p>
-                    </td>
-                    <td className="address">
-                      <p>1, Herbet Macauly way, Ijaniki</p>
-                    </td>
-                    <td>
-                      <p>LAGOS STATE</p>
-                    </td>
-                    <td className="drop">
-                      <StatusStyles $isActive={true}>Active</StatusStyles>
-                      <TableDropdownStyles>
-                        <div className="head">
-                          <ThreedotsIcon />
-                        </div>
-                      </TableDropdownStyles>
-                    </td>
-                  </tr>
+                    ))}
                 </tbody>
               </TableStyles>
             </div>
           </div>
+          {/* when a particular mda is clicked */}
         </SearchAndResultStyle>
       </WhiteContainer>
+      {showNewMdaFormModal && (
+        <NewMdaModal cancelModal={() => setShowNewMdaFormModal(false)} />
+      )}
     </>
   );
 }

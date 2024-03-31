@@ -159,7 +159,7 @@ export const CalendarComponentStyle = styled.div`
     }
   }
   .head {
-    gap: 0.5rem;
+    gap: 0.25rem;
     border-radius: 0.5rem;
     border: 1px solid #e0e2e7;
     display: flex;

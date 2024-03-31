@@ -19,7 +19,7 @@ export const AuthCardStyle = styled.div`
     }
   }
   @media (min-width: 998px) {
-    width: 80%; // or 85%
+    width: 85%; // or 85%
     .flx {
       width: 100%;
       display: flex;
@@ -80,22 +80,15 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   cursor: pointer;
   border: 1px solid #ebedf4;
   background: #fbfbfd;
-  padding: 1.81rem 1.81rem;
+  padding: 1.21rem 1.51rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  justify-content: unset;
+  gap: 1.5rem;
   .ic {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.2rem;
+    width: fit-content;
     span {
       color: rgba(0, 0, 0, 0.5);
-      text-align: center;
       font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
       font-size: 1rem;
       font-style: normal;
@@ -105,7 +98,6 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   }
   p {
     color: #768396;
-    text-align: center;
     font-feature-settings: "cv04" on, "cv03" on;
     font-size: 0.75rem;
     font-style: normal;
@@ -129,13 +121,8 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
 `;
 export const AdminlistStyle = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  .ic,
-  .nm {
-    width: 50%;
-  }
-  justify-content: center;
-  align-items: center;
   @media (min-width: 998px) {
     gap: 1.5rem;
   }

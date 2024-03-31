@@ -232,8 +232,8 @@ export default function Login() {
                 <div className="form-head">
                   <h3>Welcome to Signup Portal!</h3>
                   <p>
-                    This is the signup portal for both the Federal Ministry of
-                    Education(FME) and Ministry Department& Agencies
+                    This is the official signup portal for both Students
+                    (Trained Artisans) and Employers of Skilled Labour
                   </p>
                 </div>
                 <div className="form-input">
