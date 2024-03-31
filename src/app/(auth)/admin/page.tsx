@@ -1,6 +1,8 @@
 "use client";
 import { Ierror } from "@/app/recovery/page";
 import { CoatOfArm, FormStyles } from "@/app/recovery/style";
+import { FullMeaning, SelectAdminComp } from "@/components/auth/auth";
+import { Admins, IAdmin } from "@/components/auth/data";
 import {
   AdminlistStyle,
   AuthCardStyle,
@@ -32,6 +34,24 @@ export default function Login() {
     router.push("/");
   };
 
+  // handle first state
+  const [admins, setAdmins] = useState<IAdmin[] | null>(Admins);
+  const [adminStatus, setAdminStatus] = useState<string | null>(null);
+  const handleAdminStatus = () => {
+    const status = admins?.find((ele) => ele.isSelected == true)?.name;
+    if (status) {
+      setAdminStatus(status);
+    }
+  };
+  const selectAdmin = (id: string) => {
+    const newAdminList = admins?.map((ele) => {
+      return { ...ele, isSelected: id === ele.name };
+    });
+    if (newAdminList) {
+      setAdmins(newAdminList);
+    }
+  };
+
   // for form
   const [form, setForm] = useState<IForm>({ email: "", pwd: "" });
   // For Email
@@ -50,7 +70,7 @@ export default function Login() {
       setEmailError({ active: true, text: "Invalid email address." });
     } else {
       setEmailError({ active: false, text: "Valid Email" });
-      setForm({...form, email : value});
+      setForm({ ...form, email: value });
     }
   };
 
@@ -78,7 +98,7 @@ export default function Login() {
         active: false,
         text: "Password is Strong",
       });
-      setForm({...form,pwd : value});
+      setForm({ ...form, pwd: value });
     }
   };
 
@@ -124,114 +144,174 @@ export default function Login() {
             />
           </div>
           <div className="two">
-            <AuthFormStyles>
-              <div className="backbtn">
-                <BackBtn backFunction={backFunc} />
-              </div>
-              <div className="form-head">
-                <h3>Welcome to Login Portal!</h3>
-                <p>
-                  This is the login portal for both the Federal Ministry of
-                  Education(FME) and Ministry Department& Agencies
-                </p>
-              </div>
-              <form className="form" onSubmit={handleLogin}>
+            {adminStatus == null && (
+              <AuthFormStyles>
+                <div className="backbtn">
+                  <BackBtn backFunction={backFunc} />
+                </div>
+                <div className="form-head">
+                  <h3>Welcome to Signup Portal!</h3>
+                  <p>
+                    This is the signup portal for the Federal Ministry of
+                    Education (FME), Ministry Department& Agencies (MDA) and Skill Training Centres (STC)
+                  </p>
+                </div>
                 <div className="form-input">
-                  <div className="form-ele">
-                    <label htmlFor="email">E-mail address</label>
-                    <div className="inp">
-                      <input
-                        type="email"
-                        name="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        placeholder="Enter Email Address"
-                        className={emailError.active ? "error-bdr" : ""}
-                        autoComplete="email"
+                  <AdminlistStyle>
+                    {admins?.map((ele, index) => (
+                      <SelectAdminComp
+                        key={index}
+                        name={ele.name}
+                        icon={ele.icon}
+                        isSelected={ele.isSelected}
+                        handleSelect={() => selectAdmin(ele.name)}
                       />
-                      <div className="abs">
-                        {emailError.active === false &&
-                          emailError.text === "" && <EmailIcon />}
-                        {emailError.active === false &&
-                          emailError.text !== "" && <CheckedIcon />}
-                        {emailError.active === true && <FormErrorIcon />}
-                      </div>
-                    </div>
-                    <p
-                      role="alert"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                      className={emailError.active ? "error-msg" : "correct"}
-                    >
-                      {emailError.text}
-                    </p>
-                  </div>
-                  <div className="form-ele">
-                    <label htmlFor="pwd">New Password</label>
-                    <div className="inp">
-                      <input
-                        type={showPwd ? "text" : "password"}
-                        name="pwd"
-                        value={pwd}
-                        onChange={handlePwd1Change}
-                        placeholder="Enter Password"
-                        autoComplete="new-password"
-                        className={pwdError.active ? "error-bdr" : ""}
-                        onKeyDown={() =>
-                          setPwdError({ active: false, text: "" })
-                        }
-                      />
-                      <div className="abs" onClick={() => setShowPwd(!showPwd)}>
-                        {pwdError.active === false && pwdError.text === "" && (
-                          <EyeIcon isShown={showPwd} />
-                        )}
-                        {pwdError.active === false && pwdError.text !== "" && (
-                          <CheckedIcon />
-                        )}
-                        {pwdError.active === true && <FormErrorIcon />}
-                      </div>
-                    </div>
-                    <p
-                      role="alert"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                      className={pwdError.active ? "error-msg" : "correct"}
-                    >
-                      {pwdError.text}
-                    </p>
-                  </div>
+                    ))}
+                  </AdminlistStyle>
                 </div>
-                <div className="right">
-                  <LinkStyles>
-                    <Link href="/recovery">
-                      <p>Forgot Password?</p>
-                    </Link>
-                  </LinkStyles>
-                </div>
-                <div className="btn-m">
+                <div className="btn">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleAdminStatus}
                     disabled={
-                      pwdError.text == "" ||
-                      emailError.text == "" ||
-                      pwdError.active !== false ||
-                      emailError.active !== false
+                      admins?.find((ele) => ele.isSelected == true)
+                        ?.isSelected !== true
                     }
                   >
-                    Continue
+                    Next
                   </button>
                 </div>
-              </form>
-              <div className="btm">
-                <p>Don’t have an account?</p>
-                <button
-                  type="button"
-                  onClick={() => router.push("/admin/signup")}
-                >
-                  Sign up
-                </button>
-              </div>
-            </AuthFormStyles>
+                <div className="btm">
+                  <p>Already have an account?</p>
+                  <button type="button" onClick={() => router.push("#")}>
+                    Sign in
+                  </button>
+                </div>
+              </AuthFormStyles>
+            )}
+            {adminStatus !== null && (
+              <AuthFormStyles>
+                <div className="backbtn">
+                  <BackBtn backFunction={backFunc} />
+                </div>
+                <div className="form-head">
+                  <h3>Welcome to {adminStatus} Portal!</h3>
+                  {adminStatus === "FME" && (
+                    <p>
+                      This is the official login portal for the {FullMeaning.FME} ({adminStatus}) administrators
+                    </p>
+                  )}
+                  {adminStatus === "MDA" && (
+                    <p>
+                      This is the only official login portal for the {FullMeaning.MDA} ({adminStatus}) administrators
+                    </p>
+                  )}
+                  {adminStatus === "STC" && (
+                    <p>
+                      This is the official login portal for the {FullMeaning.STC} ({adminStatus}) administrators
+                    </p>
+                  )}
+                </div>
+                <form className="form" onSubmit={handleLogin}>
+                  <div className="form-input">
+                    <div className="form-ele">
+                      <label htmlFor="email">E-mail address</label>
+                      <div className="inp">
+                        <input
+                          type="email"
+                          name="email"
+                          value={email}
+                          onChange={handleEmailChange}
+                          placeholder="Enter Email Address"
+                          className={emailError.active ? "error-bdr" : ""}
+                          autoComplete="email"
+                        />
+                        <div className="abs">
+                          {emailError.active === false &&
+                            emailError.text === "" && <EmailIcon />}
+                          {emailError.active === false &&
+                            emailError.text !== "" && <CheckedIcon />}
+                          {emailError.active === true && <FormErrorIcon />}
+                        </div>
+                      </div>
+                      <p
+                        role="alert"
+                        aria-live="assertive"
+                        aria-atomic="true"
+                        className={emailError.active ? "error-msg" : "correct"}
+                      >
+                        {emailError.text}
+                      </p>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="pwd">Password</label>
+                      <div className="inp">
+                        <input
+                          type={showPwd ? "text" : "password"}
+                          name="pwd"
+                          value={pwd}
+                          onChange={handlePwd1Change}
+                          placeholder="Enter Password"
+                          autoComplete="new-password"
+                          className={pwdError.active ? "error-bdr" : ""}
+                          onKeyDown={() =>
+                            setPwdError({ active: false, text: "" })
+                          }
+                        />
+                        <div
+                          className="abs"
+                          onClick={() => setShowPwd(!showPwd)}
+                        >
+                          {pwdError.active === false &&
+                            pwdError.text === "" && (
+                              <EyeIcon isShown={showPwd} />
+                            )}
+                          {pwdError.active === false &&
+                            pwdError.text !== "" && <CheckedIcon />}
+                          {pwdError.active === true && <FormErrorIcon />}
+                        </div>
+                      </div>
+                      <p
+                        role="alert"
+                        aria-live="assertive"
+                        aria-atomic="true"
+                        className={pwdError.active ? "error-msg" : "correct"}
+                      >
+                        {pwdError.text}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="right">
+                    <LinkStyles>
+                      <Link href="/recovery">
+                        <p>Forgot Password?</p>
+                      </Link>
+                    </LinkStyles>
+                  </div>
+                  <div className="btn-m">
+                    <button
+                      type="submit"
+                      disabled={
+                        pwdError.text == "" ||
+                        emailError.text == "" ||
+                        pwdError.active !== false ||
+                        emailError.active !== false
+                      }
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </form>
+                <div className="btm">
+                  <p>Don’t have an account?</p>
+                  <button
+                    type="button"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              </AuthFormStyles>
+            )}
           </div>
         </div>
       </AuthCardStyle>

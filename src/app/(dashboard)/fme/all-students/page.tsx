@@ -99,7 +99,7 @@ export default function Home() {
               />
               {showCancel && (
                 <div className="abs">
-                  <CancelInputIcon />
+                  <CancelInputIcon isError={false} />
                 </div>
               )}
             </div>

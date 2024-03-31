@@ -1,12 +1,32 @@
 import styled from "styled-components";
 
 export const GenericDashboardLayoutStyle = styled.main`
-  @media (max-width: 998px) {
+  @media (max-width: 767px) {
     .sidebar {
       display: none;
     }
   }
-  @media (min-width: 998px) {
+  /* For WebKit-based browsers (Chrome, Safari, Opera) */
+  ::-webkit-scrollbar {
+    width: 0.4rem; /* width of the scrollbar */
+    background: #fff;
+    border-radius: 0.125rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fff;
+    width: 0.25rem;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 0.125rem;
+    background: #E5E7EB; /* color of the thumb */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #E7F6EC; /* color of the thumb on hover */
+  }
+  @media (min-width: 767px) {
     display: grid;
     width: 100vw;
     grid-template-columns: 20% 1fr;
@@ -27,9 +47,10 @@ export const GenericDashboardLayoutStyle = styled.main`
     }
     .main {
       grid-column: 2/3;
+      // border: 2px solid #000;
       grid-row: 2/3;
-      padding: 0.75rem 1.5rem 3.75rem 1.35rem;
-      height: 150vh;
+      padding: 1.5rem 1.5rem 3rem 1.35rem;
+      max-height: fit-content;
       background: #f9fafb;
     }
   }
