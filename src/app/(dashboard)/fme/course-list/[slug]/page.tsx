@@ -1,25 +1,26 @@
-"use client";
-import AllStcs from "@/components/stc/AllStcs";
-import SearchSection from "@/components/stc/SearchSection";
-import StcCard from "@/components/stc/StcCard";
-import StcTable from "@/components/stc/StcTable";
-
-
-export default function Home() {
-    return (
-      <section className="">
-        <div className="flex justify-between items-center">
-        <div className="">
-          <h5 className=" text-2xl font-bold text-[#101928] leading-[32px]">STCs</h5>
-          <p className=" text-sm text-[#667185] leading-[20px]">Take a Look at your policies and the new policy to see what is uncovered</p>
+'use client'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { BackSvg } from '@/components/course_list/Svg'
+import GridCard from '@/components/course_list/GridCard'
+ 
+export default function Slug() {
+  const router = useRouter()
+  // return <p>Post: {router.query.slug}</p>
+  return (
+        <section className="py-4">
+          <div className="">
+            <Link href="/fme/course-list" className=' p-[10px] rounded-[20px] flex gap-2.5 border border-[#EBEDF4] justify-center items-center w-[125px] h-[42px]'>
+              <BackSvg />
+              <span className=" text-[#768396] font-medium text-[12px]">Back</span>
+              </Link>
+          </div>
+          <div className="flex justify-between items-center">
+        <div className="mt-4">
+          <h5 className=" text-2xl font-bold text-[#101928] leading-[32px]">Fabrication Welding</h5>
+          <p className=" text-sm text-[#667185] leading-[20px]">Take a look at your policies and see what is covered</p>
         </div>
         <div className=" flex  gap-4">
-          <button className="px-3 py-2 rounded-md flex space-x-2.5  border-[#D0D5DD] border-[1px] border-solid bg-white">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10.8333 3.33333C10.8333 2.8731 10.4602 2.5 10 2.5C9.53976 2.5 9.16667 2.8731 9.16667 3.33333V9.16667H3.33333C2.8731 9.16667 2.5 9.53976 2.5 10C2.5 10.4602 2.8731 10.8333 3.33333 10.8333H9.16667V16.6667C9.16667 17.1269 9.53976 17.5 10 17.5C10.4602 17.5 10.8333 17.1269 10.8333 16.6667V10.8333H16.6667C17.1269 10.8333 17.5 10.4602 17.5 10C17.5 9.53976 17.1269 9.16667 16.6667 9.16667H10.8333V3.33333Z" fill="#111111"/>
-          </svg>
-            <span className=" font-bold text-[#111111]  text-sm">Add new STC</span>
-          </button>
           <button className=" bg-[#00932E] px-3 py-2 rounded-md flex space-x-2.5">
           <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M9.9987 11.7084C10.3439 11.7084 10.6237 11.9882 10.6237 12.3334V15.8245L11.2234 15.2248C11.4675 14.9807 11.8632 14.9807 12.1073 15.2248C12.3514 15.4689 12.3514 15.8646 12.1073 16.1087L10.4406 17.7754C10.1966 18.0194 9.80083 18.0194 9.55676 17.7754L7.89009 16.1087C7.64601 15.8646 7.64601 15.4689 7.89009 15.2248C8.13417 14.9807 8.5299 14.9807 8.77397 15.2248L9.3737 15.8245V12.3334C9.3737 11.9882 9.65352 11.7084 9.9987 11.7084Z" fill="white"/>
@@ -29,19 +30,7 @@ export default function Home() {
           </button>
         </div>
         </div>
-        <section className=" rounded-[10px] bg-white p-4 mt-6">
-
-          {/* Ideally I'm meant to map  mover this and render these components based off props */}
-          <div className=" flex gap-4">
-            <StcCard />
-            <StcCard />
-            <StcCard />
-          </div>
-          <SearchSection />
-          <AllStcs />
-          <StcTable itemsPerPage={8} />
+        <GridCard />
         </section>
-
-      </section>
-    );
-  }
+    )
+} 
