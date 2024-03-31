@@ -1,17 +1,9 @@
-
+"use client";
 import AllStcs from "@/components/stc/AllStcs";
 import SearchSection from "@/components/stc/SearchSection";
 import StcCard from "@/components/stc/StcCard";
 import StcTable from "@/components/stc/StcTable";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "stcs",
-  description: "FME page for setting STCs",
-};
-
-
-// the first page on the fme dashboard
 
 export default function Home() {
     return (

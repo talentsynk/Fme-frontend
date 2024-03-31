@@ -1,12 +1,4 @@
-
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "support",
-  description: "support page for FME",
-};
-
-
+"use client";
 // the first page on the fme dashboard
 
 export default function Home() {

@@ -1,15 +1,7 @@
+"use client";
 import Image from "next/image";
 import Profile from "@/components/settings/Profile";
 import Security from "@/components/settings/Security";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "settings",
-  description: "settings for FMEs",
-};
-
-
-// the first page on the fme dashboard
 
 export default function Home() {
     return (

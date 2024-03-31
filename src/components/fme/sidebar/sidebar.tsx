@@ -1,27 +1,52 @@
 import Link from "next/link";
 import { ILinkFunc, PageLinks } from "./data";
-import { LinkCompStyles, SidebarStyles } from "./style";
-import { AdminUserIcon, FGLogo, LogoutIcon } from "@/components/icons/sidebar";
+import { LinkCompStyles, LogoutModalStyles, SidebarStyles } from "./style";
+import {
+  AdminUserIcon,
+  FGLogo,
+  LogoutIcon,
+  LogoutPopIcon,
+  XIcon,
+} from "@/components/icons/sidebar";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { FlexAbsoluteModalStyles } from "../mda/styles";
 
 export const DashboardSidebar = () => {
   const [pageLinks, setPageLinks] = useState(PageLinks);
-
+  const name = usePathname();
   const clickLink = (id: string) => {
     const newLinks = pageLinks.map((ele) => {
       return { ...ele, isSelected: ele.id == id };
     });
     setPageLinks(newLinks);
-    console.log(id);
+  };
+  useEffect(() => {
+    const selected = pageLinks.find((ele) => ele.isSelected == true);
+    // if the user types the route
+    if (name != selected?.href) {
+      const newLinks = pageLinks.map((ele) => {
+        return { ...ele, isSelected: ele.href == name };
+      });
+      setPageLinks(newLinks);
+    }
+  }, [name]);
+
+  // for logout
+  const [isloggingout, setIsLoggingOut] = useState(false);
+  const router = useRouter();
+  const handleLogout = () => {
+    // logout logic
+    console.log("I am logging out");
+    router.push("/admin");
   };
   return (
     <SidebarStyles>
       <div className="top">
         <div className="lg">
-            <FGLogo />
-            <p>National Skills Database (NSD)</p>
+          <FGLogo />
+          <p>National Skills Database (NSD)</p>
         </div>
         <div className="links">
           {pageLinks.map(
@@ -43,7 +68,7 @@ export const DashboardSidebar = () => {
       </div>
       <div className="btm">
         <div className="btm-links">
-        {pageLinks.map(
+          {pageLinks.map(
             (ele, index) =>
               index >= 5 && (
                 <LinkComp
@@ -60,28 +85,36 @@ export const DashboardSidebar = () => {
           )}
         </div>
         <div className="logout">
-            <div className="one">
-                <AdminUserIcon />
-                <div className="text">
-                    <p>Administration</p>
-                    <span>Admin</span>
-                </div>
+          <div className="one">
+            <AdminUserIcon />
+            <div className="text">
+              <p>Administration</p>
+              <span>Admin</span>
             </div>
-            <div className="two">
-                <LogoutIcon />
-            </div>
+          </div>
+          <div className="two" onClick={() => setIsLoggingOut(true)}>
+            <LogoutIcon />
+          </div>
         </div>
         <div className="org">
-            <p>Powered by</p>
-            <Image src="/images/coderina.png" width={119} height={26} alt="coderina logo" />
+          <p>Powered by</p>
+          <Image
+            src="/images/coderina.svg"
+            width={119}
+            height={26}
+            alt="coderina logo"
+          />
         </div>
       </div>
+      {isloggingout && (
+        <LogoutModal cancelLogout={()=> setIsLoggingOut(false)} handleLogout={handleLogout} />
+      )}
     </SidebarStyles>
   );
 };
 
-interface ILinkComp extends ILinkFunc{
-  clickLink : ()=> void;
+interface ILinkComp extends ILinkFunc {
+  clickLink: () => void;
 }
 export const LinkComp: React.FC<ILinkComp> = ({
   href,
@@ -90,13 +123,13 @@ export const LinkComp: React.FC<ILinkComp> = ({
   id,
   activeState,
   isSelected,
-  clickLink
+  clickLink,
 }) => {
   const router = useRouter();
-  const handleClick =()=>{
+  const handleClick = () => {
     clickLink();
-    router.push(href)
-  }
+    router.push(href);
+  };
   return (
     <LinkCompStyles $isSelected={isSelected} onClick={handleClick}>
       <Link href={href} className="li">
@@ -104,5 +137,42 @@ export const LinkComp: React.FC<ILinkComp> = ({
         <p>{name}</p>
       </Link>
     </LinkCompStyles>
+  );
+};
+
+export interface ITwoActionsModal {
+  cancelLogout: () => void;
+  handleLogout: () => void;
+}
+export const LogoutModal: React.FC<ITwoActionsModal> = ({
+  cancelLogout,
+  handleLogout,
+}) => {
+  return (
+    <FlexAbsoluteModalStyles>
+      <LogoutModalStyles>
+        <div className="pop">
+          <div className="up">
+            <div className="x" onClick={cancelLogout}>
+              {" "}
+              <XIcon />
+            </div>
+            <div className="l">
+              <LogoutPopIcon />
+            </div>
+            <h4>Done performing Admin duties for the day?</h4>
+            <p>
+              Some other message that may be necessary here we’ll think of
+              something. Have a lovely day!
+            </p>
+          </div>
+          <div className="down">
+            <button type="button" onClick={handleLogout}>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </LogoutModalStyles>
+    </FlexAbsoluteModalStyles>
   );
 };

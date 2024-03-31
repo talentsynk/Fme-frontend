@@ -1,4 +1,4 @@
-"use client"
+"use client";
 interface MyComponentProps {
   currentItems: number[];
 }
@@ -25,8 +25,6 @@ const Items: React.FC<MyComponentProps> =({ currentItems })=> {
     </>
   );
 }
-
-// the first page on the fme dashboard
 
 
 export default function Home() {
