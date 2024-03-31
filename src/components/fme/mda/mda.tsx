@@ -21,6 +21,7 @@ import {
 } from "./data";
 import { useState } from "react";
 import { MdaDetailModal, SuspendMdaComp } from "./modals";
+import { ISTCData, StcItemDropdownList } from "../stc/data";
 
 interface ICheckbox {
   isChecked: boolean;
@@ -87,7 +88,7 @@ export const TableRow: React.FC<IMDAData> = ({
       </td>
       <td className="drop">
         <StatusComp $isActive={isActive} />
-        <TableDropdownStyles>
+        <TableDropdownStyles className="igris">
           <div className="head" onClick={() => setShowDropdown(!showDropdown)}>
             <ThreedotsIcon />
           </div>
@@ -121,9 +122,10 @@ export const TableRow: React.FC<IMDAData> = ({
   );
 };
 
+
 export const StatusComp: React.FC<IStatusStyles> = ({ $isActive }) => {
   return (
-    <StatusStyles $isActive={$isActive}>
+    <StatusStyles $isActive={$isActive} className="istatus">
       <p>{$isActive ? "Active" : "In active"}</p>
     </StatusStyles>
   );

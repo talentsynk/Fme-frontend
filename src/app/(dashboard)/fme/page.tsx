@@ -1,14 +1,15 @@
 "use client";
 import {
   ColoredArrowDown,
-  MdaIcon,
-  StcIcon,
-  StudentIcon,
+  DashboardMdaIcon,
+  DashboardStcIcon,
+  DashboardStudentIcon,
 } from "@/components/icons/fme/main";
 import { FMEHomeStyles } from "./style";
 import Head from "next/head";
 import { AngleDownStyles } from "@/components/icons/header";
 import { useState } from "react";
+import { IconWrapper } from "@/components/icons/fme/mda";
 
 // the first page on the fme dashboard
 
@@ -22,27 +23,27 @@ export default function Home() {
       </Head>
       <FMEHomeStyles>
         <div className="total">
-          <div className="icon">
-            <MdaIcon />
-          </div>
+          <IconWrapper>
+            <DashboardMdaIcon />
+          </IconWrapper>
           <div className="stat">
             <span>Total MDAs</span>
             <h3>10,000</h3>
           </div>
         </div>
         <div className="total">
-          <div className="icon">
-            <StcIcon />
-          </div>
+          <IconWrapper>
+            <DashboardStcIcon />
+          </IconWrapper>
           <div className="stat">
             <span>Total STCs</span>
             <h3>700</h3>
           </div>
         </div>
         <div className="total">
-          <div className="icon">
-            <StudentIcon />
-          </div>
+          <IconWrapper>
+            <DashboardStudentIcon />
+          </IconWrapper>
           <div className="stat">
             <span>Total Students</span>
             <h3>100,000</h3>

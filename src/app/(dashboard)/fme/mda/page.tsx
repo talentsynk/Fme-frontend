@@ -2,7 +2,6 @@
 import {
   FilterBtns,
   IMDAData,
-  ISelectedMDA,
   MDAData,
   MDATabSwitches,
   SortItemDropdownList,
@@ -41,7 +40,6 @@ import { sortMDADataAlphabetically } from "@/utils/sortData";
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [mdaTabSwitches, setMDATabSwitches] = useState(MDATabSwitches);
-  const [selectedMdas, setSelectedMdas] = useState<ISelectedMDA[]>();
 
   // mda data
   const [mdaList, setMdaList] = useState<IMDAData[] | null>(null);
@@ -210,6 +208,7 @@ export default function Home() {
         setMdaListDuplicate(sortedMDAData);
       } else if (id == "0") {
         setMdaListDuplicate(mdaList);
+        setFilterBtns(FilterBtns);
       }
       setSortItemDropdownList(newMdaList);
       setShowSortDropdown(false);

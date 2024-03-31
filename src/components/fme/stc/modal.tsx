@@ -1,5 +1,4 @@
 import {
-  CheckedBoxIcon,
   CopyIcon,
   CreationSuccessIcon,
   ErrorAlertIcon,
@@ -9,13 +8,23 @@ import {
   LocationIcon,
   NameIcon,
   SuspendIcon,
-  ThreedotsIcon,
   TotalCoursesIcon,
   TotalSTCIcon,
-  TotalStudentsIcon,
   TryAgainIcon,
-  UncheckedBoxIcon,
 } from "@/components/icons/fme/mda";
+import { XIcon } from "@/components/icons/sidebar";
+import {
+  CheckedIcon,
+  EmailIcon,
+  FormErrorIcon,
+} from "@/components/icons/recovery";
+import { BackBtn } from "@/components/recovery/recovery";
+import { FormEvent, ReactNode, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Ierror } from "@/app/recovery/page";
+import { validateEmail } from "@/utils/validateEmail";
+import { AngleDown, AngleDownStyles } from "@/components/icons/header";
+import { States } from "../mda/data";
 import {
   ErrorIconWrapper,
   FlexAbsoluteModalStyles,
@@ -26,21 +35,9 @@ import {
   StateCompStyles,
   StatesDropdownStyles,
   TwoButtonModalStyles,
-} from "./styles";
-import { XIcon } from "@/components/icons/sidebar";
-import {
-  CheckedIcon,
-  EmailIcon,
-  FormErrorIcon,
-} from "@/components/icons/recovery";
-import { BackBtn } from "@/components/recovery/recovery";
-import { FormEvent, ReactNode, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { StatusComp } from "./mda";
-import { Ierror } from "@/app/recovery/page";
-import { validateEmail } from "@/utils/validateEmail";
-import { AngleDown, AngleDownStyles } from "@/components/icons/header";
-import { States } from "./data";
+} from "../mda/styles";
+import { StatusComp } from "../mda/mda";
+import { CertifiedStudentIcon, UncertifiedStudentIcon } from "@/components/icons/fme/stc";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -53,7 +50,7 @@ interface IForm {
   state: string;
 }
 
-export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
+export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [form, setForm] = useState<IForm>({
     email: "",
     name: "",
@@ -124,7 +121,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   };
 
   const [isSuccess, setIsSuccess] = useState(false);
-  const handleCreateMda = (event: FormEvent<HTMLFormElement>) => {
+  const handleCreateStc = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
     // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
     if (
@@ -136,7 +133,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       state !== "" &&
       nameError.text !== ""
     ) {
-      // call createMDA API
+      // call createSTC API
       console.log(form);
       setIsSuccess(true);
     }
@@ -149,14 +146,14 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             <NewMdaFormStyles className="bd">
               <div className="fl">
                 <div className="form-head">
-                  <h3>Add New MDA</h3>
-                  <p>Fill in the necessary details to add a new MDA</p>
+                  <h3>Add New STC</h3>
+                  <p>Fill in the necessary details to add a new STC</p>
                 </div>
                 <IconWrapper onClick={cancelModal}>
                   <XIcon />
                 </IconWrapper>
               </div>
-              <form className="form" onSubmit={handleCreateMda}>
+              <form className="form" onSubmit={handleCreateStc}>
                 <div className="form-input">
                   <div className="form-ele">
                     <label htmlFor="name">Registered Name</label>
@@ -167,7 +164,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                         value={name}
                         className={nameError.active ? "error-bdr" : ""}
                         onChange={(e) => handleInput(e, "name")}
-                        placeholder="Please type in MDA’s registered name"
+                        placeholder="Please type in STC’s registered name"
                       />
                       <div className="abs">
                         {nameError.active === false &&
@@ -194,7 +191,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                         name="email"
                         value={email}
                         onChange={handleEmailChange}
-                        placeholder="Please type in MDA’s email address"
+                        placeholder="Please type in STC’s email address"
                         className={emailError.active ? "error-bdr" : ""}
                         autoComplete="email"
                       />
@@ -225,7 +222,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                         value={address}
                         onChange={(e) => handleInput(e, "address")}
                         className={addressError.active ? "error-bdr" : ""}
-                        placeholder="Please type in MDA’s address here"
+                        placeholder="Please type in STC’s address here"
                       />
                       <div className="abs">
                         {addressError.active === false &&
@@ -257,7 +254,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                       <>
                         {state == "" ? (
                           <p className="placeholder">
-                            Please select MDA’s state of operation
+                            Please select STC’s state of operation
                           </p>
                         ) : (
                           <p className="state-name">{state}</p>
@@ -295,7 +292,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                       state == ""
                     }
                   >
-                    Create MDA
+                    Create STC
                   </button>
                 </div>
               </form>
@@ -306,7 +303,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       {isSuccess && (
         <FlexAbsoluteModalStyles>
           <SuccessModal
-            head="New MDA has been successfully created !"
+            head="New STC has been successfully created !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
             icon={<CreationSuccessIcon />}
@@ -317,7 +314,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   );
 };
 
-export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
+export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   return (
     <>
@@ -329,10 +326,10 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               <BackBtn backFunction={cancelModal} />
               <div className="name">
                 <div className="avatar">
-                  <p>NI</p>
+                  <p>FE</p>
                 </div>
                 <div className="deet">
-                  <h4>NITDA</h4>
+                  <h4>Fed Ministry of Works & Housing</h4>
                   <p>Added on Jul 11, 2023</p>
                 </div>
               </div>
@@ -343,10 +340,9 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   <IconWrapper>
                     <TotalSTCIcon />
                   </IconWrapper>
-                  <div className="title">Total STCs</div>
+                  <div className="title">Total Students</div>
                   <div className="numer">
-                    <p>1000</p>
-                    <GraphIcon />
+                    <p>3000</p>
                   </div>
                 </div>
                 <div className="total">
@@ -356,31 +352,38 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
                     <p>1000</p>
-                    <GraphIcon />
                   </div>
                 </div>
                 <div className="total">
                   <IconWrapper>
-                    <TotalStudentsIcon />
+                    <CertifiedStudentIcon />
                   </IconWrapper>
-                  <div className="title">Total No of Students</div>
+                  <div className="title">Total Certified Students</div>
                   <div className="numer">
                     <p>1000</p>
-                    <GraphIcon />
+                  </div>
+                </div>
+                <div className="total">
+                  <IconWrapper>
+                    <UncertifiedStudentIcon />
+                  </IconWrapper>
+                  <div className="title">Total Non-Certified Students</div>
+                  <div className="numer">
+                    <p>1000</p>
                   </div>
                 </div>
               </div>
               <div className="details">
                 <div className="dx">
                   <div className="name">
-                    <span>Name of MDA</span>
-                    <p>NITDA</p>
+                    <span>Name of STC</span>
+                    <p>Fed Ministry of Works & Housing</p>
                   </div>
-                  <CopyIcon text="NITDA" />
+                  <CopyIcon text="Fed Ministry of Works & Housing" />
                 </div>
                 <div className="dx">
                   <div className="name">
-                    <span>MDA Address</span>
+                    <span>STC Address</span>
                     <p className="nm">
                       124, Oyediran Estate, Lagos, Nigeria, 5432
                     </p>
@@ -396,11 +399,11 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               </div>
             </div>
             <div className="r-3">
-              <h4>Suspend MDA</h4>
+              <h4>Suspend STC</h4>
               <div className="btn">
                 <button type="button" onClick={() => setShowSuspendModal(true)}>
                   <SuspendIcon />
-                  <p>Suspend MDA</p>
+                  <p>Suspend STC</p>
                 </button>
               </div>
             </div>
@@ -408,7 +411,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         </MDADetailStyle>
       )}
       {showSuspendModal && (
-        <SuspendMdaComp
+        <SuspendStcComp
           handleModalAction={() => console.log("handler")}
           cancelModal={() => setShowSuspendModal(false)}
         />
@@ -422,7 +425,7 @@ interface ITwoActions {
   handleModalAction: () => void;
 }
 
-export const SuspendMdaComp: React.FC<ITwoActions> = ({
+export const SuspendStcComp: React.FC<ITwoActions> = ({
   cancelModal,
   handleModalAction,
 }) => {
@@ -445,9 +448,9 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
                   </ErrorIconWrapper>
                   <XIcon />
                 </div>
-                <h4>Suspend MDA?</h4>
+                <h4>Suspend STC?</h4>
                 <p>
-                  Are you sure you want to suspend this MDA? It will no longer
+                  Are you sure you want to suspend this STC? It will no longer
                   be visible and not able to take any course for.
                 </p>
               </div>
@@ -456,7 +459,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={suspend}>
-                  Suspend MDA
+                  Suspend STC
                 </button>
               </div>
             </div>
@@ -464,7 +467,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
         )}
         {isSuccess && (
           <SuccessModal
-            head="MDA has been successfully suspended !"
+            head="STC has been successfully suspended !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
           />
@@ -497,9 +500,9 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
                   </ErrorIconWrapper>
                   <XIcon />
                 </div>
-                <h4>Re-activate MDA?</h4>
+                <h4>Re-activate STC?</h4>
                 <p>
-                  Are you sure you want to suspend this MDA? It will no longer
+                  Are you sure you want to suspend this STC? It will no longer
                   be visible and not able to take any course for.
                 </p>
               </div>
@@ -508,7 +511,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={reactivate}>
-                  Re-activate MDA
+                  Re-activate STC
                 </button>
               </div>
             </div>
@@ -516,7 +519,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
         )}
         {isSuccess && (
           <SuccessModal
-            head="MDA has been successfully re-activated !"
+            head="STC has been successfully re-activated !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={() => window.location.reload()}
           />
@@ -538,7 +541,7 @@ export const SuccessModal: React.FC<IMessageModal> = ({
   msg,
   icon,
 }) => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <OneButtonModalStyles>
       <div className="pop">
@@ -552,7 +555,7 @@ export const SuccessModal: React.FC<IMessageModal> = ({
           <p>{msg}</p>
         </div>
         <div className="down">
-          <button type="button" onClick={()=> router.push("/fme")}>
+          <button type="button" onClick={() => router.push("/fme")}>
             Go back to Dashboard
           </button>
         </div>
@@ -566,7 +569,7 @@ export const FailureModal: React.FC<IMessageModal> = ({
   head,
   msg,
 }) => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <OneButtonModalStyles $isError={true}>
       <div className="pop">
@@ -580,16 +583,16 @@ export const FailureModal: React.FC<IMessageModal> = ({
           </div>
           <h4>
             {head}
-            {/* Failed to suspend MDA ! */}
+            {/* Failed to suspend STC ! */}
           </h4>
           <p>
             {msg}
-            {/* MDA failed to suspend due to network error. Re-try or logout and
-              login to restore sessions */}
+            {/* STC failed to suspend due to network error. Re-try or logout and
+                login to restore sessions */}
           </p>
         </div>
         <div className="down">
-          <button type="button" onClick={()=> router.push("/fme")}>
+          <button type="button" onClick={() => router.push("/fme")}>
             Go back to Dashboard
           </button>
         </div>

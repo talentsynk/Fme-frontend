@@ -596,6 +596,9 @@ export const TrStyles = styled.tr`
     align-items: center;
     gap: 1rem;
     text-align: left;
+    .igris, .istatus{
+      flex: 1;
+    }
   }
   .absolute {
     position: absolute;
