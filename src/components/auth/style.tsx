@@ -83,6 +83,7 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   padding: 1.21rem 1.51rem;
   display: flex;
   justify-content: unset;
+  align-items: flex-start;
   gap: 1.5rem;
   .ic {
     display: flex;
@@ -108,6 +109,7 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   &:hover {
     background: #e7f6ec;
   }
+
   ${(props) =>
     props.$isSelected &&
     css`

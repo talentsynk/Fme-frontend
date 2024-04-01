@@ -1,13 +1,4 @@
-
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "home",
-  description: "dashboard onboarding page for users",
-};
-
-// the first page on the mda dashboard
-
+"use client";
 export default function Home() {
     return (
       <>

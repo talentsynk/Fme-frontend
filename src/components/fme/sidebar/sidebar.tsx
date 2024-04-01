@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ILinkFunc, PageLinks } from "./data";
+import { FMEPageLinks, ILinkFunc } from "./data";
 import { LinkCompStyles, LogoutModalStyles, SidebarStyles } from "./style";
 import {
   AdminUserIcon,
@@ -13,8 +13,13 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { FlexAbsoluteModalStyles } from "../mda/styles";
 
-export const DashboardSidebar = () => {
-  const [pageLinks, setPageLinks] = useState(PageLinks);
+interface ISidebar{
+  uniquePageLinks : ILinkFunc[];
+  splitIndex : number;
+}
+
+export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex}) => {
+  const [pageLinks, setPageLinks] = useState(uniquePageLinks);
   const name = usePathname();
   const clickLink = (id: string) => {
     const newLinks = pageLinks.map((ele) => {
@@ -31,7 +36,7 @@ export const DashboardSidebar = () => {
       });
       setPageLinks(newLinks);
     }
-  }, [name]);
+  }, [name,pageLinks]);
 
   // for logout
   const [isloggingout, setIsLoggingOut] = useState(false);
@@ -51,7 +56,7 @@ export const DashboardSidebar = () => {
         <div className="links">
           {pageLinks.map(
             (ele, index) =>
-              index < 5 && (
+              index < splitIndex && (
                 <LinkComp
                   key={index}
                   id={ele.id}
@@ -70,7 +75,7 @@ export const DashboardSidebar = () => {
         <div className="btm-links">
           {pageLinks.map(
             (ele, index) =>
-              index >= 5 && (
+              index >= splitIndex && (
                 <LinkComp
                   key={index}
                   id={ele.id}
