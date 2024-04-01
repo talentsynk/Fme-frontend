@@ -37,7 +37,7 @@ const StcMenu = () => {
 
   return (
     <div className="relative" ref={menuRef}>
-      {/* Three dots */}
+    
       <button className="text-xl" onClick={toggleMenu}>
         ⋮
       </button>
