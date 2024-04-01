@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client"
 import Image from "next/image";
 import Profile from "@/components/settings/Profile";
@@ -13,6 +14,12 @@ import NewAccount from "@/components/settings/NewAccount";
 
 
 // the first page on the fme dashboard
+=======
+"use client";
+import Image from "next/image";
+import Profile from "@/components/settings/Profile";
+import Security from "@/components/settings/Security";
+>>>>>>> cea2bb6b9c3c0fb32fc1b5ee0015cce4dd053e1c
 
 export default function Home() {
   const [activeDiv, setActiveDiv] = useState(1);

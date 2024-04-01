@@ -20,20 +20,17 @@ export const FMEHomeStyles = styled.div`
       font-weight: 500;
       line-height: 1.25rem; /* 142.857% */
     }
-    .icon {
-      border-radius: 0.5rem;
-      display: flex;
-      width: 2.25rem;
-      height: 2.25rem;
-      justify-content: center;
-      align-items: center;
-      flex-shrink: 0;
-      background: #e7f6ec;
-    }
     .stat {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      h3 {
+        color: var(--Black-60, #45464e);
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+      }
     }
   }
   .summary {
@@ -73,14 +70,14 @@ export const FMEHomeStyles = styled.div`
         line-height: 1.25rem; /* 142.857% */
       }
     }
-    .dropdown{
-        position: relative;
+    .dropdown {
+      position: relative;
     }
-    .options{
-        position: absolute;
-        margin-top: 0.45rem;
-        border: 2px solid #000;
-        width: 100%;
+    .options {
+      position: absolute;
+      margin-top: 0.45rem;
+      border: 2px solid #000;
+      width: 100%;
     }
   }
   .marketing {

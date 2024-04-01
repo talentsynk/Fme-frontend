@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Image from "next/image";
 import { Metadata } from "next";
 
@@ -7,6 +8,9 @@ export const metadata: Metadata = {
 };
 
 
+=======
+"use client";
+>>>>>>> cea2bb6b9c3c0fb32fc1b5ee0015cce4dd053e1c
 // the first page on the fme dashboard
 
 export default function Home() {

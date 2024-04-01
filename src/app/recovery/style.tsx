@@ -96,6 +96,12 @@ export const FormStyles = styled.div`
     flex-direction: column;
     gap: 1.5rem;
   }
+  .form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
   .form-head {
     h3 {
       color: #000;
@@ -149,7 +155,7 @@ export const FormStyles = styled.div`
       scale: 0.9;
     }
   }
-  .btn {
+  .btn, .btn-m {
     margin-top: 2rem;
     button {
       border-radius: 0.625rem;
@@ -167,6 +173,9 @@ export const FormStyles = styled.div`
       font-weight: 700;
       line-height: 1.5rem; /* 150% */
     }
+  }
+  .btn-m {
+    margin-top: 0rem;
   }
   .form-ele {
     display: flex;
@@ -257,7 +266,7 @@ export const FormStyles = styled.div`
       gap: 1rem;
     }
     .btn {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
     }
   }
 `;

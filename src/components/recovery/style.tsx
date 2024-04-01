@@ -9,8 +9,10 @@ export const BackBtnStyles = styled.button`
   height: 2.625rem;
   justify-content: center;
   background: transparent;
-  width: 7.8125rem;
+  min-width: 7.8125rem;
+  width: fit-content;
   gap: 0.625rem;
+  padding: 0.625rem;
   p {
     color: #768396;
     font-size: 0.875rem;
@@ -58,6 +60,11 @@ export const OtpCompStyles = styled.div<IError>`
   div {
     display: flex;
     gap: 1rem;
+  }
+  @media (max-width: 500px){
+    div{
+      gap: 0.5rem;
+    }
   }
   input[type="tel"]:focus::placeholder {
     color: #fff;
