@@ -1,7 +1,7 @@
+import { ILinkFunc } from "../fme/sidebar/data";
 import {
   ActiveCourseList,
   ActiveHome,
-  ActiveMdaPageIcon,
   ActiveSettingsIcon,
   ActiveStcPageIcon,
   ActiveStudentList,
@@ -9,28 +9,14 @@ import {
   AllCoursesIcon,
   AllStudentTIcon,
   HomeIcon,
-  MdaPageIcon,
   SettingsIcon,
   StcPageIcon,
   SupportIcon,
-} from "@/components/icons/sidebar";
-import { ReactNode } from "react";
+} from "../icons/sidebar";
 
-interface ILink {
-  href: string;
-  icon: ReactNode;
-  name?: string;
-}
-
-export interface ILinkFunc extends ILink {
-  id: string;
-  isSelected: boolean;
-  activeState?: ReactNode;
-}
-
-export const FMEPageLinks: ILinkFunc[] = [
+export const MDAPageLinks: ILinkFunc[] = [
   {
-    href: "/fme",
+    href: "/mda",
     icon: <HomeIcon />,
     isSelected: true,
     id: "1",
@@ -38,23 +24,7 @@ export const FMEPageLinks: ILinkFunc[] = [
     activeState: <ActiveHome />,
   },
   {
-    href: "/fme/mda",
-    icon: <MdaPageIcon />,
-    isSelected: false,
-    id: "2",
-    name: "MDA",
-    activeState: <ActiveMdaPageIcon />,
-  },
-  {
-    href: "/fme/stcs",
-    icon: <StcPageIcon />,
-    isSelected: false,
-    id: "3",
-    name: "STCs",
-    activeState: <ActiveStcPageIcon />,
-  },
-  {
-    href: "/fme/all-students",
+    href: "/mda/all-students",
     icon: <AllStudentTIcon />,
     isSelected: false,
     id: "4",
@@ -62,7 +32,15 @@ export const FMEPageLinks: ILinkFunc[] = [
     activeState: <ActiveStudentList />,
   },
   {
-    href: "/fme/course-list",
+    href: "/mda/stcs",
+    icon: <StcPageIcon />,
+    isSelected: false,
+    id: "3",
+    name: "STCs",
+    activeState: <ActiveStcPageIcon />,
+  },
+  {
+    href: "/mda/course-list",
     icon: <AllCoursesIcon />,
     isSelected: false,
     id: "5",
@@ -70,7 +48,7 @@ export const FMEPageLinks: ILinkFunc[] = [
     activeState: <ActiveCourseList />,
   },
   {
-    href: "/fme/settings",
+    href: "/mda/settings",
     icon: <SettingsIcon />,
     isSelected: false,
     id: "6",
@@ -78,7 +56,7 @@ export const FMEPageLinks: ILinkFunc[] = [
     activeState: <ActiveSettingsIcon />,
   },
   {
-    href: "/fme/support",
+    href: "/mda/support",
     icon: <SupportIcon />,
     isSelected: false,
     id: "7",

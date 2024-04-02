@@ -15,7 +15,7 @@ export const SelectAdminComp: React.FC<ISelectAdminFunc> = ({
   return (
     <SelectAdminStyles $isSelected={isSelected} onClick={handleSelect}>
       <div className="ic">
-        <>{icon}</>
+       {icon}
       </div>
       <div className="txt">
         {name == "FME" && <span className="nm">{`${FullMeaning.FME} (${name})`}</span>}
