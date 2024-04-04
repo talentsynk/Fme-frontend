@@ -1,1 +1,1 @@
-export const BACKEND_URL = "http://54.211.67.167:4001/api";
+export const BACKEND_URL = "https://fme-backend-version-1.onrender.com";

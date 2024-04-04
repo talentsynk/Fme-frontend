@@ -141,6 +141,8 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       setIsSuccess(true);
     }
   };
+
+  const router = useRouter();
   return (
     <>
       {isSuccess == false && (
@@ -310,6 +312,9 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
             icon={<CreationSuccessIcon />}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
+            navigationFunction={() => router.push("/fme")}
           />
         </FlexAbsoluteModalStyles>
       )}
@@ -431,6 +436,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
     handleModalAction();
     setIsSuccess(true);
   };
+  const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
@@ -467,6 +473,9 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
             head="MDA has been successfully suspended !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
+            navigationFunction={() => router.push("/fme")}
           />
         )}
       </FlexAbsoluteModalStyles>
@@ -483,6 +492,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
     handleModalAction();
     setIsSuccess(true);
   };
+  const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
@@ -519,6 +529,9 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
             head="MDA has been successfully re-activated !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={() => window.location.reload()}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
+            navigationFunction={() => router.push("/fme")}
           />
         )}
       </FlexAbsoluteModalStyles>
@@ -530,6 +543,9 @@ interface IMessageModal extends IOneButtonModal {
   head: string;
   msg: string;
   icon?: ReactNode;
+  hasCancel?: boolean;
+  navigationText: string;
+  navigationFunction : ()=> void;
 }
 
 export const SuccessModal: React.FC<IMessageModal> = ({
@@ -537,8 +553,10 @@ export const SuccessModal: React.FC<IMessageModal> = ({
   head,
   msg,
   icon,
+  navigationText,
+  navigationFunction
 }) => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <OneButtonModalStyles>
       <div className="pop">
@@ -552,8 +570,8 @@ export const SuccessModal: React.FC<IMessageModal> = ({
           <p>{msg}</p>
         </div>
         <div className="down">
-          <button type="button" onClick={()=> router.push("/fme")}>
-            Go back to Dashboard
+          <button type="button" onClick={navigationFunction}>
+            {navigationText}
           </button>
         </div>
       </div>
@@ -565,32 +583,30 @@ export const FailureModal: React.FC<IMessageModal> = ({
   cancelModal,
   head,
   msg,
+  navigationText,
+  hasCancel,
+  navigationFunction
 }) => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <OneButtonModalStyles $isError={true}>
       <div className="pop">
         <div className="up">
-          <div className="x" onClick={cancelModal}>
-            {" "}
-            <XIcon />
-          </div>
+          {hasCancel && (
+            <div className="x" onClick={cancelModal}>
+              {" "}
+              <XIcon />
+            </div>
+          )}
           <div className="l">
             <TryAgainIcon />
           </div>
-          <h4>
-            {head}
-            {/* Failed to suspend MDA ! */}
-          </h4>
-          <p>
-            {msg}
-            {/* MDA failed to suspend due to network error. Re-try or logout and
-              login to restore sessions */}
-          </p>
+          <h4>{head}</h4>
+          <p>{msg}</p>
         </div>
         <div className="down">
-          <button type="button" onClick={()=> router.push("/fme")}>
-            Go back to Dashboard
+          <button type="button" onClick={navigationFunction}>
+            {navigationText}
           </button>
         </div>
       </div>

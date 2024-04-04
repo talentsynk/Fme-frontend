@@ -148,9 +148,10 @@ export default function Home() {
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-    // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
+    
     if (query.trim().length >= 1) {
-      const newMdaList = mdaList?.filter((ele) =>
+      // filter from the unchanged mda list
+      const newMdaList = unchangedMdaList?.filter((ele) =>
         ele.name.toLowerCase().includes(query.toLowerCase())
       );
       if (newMdaList && newMdaList.length > 0) {
@@ -216,6 +217,8 @@ export default function Home() {
   };
 
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+
+
   return (
     <>
       <TopStyles>

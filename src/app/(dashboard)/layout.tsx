@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { GenericDasboardLayout } from "@/components/layout/dashboardlayout";
 
+
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "skill database platform dashboards powered by coderina",
@@ -14,6 +15,7 @@ export default function DashboardRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <>
       <GenericDasboardLayout>{children}</GenericDasboardLayout>

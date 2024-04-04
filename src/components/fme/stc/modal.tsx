@@ -38,6 +38,7 @@ import {
 } from "../mda/styles";
 import { StatusComp } from "../mda/mda";
 import { CertifiedStudentIcon, UncertifiedStudentIcon } from "@/components/icons/fme/stc";
+import { SuccessModal } from "../mda/modals";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -138,6 +139,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       setIsSuccess(true);
     }
   };
+  const router = useRouter();
   return (
     <>
       {isSuccess == false && (
@@ -307,6 +309,9 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
             icon={<CreationSuccessIcon />}
+            hasCancel={true}
+            navigationFunction={()=> router.push("/fme")}
+            navigationText="Go back to Dashboard"
           />
         </FlexAbsoluteModalStyles>
       )}
@@ -434,6 +439,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
     handleModalAction();
     setIsSuccess(true);
   };
+  const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
@@ -470,6 +476,9 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
             head="STC has been successfully suspended !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
+            hasCancel={true}
+            navigationFunction={()=> router.push("/fme")}
+            navigationText="Go back to Dashboard"
           />
         )}
       </FlexAbsoluteModalStyles>
@@ -486,6 +495,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
     handleModalAction();
     setIsSuccess(true);
   };
+  const router = useRouter()
   return (
     <>
       <FlexAbsoluteModalStyles>
@@ -522,6 +532,9 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
             head="STC has been successfully re-activated !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={() => window.location.reload()}
+            hasCancel={true}
+            navigationFunction={()=> router.push("/fme")}
+            navigationText="Go back to Dashboard"
           />
         )}
       </FlexAbsoluteModalStyles>
@@ -529,77 +542,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
   );
 };
 
-interface IMessageModal extends IOneButtonModal {
-  head: string;
-  msg: string;
-  icon?: ReactNode;
-}
 
-export const SuccessModal: React.FC<IMessageModal> = ({
-  cancelModal,
-  head,
-  msg,
-  icon,
-}) => {
-  const router = useRouter();
-  return (
-    <OneButtonModalStyles>
-      <div className="pop">
-        <div className="up">
-          <div className="x" onClick={cancelModal}>
-            {" "}
-            <XIcon />
-          </div>
-          <div className="l">{icon ? icon : <LargeCheckedIcon />}</div>
-          <h4>{head}</h4>
-          <p>{msg}</p>
-        </div>
-        <div className="down">
-          <button type="button" onClick={() => router.push("/fme")}>
-            Go back to Dashboard
-          </button>
-        </div>
-      </div>
-    </OneButtonModalStyles>
-  );
-};
-
-export const FailureModal: React.FC<IMessageModal> = ({
-  cancelModal,
-  head,
-  msg,
-}) => {
-  const router = useRouter();
-  return (
-    <OneButtonModalStyles $isError={true}>
-      <div className="pop">
-        <div className="up">
-          <div className="x" onClick={cancelModal}>
-            {" "}
-            <XIcon />
-          </div>
-          <div className="l">
-            <TryAgainIcon />
-          </div>
-          <h4>
-            {head}
-            {/* Failed to suspend STC ! */}
-          </h4>
-          <p>
-            {msg}
-            {/* STC failed to suspend due to network error. Re-try or logout and
-                login to restore sessions */}
-          </p>
-        </div>
-        <div className="down">
-          <button type="button" onClick={() => router.push("/fme")}>
-            Go back to Dashboard
-          </button>
-        </div>
-      </div>
-    </OneButtonModalStyles>
-  );
-};
 export const NewComp = () => {
   return <></>;
 };

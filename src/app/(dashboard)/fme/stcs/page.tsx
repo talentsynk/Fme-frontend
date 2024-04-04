@@ -144,9 +144,9 @@ export default function Home() {
   };
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-    // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
     if (query.trim().length >= 1) {
-      const newStcList = stcList?.filter((ele) =>
+      // filter from the unchanged stc list
+      const newStcList = unchangedStcList?.filter((ele) =>
         ele.name.toLowerCase().includes(query.toLowerCase())
       );
       if (newStcList && newStcList.length > 0) {

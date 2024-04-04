@@ -196,6 +196,9 @@ export const SearchAndResultStyle = styled.div`
         border: 1px solid var(--Primary-Color, #00932e);
         padding: 1rem 2rem 1rem 2rem;
       }
+      form .error-bdr{
+        border: 1px solid #eb5017;
+      }
     }
     .filsort {
       width: fit-content;
@@ -884,7 +887,11 @@ export const OneButtonModalStyles = styled.div<IOneBtnStyle>`
   ${(props) =>
     props.$isError &&
     css`
-      background: #f32d2d;
+      .down{
+        button{
+          background: #f32d2d;
+        }
+      }
     `}
   @media (max-width: 500px) {
     width: 91%;
