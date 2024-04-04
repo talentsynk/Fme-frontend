@@ -30,6 +30,7 @@ Fme-frontend
       ├── stc
 └── src
     ├── app
+       ├── animations
        ├── (auth)
           ├── login
               ├── page.tsx
@@ -49,29 +50,56 @@ Fme-frontend
           ├── mda
               ├── settings
                   ├── page.tsx
+                  ├── layout.tsx
               ├── support
                   ├── page.tsx
+                  ├── layout.tsx
               ├── page.tsx
           ├── stc
               ├── settings
                   ├── page.tsx
+                  ├── layout.tsx
               ├── support
                   ├── page.tsx
+                  ├── layout.tsx
               ├── page.tsx
           ├── layout.tsx
           ├── style.tsx
+        ├── (root)
+          ├── about
+              ├── page.tsx
+              ├── layout.tsx
+          ├── other-root pages
+              ├── page.tsx
+          ├── page.tsx
+        ├── recovery
+        ├── settings
+        ├── support
     ├── components
         ├── icons
+        ├── auth
         ├── fme
             ├── fme-components
         ├── mda
             ├── mda-components
+        ├── provider
+        ├── recovery
+        ├── settings
         ├── stc
             ├── stc-components
-    ├── customHooks
-        ├── customHooks
+    ├── constants
+    ├── lib
     ├── redux
+        ├── auth
+            ├── authSlice.ts
+        ├── fme
+            ├── fmeSlice.ts
         ├── hooks
+            ├── hooks.ts
+        ├── mda
+            ├── mdaSlice.ts
+        ├── store.ts
+    ├── types (basically redux types)
     ├── utils
 ├── .env.local
 ├── .gitignore
