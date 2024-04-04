@@ -6,7 +6,6 @@ import Image from "next/image";
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <body>
       <AuthLayoutStyles>
         <div className="cont">
           <div className="mobile center">
@@ -35,6 +34,5 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </AuthLayoutStyles>
-    </body>
   );
 };

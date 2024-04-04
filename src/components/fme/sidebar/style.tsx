@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { AbsoluteContStyle } from "../mda/styles";
 
 export const SidebarStyles = styled.div`
   display: flex;
@@ -13,9 +12,10 @@ export const SidebarStyles = styled.div`
   .lg {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.5rem;
     justify-content: center;
     padding: 0rem 1.5rem;
+    
   }
   .lg p {
     color: var(--Primary-Color, #00932e);

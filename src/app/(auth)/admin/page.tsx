@@ -17,13 +17,19 @@ import {
 } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
 import { ButtonLoader } from "@/components/recovery/style";
+import { roles } from "@/constants/roleList";
+import { BACKEND_URL } from "@/lib/config";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import Cookies from "js-cookie";
+import { setSessionExpiration } from "@/redux/auth/authSlice";
 
 interface IForm {
   email: string;
@@ -31,10 +37,9 @@ interface IForm {
 }
 export default function Login() {
   const router = useRouter();
-  const backFunc = () => {
-    router.push("/");
-  };
 
+// for dispatching redux actions
+  const dispatch = useAppDispatch();
   // handle first state
   const [admins, setAdmins] = useState<IAdmin[] | null>(Admins);
   const [adminStatus, setAdminStatus] = useState<string | null>(null);
@@ -88,9 +93,10 @@ export default function Login() {
     text: "",
   });
 
-  const handlePwd1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePwdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPwd(value);
+
     let msg: string | null = isStrongPassword(value);
     if (msg !== null) {
       setPwdError({
@@ -106,7 +112,7 @@ export default function Login() {
     }
   };
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
     // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
     if (
@@ -116,13 +122,60 @@ export default function Login() {
       pwdError.text !== ""
     ) {
       // call signup API
-      setIsLoading(true);
-      setTimeout(() => {
+
+      try{
+        const body ={
+          Email : form.email,
+          Password : form.pwd
+        };
+        // console.log(body);
+        setIsLoading(true);
+        const {data} = await axios.post(`${BACKEND_URL}/user/login`,body);
+        if(data){
+          setIsLoading(false);
+          if(data.role == 1 || data.role == 2 || data.role == 3){
+            console.log(data.expires_in);
+            const roleString = roles[data.role - 1];
+            dispatch(setSessionExpiration(false));
+            let inSetTime = new Date(new Date().getTime() + data.expires_in * 1000);
+            Cookies.set("userRole",roleString, {expires : inSetTime});
+            Cookies.set("token",data.jwt, {expires : inSetTime});
+            
+            if(roleString == "FME"){
+              router.push("/fme");
+            }else if (roleString == "MDA"){
+              router.push("/mda")
+            }else if(roleString == "STC"){
+              router.push("/stc");
+            }
+          }else{
+            console.log("This login is meant for just admins")
+            // 
+          }
+        }
+      }catch(error : any){
+        if(error.response){
+          setPwdError({
+            active: true,
+            text: error.response.data.message,
+          });
+          setEmailError({
+            active: true,
+            text: error.response.data.message,
+          });
+        }else{
+          setPwdError({
+            active: true,
+            text: error.message,
+          });
+          setEmailError({
+            active: true,
+            text: error.message,
+          });
+        }
+        // console.log(error);
         setIsLoading(false);
-        console.log(form);
-        router.push("/fme");
-      }, 2000);
-       //navigate to FME dashboard for now
+      }
     }
   };
   return (
@@ -156,13 +209,14 @@ export default function Login() {
             {adminStatus == null && (
               <AuthFormStyles>
                 <div className="backbtn">
-                  <BackBtn backFunction={backFunc} />
+                  <BackBtn backFunction={() => router.push("/")} />
                 </div>
                 <div className="form-head">
                   <h3>Welcome to Signup Portal!</h3>
                   <p>
                     This is the signup portal for the Federal Ministry of
-                    Education (FME), Ministry Department& Agencies (MDA) and Skill Training Centres (STC)
+                    Education (FME), Ministry Department& Agencies (MDA) and
+                    Skill Training Centres (STC)
                   </p>
                 </div>
                 <div className="form-input">
@@ -201,23 +255,26 @@ export default function Login() {
             {adminStatus !== null && (
               <AuthFormStyles>
                 <div className="backbtn">
-                  <BackBtn backFunction={backFunc} />
+                  <BackBtn backFunction={() => setAdminStatus(null)} />
                 </div>
                 <div className="form-head">
                   <h3>Welcome to {adminStatus} Portal!</h3>
                   {adminStatus === "FME" && (
                     <p>
-                      This is the official login portal for the {FullMeaning.FME} ({adminStatus}) administrators
+                      This is the official login portal for the{" "}
+                      {FullMeaning.FME} ({adminStatus}) administrators
                     </p>
                   )}
                   {adminStatus === "MDA" && (
                     <p>
-                      This is the only official login portal for the {FullMeaning.MDA} ({adminStatus}) administrators
+                      This is the only official login portal for the{" "}
+                      {FullMeaning.MDA} ({adminStatus}) administrators
                     </p>
                   )}
                   {adminStatus === "STC" && (
                     <p>
-                      This is the official login portal for the {FullMeaning.STC} ({adminStatus}) administrators
+                      This is the official login portal for the{" "}
+                      {FullMeaning.STC} ({adminStatus}) administrators
                     </p>
                   )}
                 </div>
@@ -259,7 +316,7 @@ export default function Login() {
                           type={showPwd ? "text" : "password"}
                           name="pwd"
                           value={pwd}
-                          onChange={handlePwd1Change}
+                          onChange={handlePwdChange}
                           placeholder="Enter Password"
                           autoComplete="new-password"
                           className={pwdError.active ? "error-bdr" : ""}
@@ -313,11 +370,7 @@ export default function Login() {
                 </form>
                 <div className="btm">
                   <p>Don’t have an account?</p>
-                  <button
-                    type="button"
-                  >
-                    Sign up
-                  </button>
+                  <button type="button">Sign up</button>
                 </div>
               </AuthFormStyles>
             )}

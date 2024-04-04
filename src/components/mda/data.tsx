@@ -64,3 +64,47 @@ export const MDAPageLinks: ILinkFunc[] = [
     activeState: <ActiveSupportIcon />,
   },
 ];
+
+
+export const STCPageLinks: ILinkFunc[] = [
+  {
+    href: "/stc",
+    icon: <HomeIcon />,
+    isSelected: true,
+    id: "1",
+    name: "Dashboard",
+    activeState: <ActiveHome />,
+  },
+  {
+    href: "/stc/all-students",
+    icon: <AllStudentTIcon />,
+    isSelected: false,
+    id: "4",
+    name: "All Students List",
+    activeState: <ActiveStudentList />,
+  },
+  {
+    href: "/stc/course-list",
+    icon: <AllCoursesIcon />,
+    isSelected: false,
+    id: "5",
+    name: "Course List",
+    activeState: <ActiveCourseList />,
+  },
+  {
+    href: "/stc/settings",
+    icon: <SettingsIcon />,
+    isSelected: false,
+    id: "6",
+    name: "Settings",
+    activeState: <ActiveSettingsIcon />,
+  },
+  {
+    href: "/support",
+    icon: <SupportIcon />,
+    isSelected: false,
+    id: "7",
+    name: "Support",
+    activeState: <ActiveSupportIcon />,
+  },
+];

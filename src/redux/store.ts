@@ -2,13 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import fmeReducer from "./fme/fmeSlice";
 import mdaReducer from "./mda/mdaSlice";
 import stcReducer from "./stc/stcSlice";
+import authReducer from "./auth/authSlice";
+
 
 
 export const store = configureStore({
     reducer : {
         fme : fmeReducer,
         mda : mdaReducer,
-        stc : stcReducer
+        stc : stcReducer,
+        auth : authReducer
     }
 });
 

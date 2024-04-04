@@ -76,7 +76,6 @@ export const DashboardHeader = () => {
       {isloggingout && (
         <LogoutModal
           cancelLogout={() => setIsLoggingOut(false)}
-          handleLogout={handleLogout}
         />
       )}
     </DashboardHeaderStyle>

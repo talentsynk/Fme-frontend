@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FMEPageLinks, ILinkFunc } from "./data";
+import {  ILinkFunc } from "./data";
 import { LinkCompStyles, LogoutModalStyles, SidebarStyles } from "./style";
 import {
   AdminUserIcon,
@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { FlexAbsoluteModalStyles } from "../mda/styles";
+import Cookies from "js-cookie";
 
 interface ISidebar{
   uniquePageLinks : ILinkFunc[];
@@ -20,6 +21,7 @@ interface ISidebar{
 
 export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex}) => {
   const [pageLinks, setPageLinks] = useState(uniquePageLinks);
+  const role = Cookies.get("userRole");
   const name = usePathname();
   const clickLink = (id: string) => {
     const newLinks = pageLinks.map((ele) => {
@@ -41,11 +43,7 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
   // for logout
   const [isloggingout, setIsLoggingOut] = useState(false);
   const router = useRouter();
-  const handleLogout = () => {
-    // logout logic
-    console.log("I am logging out");
-    router.push("/admin");
-  };
+  
   return (
     <SidebarStyles>
       <div className="top">
@@ -93,7 +91,7 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
           <div className="one">
             <AdminUserIcon />
             <div className="text">
-              <p>Administration</p>
+              <p>{role}</p>
               <span>Admin</span>
             </div>
           </div>
@@ -112,11 +110,12 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
         </div>
       </div>
       {isloggingout && (
-        <LogoutModal cancelLogout={()=> setIsLoggingOut(false)} handleLogout={handleLogout} />
+        <LogoutModal cancelLogout={()=> setIsLoggingOut(false)} />
       )}
     </SidebarStyles>
   );
 };
+
 
 interface ILinkComp extends ILinkFunc {
   clickLink: () => void;
@@ -137,22 +136,29 @@ export const LinkComp: React.FC<ILinkComp> = ({
   };
   return (
     <LinkCompStyles $isSelected={isSelected} onClick={handleClick}>
-      <Link href={href} className="li">
-        <>{isSelected ? activeState : icon}</>
-        <p>{name}</p>
+      <Link href={href}>
+        <div className="li">
+          {isSelected ? activeState : icon}
+          <p>{name}</p>
+        </div>
       </Link>
     </LinkCompStyles>
   );
 };
 
-export interface ITwoActionsModal {
+interface ILogoutActionsModal {
   cancelLogout: () => void;
-  handleLogout: () => void;
 }
-export const LogoutModal: React.FC<ITwoActionsModal> = ({
+export const LogoutModal: React.FC<ILogoutActionsModal> = ({
   cancelLogout,
-  handleLogout,
 }) => {
+  const router = useRouter();
+  const [isloggingout, setIsLoggingOut] = useState(false);
+  const handleLogout = () => {
+    Cookies.set("userRole", "");
+    Cookies.set("token", "");
+    router.push("/admin");
+  };
   return (
     <FlexAbsoluteModalStyles>
       <LogoutModalStyles>

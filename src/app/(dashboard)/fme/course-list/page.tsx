@@ -7,7 +7,6 @@ import ReactPaginate from 'react-paginate';
 import CourseCard from "@/components/course_list/CourseCard";
 import CurrentCourse from "@/components/course_list/CurrentCourse";
 import SearchSection from "@/components/stc/SearchSection";
-import { Metadata } from "next";
 
 // export const metadata: Metadata = {
 //   title: "dashboard",

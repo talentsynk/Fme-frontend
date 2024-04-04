@@ -287,6 +287,12 @@ const FGLogostyles = styled.div`
     width: 3.8125rem;
     height: 5rem;
   }
+  @media (min-width: 998px){
+    img {
+      width: 5rem;
+      height: 5rem;
+    }
+  }
 `;
 
 // active states
