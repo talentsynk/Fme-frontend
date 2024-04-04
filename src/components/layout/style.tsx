@@ -113,3 +113,8 @@ export const AuthLayoutStyles = styled.main`
     }
   }
 `;
+
+
+export const RootLayoutStyles = styled.main`
+  border: 2px solid #000;
+`

@@ -8,13 +8,14 @@ import {
 import { FMEHomeStyles } from "./style";
 import Head from "next/head";
 import { AngleDownStyles } from "@/components/icons/header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconWrapper } from "@/components/icons/fme/mda";
 
 // the first page on the fme dashboard
 
 export default function Home() {
   const [showOptions, setShowOptions] = useState(false);
+  
   return (
     <>
       <Head>
