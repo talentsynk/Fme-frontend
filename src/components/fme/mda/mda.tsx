@@ -21,7 +21,6 @@ import {
 } from "./data";
 import { useState } from "react";
 import { MdaDetailModal, SuspendMdaComp } from "./modals";
-import { ISTCData, StcItemDropdownList } from "../stc/data";
 
 interface ICheckbox {
   isChecked: boolean;

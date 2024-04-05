@@ -19,7 +19,7 @@ export interface IDesktopDropdownFunc extends IDesktopDropdown {
 export const DesktopDropdownLinks: IDesktopDropdown[] = [
   {
     id : "1",
-    link: "/fme/settings",
+    link: "/settings",
     icon: <PfIcon />,
     text: "View Profile",
     activeBg: "#00932E",

@@ -185,11 +185,9 @@ export default function Home() {
       return { ...ele, isSelected: ele.text == text };
     });
     if (text == "Sort") {
-      setShowSortDropdown(true);
-    } else if (text == "Filter") {
       setShowFilterDropdown(!showFilterDropdown);
-      setShowSortDropdown(false);
-    }
+      setShowSortDropdown(!showSortDropdown);
+    } 
     setFilterBtns(newFilterBtns);
   };
 

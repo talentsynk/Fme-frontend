@@ -140,9 +140,7 @@ export default function AccountRecovery() {
                       placeholder="Enter Password"
                       autoComplete="new-password"
                       className={pwd1Error.active ? "error-bdr" : ""}
-                      onKeyDown={() =>
-                        setPwd1Error({ active: false, text: "" })
-                      }
+                      
                     />
                     <div className="abs" onClick={() => setShowPwd1(!showPwd1)}>
                       {pwd1Error.active === false && pwd1Error.text === "" && (
@@ -151,7 +149,7 @@ export default function AccountRecovery() {
                       {pwd1Error.active === false && pwd1Error.text !== "" && (
                         <CheckedIcon />
                       )}
-                      {pwd1Error.active === true && <FormErrorIcon />}
+                      {pwd1Error.active === true && <EyeIcon isShown={showPwd1} />}
                     </div>
                   </div>
                   <p
@@ -174,9 +172,6 @@ export default function AccountRecovery() {
                       onChange={handlePwd2Change}
                       placeholder="Confirm Password"
                       autoComplete="new-password"
-                      onKeyDown={() =>
-                        setPwd2Error({ active: false, text: "" })
-                      }
                     />
                     <div className="abs" onClick={() => setShowPwd2(!showPwd2)}>
                       {pwd2Error.active === false && pwd2Error.text === "" && (
@@ -185,7 +180,7 @@ export default function AccountRecovery() {
                       {pwd2Error.active === false && pwd2Error.text !== "" && (
                         <CheckedIcon />
                       )}
-                      {pwd2Error.active === true && <FormErrorIcon />}
+                      {pwd2Error.active === true && <EyeIcon isShown={showPwd2} />}
                     </div>
                   </div>
                   <p
