@@ -20,7 +20,7 @@ export interface IFilterBtn {
   isSelected: boolean;
 }
 export const FilterBtns: IFilterBtn[] = [
-  { icon: <FilterIcon />, activeIcon: <WhiteFilterIcon />, text: "Filter", isSelected: false },
+  // { icon: <FilterIcon />, activeIcon: <WhiteFilterIcon />, text: "Filter", isSelected: false },
   { icon: <SortIcon />, activeIcon: <WhiteSortIcon /> , text: "Sort", isSelected: false },
 ];
 export interface IMDAData {

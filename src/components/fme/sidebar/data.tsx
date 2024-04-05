@@ -71,7 +71,7 @@ export const FMEPageLinks: ILinkFunc[] = [
     activeState: <ActiveCourseList />,
   },
   {
-    href: "/fme/settings",
+    href: "/settings",
     icon: <SettingsIcon />,
     isSelected: false,
     id: "6",
@@ -79,7 +79,7 @@ export const FMEPageLinks: ILinkFunc[] = [
     activeState: <ActiveSettingsIcon />,
   },
   {
-    href: "/fme/support",
+    href: "/support",
     icon: <SupportIcon />,
     isSelected: false,
     id: "7",
