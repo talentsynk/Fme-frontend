@@ -212,9 +212,9 @@ export default function Login() {
                   <BackBtn backFunction={() => router.push("/")} />
                 </div>
                 <div className="form-head">
-                  <h3>Welcome to Signup Portal!</h3>
+                  <h3>Welcome to Login Portal!</h3>
                   <p>
-                    This is the signup portal for the Federal Ministry of
+                    This is the login portal for the Federal Ministry of
                     Education (FME), Ministry Department& Agencies (MDA) and
                     Skill Training Centres (STC)
                   </p>
@@ -320,9 +320,6 @@ export default function Login() {
                           placeholder="Enter Password"
                           autoComplete="new-password"
                           className={pwdError.active ? "error-bdr" : ""}
-                          onKeyDown={() =>
-                            setPwdError({ active: false, text: "" })
-                          }
                         />
                         <div
                           className="abs"
@@ -334,7 +331,7 @@ export default function Login() {
                             )}
                           {pwdError.active === false &&
                             pwdError.text !== "" && <CheckedIcon />}
-                          {pwdError.active === true && <FormErrorIcon />}
+                          {pwdError.active === true && <EyeIcon isShown={showPwd} />}
                         </div>
                       </div>
                       <p

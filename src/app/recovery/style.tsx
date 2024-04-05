@@ -131,7 +131,7 @@ export const FormStyles = styled.div`
       background: var(--Shade-White, #fff);
       height: 3rem;
       padding: 1rem;
-      padding-right: 2rem;
+      padding-right: 2.5rem;
       width: 100%;
     }
   }
@@ -141,7 +141,7 @@ export const FormStyles = styled.div`
   }
   .abs {
     position: absolute;
-    right: 0.4rem;
+    right: 1rem;
     top: 0.95rem;
     height: fit-content;
     svg {

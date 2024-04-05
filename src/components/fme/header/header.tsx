@@ -11,10 +11,8 @@ import {
 } from "./data";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { CalendarIcon } from "@/components/icons/sidebar";
-import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import { formatDate } from "@/utils/formatDate";
 import { LogoutModal } from "../sidebar/sidebar";
 

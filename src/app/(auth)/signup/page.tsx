@@ -351,9 +351,6 @@ export default function Login() {
                           placeholder="Enter Password"
                           className={pwd1Error.active ? "error-bdr" : ""}
                           autoComplete="new-password"
-                          onKeyDown={() =>
-                            setPwd1Error({ active: false, text: "" })
-                          }
                         />
                         <div
                           className="abs"
@@ -365,7 +362,9 @@ export default function Login() {
                             )}
                           {pwd1Error.active === false &&
                             pwd1Error.text !== "" && <CheckedIcon />}
-                          {pwd1Error.active === true && <FormErrorIcon />}
+                          {pwd1Error.active === true && (
+                            <EyeIcon isShown={showPwd1} />
+                          )}
                         </div>
                       </div>
                       <p

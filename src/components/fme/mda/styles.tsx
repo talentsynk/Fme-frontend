@@ -142,7 +142,7 @@ export const SearchAndResultStyle = styled.div`
     align-items: flex-start;
 
     .input {
-      width: 80%;
+      width: 85%;
       position: relative;
       .glass,
       .abs {
@@ -196,13 +196,13 @@ export const SearchAndResultStyle = styled.div`
         border: 1px solid var(--Primary-Color, #00932e);
         padding: 1rem 2rem 1rem 2rem;
       }
-      form .error-bdr{
+      form .error-bdr {
         border: 1px solid #eb5017;
       }
     }
     .filsort {
       width: fit-content;
-      min-width: 20%;
+      // min-width: 10%;
       border-radius: 0.5rem;
       border: 1px solid #e4e7ec;
       background: #fff;
@@ -555,8 +555,6 @@ export const TableStyles = styled.table`
   border: 1px solid #e5e7eb;
   min-width: 100%;
   // width: 100%;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
   th {
     padding: 0.75rem 1.5rem;
   }
@@ -569,9 +567,15 @@ export const TableStyles = styled.table`
     font-style: normal;
     font-weight: 700;
     line-height: 1.25rem; /* 142.857% */
+    // border-top-left-radius: 5rem;
+    // border-top-right-radius: 5rem;
+    // border: 2px solid #000;
   }
   table-layout: fixed;
   border-collapse: collapse;
+  .faint {
+    text-align: left;
+  }
 `;
 
 export const TrStyles = styled.tr`
@@ -599,7 +603,8 @@ export const TrStyles = styled.tr`
     align-items: center;
     gap: 1rem;
     text-align: left;
-    .igris, .istatus{
+    .igris,
+    .istatus {
       flex: 1;
     }
   }
@@ -676,9 +681,9 @@ export const DropdownOptionsStyle = styled.div`
 export const SortOptionsStyle = styled(DropdownOptionsStyle)`
   top: 120%;
   margin-right: 0rem;
-  .options div{
+  .options div {
     padding-right: 3.5rem;
-    p{
+    p {
       white-space: nowrap;
     }
   }
@@ -887,8 +892,8 @@ export const OneButtonModalStyles = styled.div<IOneBtnStyle>`
   ${(props) =>
     props.$isError &&
     css`
-      .down{
-        button{
+      .down {
+        button {
           background: #f32d2d;
         }
       }
