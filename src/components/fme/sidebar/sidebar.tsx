@@ -155,6 +155,7 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
   const router = useRouter();
   const [isloggingout, setIsLoggingOut] = useState(false);
   const handleLogout = () => {
+    setIsLoggingOut(true);
     Cookies.set("userRole", "");
     Cookies.set("token", "");
     router.push("/admin");
@@ -178,8 +179,8 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
             </p>
           </div>
           <div className="down">
-            <button type="button" onClick={handleLogout}>
-              Sign Out
+            <button type="button" onClick={handleLogout} disabled={isloggingout}>
+              {isloggingout ? "Logging out" : "Sign Out"}
             </button>
           </div>
         </div>
