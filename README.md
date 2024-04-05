@@ -63,6 +63,8 @@ Fme-frontend
                   ├── page.tsx
                   ├── layout.tsx
               ├── page.tsx
+          ├── settings
+          ├── support
           ├── layout.tsx
           ├── style.tsx
         ├── (root)
@@ -73,8 +75,6 @@ Fme-frontend
               ├── page.tsx
           ├── page.tsx
         ├── recovery
-        ├── settings
-        ├── support
     ├── components
         ├── icons
         ├── auth
