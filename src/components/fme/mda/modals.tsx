@@ -545,7 +545,7 @@ interface IMessageModal extends IOneButtonModal {
   icon?: ReactNode;
   hasCancel?: boolean;
   navigationText: string;
-  navigationFunction : ()=> void;
+  navigationFunction: () => void;
 }
 
 export const SuccessModal: React.FC<IMessageModal> = ({
@@ -554,17 +554,20 @@ export const SuccessModal: React.FC<IMessageModal> = ({
   msg,
   icon,
   navigationText,
-  navigationFunction
+  navigationFunction,
+  hasCancel,
 }) => {
   const router = useRouter();
   return (
     <OneButtonModalStyles>
       <div className="pop">
         <div className="up">
-          <div className="x" onClick={cancelModal}>
-            {" "}
-            <XIcon />
-          </div>
+          {hasCancel && (
+            <div className="x" onClick={cancelModal}>
+              {" "}
+              <XIcon />
+            </div>
+          )}
           <div className="l">{icon ? icon : <LargeCheckedIcon />}</div>
           <h4>{head}</h4>
           <p>{msg}</p>
@@ -585,7 +588,7 @@ export const FailureModal: React.FC<IMessageModal> = ({
   msg,
   navigationText,
   hasCancel,
-  navigationFunction
+  navigationFunction,
 }) => {
   const router = useRouter();
   return (
