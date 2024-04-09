@@ -244,8 +244,8 @@ export default function Login() {
                   </button>
                 </div>
                 <div className="btm">
-                  <p>Already have an account?</p>
-                  <button type="button" onClick={() => router.push("#")}>
+                  <p>Not an Admin user?</p>
+                  <button type="button" onClick={() => router.push("/login")}>
                     Sign in
                   </button>
                 </div>
