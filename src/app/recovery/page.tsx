@@ -14,12 +14,16 @@ import {
   EmailIcon,
   FormErrorIcon,
 } from "@/components/icons/recovery";
-import { BackBtn } from "@/components/recovery/recovery";
-import { useEffect, useState } from "react";
+import { BackBtn, CountdownTimer } from "@/components/recovery/recovery";
+import { useCallback, useEffect, useState } from "react";
 import { OtpComp } from "@/components/recovery/otpInput";
 import { useRouter } from "next/navigation";
 import { ButtonLoader } from "@/components/recovery/style";
 import { validateEmail } from "@/utils/validateEmail";
+import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
+import Cookies from "js-cookie";
+import { useAppDispatch } from "@/redux/hooks/hooks";
 
 export interface Ierror {
   active: boolean;
@@ -53,15 +57,36 @@ export default function AccountRecovery() {
   };
   // sending email loader
   const [isSendLoading, setIsSendLoading] = useState(false);
+  const [countdownStarted, setCountdownStarted] = useState(false);
+  const [hasOtpExpired, setHasOtpExpired] = useState(false);
   // this function would check using the API provided if the email is in the DB and then send a message, if not in the DB, it returns an error
-  const getOtp = () => {
+  const getOtp = async () => {
     if (!emailError.active) {
       //when there's no error msg
-      setIsSendLoading(true);
-      setTimeout(() => {
+      try {
+        setIsSendLoading(true);
+        const { data } = await axios.post(`${BACKEND_URL}/user/otp/request`, {
+          Email: email,
+        });
+        if (data) {
+          console.log(data); // comment out later, i am using this to check the otp for testing purposes
+          Cookies.set("otpRequestTime", new Date().toISOString());
+          setCountdownStarted(true);
+          setFormStep(1);
+          setIsSendLoading(false);
+        }
+      } catch (error: any) {
         setIsSendLoading(false);
-        setFormStep(1);
-      }, 2000);
+        if (error.response) {
+          // if the server responds with an error msg
+          setEmailError({
+            active: true,
+            text: error.response.data.message,
+          });
+        } else {
+          setEmailError({ active: true, text: error.message });
+        }
+      }
     }
   };
 
@@ -71,22 +96,42 @@ export default function AccountRecovery() {
   const [userOtp, setUserOtp] = useState("");
   const [otpError, setOtpError] = useState<Ierror>({ active: false, text: "" });
 
+  const dispatch = useAppDispatch();
   // otp button loader state
   const [isLoading, setIsLoading] = useState(false);
-  const verifyOtp = () => {
+  const verifyOtp = async () => {
     if (!otpError.active) {
       //when there's no error msg
-      setIsLoading(true);
-      setTimeout(() => {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.post(`${BACKEND_URL}/user/otp/verify`, {
+          Email: email,
+          Otp: userOtp,
+        });
+        if (data) {
+          // otp verification expires in 5 mins
+          let inSetTime = new Date(new Date().getTime() + 5 * 60 * 1000);
+          Cookies.set("otp", "otp is set", { expires: inSetTime });
+          Cookies.set("email", email);
+          router.push("/recovery/newpwd");
+          setIsLoading(false);
+        }
+      } catch (error: any) {
         setIsLoading(false);
-        console.log(userOtp);
-        router.push("/recovery/newpwd");
-      }, 2000);
+        if (error.response) {
+          // if the server responds with an error msg
+          setOtpError({
+            active: true,
+            text: error.response.data.message,
+          });
+        } else {
+          setOtpError({ active: true, text: error.message });
+        }
+      }
     }
-    // verify using the api values
-    // add loader to improve UX
-    // if verification is successful, move to next
+    // remove Date-fns if there's no particular date-based countdown
   };
+
   useEffect(() => {
     if (userOtp.length > 0) {
       if (userOtp.length < 5) {
@@ -104,6 +149,9 @@ export default function AccountRecovery() {
     }
   }, [userOtp]);
 
+  const handleOtpExpiration = useCallback(() => {
+    setHasOtpExpired(true);
+  }, [setHasOtpExpired]);
   return (
     <>
       <Head>
@@ -174,7 +222,12 @@ export default function AccountRecovery() {
             {formStep == 1 && (
               <FormStyles>
                 <div className="backbtn">
-                  <BackBtn backFunction={() => setFormStep(0)} />
+                  <BackBtn
+                    backFunction={() => {
+                      setFormStep(0);
+                      Cookies.remove("otpExpiryTime");
+                    }}
+                  />
                 </div>
 
                 <ImprovisedStyle>
@@ -190,10 +243,9 @@ export default function AccountRecovery() {
                   <div className="form-head">
                     <h3>Check your mail</h3>
                     <p>
-                      A mail has been sent to {email}. Follow the steps
-                      provided in the email to update your password or
-                      select Log In if you don’t want to change your password at
-                      this time.
+                      A mail has been sent to {email}. Follow the steps provided
+                      in the email to update your password or click back to go
+                      to the Login page. The OTP sent expires in 2 mins.
                     </p>
                   </div>
                   <div className="btn">
@@ -204,14 +256,21 @@ export default function AccountRecovery() {
                 </ImprovisedStyle>
                 <div className="btm">
                   <p>I Didn’t get the mail?</p>
-                  <button type="button">Resend mail</button>
+                  <button type="button" onClick={() => setFormStep(0)}>
+                    Resend mail
+                  </button>
                 </div>
               </FormStyles>
             )}
             {formStep == 2 && (
               <FormStyles>
                 <div className="backbtn">
-                  <BackBtn backFunction={() => setFormStep(1)} />
+                  <BackBtn
+                    backFunction={() => {
+                      setFormStep(0);
+                      Cookies.remove("otpExpiryTime");
+                    }}
+                  />
                 </div>
                 <div className="form-head">
                   <h3>Verify your e-mail address</h3>
@@ -247,8 +306,16 @@ export default function AccountRecovery() {
                   </button>
                 </div>
                 <div className="btm">
-                  <p>Didn’t get OTP in the mail?</p>
-                  <button type="button">Resend OTP</button>
+                  <p>
+                    {hasOtpExpired
+                      ? "OTP has expired!"
+                      : "OTP expires shortly!"}
+                  </p>
+                  <button type="button">
+                    {countdownStarted && (
+                      <CountdownTimer onExpire={handleOtpExpiration} />
+                    )}
+                  </button>
                 </div>
               </FormStyles>
             )}
