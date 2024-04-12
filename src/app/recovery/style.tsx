@@ -134,6 +134,15 @@ export const FormStyles = styled.div`
       padding-right: 2.5rem;
       width: 100%;
     }
+    textarea{
+      border-radius: 0.375rem;
+      border: 1px solid #d0d5dd;
+      background: var(--Shade-White, #fff);
+      height: 3rem;
+      padding: 1rem;
+      padding-right: 2.5rem;
+      width: 100%;
+    }
   }
   input:active,
   input:focus {

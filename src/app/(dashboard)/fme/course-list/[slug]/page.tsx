@@ -1,8 +1,8 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { BackSvg } from '@/components/course_list/Svg'
-import GridCard from '@/components/course_list/GridCard'
+import { BackSvg } from '@/components/fme/course_list/Svg'
+import GridCard from '@/components/fme/course_list/GridCard'
  
 export default function Slug() {
   const router = useRouter()

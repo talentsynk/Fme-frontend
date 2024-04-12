@@ -132,3 +132,8 @@ img{
   background-repeat: no-repeat;
   background-size: cover;
 }
+.support-img{
+  background: url(/images/support/real.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
