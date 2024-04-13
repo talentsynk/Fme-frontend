@@ -134,7 +134,6 @@ export default function Login() {
         if(data){
           setIsLoading(false);
           if(data.role == 1 || data.role == 2 || data.role == 3){
-            console.log(data.expires_in);
             const roleString = roles[data.role - 1];
             dispatch(setSessionExpiration(false));
             let inSetTime = new Date(new Date().getTime() + data.expires_in * 1000);
@@ -245,8 +244,8 @@ export default function Login() {
                   </button>
                 </div>
                 <div className="btm">
-                  <p>Already have an account?</p>
-                  <button type="button" onClick={() => router.push("#")}>
+                  <p>Not an Admin user?</p>
+                  <button type="button" onClick={() => router.push("/login")}>
                     Sign in
                   </button>
                 </div>

@@ -1,14 +1,9 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Login",
-  description: "login to account",
-};
+"use client";
 
 export default function Login() {
     return (
       <>
-        <h1>Hello world, Login page here</h1>
+        <h1>Hello world, Non-Admin User Login page here</h1>
       </>
     );
   }

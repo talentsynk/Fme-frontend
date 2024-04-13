@@ -27,7 +27,7 @@ export const authSlice = createSlice({
 export const authSelector = (state: RootState) => state.auth;
 
 export const {
-  setSessionExpiration,
+  setSessionExpiration
 } = authSlice.actions;
 
 export default authSlice.reducer;
