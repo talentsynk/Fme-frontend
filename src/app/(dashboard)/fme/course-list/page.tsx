@@ -7,6 +7,7 @@ import { useState, FormEvent } from "react";
 // import ReactPaginate from 'react-paginate';
 import CourseCard from "@/components/fme/course_list/CourseCard";
 import CurrentCourse from "@/components/fme/course_list/CurrentCourse";
+import { FilterBtnComp } from "@/components/fme/mda/mda";
 // import SearchSection from "@/components/stc/SearchSection";
 import {
 	ActiveIcon,
@@ -36,7 +37,10 @@ import { Ierror } from "@/app/recovery/page";
 import { ICourseData } from "@/components/fme/course_list/data";
 import { SortItemDropdownList } from "@/components/fme/mda/data";
 import { sortCourseDataAlphabetically } from "@/components/fme/course_list/data";
-
+import { FilterBtns } from "@/components/fme/mda/data";
+import { MdaItemComp } from "@/components/fme/mda/mda";
+import { sortCourseListDataAlphabetically } from "@/utils/sortData";
+import { CoursesTabSwitches } from "@/components/fme/course_list/data";
 // export const metadata: Metadata = {
 //   title: "dashboard",
 //   description: "dashboard for setting courses",
@@ -53,6 +57,8 @@ const Items: React.FC<MyComponentProps> = ({ currentItems }) => {
 export default function Home() {
 	// const mappedArray=mockArray.map(coursecard=>(<CourseCard key={coursecard} />))
 	//mock data
+	const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
+	const [filterBtns, setFilterBtns] = useState(FilterBtns);
 	const [itemOffset, setItemOffset] = useState(0);
 	const endOffset = itemOffset + 35;
 	console.log(`Loading items from ${itemOffset} to ${endOffset}`);
@@ -75,12 +81,49 @@ export default function Home() {
 	// for dynamic student data
 	const [courseListDuplicate, setCourseListDuplicate] = useState<ICourseData[] | null>(null);
 	const [showCancel, setShowCancel] = useState(false);
+	const [courseTabSwitches, setCourseTabSwitches] = useState(CoursesTabSwitches);
 
+	const handleTabSwitch = (tabIndex: number) => {
+		const newMdaTabSwitches = courseTabSwitches.map((ele) => {
+			return { ...ele, isSelected: tabIndex == ele.tabIndex };
+		});
+		setCourseTabSwitches(newMdaTabSwitches);
+
+		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
+		if (tabIndex == 0) {
+			if (sortStatus && courseList !== null) {
+				const sortedCourseListData = sortCourseListDataAlphabetically(courseList, sortStatus == "-1");
+				setCourseListDuplicate(sortedCourseListData);
+			} else {
+				setCourseListDuplicate(courseList);
+			}
+		} else if (tabIndex == 1) {
+			const newCourseList = courseList?.filter((ele) => ele.isActive);
+			if (newCourseList) {
+				if (sortStatus) {
+					const sortedCourseData = sortCourseListDataAlphabetically(newCourseList, sortStatus == "-1");
+					setCourseListDuplicate(sortedCourseData);
+				} else {
+					setCourseListDuplicate(newCourseList);
+				}
+			}
+		} else if (tabIndex == 2) {
+			const newStcList = courseList?.filter((ele) => ele.isActive == false);
+			if (newStcList) {
+				if (sortStatus) {
+					const sortedSTCData = sortCourseListDataAlphabetically(newStcList, sortStatus == "-1");
+					setCourseListDuplicate(sortedSTCData);
+				} else {
+					setCourseListDuplicate(newStcList);
+				}
+			}
+		}
+	};
 	const handleSearch = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault(); // Prevent default form submission
 		if (query.trim().length >= 1) {
 			// filter from the unchanged stc list
-			const newCourseList = unchangedCourseList?.filter((ele) => ele.course.toLowerCase().includes(query.toLowerCase()));
+			const newCourseList = unchangedCourseList?.filter((ele) => ele.name.toLowerCase().includes(query.toLowerCase()));
 			if (newCourseList && newCourseList.length > 0) {
 				// set sort filter to default;
 				const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
@@ -118,7 +161,7 @@ export default function Home() {
 		// return courseList and listDuplicate to default - might involve calling the api
 		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
 		if (sortStatus && unchangedCourseList !== null) {
-			const sortedSTCData = sortDataAlphabetically(unchangedCourseList, sortStatus == "-1");
+			const sortedSTCData = sortCourseDataAlphabetically(unchangedCourseList, sortStatus == "-1");
 			setCourseListDuplicate(sortedSTCData);
 			setCourseList(unchangedCourseList);
 		} else {
@@ -128,6 +171,38 @@ export default function Home() {
 		setShowCancel(false);
 	};
 	//
+	const [showSortDropdown, setShowSortDropdown] = useState(false);
+	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+	const handleClickFilterBtns = (text: string) => {
+		const newFilterBtns = filterBtns.map((ele) => {
+			return { ...ele, isSelected: ele.text == text };
+		});
+		if (text == "Sort") {
+			setShowFilterDropdown(!showFilterDropdown);
+			setShowSortDropdown(!showSortDropdown);
+		}
+		setFilterBtns(newFilterBtns);
+	};
+
+	const handleSelectSortDropdownItem = (id: string | undefined) => {
+		if (id) {
+			const newCourseList = sortItemDropdownList.map((ele) => {
+				return { ...ele, isSelected: ele.id === id };
+			});
+			if (id == "1" && courseListDuplicate !== null) {
+				const sortedCourseData = sortCourseDataAlphabetically(courseListDuplicate);
+				setCourseListDuplicate(sortedCourseData);
+			} else if (id == "-1" && courseListDuplicate !== null) {
+				const sortedCourseData = sortCourseDataAlphabetically(courseListDuplicate, true);
+				setCourseListDuplicate(sortedCourseData);
+			} else if (id == "0") {
+				setCourseListDuplicate(courseList);
+				setFilterBtns(FilterBtns);
+			}
+			setSortItemDropdownList(newCourseList);
+			setShowSortDropdown(false);
+		}
+	};
 
 	return (
 		<section className="">
@@ -207,15 +282,15 @@ export default function Home() {
 					</div>
 				</div>
 
-				<div className="pad">
+				{/* <div className="pad">
 					<div className="options">
-						{studentTabSwitches.map((ele, index) => (
+						{courseTabSwitches.map((ele, index) => (
 							<TabSwitchStyle key={index} $tabIndex={ele.tabIndex} $isSelected={ele.isSelected} onClick={() => handleTabSwitch(ele.tabIndex)}>
 								<div className="no">
 									<p>{ele.text}</p>
-									{ele.isSelected && studentListDuplicate && (
+									{ele.isSelected && courseListDuplicate && (
 										<div className="num">
-											<span>{studentListDuplicate?.length}</span>
+											<span>{courseListDuplicate?.length}</span>
 										</div>
 									)}
 								</div>
@@ -223,8 +298,8 @@ export default function Home() {
 							</TabSwitchStyle>
 						))}
 					</div>
-				</div>
-				<div className="pad scroll">
+				</div> */}
+				{/* <div className="pad scroll">
 					<div className="result">
 						<TableStyles>
 							<thead>
@@ -237,8 +312,8 @@ export default function Home() {
 								</tr>
 							</thead>
 							<tbody>
-								{studentListDuplicate &&
-									studentListDuplicate.map((ele, index) => (
+								{courseListDuplicate &&
+									courseListDuplicate.map((ele, index) => (
 										<StudentTableRow
 											key={index}
 											isActive={ele.isActive}
@@ -252,29 +327,14 @@ export default function Home() {
 							</tbody>
 						</TableStyles>
 					</div>
-				</div>
+				</div> */}
 			</SearchAndResultStyle>
 			<section className="p-4 rounded-lg bg-white">
 				<CurrentCourse />
 				<div className=" flex flex-wrap gap-4 p-4 justify-evenly ">
 					<Items currentItems={currentItems} />
 				</div>
-				{/* <ReactPaginate
-          activeClassName={'item active '}
-          breakClassName={'item break-me '}
-          containerClassName={'pagination'}
-          disabledClassName={'disabled-page'}
-          nextClassName={"item next "}
-          pageClassName={'item pagination-page '}
-          previousClassName={"item previous"}
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-        /> */}
+				
 			</section>
 			{showNewMdaFormModal && <NewMdaModal cancelModal={() => setShowNewMdaFormModal(false)} />}
 		</section>

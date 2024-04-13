@@ -1,6 +1,7 @@
 import { IMDAData } from "@/components/fme/mda/data";
 import { ISTCData } from "@/components/fme/stc/data";
 import { IStudentData } from "@/components/fme/students/data";
+import { ICourseData } from "@/components/fme/course_list/data";
 
 export const sortMDADataAlphabetically = (data: IMDAData[], reverse: boolean = false): IMDAData[] => {
     const sortedData = data.slice().sort((a, b) => {
@@ -34,3 +35,13 @@ export const sortStudentListDataAlphabetically = (data: IStudentData[], reverse:
     });
     return sortedData;
   };
+export const sortCourseListDataAlphabetically = (data: ICourseData[], reverse: boolean = false): ICourseData[] => {
+	const sortedData = data.slice().sort((a, b) => {
+		if (reverse) {
+			return b.name.localeCompare(a.name);
+		} else {
+			return a.name.localeCompare(b.name);
+		}
+	});
+	return sortedData;
+};
