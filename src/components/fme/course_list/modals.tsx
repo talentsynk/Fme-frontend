@@ -217,7 +217,7 @@ const [courseDescriptionError, setCourseDescriptionError] = useState<Ierror>({
                         
                         id=""
                         value={courseDescription}
-                        onChange={(e) => handleInput(e, "courseDescription")}
+                        onChange={(e:any) => handleInput(e, "courseDescription")}
                         className={courseDescriptionError.active ? "error-bdr" : ""}
                         placeholder="Please type in course description"
                         />
