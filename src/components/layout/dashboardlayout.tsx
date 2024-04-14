@@ -10,7 +10,8 @@ import { FlexAbsoluteModalStyles } from "../fme/mda/styles";
 import Cookies from "js-cookie";
 import { authSelector, setSessionExpiration } from "@/redux/auth/authSlice";
 import { FMEPageLinks } from "../fme/sidebar/data";
-import { MDAPageLinks, STCPageLinks } from "../mda/data";
+import { MDAPageLinks} from "../mda/data";
+import { STCPageLinks } from "../stc/data";
 
 export const GenericDasboardLayout = ({
   children,

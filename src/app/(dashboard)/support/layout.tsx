@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Having technical issues? Contact us for support",
 };
 
-export default function SettingsClientLayout({
+export default function ServerSideLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

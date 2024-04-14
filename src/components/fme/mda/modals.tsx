@@ -8,6 +8,7 @@ import {
   LargeCheckedIcon,
   LocationIcon,
   NameIcon,
+  ReactivateIcon,
   SuspendIcon,
   ThreedotsIcon,
   TotalCoursesIcon,
@@ -34,13 +35,16 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
-import { FormEvent, ReactNode, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { StatusComp } from "./mda";
 import { Ierror } from "@/app/recovery/page";
 import { validateEmail } from "@/utils/validateEmail";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import { States } from "./data";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fmeSelector, setUnchangedMdaList } from "@/redux/fme/fmeSlice";
+import { truncateString } from "@/utils/truncateString";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -324,9 +328,17 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showActiveModal, setShowActivateModal] = useState(false);
+  const { selectedMdaId, unchangedMdaList } = useAppSelector(fmeSelector);
+  const [mdaDetails, setMdaDetails] = useState(
+    unchangedMdaList?.find((ele) => ele.id == selectedMdaId)
+  );
+  useEffect(() => {
+    setMdaDetails( unchangedMdaList?.find((ele) => ele.id == selectedMdaId));
+  }, [unchangedMdaList, selectedMdaId]);
   return (
     <>
-      {!showSuspendModal && (
+      {!showSuspendModal && mdaDetails && (
         <MDADetailStyle>
           <div className="left" onClick={cancelModal}></div>
           <div className="right">
@@ -334,10 +346,10 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               <BackBtn backFunction={cancelModal} />
               <div className="name">
                 <div className="avatar">
-                  <p>NI</p>
+                  <p>{mdaDetails.name.slice(0, 2).toUpperCase()}</p>
                 </div>
                 <div className="deet">
-                  <h4>NITDA</h4>
+                  <h4>{truncateString(mdaDetails.name,40)}</h4>
                   <p>Added on Jul 11, 2023</p>
                 </div>
               </div>
@@ -350,7 +362,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total STCs</div>
                   <div className="numer">
-                    <p>1000</p>
+                    <p>{mdaDetails.stcNo}</p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -360,7 +372,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
-                    <p>1000</p>
+                    <p>{mdaDetails.studentNo}</p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -379,34 +391,45 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>Name of MDA</span>
-                    <p>NITDA</p>
+                    <p>{mdaDetails.name}</p>
                   </div>
-                  <CopyIcon text="NITDA" />
+                  <CopyIcon text={mdaDetails.name} />
                 </div>
                 <div className="dx">
                   <div className="name">
                     <span>MDA Address</span>
-                    <p className="nm">
-                      124, Oyediran Estate, Lagos, Nigeria, 5432
-                    </p>
+                    <p className="nm">{mdaDetails.address}</p>
                   </div>
-                  <CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
+                  <CopyIcon text={mdaDetails.address} />
                 </div>
                 <div className="dx">
                   <div className="name">
                     <span>Status</span>
-                    <StatusComp $isActive={true} />
+                    <StatusComp $isActive={mdaDetails.isActive} />
                   </div>
                 </div>
               </div>
             </div>
             <div className="r-3">
-              <h4>Suspend MDA</h4>
+              <h4>{mdaDetails.isActive ? "Suspend MDA" : "Re-activate"}</h4>
               <div className="btn">
-                <button type="button" onClick={() => setShowSuspendModal(true)}>
-                  <SuspendIcon />
-                  <p>Suspend MDA</p>
-                </button>
+                {mdaDetails.isActive ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowSuspendModal(true)}
+                  >
+                    <SuspendIcon />
+                    <p>Suspend MDA</p>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowActivateModal(true)}
+                  >
+                    <ReactivateIcon />
+                    <p>Re-Activate MDA</p>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -414,8 +437,14 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       )}
       {showSuspendModal && (
         <SuspendMdaComp
-          handleModalAction={() => console.log("handler")}
+          handleModalAction={cancelModal}
           cancelModal={() => setShowSuspendModal(false)}
+        />
+      )}
+      {showActiveModal && (
+        <ReactivateMdaComp
+          handleModalAction={cancelModal}
+          cancelModal={() => setShowActivateModal(false)}
         />
       )}
     </>
@@ -424,18 +453,33 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 interface ITwoActions {
   cancelModal: () => void;
-  handleModalAction: () => void;
+  handleModalAction ?: () => void;
 }
 
 export const SuspendMdaComp: React.FC<ITwoActions> = ({
-  cancelModal,
   handleModalAction,
+  cancelModal,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const {unchangedMdaList, selectedMdaId} = useAppSelector(fmeSelector);
+  const dispatch = useAppDispatch();
   const suspend = () => {
-    handleModalAction();
-    setIsSuccess(true);
-  };
+    // make Suspend MDA API call to suspend MDA
+    // if successful, change the data on the frontend
+    // display error / success message
+    // let's assume the API call was successful
+    if(unchangedMdaList !== null){
+      const newMdalist = unchangedMdaList.map((ele) => {
+        return {
+          ...ele,
+          isActive: ele.id === selectedMdaId ? false : ele.isActive,
+        };
+      });
+      // why does this state not update Immediately on the UI?
+      dispatch(setUnchangedMdaList(newMdalist));
+      setIsSuccess(true);
+    }
+  }
   const router = useRouter();
   return (
     <>
@@ -475,7 +519,8 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
             cancelModal={cancelModal}
             navigationText="Go back to Dashboard"
             hasCancel={true}
-            navigationFunction={() => router.push("/fme")}
+            navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+            // navigationFunction={() => router.push("/fme")}
           />
         )}
       </FlexAbsoluteModalStyles>
@@ -484,13 +529,29 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
 };
 
 export const ReactivateMdaComp: React.FC<ITwoActions> = ({
-  cancelModal,
   handleModalAction,
+  cancelModal,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const {unchangedMdaList, selectedMdaId} = useAppSelector(fmeSelector);
+  const dispatch = useAppDispatch();
+
   const reactivate = () => {
-    handleModalAction();
-    setIsSuccess(true);
+    // make Reactivate MDA API call to suspend MDA
+    // if successful, change the data on the frontend
+    // display error / success message
+    // let's assume the API call was successful
+    if(unchangedMdaList !== null){
+      const newMdalist = unchangedMdaList.map((ele) => {
+        return {
+          ...ele,
+          isActive: ele.id === selectedMdaId ? true : ele.isActive,
+        };
+      });
+      // why does this state not update Immediately on the UI?
+      dispatch(setUnchangedMdaList(newMdalist));
+      setIsSuccess(true);
+    }
   };
   const router = useRouter();
   return (
@@ -518,7 +579,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={reactivate}>
-                  Re-activate MDA
+                  Re-activate
                 </button>
               </div>
             </div>
@@ -528,10 +589,11 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
           <SuccessModal
             head="MDA has been successfully re-activated !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
-            cancelModal={() => window.location.reload()}
+            cancelModal={cancelModal}
             navigationText="Go back to Dashboard"
             hasCancel={true}
-            navigationFunction={() => router.push("/fme")}
+            // navigationFunction={() => router.push("/fme")}
+            navigationFunction={handleModalAction ? handleModalAction : cancelModal}
           />
         )}
       </FlexAbsoluteModalStyles>

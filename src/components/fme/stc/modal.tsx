@@ -7,6 +7,7 @@ import {
   LargeCheckedIcon,
   LocationIcon,
   NameIcon,
+  ReactivateIcon,
   SuspendIcon,
   TotalCoursesIcon,
   TotalSTCIcon,
@@ -37,8 +38,14 @@ import {
   TwoButtonModalStyles,
 } from "../mda/styles";
 import { StatusComp } from "../mda/mda";
-import { CertifiedStudentIcon, UncertifiedStudentIcon } from "@/components/icons/fme/stc";
+import {
+  CertifiedStudentIcon,
+  UncertifiedStudentIcon,
+} from "@/components/icons/fme/stc";
 import { SuccessModal } from "../mda/modals";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fmeSelector, setUnchangedStcList } from "@/redux/fme/fmeSlice";
+import { truncateString } from "@/utils/truncateString";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -310,7 +317,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             cancelModal={cancelModal}
             icon={<CreationSuccessIcon />}
             hasCancel={true}
-            navigationFunction={()=> router.push("/fme")}
+            navigationFunction={() => router.push("/fme")}
             navigationText="Go back to Dashboard"
           />
         </FlexAbsoluteModalStyles>
@@ -321,9 +328,14 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showActiveModal, setShowActivateModal] = useState(false);
+  const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
+  const [stcDetails, setStcDetails] = useState(
+    unchangedStcList?.find((ele) => ele.id == selectedStcId)
+  );
   return (
     <>
-      {!showSuspendModal && (
+      {!showSuspendModal && stcDetails && (
         <MDADetailStyle>
           <div className="left" onClick={cancelModal}></div>
           <div className="right">
@@ -331,10 +343,10 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               <BackBtn backFunction={cancelModal} />
               <div className="name">
                 <div className="avatar">
-                  <p>FE</p>
+                  <p>{stcDetails.name.slice(0, 2).toUpperCase()}</p>
                 </div>
                 <div className="deet">
-                  <h4>Fed Ministry of Works & Housing</h4>
+                  <h4>{truncateString(stcDetails.name,40)}</h4>
                   <p>Added on Jul 11, 2023</p>
                 </div>
               </div>
@@ -347,7 +359,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total Students</div>
                   <div className="numer">
-                    <p>3000</p>
+                    <p>{stcDetails.studentNo}</p>
                   </div>
                 </div>
                 <div className="total">
@@ -356,7 +368,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
-                    <p>1000</p>
+                    <p>{stcDetails.coursesNo}</p>
                   </div>
                 </div>
                 <div className="total">
@@ -382,34 +394,46 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>Name of STC</span>
-                    <p>Fed Ministry of Works & Housing</p>
+                    <p>{stcDetails.name}</p>
                   </div>
-                  <CopyIcon text="Fed Ministry of Works & Housing" />
+                  <CopyIcon text={stcDetails.name} />
                 </div>
                 <div className="dx">
                   <div className="name">
                     <span>STC Address</span>
-                    <p className="nm">
-                      124, Oyediran Estate, Lagos, Nigeria, 5432
-                    </p>
+                    <p className="nm">{stcDetails.address}</p>
                   </div>
-                  <CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
+                  <CopyIcon text={stcDetails.address} />
                 </div>
                 <div className="dx">
                   <div className="name">
                     <span>Status</span>
-                    <StatusComp $isActive={true} />
+                    <StatusComp $isActive={stcDetails.isActive} />
                   </div>
                 </div>
               </div>
             </div>
             <div className="r-3">
-              <h4>Suspend STC</h4>
+              <h4>{stcDetails.isActive ? "Suspend STC" : "Re-activate"}</h4>
               <div className="btn">
-                <button type="button" onClick={() => setShowSuspendModal(true)}>
-                  <SuspendIcon />
-                  <p>Suspend STC</p>
-                </button>
+                {stcDetails.isActive ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowSuspendModal(true)}
+                  >
+                    <SuspendIcon />
+                    <p>Suspend STC</p>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="reactivate"
+                    onClick={() => setShowActivateModal(true)}
+                  >
+                    <ReactivateIcon />
+                    <p>Re-Activate MDA</p>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -417,8 +441,14 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       )}
       {showSuspendModal && (
         <SuspendStcComp
-          handleModalAction={() => console.log("handler")}
+        handleModalAction={cancelModal}
           cancelModal={() => setShowSuspendModal(false)}
+        />
+      )}
+      {showActiveModal && (
+        <ReactivateStcComp
+          handleModalAction={cancelModal}
+          cancelModal={() => setShowActivateModal(false)}
         />
       )}
     </>
@@ -427,7 +457,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 interface ITwoActions {
   cancelModal: () => void;
-  handleModalAction: () => void;
+  handleModalAction?: () => void;
 }
 
 export const SuspendStcComp: React.FC<ITwoActions> = ({
@@ -435,9 +465,24 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
   handleModalAction,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
+  const dispatch = useAppDispatch();
   const suspend = () => {
-    handleModalAction();
-    setIsSuccess(true);
+    // make Suspend STC API call to suspend MDA
+    // if successful, change the data on the frontend
+    // display error / success message
+    // let's assume the API call was successful
+    if (unchangedStcList !== null) {
+      const newMdalist = unchangedStcList.map((ele) => {
+        return {
+          ...ele,
+          isActive: ele.id === selectedStcId ? false : ele.isActive,
+        };
+      });
+      // why does this state not update Immediately on the UI?
+      dispatch(setUnchangedStcList(newMdalist));
+      setIsSuccess(true);
+    }
   };
   const router = useRouter();
   return (
@@ -477,7 +522,9 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
-            navigationFunction={()=> router.push("/fme")}
+            navigationFunction={
+              handleModalAction ? handleModalAction : cancelModal
+            }
             navigationText="Go back to Dashboard"
           />
         )}
@@ -486,16 +533,32 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
   );
 };
 
-export const ReactivateMdaComp: React.FC<ITwoActions> = ({
+export const ReactivateStcComp: React.FC<ITwoActions> = ({
   cancelModal,
   handleModalAction,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
+  const dispatch = useAppDispatch();
   const reactivate = () => {
-    handleModalAction();
-    setIsSuccess(true);
+    // make Reactivate STC API call to suspend MDA
+    // if successful, change the data on the frontend
+    // display error / success message
+    // let's assume the API call was successful
+
+    if (unchangedStcList !== null) {
+      const newMdalist = unchangedStcList.map((ele) => {
+        return {
+          ...ele,
+          isActive: ele.id === selectedStcId ? true : ele.isActive,
+        };
+      });
+      // why does this state not update Immediately on the UI?
+      dispatch(setUnchangedStcList(newMdalist));
+      setIsSuccess(true);
+    }
   };
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
@@ -531,9 +594,11 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
           <SuccessModal
             head="STC has been successfully re-activated !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
-            cancelModal={() => window.location.reload()}
+            cancelModal={cancelModal}
             hasCancel={true}
-            navigationFunction={()=> router.push("/fme")}
+            navigationFunction={
+              handleModalAction ? handleModalAction : cancelModal
+            }
             navigationText="Go back to Dashboard"
           />
         )}
@@ -541,7 +606,6 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
     </>
   );
 };
-
 
 export const NewComp = () => {
   return <></>;

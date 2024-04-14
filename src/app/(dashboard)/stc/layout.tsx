@@ -1,13 +1,11 @@
-
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Courses-List",
-  description: "Manage all courses",
+  title: "Dashboard",
+  description: "Dashboard for STCs",
 };
 
-export default function ServerSideLayout({
+export default function ServerLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -36,17 +36,24 @@ import { FilterBtnComp, MdaItemComp, TableRow } from "@/components/fme/mda/mda";
 import { MdaDetailModal, NewMdaModal } from "@/components/fme/mda/modals";
 import { Ierror } from "@/app/recovery/page";
 import { sortMDADataAlphabetically } from "@/utils/sortData";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fmeSelector, setSelectedMdaId, setUnchangedMdaList } from "@/redux/fme/fmeSlice";
+
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [mdaTabSwitches, setMDATabSwitches] = useState(MDATabSwitches);
 
+  // get data from redux
+  // stores the unchanged mda initial data, this is useful to prevent multiple API calls when no data is changing
+  const {unchangedMdaList} = useAppSelector(fmeSelector);
+  // use app dispatch
+  const dispatch = useAppDispatch();
   // mda data
   const [mdaList, setMdaList] = useState<IMDAData[] | null>(null);
-  // stores the unchanged mda initial data, this is useful to prevent multiple API calls when no data is changing
-  const [unchangedMdaList, setUnchangedMdaList] = useState<IMDAData[] | null>(
-    null
-  );
+  // const [unchangedMdaList, setUnchangedMdaList] = useState<IMDAData[] | null>(
+  //   null
+  // );
   // for dynamic mda data
   const [mdaListDuplicate, setMdaListDuplicate] = useState<IMDAData[] | null>(
     null
@@ -102,9 +109,23 @@ export default function Home() {
 
   useEffect(() => {
     setMdaList(MDAData);
+    // setUnchangedMdaList(MDAData);
+
     setMdaListDuplicate(MDAData);
-    setUnchangedMdaList(MDAData);
-  }, []);
+    // store data in redux so it can reused across components for easy lookup
+    dispatch(setUnchangedMdaList(MDAData));
+    dispatch(setSelectedMdaId(null));
+  }, [dispatch]);
+
+  // do stuff here
+  useEffect(()=>{
+    setMdaList(unchangedMdaList);
+    setMdaListDuplicate(unchangedMdaList);
+    dispatch(setSelectedMdaId(null));
+    setMDATabSwitches(MDATabSwitches);
+    
+  },[unchangedMdaList]);
+
 
   const [showNewMdaFormModal, setShowNewMdaFormModal] = useState(false);
 
@@ -154,6 +175,7 @@ export default function Home() {
       const newMdaList = unchangedMdaList?.filter((ele) =>
         ele.name.toLowerCase().includes(query.toLowerCase())
       );
+
       if (newMdaList && newMdaList.length > 0) {
         // set sort filter to default;
         const sortStatus = sortItemDropdownList.find(

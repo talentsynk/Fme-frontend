@@ -27,6 +27,8 @@ import {
   TotalIcon,
   UploadIcon,
 } from "@/components/icons/fme/mda";
+import { fmeSelector, setSelectedStcId, setUnchangedStcList } from "@/redux/fme/fmeSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { sortSTCDataAlphabetically } from "@/utils/sortData";
 import { motion } from "framer-motion";
 import { FormEvent, useEffect, useState } from "react";
@@ -40,9 +42,7 @@ export default function Home() {
   // stc data
   const [stcList, setStcList] = useState<ISTCData[] | null>(null);
   // stores the unchanged stc initial data, this is useful to prevent multiple API calls when no data is changing
-  const [unchangedStcList, setUnchangedStcList] = useState<ISTCData[] | null>(
-    null
-  );
+  const {unchangedStcList} = useAppSelector(fmeSelector);
   // for dynamic stc data
   const [stcListDuplicate, setStcListDuplicate] = useState<ISTCData[] | null>(
     null
@@ -96,12 +96,21 @@ export default function Home() {
       }
     }
   };
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
     setStcList(STCData);
     setStcListDuplicate(STCData);
-    setUnchangedStcList(STCData);
-  }, []);
+    dispatch(setUnchangedStcList(STCData));
+    dispatch(setSelectedStcId(null));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setStcList(unchangedStcList);
+    setStcListDuplicate(unchangedStcList);
+    setStcTabSwitches(STCTabSwitches);
+    dispatch(setSelectedStcId(null));
+  }, [unchangedStcList]);
+
 
   const [showNewStcFormModal, setShowNewStcFormModal] = useState(false);
 

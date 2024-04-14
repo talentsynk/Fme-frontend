@@ -18,9 +18,9 @@ export const SelectAdminComp: React.FC<ISelectAdminFunc> = ({
        {icon}
       </div>
       <div className="txt">
-        {name == "FME" && <span className="nm">{`${FullMeaning.FME} (${name})`}</span>}
-        {name == "MDA" && <span className="nm">{`${FullMeaning.MDA} (${name})`}</span>}
-        {name == "STC" && <span className="nm">{`${FullMeaning.STC} (${name})`}</span>}
+        {name == "FME" && <div className="nm">{`${FullMeaning.FME} (${name})`}</div>}
+        {name == "MDA" && <div className="nm">{`${FullMeaning.MDA} (${name})`}</div>}
+        {name == "STC" && <div className="nm">{`${FullMeaning.STC} (${name})`}</div>}
         <p>You identify as a {name} Member</p>
       </div>
     </SelectAdminStyles>

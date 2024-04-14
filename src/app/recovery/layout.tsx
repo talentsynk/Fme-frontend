@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Reset your password here",
 };
 
-export default function RootLayout({
+export default function ServerSideLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -19,8 +19,11 @@ import {
   IMdaDropdownFunc,
   MdaItemDropdownList,
 } from "./data";
-import { useState } from "react";
-import { MdaDetailModal, SuspendMdaComp } from "./modals";
+import { useEffect, useState } from "react";
+import { MdaDetailModal, ReactivateMdaComp, SuspendMdaComp } from "./modals";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fmeSelector, setSelectedMdaId } from "@/redux/fme/fmeSlice";
+import { truncateString } from "@/utils/truncateString";
 
 interface ICheckbox {
   isChecked: boolean;
@@ -42,6 +45,7 @@ export const CheckboxComp: React.FC<ICheckbox> = ({
 //   isSelected: boolean;
 // }
 export const TableRow: React.FC<IMDAData> = ({
+  id,
   isActive,
   name,
   stcNo,
@@ -53,25 +57,43 @@ export const TableRow: React.FC<IMDAData> = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDetails, setShowdetails] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showActiveModal, setShowActivateModal] = useState(false);
 
   const handleSelectItem = (action: string) => {
-    const newMdaList = mdaItemList.map((ele) => {
+    let newMdaList = mdaItemList.map((ele) => {
       return { ...ele, isSelected: ele.text === action };
     });
     setMdaItemList(newMdaList);
     if (action === "Clear Selection") {
       setMdaItemList(MdaItemDropdownList);
+      dispatch(setSelectedMdaId(null));
     } else if (action === "View MDA Profile") {
       setShowdetails(true);
     } else if (action === "Suspend MDA") {
       setShowSuspendModal(true);
+    }else if(action === "Re-activate MDA"){
+      setShowActivateModal(true);
     }
-    setShowDropdown(false);
   };
+  const { selectedMdaId } = useAppSelector(fmeSelector);
+  // set dispatch
+  const dispatch = useAppDispatch();
+  const handleSelectOptions = () => {
+    setShowDropdown(!showDropdown);
+    if (selectedMdaId === id) {
+      dispatch(setSelectedMdaId(null));
+    } else {
+      // set selected Mda id in redux here
+      dispatch(setSelectedMdaId(id));
+    }
+    // reset the dropdown state
+    setMdaItemList(MdaItemDropdownList);
+  };
+
   return (
     <TrStyles>
       <td className="">
-        <p>{name}</p>
+        <p>{truncateString(name,37)}</p>
       </td>
       <td>
         <p>{stcNo}</p>
@@ -80,7 +102,7 @@ export const TableRow: React.FC<IMDAData> = ({
         <p>{studentNo}</p>
       </td>
       <td className="address">
-        <p>{address}</p>
+        <p>{truncateString(address,30)}</p>
       </td>
       <td>
         <p>{state.toUpperCase()} STATE</p>
@@ -88,19 +110,21 @@ export const TableRow: React.FC<IMDAData> = ({
       <td className="drop">
         <StatusComp $isActive={isActive} />
         <TableDropdownStyles className="igris">
-          <div className="head" onClick={() => setShowDropdown(!showDropdown)}>
+          <div className="head" onClick={handleSelectOptions}>
             <ThreedotsIcon />
           </div>
-          {showDropdown && (
+          {selectedMdaId === id && (
             <DropdownOptionsStyle>
               <div className="options">
                 {mdaItemList.map((ele, index) => (
                   <MdaItemComp
                     key={index}
                     isSelected={ele.isSelected}
-                    text={ele.text}
+                    text={!isActive && ele.text === "Suspend MDA" ? "Re-activate MDA" : ele.text}
                     hasBorder={ele.hasBorder}
-                    handleSelect={() => handleSelectItem(ele.text)}
+                    handleSelect={() =>
+                      handleSelectItem(!isActive && ele.text === "Suspend MDA" ? "Re-activate MDA" : ele.text)
+                    }
                   />
                 ))}
               </div>
@@ -112,15 +136,18 @@ export const TableRow: React.FC<IMDAData> = ({
         )}
         {showSuspendModal && (
           <SuspendMdaComp
-            handleModalAction={() => console.log("suspend Mda!")}
             cancelModal={() => setShowSuspendModal(false)}
+          />
+        )}
+        {showActiveModal && (
+          <ReactivateMdaComp
+            cancelModal={() => setShowActivateModal(false)}
           />
         )}
       </td>
     </TrStyles>
   );
 };
-
 
 export const StatusComp: React.FC<IStatusStyles> = ({ $isActive }) => {
   return (
