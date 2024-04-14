@@ -337,7 +337,7 @@ export const MDADetailStyle = styled(AbsoluteContStyle)`
       align-items: center;
     }
     .avatar {
-      width: 3rem;
+      min-width: 3rem;
       height: 3rem;
       background: #e7f6ec;
       border-radius: 50%;
@@ -463,6 +463,7 @@ export const MDADetailStyle = styled(AbsoluteContStyle)`
       padding: 0.5rem 1rem;
       gap: 0.625rem;
       border-radius: 0.375rem;
+      border: 1px solid #f32d2d;
       p {
         color: var(--Neutrals-Colors-100, #fff);
         text-align: center;
@@ -472,6 +473,16 @@ export const MDADetailStyle = styled(AbsoluteContStyle)`
         font-weight: 700;
         line-height: 1.25rem; /* 142.857% */
       }
+    }
+    .btn .reactivate{
+      background: #FBEAE9;
+      border: 1px solid #FBEAE9;
+      p{
+        color: #F32D2D;
+      }
+    }
+    .btn button:hover{
+      border: 1px solid #000;
     }
   }
 `;

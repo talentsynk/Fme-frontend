@@ -9,9 +9,13 @@ import { MdaItemComp, StatusComp } from "../mda/mda";
 import { ThreedotsIcon } from "@/components/icons/fme/mda";
 import { MdaDetailModal } from "../mda/modals";
 import { NocenterStyles } from "./styles";
-import { StcDetailModal, SuspendStcComp } from "./modal";
+import { ReactivateStcComp, StcDetailModal, SuspendStcComp } from "./modal";
+import { fmeSelector, setSelectedStcId } from "@/redux/fme/fmeSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { truncateString } from "@/utils/truncateString";
 
 export const STCTableRow: React.FC<ISTCData> = ({
+  id,
   isActive,
   name,
   coursesNo,
@@ -23,6 +27,7 @@ export const STCTableRow: React.FC<ISTCData> = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDetails, setShowdetails] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showActiveModal, setShowActivateModal] = useState(false);
 
   const handleSelectItem = (action: string) => {
     const newStcList = stcItemList.map((ele) => {
@@ -31,18 +36,35 @@ export const STCTableRow: React.FC<ISTCData> = ({
     setStcItemList(newStcList);
     if (action === "Clear Selection") {
       setStcItemList(StcItemDropdownList);
+      dispatch(setSelectedStcId(null));
     } else if (action === "View STC Profile") {
       setShowdetails(true);
     } else if (action === "Suspend STC") {
       setShowSuspendModal(true);
+    }else if(action === "Re-activate STC"){
+      setShowActivateModal(true);
     }
-    setShowDropdown(false);
   };
+  const { selectedStcId } = useAppSelector(fmeSelector);
+  // set dispatch
+  const dispatch = useAppDispatch();
+  const handleSelectOptions = () => {
+    setShowDropdown(!showDropdown);
+    if (selectedStcId === id) {
+      dispatch(setSelectedStcId(null));
+    } else {
+      // set selected Mda id in redux here
+      dispatch(setSelectedStcId(id));
+    }
+    // reset the dropdown state
+    setStcItemList(StcItemDropdownList);
+  };
+
   return (
     <TrStyles>
       <td className="nocenter">
         <NocenterStyles>
-          <p>{name}</p>
+          <p>{truncateString(name,37)}</p>
         </NocenterStyles>
       </td>
       <td>
@@ -52,7 +74,7 @@ export const STCTableRow: React.FC<ISTCData> = ({
         <p>{studentNo}</p>
       </td>
       <td className="address">
-        <p>{address}</p>
+        <p>{truncateString(address,30)}</p>
       </td>
       <td>
         <p>{state.toUpperCase()} STATE</p>
@@ -60,19 +82,19 @@ export const STCTableRow: React.FC<ISTCData> = ({
       <td className="drop">
         <StatusComp $isActive={isActive} />
         <TableDropdownStyles>
-          <div className="head" onClick={() => setShowDropdown(!showDropdown)}>
+          <div className="head" onClick={handleSelectOptions}>
             <ThreedotsIcon />
           </div>
-          {showDropdown && (
+          {selectedStcId === id  && (
             <DropdownOptionsStyle>
               <div className="options">
                 {stcItemList.map((ele, index) => (
                   <MdaItemComp
                     key={index}
                     isSelected={ele.isSelected}
-                    text={ele.text}
+                    text={!isActive && ele.text === "Suspend STC" ? "Re-activate STC" : ele.text}
                     hasBorder={ele.hasBorder}
-                    handleSelect={() => handleSelectItem(ele.text)}
+                    handleSelect={() => handleSelectItem(!isActive && ele.text === "Suspend STC" ? "Re-activate STC" : ele.text)}
                   />
                 ))}
               </div>
@@ -84,8 +106,12 @@ export const STCTableRow: React.FC<ISTCData> = ({
         )}
         {showSuspendModal && (
           <SuspendStcComp
-            handleModalAction={() => console.log("suspend Stc!")}
             cancelModal={() => setShowSuspendModal(false)}
+          />
+        )}
+        {showActiveModal && (
+          <ReactivateStcComp
+            cancelModal={() => setShowActivateModal(false)}
           />
         )}
       </td>
