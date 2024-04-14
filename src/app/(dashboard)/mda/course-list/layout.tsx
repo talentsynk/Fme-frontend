@@ -1,10 +1,8 @@
-
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Courses-List",
-  description: "Manage all courses",
+  description: "For MDA to Manage its Courses",
 };
 
 export default function ServerSideLayout({
@@ -12,7 +10,5 @@ export default function ServerSideLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>{children}</>
-  )
+  return <>{children}</>;
 }

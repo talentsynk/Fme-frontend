@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Dashboard for MDAs",
 };
 
-export default function ClientLayout({
+export default function ServerLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

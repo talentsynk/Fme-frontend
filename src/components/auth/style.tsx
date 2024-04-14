@@ -81,20 +81,21 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   border: 1px solid #ebedf4;
   background: #fbfbfd;
   padding: 1.21rem 1.51rem;
+  min-height: 5rem;
   display: flex;
   justify-content: unset;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.5rem;
   .ic {
     display: flex;
     width: fit-content;
-    span {
+    .nm {
       color: rgba(0, 0, 0, 0.5);
       font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-style: normal;
       font-weight: 700;
-      line-height: 1.5rem; /* 150% */
+      line-height: 1.25rem; /* 150% */
     }
   }
   p {

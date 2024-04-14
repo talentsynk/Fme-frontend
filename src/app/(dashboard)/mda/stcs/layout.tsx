@@ -1,10 +1,9 @@
 
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Courses-List",
-  description: "Manage all courses",
+  title: "STCs",
+  description: "For MDA to Manage its STCs",
 };
 
 export default function ServerSideLayout({

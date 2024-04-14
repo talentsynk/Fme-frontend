@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Manage all students",
 };
 
-export default function StudentsClientLayout({
+export default function ServerSideLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
