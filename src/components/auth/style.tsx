@@ -84,7 +84,7 @@ export const SelectAdminStyles = styled.div<ISelectedcompStyle>`
   min-height: 5rem;
   display: flex;
   justify-content: unset;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.5rem;
   .ic {
     display: flex;

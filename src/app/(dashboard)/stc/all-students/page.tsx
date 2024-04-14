@@ -2,7 +2,7 @@
 export default function Home() {
     return (
       <>
-        <h1>Hello world, MDA STC management page here</h1>
+        <h1>Hello world, STC Students management page here</h1>
       </>
     );
   }

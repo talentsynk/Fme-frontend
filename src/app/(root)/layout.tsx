@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 // client layout comp unlike other ones because there's no meta data here
 
-export default function RootLayout({
+export default function ServerSideLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

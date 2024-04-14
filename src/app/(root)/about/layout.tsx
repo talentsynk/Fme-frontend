@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Learn about the skills database platform dashboards powered by coderina",
 };
 
-export default function AboutClientLayout({
+export default function ServerSideLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
