@@ -27,24 +27,31 @@ import {
   TotalIcon,
   UploadIcon,
 } from "@/components/icons/fme/mda";
-import { fmeSelector, setSelectedStcId, setUnchangedStcList } from "@/redux/fme/fmeSlice";
+import { fmeSelector, setFakeNewStcId, setSelectedStcId, setUnchangedStcList } from "@/redux/fme/fmeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { ISTCCompData } from "@/types/Stc";
 import { sortSTCDataAlphabetically } from "@/utils/sortData";
 import { motion } from "framer-motion";
 import { FormEvent, useEffect, useState } from "react";
-
+import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
 // the first page on the fme dashboard
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [stcTabSwitches, setStcTabSwitches] = useState(STCTabSwitches);
-  
+  const [total, setTotal] = useState({
+    totalStc : 0,
+    totalActive : 0,
+    totalInactive : 0
+  });
   // stc data
-  const [stcList, setStcList] = useState<ISTCData[] | null>(null);
+  const [stcList, setStcList] = useState<ISTCCompData[] | null>(null);
   // stores the unchanged stc initial data, this is useful to prevent multiple API calls when no data is changing
-  const {unchangedStcList} = useAppSelector(fmeSelector);
+  const {unchangedStcList, fakeNewStcId} = useAppSelector(fmeSelector);
   // for dynamic stc data
-  const [stcListDuplicate, setStcListDuplicate] = useState<ISTCData[] | null>(
+  const [stcListDuplicate, setStcListDuplicate] = useState<ISTCCompData[] | null>(
     null
   );
 
@@ -69,7 +76,7 @@ export default function Home() {
         setStcListDuplicate(stcList);
       }
     } else if (tabIndex == 1) {
-      const newStcList = stcList?.filter((ele) => ele.isActive);
+      const newStcList = stcList?.filter((ele) => ele.is_active);
       if (newStcList) {
         if (sortStatus) {
           const sortedSTCData = sortSTCDataAlphabetically(
@@ -82,7 +89,7 @@ export default function Home() {
         }
       }
     } else if (tabIndex == 2) {
-      const newStcList = stcList?.filter((ele) => ele.isActive == false);
+      const newStcList = stcList?.filter((ele) => ele.is_active == false);
       if (newStcList) {
         if (sortStatus) {
           const sortedSTCData = sortSTCDataAlphabetically(
@@ -98,17 +105,54 @@ export default function Home() {
   };
   const dispatch = useAppDispatch();
   useEffect(() => {
-    setStcList(STCData);
-    setStcListDuplicate(STCData);
-    dispatch(setUnchangedStcList(STCData));
-    dispatch(setSelectedStcId(null));
-  }, [dispatch]);
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+    axios
+    .get(`${BACKEND_URL}/mda/get-all-mdas`, config)   //change endpoint to stc
+    .then((res) => {
+      const data = res.data.mdas; //change this to stc
+      setStcList(data);
+      setStcListDuplicate(data);
+      // store data in redux so it can reused across components for easy lookup
+      dispatch(setUnchangedStcList(data));
+      dispatch(setSelectedStcId(null));
+      
+      const maxStcId = data.reduce((max:number, obj:ISTCCompData) => Math.max(max, obj.ID), 0);
+      dispatch(setFakeNewStcId(maxStcId));
+      })
+      .catch((error) => console.log(error));
+
+      axios
+      .get(`${BACKEND_URL}/mda/total-mda`, config)  // change to stc endpoint
+      .then((res) => {
+        const {total_active_mda, total_mda, total_inactive_mda} = res.data;
+        setTotal({
+          totalStc : total_mda,
+          totalActive : total_active_mda,
+          totalInactive : total_inactive_mda
+        });
+        })
+        .catch((error) => console.log(error));
+
+  }, [dispatch, fakeNewStcId]);
 
   useEffect(() => {
     setStcList(unchangedStcList);
     setStcListDuplicate(unchangedStcList);
     setStcTabSwitches(STCTabSwitches);
     dispatch(setSelectedStcId(null));
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+    // handle suspend and activate here
+    // might need to call api again
   }, [unchangedStcList]);
 
 
@@ -156,7 +200,7 @@ export default function Home() {
     if (query.trim().length >= 1) {
       // filter from the unchanged stc list
       const newStcList = unchangedStcList?.filter((ele) =>
-        ele.name.toLowerCase().includes(query.toLowerCase())
+        ele.RegisterName.toLowerCase().includes(query.toLowerCase())
       );
       if (newStcList && newStcList.length > 0) {
         // set sort filter to default;
@@ -245,21 +289,21 @@ export default function Home() {
           <StatListItemStyle>
           <div className="stat">
               <span>Total No of STCs</span>
-              <p>4000</p>
+              <p>{total.totalStc}</p>
             </div>
             <TotalIcon />
           </StatListItemStyle>
           <StatListItemStyle>
           <div className="stat">
               <span>Active STCs</span>
-              <p>3000</p>
+              <p>{total.totalActive}</p>
             </div>
             <ActiveIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Inactive STCs</span>
-              <p>1000</p>
+              <p>{total.totalInactive}</p>
             </div>
             <InactiveIcon />
           </StatListItemStyle>
@@ -300,9 +344,7 @@ export default function Home() {
                   activeIcon={ele.activeIcon}
                   text={ele.text}
                   isSelected={ele.isSelected}
-                  handleFilterFunc={() =>
-                    console.log("I will handle Filter/Sort")
-                  }
+                  handleFilterFunc={() => {}}
                   handleClick={() => handleClickFilterBtns(ele.text)}
                 />
               ))}
@@ -371,13 +413,7 @@ export default function Home() {
                     stcListDuplicate.map((ele, index) => (
                       <STCTableRow
                         key={index}
-                        isActive={ele.isActive}
-                        name={ele.name}
-                        coursesNo={ele.coursesNo}
-                        address={ele.address}
-                        studentNo={ele.studentNo}
-                        state={ele.state}
-                        id={ele.id}
+                        {...ele}
                       />
                     ))}
                 </tbody>

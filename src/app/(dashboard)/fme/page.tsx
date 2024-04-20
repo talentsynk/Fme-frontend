@@ -15,7 +15,7 @@ import { IconWrapper } from "@/components/icons/fme/mda";
 
 export default function Home() {
   const [showOptions, setShowOptions] = useState(false);
-  
+  // task left: Add loader for suspend and reactivate API call, work on add New Mda and Stc, plug in the APIs on wednesday
   return (
     <>
       <Head>

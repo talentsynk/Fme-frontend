@@ -1,18 +1,21 @@
 import { IUser } from "@/types/User";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { IMDAData } from "@/components/fme/mda/data";
 import { ISTCData } from "@/components/fme/stc/data";
+import { IMDACompData } from "@/types/Mda";
+import { ISTCCompData } from "@/types/Stc";
 
 // this is the redux page for managing the FME dashboard
 
 interface IFMEState {
   fmeLoading: boolean;
   fmeError: string | null;
-  unchangedMdaList: IMDAData[] | null;
-  unchangedStcList: ISTCData[] | null;
-  selectedMdaId: string | null;
-  selectedStcId: string | null;
+  unchangedMdaList: IMDACompData[] | null;
+  unchangedStcList: ISTCCompData[] | null;
+  selectedMdaId: number | null;
+  selectedStcId: number | null;
+  fakeNewMdaId : number | null;
+  fakeNewStcId : number | null;
 }
 
 const initialState: IFMEState = {
@@ -22,6 +25,8 @@ const initialState: IFMEState = {
   unchangedStcList: null,
   selectedMdaId: null,
   selectedStcId: null,
+  fakeNewMdaId : null,
+  fakeNewStcId : null,
 };
 
 export const fmeSlice = createSlice({
@@ -32,17 +37,23 @@ export const fmeSlice = createSlice({
       state.fmeError = null;
       state.fmeLoading = true;
     },
-    setSelectedMdaId: (state, action: PayloadAction<string | null>) => {
+    setSelectedMdaId: (state, action: PayloadAction<number | null>) => {
       state.selectedMdaId = action.payload;
     },
-    setUnchangedMdaList: (state, action: PayloadAction<IMDAData[] | null>) => {
+    setUnchangedMdaList: (state, action: PayloadAction<IMDACompData[] | null>) => {
       state.unchangedMdaList = action.payload;
     },
-    setSelectedStcId: (state, action: PayloadAction<string | null>) => {
+    setSelectedStcId: (state, action: PayloadAction<number | null>) => {
       state.selectedStcId = action.payload;
     },
-    setUnchangedStcList: (state, action: PayloadAction<ISTCData[] | null>) => {
+    setUnchangedStcList: (state, action: PayloadAction<ISTCCompData[] | null>) => {
       state.unchangedStcList = action.payload;
+    },
+    setFakeNewMdaId:(state,action:PayloadAction<number>)=>{
+      state.fakeNewMdaId = action.payload;
+    },
+    setFakeNewStcId:(state,action:PayloadAction<number>)=>{
+      state.fakeNewStcId = action.payload;
     },
   },
 });
@@ -54,6 +65,8 @@ export const {
   setSelectedMdaId,
   setUnchangedMdaList,
   setSelectedStcId,
-  setUnchangedStcList
+  setUnchangedStcList,
+  setFakeNewMdaId,
+  setFakeNewStcId
 } = fmeSlice.actions;
 export default fmeSlice.reducer;

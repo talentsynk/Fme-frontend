@@ -24,6 +24,7 @@ import { MdaDetailModal, ReactivateMdaComp, SuspendMdaComp } from "./modals";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { fmeSelector, setSelectedMdaId } from "@/redux/fme/fmeSlice";
 import { truncateString } from "@/utils/truncateString";
+import { IMDACompData } from "@/types/Mda";
 
 interface ICheckbox {
   isChecked: boolean;
@@ -44,14 +45,14 @@ export const CheckboxComp: React.FC<ICheckbox> = ({
 //   handleSelect: () => void;
 //   isSelected: boolean;
 // }
-export const TableRow: React.FC<IMDAData> = ({
-  id,
-  isActive,
-  name,
+export const TableRow: React.FC<IMDACompData> = ({
+  ID : id,
+  is_active : isActive,
+  RegisterName : name,
   stcNo,
   studentNo,
-  address,
-  state,
+  Address : address,
+  StateOfOperation : state,
 }) => {
   const [mdaItemList, setMdaItemList] = useState(MdaItemDropdownList);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -93,13 +94,13 @@ export const TableRow: React.FC<IMDAData> = ({
   return (
     <TrStyles>
       <td className="">
-        <p>{truncateString(name,37)}</p>
+        <p>{truncateString(name,37).toUpperCase()}</p>
       </td>
       <td>
-        <p>{stcNo}</p>
+        <p>{stcNo ? stcNo  : 20}</p>
       </td>
       <td>
-        <p>{studentNo}</p>
+        <p>{studentNo ? studentNo : 10}</p>
       </td>
       <td className="address">
         <p>{truncateString(address,30)}</p>

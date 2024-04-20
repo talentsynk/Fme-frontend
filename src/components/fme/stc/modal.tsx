@@ -20,7 +20,7 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
-import { FormEvent, ReactNode, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Ierror } from "@/app/recovery/page";
 import { validateEmail } from "@/utils/validateEmail";
@@ -32,7 +32,6 @@ import {
   MDADetailStyle,
   NewMdaAbsoluteStyles,
   NewMdaFormStyles,
-  OneButtonModalStyles,
   StateCompStyles,
   StatesDropdownStyles,
   TwoButtonModalStyles,
@@ -44,8 +43,13 @@ import {
 } from "@/components/icons/fme/stc";
 import { SuccessModal } from "../mda/modals";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
-import { fmeSelector, setUnchangedStcList } from "@/redux/fme/fmeSlice";
+import { fmeSelector, setFakeNewStcId, setUnchangedStcList } from "@/redux/fme/fmeSlice";
 import { truncateString } from "@/utils/truncateString";
+import { formatDate } from "@/utils/formatDate";
+import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { ButtonLoader } from "@/components/recovery/style";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -94,6 +98,11 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
     text: "",
   });
 
+  const [otherError, setOtherError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement>,
     input: string
@@ -114,7 +123,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         setAddressError({ active: true, text: "Address is required" });
       } else {
         setAddressError({ active: false, text: "Address is valid" });
-        setForm({ ...form, name: value });
+        setForm({ ...form, address: value });
       }
     }
   };
@@ -124,12 +133,17 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const handleStateSelection = (name: string) => {
+    setForm({ ...form, state: name });
     setState(name);
     setShowDropdown(false);
   };
 
+  // login button loader state
+  const [isLoading, setIsLoading] = useState(false);
+  const { fakeNewStcId } = useAppSelector(fmeSelector);
+  const dispatch = useAppDispatch();
   const [isSuccess, setIsSuccess] = useState(false);
-  const handleCreateStc = (event: FormEvent<HTMLFormElement>) => {
+  const handleCreateStc = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
     // check if the username and pwd match the DB using the APIendpoint, setup the user session using redux and navigate to the respective dashboard
     if (
@@ -142,8 +156,52 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       nameError.text !== ""
     ) {
       // call createSTC API
-      console.log(form);
-      setIsSuccess(true);
+      const token = Cookies.get("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const body = {
+          RegisterName: form.name,
+          Email: form.email,
+          PhoneNumber: "2348149753850",
+          Address: form.address,
+          StateOfOperation: form.state,
+        };
+        setIsLoading(true);
+        const { data } = await axios.post(
+          `${BACKEND_URL}/mda/create-mda`,  // change this to stc endpoint
+          body,
+          config
+        );
+        if (data) {
+          setIsLoading(false);
+          // update fakeMdaId
+          let newFakeId = fakeNewStcId ? fakeNewStcId + 1 : 1;
+          dispatch(setFakeNewStcId(newFakeId));
+          setIsSuccess(true);
+        }
+      } catch (error: any) {
+        if (error.response) {
+          setEmailError({
+            active: true,
+            text: error.response.data.error,
+          });
+          setNameError({
+            active: true,
+            text: error.response.data.error,
+          });
+        } else {
+          console.log(error);
+          setOtherError({
+            active: true,
+            text: error.message,
+          });
+        }
+        setIsLoading(false);
+      }
     }
   };
   const router = useRouter();
@@ -331,8 +389,12 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [showActiveModal, setShowActivateModal] = useState(false);
   const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
   const [stcDetails, setStcDetails] = useState(
-    unchangedStcList?.find((ele) => ele.id == selectedStcId)
+    unchangedStcList?.find((ele) => ele.ID == selectedStcId)
   );
+  useEffect(() => {
+    setStcDetails(unchangedStcList?.find((ele) => ele.ID == selectedStcId));
+  }, [unchangedStcList, selectedStcId]);
+
   return (
     <>
       {!showSuspendModal && stcDetails && (
@@ -343,11 +405,11 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               <BackBtn backFunction={cancelModal} />
               <div className="name">
                 <div className="avatar">
-                  <p>{stcDetails.name.slice(0, 2).toUpperCase()}</p>
+                  <p>{stcDetails.RegisterName.slice(0, 2).toUpperCase()}</p>
                 </div>
                 <div className="deet">
-                  <h4>{truncateString(stcDetails.name,40)}</h4>
-                  <p>Added on Jul 11, 2023</p>
+                  <h4>{truncateString(stcDetails.RegisterName,40).toUpperCase()}</h4>
+                  <p>Added on {formatDate(stcDetails.CreatedAt)}</p>
                 </div>
               </div>
             </div>
@@ -359,7 +421,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total Students</div>
                   <div className="numer">
-                    <p>{stcDetails.studentNo}</p>
+                    <p>{stcDetails.studentNo ? stcDetails.studentNo : 20 }</p>
                   </div>
                 </div>
                 <div className="total">
@@ -368,7 +430,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
-                    <p>{stcDetails.coursesNo}</p>
+                    <p>{stcDetails.coursesNo ? stcDetails.coursesNo : 10}</p>
                   </div>
                 </div>
                 <div className="total">
@@ -394,29 +456,29 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>Name of STC</span>
-                    <p>{stcDetails.name}</p>
+                    <p>{stcDetails.RegisterName.toUpperCase()}</p>
                   </div>
-                  <CopyIcon text={stcDetails.name} />
+                  <CopyIcon text={stcDetails.RegisterName.toUpperCase()} />
                 </div>
                 <div className="dx">
                   <div className="name">
                     <span>STC Address</span>
-                    <p className="nm">{stcDetails.address}</p>
+                    <p className="nm">{stcDetails.Address}</p>
                   </div>
-                  <CopyIcon text={stcDetails.address} />
+                  <CopyIcon text={stcDetails.Address} />
                 </div>
                 <div className="dx">
                   <div className="name">
                     <span>Status</span>
-                    <StatusComp $isActive={stcDetails.isActive} />
+                    <StatusComp $isActive={stcDetails.is_active} />
                   </div>
                 </div>
               </div>
             </div>
             <div className="r-3">
-              <h4>{stcDetails.isActive ? "Suspend STC" : "Re-activate"}</h4>
+              <h4>{stcDetails.is_active ? "Suspend STC" : "Re-activate"}</h4>
               <div className="btn">
-                {stcDetails.isActive ? (
+                {stcDetails.is_active ? (
                   <button
                     type="button"
                     onClick={() => setShowSuspendModal(true)}
@@ -476,7 +538,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
       const newMdalist = unchangedStcList.map((ele) => {
         return {
           ...ele,
-          isActive: ele.id === selectedStcId ? false : ele.isActive,
+          isActive: ele.ID === selectedStcId ? false : ele.is_active,
         };
       });
       // why does this state not update Immediately on the UI?
@@ -550,7 +612,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
       const newMdalist = unchangedStcList.map((ele) => {
         return {
           ...ele,
-          isActive: ele.id === selectedStcId ? true : ele.isActive,
+          isActive: ele.ID === selectedStcId ? true : ele.is_active,
         };
       });
       // why does this state not update Immediately on the UI?

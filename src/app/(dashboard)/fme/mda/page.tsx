@@ -1,14 +1,10 @@
 "use client";
 import {
   FilterBtns,
-  IMDAData,
-  MDAData,
   MDATabSwitches,
   SortItemDropdownList,
 } from "@/components/fme/mda/data";
 import {
-  DropdownOptionsStyle,
-  FilterBtnStyles,
   SearchAndResultStyle,
   SortOptionsStyle,
   StatListItemStyle,
@@ -21,12 +17,9 @@ import {
 import {
   ActiveIcon,
   CancelInputIcon,
-  CopyIcon,
-  FilterIcon,
   InactiveIcon,
   MagnifyingGlassIcon,
   PlusIcon,
-  SortIcon,
   TotalIcon,
   UploadIcon,
 } from "@/components/icons/fme/mda";
@@ -37,25 +30,37 @@ import { MdaDetailModal, NewMdaModal } from "@/components/fme/mda/modals";
 import { Ierror } from "@/app/recovery/page";
 import { sortMDADataAlphabetically } from "@/utils/sortData";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
-import { fmeSelector, setSelectedMdaId, setUnchangedMdaList } from "@/redux/fme/fmeSlice";
-
+import {
+  fmeSelector,
+  setFakeNewMdaId,
+  setSelectedMdaId,
+  setUnchangedMdaList,
+} from "@/redux/fme/fmeSlice";
+import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
+import Cookies from "js-cookie";
+import { IMDACompData } from "@/types/Mda";
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [mdaTabSwitches, setMDATabSwitches] = useState(MDATabSwitches);
-
+  const [total, setTotal] = useState({
+    totalMda : 0,
+    totalActive : 0,
+    totalInactive : 0
+  });
   // get data from redux
   // stores the unchanged mda initial data, this is useful to prevent multiple API calls when no data is changing
-  const {unchangedMdaList} = useAppSelector(fmeSelector);
+  const { unchangedMdaList, fakeNewMdaId } = useAppSelector(fmeSelector);
   // use app dispatch
   const dispatch = useAppDispatch();
   // mda data
-  const [mdaList, setMdaList] = useState<IMDAData[] | null>(null);
+  const [mdaList, setMdaList] = useState<IMDACompData[] | null>(null);
   // const [unchangedMdaList, setUnchangedMdaList] = useState<IMDAData[] | null>(
   //   null
   // );
   // for dynamic mda data
-  const [mdaListDuplicate, setMdaListDuplicate] = useState<IMDAData[] | null>(
+  const [mdaListDuplicate, setMdaListDuplicate] = useState<IMDACompData[] | null>(
     null
   );
 
@@ -79,7 +84,7 @@ export default function Home() {
         setMdaListDuplicate(mdaList);
       }
     } else if (tabIndex == 1) {
-      const newMdaList = mdaList?.filter((ele) => ele.isActive);
+      const newMdaList = mdaList?.filter((ele) => ele.is_active);
       if (newMdaList) {
         if (sortStatus) {
           const sortedMDAData = sortMDADataAlphabetically(
@@ -92,7 +97,7 @@ export default function Home() {
         }
       }
     } else if (tabIndex == 2) {
-      const newMdaList = mdaList?.filter((ele) => ele.isActive == false);
+      const newMdaList = mdaList?.filter((ele) => ele.is_active == false);
       if (newMdaList) {
         if (sortStatus) {
           const sortedMDAData = sortMDADataAlphabetically(
@@ -108,24 +113,68 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setMdaList(MDAData);
-    // setUnchangedMdaList(MDAData);
+    
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+    axios
+    .get(`${BACKEND_URL}/mda/get-all-mdas`, config)
+    .then((res) => {
+      const data = res.data.mdas;
+      setMdaList(data);
+      setMdaListDuplicate(data);
+      // store data in redux so it can reused across components for easy lookup
+      dispatch(setUnchangedMdaList(data));
+      dispatch(setSelectedMdaId(null));
+      const maxMdaId = data.reduce((max:number, obj:IMDACompData) => Math.max(max, obj.ID), 0);
+      dispatch(setFakeNewMdaId(maxMdaId));
+      })
+      .catch((error) => console.log(error));
+    
+    axios
+    .get(`${BACKEND_URL}/mda/total-mda`, config)
+    .then((res) => {
+      const {total_active_mda, total_mda, total_inactive_mda} = res.data;
+      setTotal({
+        totalMda : total_mda,
+        totalActive : total_active_mda,
+        totalInactive : total_inactive_mda
+      });
+      })
+      .catch((error) => console.log(error));
+    
 
-    setMdaListDuplicate(MDAData);
-    // store data in redux so it can reused across components for easy lookup
-    dispatch(setUnchangedMdaList(MDAData));
-    dispatch(setSelectedMdaId(null));
-  }, [dispatch]);
+  }, [dispatch, fakeNewMdaId]);
 
   // do stuff here
-  useEffect(()=>{
+  useEffect(() => {
     setMdaList(unchangedMdaList);
     setMdaListDuplicate(unchangedMdaList);
     dispatch(setSelectedMdaId(null));
     setMDATabSwitches(MDATabSwitches);
-    
-  },[unchangedMdaList]);
-
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+    // handle suspend and activate here
+    // might need to call api again
+    // axios
+    // .get(`${BACKEND_URL}/mda/total-mda`, config)
+    // .then((res) => {
+    //   const {total_active_mda, total_mda, total_inactive_mda} = res.data;
+    //   setTotal({
+    //     totalMda : total_mda,
+    //     totalActive : total_active_mda,
+    //     totalInactive : total_inactive_mda
+    //   });
+    //   })
+    //   .catch((error) => console.log(error));
+  }, [unchangedMdaList]);
 
   const [showNewMdaFormModal, setShowNewMdaFormModal] = useState(false);
 
@@ -145,7 +194,7 @@ export default function Home() {
       setQueryError({ active: false, text: "Press enter to search" });
     }
   };
-  
+
   const CancelQuerySearch = () => {
     setQuery("");
     setQueryError({ active: false, text: "" });
@@ -169,11 +218,11 @@ export default function Home() {
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-    
+
     if (query.trim().length >= 1) {
       // filter from the unchanged mda list
       const newMdaList = unchangedMdaList?.filter((ele) =>
-        ele.name.toLowerCase().includes(query.toLowerCase())
+        ele.RegisterName.toLowerCase().includes(query.toLowerCase())
       );
 
       if (newMdaList && newMdaList.length > 0) {
@@ -209,7 +258,7 @@ export default function Home() {
     if (text == "Sort") {
       setShowFilterDropdown(!showFilterDropdown);
       setShowSortDropdown(!showSortDropdown);
-    } 
+    }
     setFilterBtns(newFilterBtns);
   };
 
@@ -238,7 +287,6 @@ export default function Home() {
 
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 
-
   return (
     <>
       <TopStyles>
@@ -266,21 +314,21 @@ export default function Home() {
           <StatListItemStyle>
             <div className="stat">
               <span>Total No of MDAs</span>
-              <p>4000</p>
+              <p>{total.totalMda}</p>
             </div>
             <TotalIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Active MDAs</span>
-              <p>3000</p>
+              <p>{total.totalActive}</p>
             </div>
             <ActiveIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Inactive MDAs</span>
-              <p>1000</p>
+              <p>{total.totalInactive}</p>
             </div>
             <InactiveIcon />
           </StatListItemStyle>
@@ -321,9 +369,7 @@ export default function Home() {
                   activeIcon={ele.activeIcon}
                   text={ele.text}
                   isSelected={ele.isSelected}
-                  handleFilterFunc={() =>
-                    console.log("I will handle Filter/Sort")
-                  }
+                  handleFilterFunc={() =>{}}
                   handleClick={() => handleClickFilterBtns(ele.text)}
                 />
               ))}
@@ -392,13 +438,7 @@ export default function Home() {
                     mdaListDuplicate.map((ele, index) => (
                       <TableRow
                         key={index}
-                        isActive={ele.isActive}
-                        name={ele.name}
-                        stcNo={ele.stcNo}
-                        address={ele.address}
-                        studentNo={ele.studentNo}
-                        state={ele.state}
-                        id={ele.id}
+                        {...ele}
                       />
                     ))}
                 </tbody>

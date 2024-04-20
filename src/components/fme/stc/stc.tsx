@@ -13,15 +13,16 @@ import { ReactivateStcComp, StcDetailModal, SuspendStcComp } from "./modal";
 import { fmeSelector, setSelectedStcId } from "@/redux/fme/fmeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { truncateString } from "@/utils/truncateString";
+import { ISTCCompData } from "@/types/Stc";
 
-export const STCTableRow: React.FC<ISTCData> = ({
-  id,
-  isActive,
-  name,
-  coursesNo,
+export const STCTableRow: React.FC<ISTCCompData> = ({
+  ID : id,
+  is_active : isActive,
+  RegisterName : name,
+  stcNo : coursesNo, // change this to coursesNo
   studentNo,
-  address,
-  state,
+  Address : address,
+  StateOfOperation : state,
 }) => {
   const [stcItemList, setStcItemList] = useState(StcItemDropdownList);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -64,14 +65,14 @@ export const STCTableRow: React.FC<ISTCData> = ({
     <TrStyles>
       <td className="nocenter">
         <NocenterStyles>
-          <p>{truncateString(name,37)}</p>
+          <p>{truncateString(name,37).toUpperCase()}</p>
         </NocenterStyles>
       </td>
       <td>
-        <p>{coursesNo}</p>
+        <p>{coursesNo ? coursesNo : 10}</p>
       </td>
       <td>
-        <p>{studentNo}</p>
+        <p>{studentNo ? studentNo : 20}</p>
       </td>
       <td className="address">
         <p>{truncateString(address,30)}</p>
