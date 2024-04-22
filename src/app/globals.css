@@ -65,75 +65,8 @@ img{
 }
 
 
-/* style for pagination */
-.item {
-  align-items: center;
-  color: #FFF;
-  cursor: pointer;
-  display: flex;
-  font-size: 14px;
-  height: 20px;
-  justify-content: center;
-  width: 20px;
-}
-
-.disabled-page {
-  color: #808e9b;
-}
-
-.active {
-  border: solid 1px #00932E;
-  border-radius: 6px;
-  color: #808e9b;
-}
-
-.next {
-  border-left: solid 1px #808e9b;
-  font-size: 1rem;
-  height: 40px;
-  position: absolute;
-  right: 0;
-  width: 150px;
-  background-color: #00932E;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.pagination {
-  align-items: center;
-  background-color: #F0F2F5;
-  display: flex;
-  flex-direction: row;
-  height: 40px;
-  justify-content: center;
-  list-style-type: none;
-  position: relative;
-  width: 100%;
-}
-
-.pagination-page {
-  font-weight: 700;
-}
-
-.previous {
-  border-right: solid 1px #808e9b;
-  font-size: 1rem;
-  height: 40px;
-  left: 0;
-  position: absolute;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  width: 150px;
-  background-color: #00932E;
-}
-.support{
-  background-image: url('/images/support/Rectangle\ 5402.png');
-  height: 300px;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 .support-img{
-  background: url(/images/support/real.jpeg);
+  background: url(/images/settings/ELON\ MUSK\ SVG.svg);
   background-repeat: no-repeat;
   background-size: cover;
 }

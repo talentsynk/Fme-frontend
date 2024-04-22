@@ -702,7 +702,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({ cancelModal, handleMo
 				)}
 				{isSuccess && (
 					<SuccessModal
-						head="STC has been successfully re-activated !"
+						head="Student has been successfully re-activated !"
 						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
 						cancelModal={() => window.location.reload()}
 						hasCancel={true}
