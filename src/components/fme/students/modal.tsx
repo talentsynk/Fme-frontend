@@ -7,6 +7,7 @@ import {
 	LargeCheckedIcon,
 	LocationIcon,
 	NameIcon,
+	ReactivateIcon,
 	SuspendIcon,
 	TotalCoursesIcon,
 	TotalSTCIcon,
@@ -35,6 +36,9 @@ import {
 import { StatusComp } from "../mda/mda";
 import { CertifiedStudentIcon, UncertifiedStudentIcon } from "@/components/icons/fme/stc";
 import { SuccessModal } from "../mda/modals";
+import { fmeSelector, setUnchangedStudentsList } from "@/redux/fme/fmeSlice";
+import { truncateString } from "@/utils/truncateString";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 
 interface IOneButtonModal {
 	cancelModal: () => void;
@@ -162,18 +166,18 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			setIsSuccess(true);
 		}
 	};
-   const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
-    const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
-     const handleContinue = () => {
-				// Assuming formData is already populated with the first modal's data
-				setIsFirstModalOpen(false);
-				setIsSecondModalOpen(true);
-			};
+	const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
+	const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+	const handleContinue = () => {
+		// Assuming formData is already populated with the first modal's data
+		setIsFirstModalOpen(false);
+		setIsSecondModalOpen(true);
+	};
 
-			const handlePrevious = () => {
-				setIsFirstModalOpen(true);
-				setIsSecondModalOpen(false);
-			};
+	const handlePrevious = () => {
+		setIsFirstModalOpen(true);
+		setIsSecondModalOpen(false);
+	};
 
 	const router = useRouter();
 
@@ -356,7 +360,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													{nameError.active === false && nameError.text !== "" && <CheckedIcon />}
 													{nameError.active === true && <FormErrorIcon />}
 												</div>
-												
 											</div>
 										</div>
 										<div className="form-ele flex-1">
@@ -375,7 +378,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													{nameError.active === false && nameError.text !== "" && <CheckedIcon />}
 													{nameError.active === true && <FormErrorIcon />}
 												</div>
-												
 											</div>
 										</div>
 
@@ -413,7 +415,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													{emailError.active === false && emailError.text !== "" && <CheckedIcon />}
 													{emailError.active === true && <FormErrorIcon />}
 												</div>
-												
 											</div>
 										</div>
 										<div className=" flex justify-between gap-4">
@@ -433,7 +434,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 														{addressError.active === false && addressError.text !== "" && <CheckedIcon />}
 														{addressError.active === true && <FormErrorIcon />}
 													</div>
-													
 												</div>
 											</div>
 											<div className="form-ele flex-1">
@@ -452,7 +452,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 														{addressError.active === false && addressError.text !== "" && <CheckedIcon />}
 														{addressError.active === true && <FormErrorIcon />}
 													</div>
-													
 												</div>
 											</div>
 										</div>
@@ -516,9 +515,14 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	const [showSuspendModal, setShowSuspendModal] = useState(false);
+	const [showActiveModal, setShowActivateModal] = useState(false);
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
+	const [studentDetails, setStudentDetails] = useState(unchangedStudentsList?.find((ele) => ele.id == selectedStudentId));
+	console.log(studentDetails, unchangedStudentsList, selectedStudentId);
+
 	return (
 		<>
-			{!showSuspendModal && (
+			{!showSuspendModal && studentDetails && (
 				<MDADetailStyle>
 					<div className="left" onClick={cancelModal}></div>
 					<div className="right">
@@ -526,10 +530,10 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 							<BackBtn backFunction={cancelModal} />
 							<div className="name">
 								<div className="avatar">
-									<p>OA</p>
+									<p>{studentDetails.profile.slice(0, 2).toUpperCase()}</p>
 								</div>
 								<div className="deet">
-									<h4>Oluwatimilehin Alarape</h4>
+									<h4>{truncateString(studentDetails.profile, 40)}</h4>
 									<p>Added on Jul 11, 2023</p>
 								</div>
 							</div>
@@ -539,16 +543,16 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 								<div className="dx">
 									<div className="name">
 										<span>Name of Student</span>
-										<p>Oluwatimilehin Alarape</p>
+										<p>{truncateString(studentDetails.profile, 40)}</p>
 									</div>
-									<CopyIcon text="Fed Ministry of Works & Housing" />
+									<CopyIcon text={studentDetails.profile} />
 								</div>
 								<div className="dx">
 									<div className="name">
 										<span>Student ID</span>
-										<p className="nm">#1234567</p>
+										<p className="nm">#{studentDetails.studentId}</p>
 									</div>
-									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
+									<CopyIcon text={studentDetails.studentId.toString()} />
 								</div>
 								<div className="dx">
 									<div className="name">
@@ -567,7 +571,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 								<div className="dx">
 									<div className="name">
 										<span>State of Residence</span>
-										<p className="nm">Lagos State</p>
+										<p className="nm">{studentDetails.state}</p>
 									</div>
 									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
 								</div>
@@ -581,7 +585,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 								<div className="dx">
 									<div className="name">
 										<span>Student Certificate</span>
-										<p className="nm">Oluwatimilehin Alarape PDF.pdf</p>
+										<p className="nm">{studentDetails.profile} PDF.pdf</p>
 									</div>
 									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
 								</div>
@@ -594,18 +598,26 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 							</div>
 						</div>
 						<div className="r-3">
-							<h4>Suspend Student</h4>
+							<h4>{studentDetails.isActive ? "Suspend Student" : "Re-activate"}</h4>
 							<div className="btn">
-								<button type="button" onClick={() => setShowSuspendModal(true)}>
-									<SuspendIcon />
-									<p>Suspend this student</p>
-								</button>
+								{studentDetails.isActive ? (
+									<button type="button" onClick={() => setShowSuspendModal(true)}>
+										<SuspendIcon />
+										<p>Suspend Student</p>
+									</button>
+								) : (
+									<button type="button" className="reactivate" onClick={() => setShowActivateModal(true)}>
+										<ReactivateIcon />
+										<p>Re-Activate Student</p>
+									</button>
+								)}
 							</div>
 						</div>
 					</div>
 				</MDADetailStyle>
 			)}
-			{showSuspendModal && <SuspendStudentComp handleModalAction={() => console.log("handler")} cancelModal={() => setShowSuspendModal(false)} />}
+			{showSuspendModal && <SuspendStudentComp handleModalAction={cancelModal} cancelModal={() => setShowSuspendModal(false)} />}
+			{showActiveModal && <ReactivateStudentComp handleModalAction={cancelModal} cancelModal={() => setShowActivateModal(false)} />}
 		</>
 	);
 };
@@ -617,9 +629,24 @@ interface ITwoActions {
 
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
+	const dispatch = useAppDispatch();
 	const suspend = () => {
-		handleModalAction();
-		setIsSuccess(true);
+		// make Suspend STC API call to suspend MDA
+		// if successful, change the data on the frontend
+		// display error / success message
+		// let's assume the API call was successful
+		if (unchangedStudentsList !== null) {
+			const newMdalist = unchangedStudentsList.map((ele) => {
+				return {
+					...ele,
+					isActive: ele.id === selectedStudentId ? false : ele.isActive,
+				};
+			});
+			// why does this state not update Immediately on the UI?
+			dispatch(setUnchangedStudentsList(newMdalist));
+			setIsSuccess(true);
+		}
 	};
 	const router = useRouter();
 	return (
@@ -656,7 +683,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
 						cancelModal={cancelModal}
 						hasCancel={true}
-						navigationFunction={() => router.push("/fme")}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
 						navigationText="Go back to Dashboard"
 					/>
 				)}
@@ -665,11 +692,27 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 	);
 };
 
-export const ReactivateMdaComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+export const ReactivateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
+	const dispatch = useAppDispatch();
 	const reactivate = () => {
-		handleModalAction();
-		setIsSuccess(true);
+		// make Reactivate STC API call to suspend MDA
+		// if successful, change the data on the frontend
+		// display error / success message
+		// let's assume the API call was successful
+
+		if (unchangedStudentsList !== null) {
+			const newMdalist = unchangedStudentsList.map((ele) => {
+				return {
+					...ele,
+					isActive: ele.id === selectedStudentId ? true : ele.isActive,
+				};
+			});
+			// why does this state not update Immediately on the UI?
+			dispatch(setUnchangedStudentsList(newMdalist));
+			setIsSuccess(true);
+		}
 	};
 	const router = useRouter();
 	return (
@@ -706,7 +749,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({ cancelModal, handleMo
 						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
 						cancelModal={() => window.location.reload()}
 						hasCancel={true}
-						navigationFunction={() => router.push("/fme")}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
 						navigationText="Go back to Dashboard"
 					/>
 				)}

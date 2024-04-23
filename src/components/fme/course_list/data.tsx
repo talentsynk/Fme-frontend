@@ -8,12 +8,12 @@ export const Courses: ICourses[] = [{ name: "Biology" }, { name: "Chemistry" }, 
 export interface ICourseData {
 	id: string;
 	name: string;
-	isActive: boolean;
+	description:string;
 }
+
 export const CoursesTabSwitches: ITabSwitch[] = [
-	{ text: "All Student List", tabIndex: 0, isSelected: true },
-	{ text: "Active Students", tabIndex: 1, isSelected: false },
-	{ text: "Inactive Studentss", tabIndex: 2, isSelected: false },
+	{ text: "Current Course List", tabIndex: 0, isSelected: true },
+	{ text: "Analytics of all Course", tabIndex: 1, isSelected: false },
 ];
 
 export const sortCourseDataAlphabetically = (data: ICourseData[], reverse: boolean = false): ICourseData[] => {
