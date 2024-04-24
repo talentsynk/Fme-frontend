@@ -10,12 +10,45 @@ import Head from "next/head";
 import { AngleDownStyles } from "@/components/icons/header";
 import { useEffect, useState } from "react";
 import { IconWrapper } from "@/components/icons/fme/mda";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 // the first page on the fme dashboard
 
 export default function Home() {
   const [showOptions, setShowOptions] = useState(false);
-  // task left: Add loader for suspend and reactivate API call, work on add New Mda and Stc, plug in the APIs on wednesday
+  const [totalStat, setTotalStat] = useState({
+    totalMdas : 0,
+    totalStcs : 0,
+    totalStudents : 0
+  });
+  // task left: work on add New Mda and Stc, plug in the APIs on wednesday
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    console.log(config);
+    axios
+      .get(`${BACKEND_URL}/dashboard/summary`, config)
+      .then((res) => {
+        if(res.data.response){
+          // TotalStcs: 7, TotalMdas: 13, TotalStudents: 1}
+          const {TotalStcs, TotalMdas, TotalStudents} = res.data.response;
+          setTotalStat({
+            totalMdas : TotalMdas,
+            totalStcs : TotalStcs,
+            totalStudents : TotalStudents
+          });
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
   return (
     <>
       <Head>
@@ -29,7 +62,7 @@ export default function Home() {
           </IconWrapper>
           <div className="stat">
             <span>Total MDAs</span>
-            <h3>10,000</h3>
+            <h3>{totalStat.totalMdas || <Skeleton />}</h3>
           </div>
         </div>
         <div className="total">
@@ -38,7 +71,7 @@ export default function Home() {
           </IconWrapper>
           <div className="stat">
             <span>Total STCs</span>
-            <h3>700</h3>
+            <h3>{totalStat.totalStcs || <Skeleton />}</h3>
           </div>
         </div>
         <div className="total">
@@ -47,7 +80,7 @@ export default function Home() {
           </IconWrapper>
           <div className="stat">
             <span>Total Students</span>
-            <h3>100,000</h3>
+            <h3>{totalStat.totalStudents || <Skeleton />}</h3>
           </div>
         </div>
         <div className="summary">

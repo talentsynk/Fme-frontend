@@ -14,6 +14,9 @@ import { fmeSelector, setSelectedStcId } from "@/redux/fme/fmeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { truncateString } from "@/utils/truncateString";
 import { ISTCCompData } from "@/types/Stc";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 export const STCTableRow: React.FC<ISTCCompData> = ({
   Id : id,

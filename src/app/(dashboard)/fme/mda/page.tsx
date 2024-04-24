@@ -40,6 +40,10 @@ import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import { IMDACompData } from "@/types/Mda";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
+import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
+
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
@@ -162,7 +166,7 @@ export default function Home() {
       },
     }
     // handle suspend and activate here
-    // I have done suspend, activate MDA. It remains Suspend, Activate Stc, Stc total, then finally the dashboard index page
+    
     axios
     .get(`${BACKEND_URL}/mda/total-mda`, config)
     .then((res) => {
@@ -216,6 +220,10 @@ export default function Home() {
     setShowCancel(false);
   };
 
+  //  to handle the state for searching, when the searchApi is called, 
+  // I will store the result in unChangedList
+  // but when the cancel is clicked, the normal api is called
+  // this way i only modify the unchangedList and don't need to change many things
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
 
@@ -314,21 +322,21 @@ export default function Home() {
           <StatListItemStyle>
             <div className="stat">
               <span>Total No of MDAs</span>
-              <p>{total.totalMda}</p>
+              <p>{total.totalMda || <Skeleton />}</p>
             </div>
             <TotalIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Active MDAs</span>
-              <p>{total.totalActive}</p>
+              <p>{total.totalActive || <Skeleton />}</p>
             </div>
             <ActiveIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Inactive MDAs</span>
-              <p>{total.totalInactive}</p>
+              <p>{total.totalInactive || <Skeleton />}</p>
             </div>
             <InactiveIcon />
           </StatListItemStyle>
@@ -441,6 +449,9 @@ export default function Home() {
                         {...ele}
                       />
                     ))}
+                    {mdaListDuplicate === null && [1,2,3,4,5,6,7,8,9,10].map((ele,index)=> (
+                      <TRSkeleton key={index} />
+                    ) )  }
                 </tbody>
               </TableStyles>
             </div>

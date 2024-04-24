@@ -41,9 +41,13 @@ import {
   CertifiedStudentIcon,
   UncertifiedStudentIcon,
 } from "@/components/icons/fme/stc";
-import { SuccessModal } from "../mda/modals";
+import { FailureModal, SuccessModal } from "../mda/modals";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
-import { fmeSelector, setFakeNewStcId, setUnchangedStcList } from "@/redux/fme/fmeSlice";
+import {
+  fmeSelector,
+  setFakeNewStcId,
+  setUnchangedStcList,
+} from "@/redux/fme/fmeSlice";
 import { truncateString } from "@/utils/truncateString";
 import { formatDate } from "@/utils/formatDate";
 import { BACKEND_URL } from "@/lib/config";
@@ -164,15 +168,14 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       };
       try {
         const body = {
-          RegisterName: form.name,
+          Name: form.name,
           Email: form.email,
-          PhoneNumber: "2348149753850",
           Address: form.address,
-          StateOfOperation: form.state,
+          State: form.state,
         };
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/mda/create-mda`,  // change this to stc endpoint
+          `${BACKEND_URL}/stc/create-stc`, // test
           body,
           config
         );
@@ -180,6 +183,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           setIsLoading(false);
           // update fakeMdaId
           let newFakeId = fakeNewStcId ? fakeNewStcId + 1 : 1;
+          // this new fakeId value will cause a rerender on the main page
           dispatch(setFakeNewStcId(newFakeId));
           setIsSuccess(true);
         }
@@ -369,7 +373,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                       state == ""
                     }
                   >
-                    Create STC
+                    {isLoading ? <ButtonLoader /> : "Create STC"}
                   </button>
                 </div>
               </form>
@@ -418,8 +422,13 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   <p>{stcDetails.Name.slice(0, 2).toUpperCase()}</p>
                 </div>
                 <div className="deet">
-                  <h4>{truncateString(stcDetails.Name,40).toUpperCase()}</h4>
-                  <p>Added on {stcDetails.CreatedAt ? formatDate(stcDetails.CreatedAt) : "March 29, 2024"}</p>
+                  <h4>{truncateString(stcDetails.Name, 40).toUpperCase()}</h4>
+                  <p>
+                    Added on{" "}
+                    {stcDetails.CreatedAt
+                      ? formatDate(stcDetails.CreatedAt)
+                      : "March 29, 2024"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -431,7 +440,9 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total Students</div>
                   <div className="numer">
-                    <p>{stcDetails.student_count ? stcDetails.student_count : 0 }</p>
+                    <p>
+                      {stcDetails.student_count ? stcDetails.student_count : 0}
+                    </p>
                   </div>
                 </div>
                 <div className="total">
@@ -449,7 +460,11 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total Certified Students</div>
                   <div className="numer">
-                    <p>1000</p>
+                    <p>
+                      {stcDetails.CertifiedStudentCount
+                        ? stcDetails.CertifiedStudentCount
+                        : 0}
+                    </p>
                   </div>
                 </div>
                 <div className="total">
@@ -458,7 +473,11 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total Non-Certified Students</div>
                   <div className="numer">
-                    <p>1000</p>
+                    <p>
+                      {stcDetails.NonCertifedStudentCount
+                        ? stcDetails.NonCertifedStudentCount
+                        : 0}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -513,7 +532,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       )}
       {showSuspendModal && (
         <SuspendStcComp
-        handleModalAction={cancelModal}
+          handleModalAction={cancelModal}
           cancelModal={() => setShowSuspendModal(false)}
         />
       )}
@@ -540,29 +559,65 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
   const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const suspend = () => {
-    // make Suspend STC API call to suspend MDA
-    // if successful, change the data on the frontend
-    // display error / success message
+  const [msgError, setMsgError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
 
-    // let's assume the API call was successful
-    if (unchangedStcList !== null) {
-      const newMdalist = unchangedStcList.map((ele) => {
-        return {
-          ...ele,
-          isActive: ele.Id === selectedStcId ? false : ele.is_active,
-        };
-      });
-      // why does this state not update Immediately on the UI?
-      dispatch(setUnchangedStcList(newMdalist));
-      setIsSuccess(true);
+  const suspend = async () => {
+    // make Suspend MDA API call to suspend MDA\
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const userId = unchangedStcList?.find(
+      (ele) => ele.Id === selectedStcId
+    )?.UserId;
+    if (userId) {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(
+          `${BACKEND_URL}/user/suspend/${userId}`,
+          config
+        );
+        if (data) {
+          if (unchangedStcList !== null) {
+            const newStclist = unchangedStcList.map((ele) => {
+              return {
+                ...ele,
+                is_active: ele.Id === selectedStcId ? false : ele.is_active,
+              };
+            });
+            setIsLoading(false);
+            // why does this state not update Immediately on the UI?
+            dispatch(setUnchangedStcList(newStclist));
+            setIsSuccess(true);
+          }
+        }
+      } catch (error: any) {
+        setIsLoading(false);
+        if (error.response) {
+          // if the server responds with an error msg
+          setMsgError({
+            active: true,
+            text: error.response.data.message,
+          });
+        } else {
+          setMsgError({
+            active: true,
+            text: error.message,
+          });
+        }
+      }
     }
   };
   const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
-        {!isSuccess && (
+        {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <div className="pop">
               <div className="up">
@@ -584,7 +639,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={suspend}>
-                  Suspend STC
+                  {isLoading ? <ButtonLoader /> : "Suspend STC"}
                 </button>
               </div>
             </div>
@@ -602,6 +657,21 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
             navigationText="Go back to Dashboard"
           />
         )}
+        {msgError.active && (
+          <FailureModal
+            cancelModal={() =>
+              setMsgError({
+                active: false,
+                text: "",
+              })
+            }
+            head="Failed to suspend STC !"
+            msg={msgError.text}
+            navigationFunction={cancelModal}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
+          />
+        )}
       </FlexAbsoluteModalStyles>
     </>
   );
@@ -614,29 +684,66 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
   const dispatch = useAppDispatch();
-  const reactivate = () => {
-    // make Reactivate STC API call to suspend MDA
-    // if successful, change the data on the frontend
-    // display error / success message
-    // let's assume the API call was successful
+  const [isLoading, setIsLoading] = useState(false);
+  const [msgError, setMsgError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
 
-    if (unchangedStcList !== null) {
-      const newMdalist = unchangedStcList.map((ele) => {
-        return {
-          ...ele,
-          isActive: ele.Id === selectedStcId ? true : ele.is_active,
-        };
-      });
-      // why does this state not update Immediately on the UI?
-      dispatch(setUnchangedStcList(newMdalist));
-      setIsSuccess(true);
+  const reactivate = async () => {
+    // make Suspend MDA API call to suspend MDA\
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const userId = unchangedStcList?.find(
+      (ele) => ele.Id === selectedStcId
+    )?.UserId;
+    if (userId) {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(
+          `${BACKEND_URL}/user/activate/${userId}`,
+          config
+        );
+        if (data) {
+          if (unchangedStcList !== null) {
+            const newStclist = unchangedStcList.map((ele) => {
+              return {
+                ...ele,
+                is_active: ele.Id === selectedStcId ? true : ele.is_active,
+              };
+            });
+            setIsLoading(false);
+            // why does this state not update Immediately on the UI?
+            dispatch(setUnchangedStcList(newStclist));
+            setIsSuccess(true);
+          }
+        }
+      } catch (error: any) {
+        setIsLoading(false);
+        if (error.response) {
+          // if the server responds with an error msg
+          setMsgError({
+            active: true,
+            text: error.response.data.message,
+          });
+        } else {
+          setMsgError({
+            active: true,
+            text: error.message,
+          });
+        }
+      }
     }
   };
   const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
-        {!isSuccess && (
+        {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <div className="pop">
               <div className="up">
@@ -658,7 +765,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={reactivate}>
-                  Re-activate STC
+                  {isLoading ? <ButtonLoader /> : "Re-activate STC"}
                 </button>
               </div>
             </div>
@@ -674,6 +781,21 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
               handleModalAction ? handleModalAction : cancelModal
             }
             navigationText="Go back to Dashboard"
+          />
+        )}
+        {msgError.active && (
+          <FailureModal
+            cancelModal={() =>
+              setMsgError({
+                active: false,
+                text: "",
+              })
+            }
+            head="Failed to re-activate STC !"
+            msg={msgError.text}
+            navigationFunction={cancelModal}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
           />
         )}
       </FlexAbsoluteModalStyles>

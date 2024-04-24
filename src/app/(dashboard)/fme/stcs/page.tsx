@@ -27,7 +27,12 @@ import {
   TotalIcon,
   UploadIcon,
 } from "@/components/icons/fme/mda";
-import { fmeSelector, setFakeNewStcId, setSelectedStcId, setUnchangedStcList } from "@/redux/fme/fmeSlice";
+import {
+  fmeSelector,
+  setFakeNewStcId,
+  setSelectedStcId,
+  setUnchangedStcList,
+} from "@/redux/fme/fmeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { ISTCCompData } from "@/types/Stc";
 import { sortSTCDataAlphabetically } from "@/utils/sortData";
@@ -36,24 +41,28 @@ import { FormEvent, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
+
 // the first page on the fme dashboard
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [stcTabSwitches, setStcTabSwitches] = useState(STCTabSwitches);
   const [total, setTotal] = useState({
-    totalStc : 0,
-    totalActive : 0,
-    totalInactive : 0
+    totalStc: 0,
+    totalActive: 0,
+    totalInactive: 0,
   });
   // stc data
   const [stcList, setStcList] = useState<ISTCCompData[] | null>(null);
   // stores the unchanged stc initial data, this is useful to prevent multiple API calls when no data is changing
-  const {unchangedStcList, fakeNewStcId} = useAppSelector(fmeSelector);
+  const { unchangedStcList, fakeNewStcId } = useAppSelector(fmeSelector);
   // for dynamic stc data
-  const [stcListDuplicate, setStcListDuplicate] = useState<ISTCCompData[] | null>(
-    null
-  );
+  const [stcListDuplicate, setStcListDuplicate] = useState<
+    ISTCCompData[] | null
+  >(null);
 
   const handleTabSwitch = (tabIndex: number) => {
     const newStcTabSwitches = stcTabSwitches.map((ele) => {
@@ -108,36 +117,38 @@ export default function Home() {
     let token = Cookies.get("token");
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-    }
+    };
     axios
-    .get(`${BACKEND_URL}/stc/get-all-stc`, config)   //change endpoint to stc
-    .then((res) => {
-      const data = res.data.stcs; //change this to stc
-      setStcList(data);
-      setStcListDuplicate(data);
-      // store data in redux so it can reused across components for easy lookup
-      dispatch(setUnchangedStcList(data));
-      dispatch(setSelectedStcId(null));
-      
-      const maxStcId = data.reduce((max:number, obj:ISTCCompData) => Math.max(max, obj.Id), 0);
-      dispatch(setFakeNewStcId(maxStcId));
+      .get(`${BACKEND_URL}/stc/get-all-stc`, config) //change endpoint to stc
+      .then((res) => {
+        const data = res.data.stcs; //change this to stc
+        setStcList(data);
+        setStcListDuplicate(data);
+        // store data in redux so it can reused across components for easy lookup
+        dispatch(setUnchangedStcList(data));
+        dispatch(setSelectedStcId(null));
+
+        const maxStcId = data.reduce(
+          (max: number, obj: ISTCCompData) => Math.max(max, obj.Id),
+          0
+        );
+        dispatch(setFakeNewStcId(maxStcId));
       })
       .catch((error) => console.log(error));
 
-      axios
-      .get(`${BACKEND_URL}/mda/total-mda`, config)  // change to stc endpoint
+    axios
+      .get(`${BACKEND_URL}/stc/get-total-count`, config) // change to stc endpoint
       .then((res) => {
-        const {total_active_mda, total_mda, total_inactive_mda} = res.data;
+        const { total_active_stc, total_stc, total_inactive_stc } = res.data;
         setTotal({
-          totalStc : total_mda,
-          totalActive : total_active_mda,
-          totalInactive : total_inactive_mda
+          totalStc: total_stc,
+          totalActive: total_active_stc,
+          totalInactive: total_inactive_stc,
         });
-        })
-        .catch((error) => console.log(error));
-
+      })
+      .catch((error) => console.log(error));
   }, [dispatch, fakeNewStcId]);
 
   useEffect(() => {
@@ -148,13 +159,21 @@ export default function Home() {
     let token = Cookies.get("token");
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-    }
-    // handle suspend and activate here
-    // might need to call api again
+    };
+    axios
+      .get(`${BACKEND_URL}/stc/get-total-count`, config)
+      .then((res) => {
+        const { total_active_stc, total_stc, total_inactive_stc } = res.data;
+        setTotal({
+          totalStc: total_stc,
+          totalActive: total_active_stc,
+          totalInactive: total_inactive_stc,
+        });
+      })
+      .catch((error) => console.log(error));
   }, [unchangedStcList]);
-
 
   const [showNewStcFormModal, setShowNewStcFormModal] = useState(false);
 
@@ -174,7 +193,7 @@ export default function Home() {
       setQueryError({ active: false, text: "Press enter to search" });
     }
   };
-  
+
   const CancelQuerySearch = () => {
     setQuery("");
     setQueryError({ active: false, text: "" });
@@ -269,12 +288,14 @@ export default function Home() {
       <TopStyles>
         <div className="text">
           <h1>STCs</h1>
-          <p>
-          View the STCs Statistics at a go on this page 
-          </p>
+          <p>View the STCs Statistics at a go on this page</p>
         </div>
         <div className="buttons">
-          <button type="button" className="add" onClick={() => setShowNewStcFormModal(true)}>
+          <button
+            type="button"
+            className="add"
+            onClick={() => setShowNewStcFormModal(true)}
+          >
             <PlusIcon />
             <span>Add New STC</span>
           </button>
@@ -287,23 +308,23 @@ export default function Home() {
       <WhiteContainer>
         <StatListStyle>
           <StatListItemStyle>
-          <div className="stat">
+            <div className="stat">
               <span>Total No of STCs</span>
-              <p>{total.totalStc}</p>
+              <p>{total.totalStc || <Skeleton />}</p>
             </div>
             <TotalIcon />
           </StatListItemStyle>
           <StatListItemStyle>
-          <div className="stat">
+            <div className="stat">
               <span>Active STCs</span>
-              <p>{total.totalActive}</p>
+              <p>{total.totalActive || <Skeleton />}</p>
             </div>
             <ActiveIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Inactive STCs</span>
-              <p>{total.totalInactive}</p>
+              <p>{total.totalInactive || <Skeleton />}</p>
             </div>
             <InactiveIcon />
           </StatListItemStyle>
@@ -411,10 +432,11 @@ export default function Home() {
                 <tbody>
                   {stcListDuplicate &&
                     stcListDuplicate.map((ele, index) => (
-                      <STCTableRow
-                        key={index}
-                        {...ele}
-                      />
+                      <STCTableRow key={index} {...ele} />
+                    ))}
+                  {stcListDuplicate === null &&
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => (
+                      <TRSkeleton key={index} />
                     ))}
                 </tbody>
               </TableStyles>
@@ -426,8 +448,6 @@ export default function Home() {
       {showNewStcFormModal && (
         <NewStcModal cancelModal={() => setShowNewStcFormModal(false)} />
       )}
-      
     </>
   );
 }
-

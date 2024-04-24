@@ -171,7 +171,6 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         const body = {
           RegisterName: form.name,
           Email: form.email,
-          PhoneNumber: "2348149753850",
           Address: form.address,
           StateOfOperation: form.state,
         };
@@ -441,7 +440,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total STCs</div>
                   <div className="numer">
-                    <p>{mdaDetails.stc_count ? mdaDetails.stc_count : 20}</p>
+                    <p>{mdaDetails.stc_count ? mdaDetails.stc_count : 0}</p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -452,7 +451,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
                     <p>
-                      {mdaDetails.CourseCount ? mdaDetails.CourseCount : 10}
+                      {mdaDetails.CourseCount ? mdaDetails.CourseCount : 0}
                     </p>
                     <GraphIcon />
                   </div>
@@ -464,7 +463,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   <div className="title">Total No of Students</div>
                   <div className="numer">
                     <p>
-                      {mdaDetails.student_count ? mdaDetails.student_count : 20}
+                      {mdaDetails.student_count ? mdaDetails.student_count : 0}
                     </p>
                     <GraphIcon />
                   </div>
@@ -507,6 +506,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 ) : (
                   <button
                     type="button"
+                    className="reactivate"
                     onClick={() => setShowActivateModal(true)}
                   >
                     <ReactivateIcon />
@@ -568,7 +568,6 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
           config
         );
         if (data) {
-          console.log(data);
           if (unchangedMdaList !== null) {
             const newMdalist = unchangedMdaList.map((ele) => {
               return {
@@ -694,12 +693,11 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
            config
          );
          if (data) {
-           console.log(data);
            if (unchangedMdaList !== null) {
              const newMdalist = unchangedMdaList.map((ele) => {
                return {
                  ...ele,
-                 isActive: ele.Id === selectedMdaId ? true : ele.is_active,
+                 is_active: ele.Id === selectedMdaId ? true : ele.is_active,
                };
              });
              setIsLoading(false);
@@ -751,7 +749,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={reactivate}>
-                  Re-activate
+                  {isLoading ? <ButtonLoader /> : "Re-activate"}
                 </button>
               </div>
             </div>
