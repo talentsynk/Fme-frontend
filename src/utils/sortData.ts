@@ -8,9 +8,9 @@ import { ISTCCompData } from "@/types/Stc";
 export const sortMDADataAlphabetically = (data: IMDACompData[], reverse: boolean = false): IMDACompData[] => {
     const sortedData = data.slice().sort((a, b) => {
       if (reverse) {
-        return b.RegisterName.localeCompare(a.RegisterName);
+        return b.Name.localeCompare(a.Name);
       } else {
-        return a.RegisterName.localeCompare(b.RegisterName);
+        return a.Name.localeCompare(b.Name);
       }
     });
     return sortedData;
@@ -19,9 +19,9 @@ export const sortMDADataAlphabetically = (data: IMDACompData[], reverse: boolean
 export const sortSTCDataAlphabetically = (data: ISTCCompData[], reverse: boolean = false): ISTCCompData[] => {
     const sortedData = data.slice().sort((a, b) => {
       if (reverse) {
-        return b.RegisterName.localeCompare(a.RegisterName);
+        return b.Name.localeCompare(a.Name);
       } else {
-        return a.RegisterName.localeCompare(b.RegisterName);
+        return a.Name.localeCompare(b.Name);
       }
     });
     return sortedData;
