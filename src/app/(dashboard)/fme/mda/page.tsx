@@ -129,7 +129,7 @@ export default function Home() {
       // store data in redux so it can reused across components for easy lookup
       dispatch(setUnchangedMdaList(data));
       dispatch(setSelectedMdaId(null));
-      const maxMdaId = data.reduce((max:number, obj:IMDACompData) => Math.max(max, obj.ID), 0);
+      const maxMdaId = data.reduce((max:number, obj:IMDACompData) => Math.max(max, obj.Id), 0);
       dispatch(setFakeNewMdaId(maxMdaId));
       })
       .catch((error) => console.log(error));
@@ -162,18 +162,18 @@ export default function Home() {
       },
     }
     // handle suspend and activate here
-    // might need to call api again
-    // axios
-    // .get(`${BACKEND_URL}/mda/total-mda`, config)
-    // .then((res) => {
-    //   const {total_active_mda, total_mda, total_inactive_mda} = res.data;
-    //   setTotal({
-    //     totalMda : total_mda,
-    //     totalActive : total_active_mda,
-    //     totalInactive : total_inactive_mda
-    //   });
-    //   })
-    //   .catch((error) => console.log(error));
+    // I have done suspend, activate MDA. It remains Suspend, Activate Stc, Stc total, then finally the dashboard index page
+    axios
+    .get(`${BACKEND_URL}/mda/total-mda`, config)
+    .then((res) => {
+      const {total_active_mda, total_mda, total_inactive_mda} = res.data;
+      setTotal({
+        totalMda : total_mda,
+        totalActive : total_active_mda,
+        totalInactive : total_inactive_mda
+      });
+      })
+      .catch((error) => console.log(error));
   }, [unchangedMdaList]);
 
   const [showNewMdaFormModal, setShowNewMdaFormModal] = useState(false);
@@ -222,7 +222,7 @@ export default function Home() {
     if (query.trim().length >= 1) {
       // filter from the unchanged mda list
       const newMdaList = unchangedMdaList?.filter((ele) =>
-        ele.RegisterName.toLowerCase().includes(query.toLowerCase())
+        ele.Name.toLowerCase().includes(query.toLowerCase())
       );
 
       if (newMdaList && newMdaList.length > 0) {

@@ -108,7 +108,6 @@ export default function AccountRecovery() {
       try {
         setIsLoading(true);
         const email = Cookies.get("email");
-        console.log(email, pwd1);
         const { data } = await axios.post(
           `${BACKEND_URL}/user/changepassword`,
           {

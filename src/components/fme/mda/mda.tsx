@@ -46,11 +46,11 @@ export const CheckboxComp: React.FC<ICheckbox> = ({
 //   isSelected: boolean;
 // }
 export const TableRow: React.FC<IMDACompData> = ({
-  ID : id,
+  Id : id,
   is_active : isActive,
-  RegisterName : name,
-  stcNo,
-  studentNo,
+  Name : name,
+  stc_count :  stcNo,
+  student_count : studentNo,
   Address : address,
   StateOfOperation : state,
 }) => {
@@ -90,23 +90,23 @@ export const TableRow: React.FC<IMDACompData> = ({
     // reset the dropdown state
     setMdaItemList(MdaItemDropdownList);
   };
-
+  
   return (
     <TrStyles>
       <td className="">
         <p>{truncateString(name,37).toUpperCase()}</p>
       </td>
       <td>
-        <p>{stcNo ? stcNo  : 20}</p>
+        <p>{stcNo ? stcNo  : 0}</p>
       </td>
       <td>
-        <p>{studentNo ? studentNo : 10}</p>
+        <p>{studentNo ? studentNo : 0}</p>
       </td>
       <td className="address">
         <p>{truncateString(address,30)}</p>
       </td>
       <td>
-        <p>{state.toUpperCase()} STATE</p>
+        <p>{state && state.toUpperCase()} STATE</p>
       </td>
       <td className="drop">
         <StatusComp $isActive={isActive} />

@@ -16,13 +16,13 @@ import { truncateString } from "@/utils/truncateString";
 import { ISTCCompData } from "@/types/Stc";
 
 export const STCTableRow: React.FC<ISTCCompData> = ({
-  ID : id,
+  Id : id,
   is_active : isActive,
-  RegisterName : name,
-  stcNo : coursesNo, // change this to coursesNo
-  studentNo,
+  Name : name,
+  student_count : studentNo,
   Address : address,
   StateOfOperation : state,
+  CourseCount
 }) => {
   const [stcItemList, setStcItemList] = useState(StcItemDropdownList);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -69,16 +69,16 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
         </NocenterStyles>
       </td>
       <td>
-        <p>{coursesNo ? coursesNo : 10}</p>
+        <p>{CourseCount ? CourseCount : 0}</p>
       </td>
       <td>
-        <p>{studentNo ? studentNo : 20}</p>
+        <p>{studentNo ? studentNo : 0}</p>
       </td>
       <td className="address">
         <p>{truncateString(address,30)}</p>
       </td>
       <td>
-        <p>{state.toUpperCase()} STATE</p>
+        <p>{state && state.toUpperCase()} STATE</p>
       </td>
       <td className="drop">
         <StatusComp $isActive={isActive} />

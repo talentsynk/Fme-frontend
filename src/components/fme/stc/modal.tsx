@@ -345,6 +345,16 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                       </div>
                     )}
                   </StatesDropdownStyles>
+                  {otherError.active && (
+                    <p
+                      role="alert"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                      className="error-msg"
+                    >
+                      {otherError.text}
+                    </p>
+                  )}
                 </div>
                 <div className="btn-m">
                   <button
@@ -375,7 +385,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             cancelModal={cancelModal}
             icon={<CreationSuccessIcon />}
             hasCancel={true}
-            navigationFunction={() => router.push("/fme")}
+            navigationFunction={cancelModal}
             navigationText="Go back to Dashboard"
           />
         </FlexAbsoluteModalStyles>
@@ -389,10 +399,10 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [showActiveModal, setShowActivateModal] = useState(false);
   const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
   const [stcDetails, setStcDetails] = useState(
-    unchangedStcList?.find((ele) => ele.ID == selectedStcId)
+    unchangedStcList?.find((ele) => ele.Id == selectedStcId)
   );
   useEffect(() => {
-    setStcDetails(unchangedStcList?.find((ele) => ele.ID == selectedStcId));
+    setStcDetails(unchangedStcList?.find((ele) => ele.Id == selectedStcId));
   }, [unchangedStcList, selectedStcId]);
 
   return (
@@ -405,11 +415,11 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               <BackBtn backFunction={cancelModal} />
               <div className="name">
                 <div className="avatar">
-                  <p>{stcDetails.RegisterName.slice(0, 2).toUpperCase()}</p>
+                  <p>{stcDetails.Name.slice(0, 2).toUpperCase()}</p>
                 </div>
                 <div className="deet">
-                  <h4>{truncateString(stcDetails.RegisterName,40).toUpperCase()}</h4>
-                  <p>Added on {formatDate(stcDetails.CreatedAt)}</p>
+                  <h4>{truncateString(stcDetails.Name,40).toUpperCase()}</h4>
+                  <p>Added on {stcDetails.CreatedAt ? formatDate(stcDetails.CreatedAt) : "March 29, 2024"}</p>
                 </div>
               </div>
             </div>
@@ -421,7 +431,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total Students</div>
                   <div className="numer">
-                    <p>{stcDetails.studentNo ? stcDetails.studentNo : 20 }</p>
+                    <p>{stcDetails.student_count ? stcDetails.student_count : 0 }</p>
                   </div>
                 </div>
                 <div className="total">
@@ -430,7 +440,7 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
-                    <p>{stcDetails.coursesNo ? stcDetails.coursesNo : 10}</p>
+                    <p>{stcDetails.CourseCount ? stcDetails.CourseCount : 0}</p>
                   </div>
                 </div>
                 <div className="total">
@@ -456,16 +466,16 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>Name of STC</span>
-                    <p>{stcDetails.RegisterName.toUpperCase()}</p>
+                    <p>{stcDetails.Name.toUpperCase()}</p>
                   </div>
-                  <CopyIcon text={stcDetails.RegisterName.toUpperCase()} />
+                  <CopyIcon text={stcDetails.Name.toUpperCase()} />
                 </div>
                 <div className="dx">
                   <div className="name">
-                    <span>STC Address</span>
-                    <p className="nm">{stcDetails.Address}</p>
+                    <span>STC Email</span>
+                    <p className="nm">{stcDetails.email}</p>
                   </div>
-                  <CopyIcon text={stcDetails.Address} />
+                  <CopyIcon text={stcDetails.email} />
                 </div>
                 <div className="dx">
                   <div className="name">
@@ -529,16 +539,18 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const { selectedStcId, unchangedStcList } = useAppSelector(fmeSelector);
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const suspend = () => {
     // make Suspend STC API call to suspend MDA
     // if successful, change the data on the frontend
     // display error / success message
+
     // let's assume the API call was successful
     if (unchangedStcList !== null) {
       const newMdalist = unchangedStcList.map((ele) => {
         return {
           ...ele,
-          isActive: ele.ID === selectedStcId ? false : ele.is_active,
+          isActive: ele.Id === selectedStcId ? false : ele.is_active,
         };
       });
       // why does this state not update Immediately on the UI?
@@ -612,7 +624,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
       const newMdalist = unchangedStcList.map((ele) => {
         return {
           ...ele,
-          isActive: ele.ID === selectedStcId ? true : ele.is_active,
+          isActive: ele.Id === selectedStcId ? true : ele.is_active,
         };
       });
       // why does this state not update Immediately on the UI?

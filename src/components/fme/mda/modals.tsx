@@ -392,7 +392,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             icon={<CreationSuccessIcon />}
             navigationText="Go back to Dashboard"
             hasCancel={true}
-            navigationFunction={() => router.push("/fme")}
+            navigationFunction={cancelModal}
           />
         </FlexAbsoluteModalStyles>
       )}
@@ -405,10 +405,10 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   const [showActiveModal, setShowActivateModal] = useState(false);
   const { selectedMdaId, unchangedMdaList } = useAppSelector(fmeSelector);
   const [mdaDetails, setMdaDetails] = useState(
-    unchangedMdaList?.find((ele) => ele.ID == selectedMdaId)
+    unchangedMdaList?.find((ele) => ele.Id == selectedMdaId)
   );
   useEffect(() => {
-    setMdaDetails(unchangedMdaList?.find((ele) => ele.ID == selectedMdaId));
+    setMdaDetails(unchangedMdaList?.find((ele) => ele.Id == selectedMdaId));
   }, [unchangedMdaList, selectedMdaId]);
   return (
     <>
@@ -420,13 +420,16 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
               <BackBtn backFunction={cancelModal} />
               <div className="name">
                 <div className="avatar">
-                  <p>{mdaDetails.RegisterName.slice(0, 2).toUpperCase()}</p>
+                  <p>{mdaDetails.Name.slice(0, 2).toUpperCase()}</p>
                 </div>
                 <div className="deet">
-                  <h4>
-                    {truncateString(mdaDetails.RegisterName, 40).toUpperCase()}
-                  </h4>
-                  <p>Added on {formatDate(mdaDetails.CreatedAt)}</p>
+                  <h4>{truncateString(mdaDetails.Name, 40).toUpperCase()}</h4>
+                  <p>
+                    Added on{" "}
+                    {mdaDetails.CreatedAt
+                      ? formatDate(mdaDetails.CreatedAt)
+                      : "March 20, 2024"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -438,7 +441,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total STCs</div>
                   <div className="numer">
-                    <p>{mdaDetails.stcNo ? mdaDetails.stcNo : 20}</p>
+                    <p>{mdaDetails.stc_count ? mdaDetails.stc_count : 20}</p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -448,7 +451,9 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
-                    <p>{mdaDetails.coursesNo ? mdaDetails.coursesNo : 10}</p>
+                    <p>
+                      {mdaDetails.CourseCount ? mdaDetails.CourseCount : 10}
+                    </p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -458,7 +463,9 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Students</div>
                   <div className="numer">
-                    <p>{mdaDetails.studentNo ? mdaDetails.studentNo : 20}</p>
+                    <p>
+                      {mdaDetails.student_count ? mdaDetails.student_count : 20}
+                    </p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -467,16 +474,16 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>Name of MDA</span>
-                    <p>{mdaDetails.RegisterName.toUpperCase()}</p>
+                    <p>{mdaDetails.Name.toUpperCase()}</p>
                   </div>
-                  <CopyIcon text={mdaDetails.RegisterName.toUpperCase()} />
+                  <CopyIcon text={mdaDetails.Name.toUpperCase()} />
                 </div>
                 <div className="dx">
                   <div className="name">
-                    <span>MDA Address</span>
-                    <p className="nm">{mdaDetails.Address}</p>
+                    <span>MDA Email</span>
+                    <p className="nm">{mdaDetails.email}</p>
                   </div>
-                  <CopyIcon text={mdaDetails.Address} />
+                  <CopyIcon text={mdaDetails.email} />
                 </div>
                 <div className="dx">
                   <div className="name">
@@ -537,30 +544,67 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
   cancelModal,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [msgError, setMsgError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
   const { unchangedMdaList, selectedMdaId } = useAppSelector(fmeSelector);
   const dispatch = useAppDispatch();
-  const suspend = () => {
-    // make Suspend MDA API call to suspend MDA
-    // if successful, change the data on the frontend
-    // display error / success message
-    // let's assume the API call was successful
-    if (unchangedMdaList !== null) {
-      const newMdalist = unchangedMdaList.map((ele) => {
-        return {
-          ...ele,
-          isActive: ele.ID === selectedMdaId ? false : ele.is_active,
-        };
-      });
-      // why does this state not update Immediately on the UI?
-      dispatch(setUnchangedMdaList(newMdalist));
-      setIsSuccess(true);
+  const suspend = async () => {
+    // make Suspend MDA API call to suspend MDA\
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const userId = unchangedMdaList?.find((ele) => ele.Id === selectedMdaId)?.UserId;
+    if (userId) {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(
+          `${BACKEND_URL}/user/suspend/${userId}`,
+          config
+        );
+        if (data) {
+          console.log(data);
+          if (unchangedMdaList !== null) {
+            const newMdalist = unchangedMdaList.map((ele) => {
+              return {
+                ...ele,
+                is_active: ele.Id === selectedMdaId ? false : ele.is_active,
+              };
+            });
+            setIsLoading(false);
+            // why does this state not update Immediately on the UI?
+            dispatch(setUnchangedMdaList(newMdalist));
+            setIsSuccess(true);
+          }
+        }
+      } catch (error: any) {
+        setIsLoading(false);
+        if (error.response) {
+          // if the server responds with an error msg
+          setMsgError({
+            active: true,
+            text: error.response.data.message,
+          });
+          // error.response.data.message
+        } else {
+          setMsgError({
+            active: true,
+            text: error.message,
+          });
+        }
+      }
     }
   };
   const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
-        {!isSuccess && (
+        {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <div className="pop">
               <div className="up">
@@ -582,7 +626,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
                   Cancel
                 </button>
                 <button type="button" onClick={suspend}>
-                  Suspend MDA
+                  {isLoading ? <ButtonLoader /> : "Suspend MDA"}
                 </button>
               </div>
             </div>
@@ -601,6 +645,21 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
             // navigationFunction={() => router.push("/fme")}
           />
         )}
+        {msgError.active && (
+          <FailureModal
+            cancelModal={() =>
+              setMsgError({
+                active: false,
+                text: "",
+              })
+            }
+            head="Failed to suspend MDA !"
+            msg={msgError.text}
+            navigationFunction={cancelModal}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
+          />
+        )}
       </FlexAbsoluteModalStyles>
     </>
   );
@@ -613,29 +672,64 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const { unchangedMdaList, selectedMdaId } = useAppSelector(fmeSelector);
   const dispatch = useAppDispatch();
-
-  const reactivate = () => {
-    // make Reactivate MDA API call to suspend MDA
-    // if successful, change the data on the frontend
-    // display error / success message
-    // let's assume the API call was successful
-    if (unchangedMdaList !== null) {
-      const newMdalist = unchangedMdaList.map((ele) => {
-        return {
-          ...ele,
-          isActive: ele.ID === selectedMdaId ? true : ele.is_active,
-        };
-      });
-      // why does this state not update Immediately on the UI?
-      dispatch(setUnchangedMdaList(newMdalist));
-      setIsSuccess(true);
-    }
+  const [isLoading, setIsLoading] = useState(false);
+  const [msgError, setMsgError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+  const reactivate = async () => {
+    // make Reactivate MDA API call to activate MDA
+     const token = Cookies.get("token");
+     const config = {
+       headers: {
+         Authorization: `Bearer ${token}`,
+       },
+     };
+     const userId = unchangedMdaList?.find((ele) => ele.Id === selectedMdaId)?.UserId;
+     if (userId) {
+       try {
+         setIsLoading(true);
+         const { data } = await axios.get(
+           `${BACKEND_URL}/user/activate/${userId}`,
+           config
+         );
+         if (data) {
+           console.log(data);
+           if (unchangedMdaList !== null) {
+             const newMdalist = unchangedMdaList.map((ele) => {
+               return {
+                 ...ele,
+                 isActive: ele.Id === selectedMdaId ? true : ele.is_active,
+               };
+             });
+             setIsLoading(false);
+             dispatch(setUnchangedMdaList(newMdalist));
+             setIsSuccess(true);
+           }
+         }
+       } catch (error: any) {
+         setIsLoading(false);
+         if (error.response) {
+           // if the server responds with an error msg
+           setMsgError({
+             active: true,
+             text: error.response.data.message,
+           });
+           // error.response.data.message
+         } else {
+           setMsgError({
+             active: true,
+             text: error.message,
+           });
+         }
+       }
+     }
   };
   const router = useRouter();
   return (
     <>
       <FlexAbsoluteModalStyles>
-        {!isSuccess && (
+        {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <div className="pop">
               <div className="up">
@@ -674,6 +768,21 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
             navigationFunction={
               handleModalAction ? handleModalAction : cancelModal
             }
+          />
+        )}
+          {msgError.active && (
+          <FailureModal
+            cancelModal={() =>
+              setMsgError({
+                active: false,
+                text: "",
+              })
+            }
+            head="Failed to re-activate MDA !"
+            msg={msgError.text}
+            navigationFunction={cancelModal}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
           />
         )}
       </FlexAbsoluteModalStyles>

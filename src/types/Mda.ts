@@ -1,15 +1,13 @@
 export interface IMDACompData {
-    ID: number;
+    Id: number;
     CreatedAt: string;
-    UpdatedAt ?: string;
-    DeletedAt ?: string | null;
-    RegisterName: string;
+    Name: string;
     Address: string;
-    StateOfOperation: string;
-    UserID ?: number;
+    StateOfOperation ?: string;
+    UserId ?: number;
     email: string;
     is_active: boolean;
-    stcNo ?: number;
-    studentNo ?: number;
-    coursesNo ?: number;
+    stc_count ?: number;
+    student_count ?: number;
+    CourseCount ?: number;
 }

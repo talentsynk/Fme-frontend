@@ -1,15 +1,14 @@
 export interface ISTCCompData {
-    ID: number;
+    Id: number;
     CreatedAt: string;
-    UpdatedAt ?: string;
-    DeletedAt ?: string | null;
-    RegisterName: string;
+    Name: string;
     Address: string;
-    StateOfOperation: string;
-    UserID ?: number;
+    StateOfOperation ?: string;
+    UserId ?: number;
     email: string;
     is_active: boolean;
-    stcNo ?: number;    // remove this when the api is ready
-    studentNo ?: number;
-    coursesNo ?: number;
+    student_count ?: number;
+    CourseCount ?: number;
+    CertifiedStudentCount ?: number;
+    NonCertifedStudentCount ?: number;
 }
