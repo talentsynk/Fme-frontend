@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const GenericDashboardLayoutStyle = styled.main`
-  @media (max-width: 767px) {
+  @media (max-width: 998px) {
     .sidebar {
       display: none;
     }
@@ -26,7 +26,7 @@ export const GenericDashboardLayoutStyle = styled.main`
   ::-webkit-scrollbar-thumb:hover {
     background: #E7F6EC; /* color of the thumb on hover */
   }
-  @media (min-width: 767px) {
+  @media (min-width: 998px) {
     display: grid;
     width: 100vw;
     grid-template-columns: 20% 1fr;

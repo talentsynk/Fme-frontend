@@ -45,7 +45,7 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
   const router = useRouter();
   
   return (
-    <SidebarStyles>
+    <SidebarStyles suppressHydrationWarning={true}>
       <div className="top">
         <div className="lg">
           <FGLogo />

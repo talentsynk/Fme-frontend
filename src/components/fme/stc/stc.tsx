@@ -13,15 +13,19 @@ import { ReactivateStcComp, StcDetailModal, SuspendStcComp } from "./modal";
 import { fmeSelector, setSelectedStcId } from "@/redux/fme/fmeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { truncateString } from "@/utils/truncateString";
+import { ISTCCompData } from "@/types/Stc";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 
-export const STCTableRow: React.FC<ISTCData> = ({
-  id,
-  isActive,
-  name,
-  coursesNo,
-  studentNo,
-  address,
-  state,
+
+export const STCTableRow: React.FC<ISTCCompData> = ({
+  Id : id,
+  is_active : isActive,
+  Name : name,
+  student_count : studentNo,
+  Address : address,
+  StateOfOperation : state,
+  CourseCount
 }) => {
   const [stcItemList, setStcItemList] = useState(StcItemDropdownList);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -64,20 +68,20 @@ export const STCTableRow: React.FC<ISTCData> = ({
     <TrStyles>
       <td className="nocenter">
         <NocenterStyles>
-          <p>{truncateString(name,37)}</p>
+          <p>{truncateString(name,37).toUpperCase()}</p>
         </NocenterStyles>
       </td>
       <td>
-        <p>{coursesNo}</p>
+        <p>{CourseCount ? CourseCount : 0}</p>
       </td>
       <td>
-        <p>{studentNo}</p>
+        <p>{studentNo ? studentNo : 0}</p>
       </td>
       <td className="address">
         <p>{truncateString(address,30)}</p>
       </td>
       <td>
-        <p>{state.toUpperCase()} STATE</p>
+        <p>{state && state.toUpperCase()} STATE</p>
       </td>
       <td className="drop">
         <StatusComp $isActive={isActive} />

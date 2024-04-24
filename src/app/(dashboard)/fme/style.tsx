@@ -6,7 +6,7 @@ export const FMEHomeStyles = styled.div`
   column-gap: 1.1875rem;
   row-gap: 1.25rem;
   .total {
-    height: 9.0625rem;
+    height: 8.0625rem;
     background: #fff;
     border-radius: 0.75rem;
     padding: 0.6875rem 0.9375rem;

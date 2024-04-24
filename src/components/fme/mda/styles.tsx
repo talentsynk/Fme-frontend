@@ -717,8 +717,8 @@ export const NewMdaAbsoluteStyles = styled(AbsoluteContStyle)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 8rem;
-  padding-bottom: 3rem;
+  padding-top: 10rem;
+  padding-bottom: 2rem;
   overflow: auto;
   .form {
     width: 60%;
@@ -744,6 +744,9 @@ export const NewMdaFormStyles = styled(FormStyles)`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+  }
+  .form-input{
+    gap: 1rem;
   }
   .form {
     width: 100%;
