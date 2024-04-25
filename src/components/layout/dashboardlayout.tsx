@@ -9,7 +9,7 @@ import { FailureModal } from "../fme/mda/modals";
 import { FlexAbsoluteModalStyles } from "../fme/mda/styles";
 import Cookies from "js-cookie";
 import { authSelector, setSessionExpiration } from "@/redux/auth/authSlice";
-import { FMEPageLinks } from "../fme/sidebar/data";
+import { FMEPageLinks, ILinkFunc } from "../fme/sidebar/data";
 import { MDAPageLinks} from "../mda/data";
 import { STCPageLinks } from "../stc/data";
 
@@ -20,7 +20,9 @@ export const GenericDasboardLayout = ({
 }) => {
   const dispatch = useAppDispatch();
   const {isSessionExpired} = useAppSelector(authSelector);
-
+  const [fmePageLinks, setFmePageLinks] = useState<ILinkFunc[] | null>(null);
+  const [mdaPageLinks, setMdaPageLinks] = useState<ILinkFunc[] | null>(null);
+  const [stcPageLinks, setStcPageLinks] = useState<ILinkFunc[] | null>(null);
   const router = useRouter();
   const role = Cookies.get("userRole");
   const token = Cookies.get("token");
@@ -34,7 +36,11 @@ export const GenericDasboardLayout = ({
     }
   }, [role,token,router,dispatch]);
   
-
+  useEffect(()=>{
+    setFmePageLinks(FMEPageLinks);
+    setMdaPageLinks(MDAPageLinks);
+    setStcPageLinks(STCPageLinks);
+  },[])
   const handleLogout = () => {
     Cookies.set("userRole","");
     Cookies.set("token","");
@@ -46,16 +52,16 @@ export const GenericDasboardLayout = ({
           <DashboardHeader />
         </div>
         <div className="sidebar">
-          {role === "FME" && <DashboardSidebar
-            uniquePageLinks={FMEPageLinks}
+          {role === "FME" && fmePageLinks !== null && <DashboardSidebar
+            uniquePageLinks={fmePageLinks}
             splitIndex={5}
           />}
-          {role === "MDA" &&<DashboardSidebar
-            uniquePageLinks={MDAPageLinks}
+          {role === "MDA" && mdaPageLinks !== null && <DashboardSidebar
+            uniquePageLinks={mdaPageLinks}
             splitIndex={4}
           />}
-          {role === "STC" &&<DashboardSidebar
-            uniquePageLinks={STCPageLinks}
+          {role === "STC" && stcPageLinks !== null && <DashboardSidebar
+            uniquePageLinks={stcPageLinks}
             splitIndex={3}
           />}
         </div>
