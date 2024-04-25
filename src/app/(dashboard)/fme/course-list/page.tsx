@@ -90,34 +90,34 @@ export default function Home() {
 		setCourseTabSwitches(newMdaTabSwitches);
 
 		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-		if (tabIndex == 0) {
-			if (sortStatus && courseList !== null) {
-				const sortedCourseListData = sortCourseListDataAlphabetically(courseList, sortStatus == "-1");
-				setCourseListDuplicate(sortedCourseListData);
-			} else {
-				setCourseListDuplicate(courseList);
-			}
-		} else if (tabIndex == 1) {
-			const newCourseList = courseList?.filter((ele) => ele.isActive);
-			if (newCourseList) {
-				if (sortStatus) {
-					const sortedCourseData = sortCourseListDataAlphabetically(newCourseList, sortStatus == "-1");
-					setCourseListDuplicate(sortedCourseData);
-				} else {
-					setCourseListDuplicate(newCourseList);
-				}
-			}
-		} else if (tabIndex == 2) {
-			const newStcList = courseList?.filter((ele) => ele.isActive == false);
-			if (newStcList) {
-				if (sortStatus) {
-					const sortedSTCData = sortCourseListDataAlphabetically(newStcList, sortStatus == "-1");
-					setCourseListDuplicate(sortedSTCData);
-				} else {
-					setCourseListDuplicate(newStcList);
-				}
-			}
-		}
+		// if (tabIndex == 0) {
+		// 	if (sortStatus && courseList !== null) {
+		// 		const sortedCourseListData = sortCourseListDataAlphabetically(courseList, sortStatus == "-1");
+		// 		setCourseListDuplicate(sortedCourseListData);
+		// 	} else {
+		// 		setCourseListDuplicate(courseList);
+		// 	}
+		// } else if (tabIndex == 1) {
+		// 	const newCourseList = courseList?.filter((ele) => ele.isActive);
+		// 	if (newCourseList) {
+		// 		if (sortStatus) {
+		// 			const sortedCourseData = sortCourseListDataAlphabetically(newCourseList, sortStatus == "-1");
+		// 			setCourseListDuplicate(sortedCourseData);
+		// 		} else {
+		// 			setCourseListDuplicate(newCourseList);
+		// 		}
+		// 	}
+		// } else if (tabIndex == 2) {
+		// 	const newStcList = courseList?.filter((ele) => ele.isActive == false);
+		// 	if (newStcList) {
+		// 		if (sortStatus) {
+		// 			const sortedSTCData = sortCourseListDataAlphabetically(newStcList, sortStatus == "-1");
+		// 			setCourseListDuplicate(sortedSTCData);
+		// 		} else {
+		// 			setCourseListDuplicate(newStcList);
+		// 		}
+		// 	}
+		// }
 	};
 	const handleSearch = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault(); // Prevent default form submission
