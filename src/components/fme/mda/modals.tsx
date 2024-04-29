@@ -480,9 +480,9 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>MDA Email</span>
-                    <p className="nm">{mdaDetails.email}</p>
+                    <p className="nm">{mdaDetails.Email}</p>
                   </div>
-                  <CopyIcon text={mdaDetails.email} />
+                  <CopyIcon text={mdaDetails.Email} />
                 </div>
                 <div className="dx">
                   <div className="name">

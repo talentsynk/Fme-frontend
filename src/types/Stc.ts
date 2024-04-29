@@ -5,7 +5,7 @@ export interface ISTCCompData {
     Address: string;
     StateOfOperation ?: string;
     UserId ?: number;
-    email: string;
+    Email: string;
     is_active: boolean;
     student_count ?: number;
     CourseCount ?: number;

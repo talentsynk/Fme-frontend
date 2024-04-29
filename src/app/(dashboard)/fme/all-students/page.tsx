@@ -220,7 +220,7 @@ useEffect(() => {
 
 			const jsonData = await response.json();
 			console.log(jsonData);
-		} catch (error) {
+		} catch (error:any) {
 			console.log(error.message);
 		}
 	};
