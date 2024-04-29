@@ -1001,7 +1001,7 @@ export const StatesDropdownStyles = styled.div`
     border-radius: 0.375rem;
     border: 1px solid var(--Grey-300, #d0d5dd);
     background: var(--Shade-White, #fff);
-    height: 3.5rem;
+    height: 3rem;
     padding: 1rem;
     cursor: pointer;
     display: flex;
