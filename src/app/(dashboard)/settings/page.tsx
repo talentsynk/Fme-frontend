@@ -1,5 +1,4 @@
 "use client"
-import { Metadata } from "next";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
