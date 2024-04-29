@@ -32,11 +32,13 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
   useEffect(() => {
     const selected = pageLinks.find((ele) => ele.isSelected == true);
     // if the user types the route
-    if (name != selected?.href) {
-      const newLinks = pageLinks.map((ele) => {
-        return { ...ele, isSelected: ele.href == name };
-      });
-      setPageLinks(newLinks);
+    if(selected){
+      if (name != selected?.href) {
+        const newLinks = pageLinks.map((ele) => {
+          return { ...ele, isSelected: ele.href == name };
+        });
+        setPageLinks(newLinks);
+      }
     }
   }, [name,pageLinks]);
 

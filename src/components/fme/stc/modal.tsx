@@ -492,9 +492,9 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 <div className="dx">
                   <div className="name">
                     <span>STC Email</span>
-                    <p className="nm">{stcDetails.email}</p>
+                    <p className="nm">{stcDetails.Email}</p>
                   </div>
-                  <CopyIcon text={stcDetails.email} />
+                  <CopyIcon text={stcDetails.Email} />
                 </div>
                 <div className="dx">
                   <div className="name">

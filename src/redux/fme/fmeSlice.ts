@@ -1,9 +1,9 @@
 import { IUser } from "@/types/User";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { ISTCData } from "@/components/fme/stc/data";
 import { IMDACompData } from "@/types/Mda";
 import { ISTCCompData } from "@/types/Stc";
+import { IStudentData } from "@/components/fme/students/data";
 
 // this is the redux page for managing the FME dashboard
 
@@ -12,8 +12,10 @@ interface IFMEState {
   fmeError: string | null;
   unchangedMdaList: IMDACompData[] | null;
   unchangedStcList: ISTCCompData[] | null;
+  unchangedStudentsList: IStudentData[] | null;
   selectedMdaId: number | null;
   selectedStcId: number | null;
+  selectedStudentId: string | null;
   fakeNewMdaId : number | null;
   fakeNewStcId : number | null;
 }
@@ -23,8 +25,10 @@ const initialState: IFMEState = {
   fmeError: null,
   unchangedMdaList: null,
   unchangedStcList: null,
+  unchangedStudentsList: null,
   selectedMdaId: null,
   selectedStcId: null,
+  selectedStudentId: null,
   fakeNewMdaId : null,
   fakeNewStcId : null,
 };
@@ -40,6 +44,9 @@ export const fmeSlice = createSlice({
     setSelectedMdaId: (state, action: PayloadAction<number | null>) => {
       state.selectedMdaId = action.payload;
     },
+    setSelectedStudentId: (state, action: PayloadAction<string | null>) => {
+      state.selectedStudentId = action.payload;
+    },
     setUnchangedMdaList: (state, action: PayloadAction<IMDACompData[] | null>) => {
       state.unchangedMdaList = action.payload;
     },
@@ -48,6 +55,9 @@ export const fmeSlice = createSlice({
     },
     setUnchangedStcList: (state, action: PayloadAction<ISTCCompData[] | null>) => {
       state.unchangedStcList = action.payload;
+    },
+    setUnchangedStudentsList: (state, action: PayloadAction<IStudentData[] | null>) => {
+      state.unchangedStudentsList = action.payload;
     },
     setFakeNewMdaId:(state,action:PayloadAction<number>)=>{
       state.fakeNewMdaId = action.payload;
@@ -66,6 +76,8 @@ export const {
   setUnchangedMdaList,
   setSelectedStcId,
   setUnchangedStcList,
+  setUnchangedStudentsList,
+  setSelectedStudentId,
   setFakeNewMdaId,
   setFakeNewStcId
 } = fmeSlice.actions;
