@@ -17,6 +17,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { CourseItem } from "@/components/fme/index";
 import { ColorGroup, CourseItems } from "@/components/fme/index/data";
+import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
 
 // the first page on the fme dashboard
 
@@ -27,20 +28,22 @@ export default function Home() {
     totalStcs: 0,
     totalStudents: 0,
   });
-  const [courseLists, setCourseLists] = useState(CourseItems);
+  const [courseLists, setCourseLists] = useState<
+    { name: string; percent: number }[] | null
+  >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState([
     { name: "MDAs", isSelected: true },
     { name: "STCs", isSelected: false },
     { name: "Students", isSelected: false },
   ]);
-  const handleSelectOption =(name : string)=>{
-    const newGraphOptions = graphOptions.map(ele => {
-      return {...ele,isSelected : ele.name === name}
+  const handleSelectOption = (name: string) => {
+    const newGraphOptions = graphOptions.map((ele) => {
+      return { ...ele, isSelected: ele.name === name };
     });
     setGraphOptions(newGraphOptions);
     setShowOptions(false);
-  }
+  };
   // task left: work on add New Mda and Stc, plug in the APIs on wednesday
   useEffect(() => {
     const token = Cookies.get("token");
@@ -53,13 +56,22 @@ export default function Home() {
       .get(`${BACKEND_URL}/dashboard/summary`, config)
       .then((res) => {
         if (res.data.response) {
-          // TotalStcs: 7, TotalMdas: 13, TotalStudents: 1}
           const { TotalStcs, TotalMdas, TotalStudents } = res.data.response;
           setTotalStat({
             totalMdas: TotalMdas,
             totalStcs: TotalStcs,
             totalStudents: TotalStudents,
           });
+        }
+      })
+      .catch((error) => console.log(error));
+
+    // simulating get-request for the top course tracker API
+    axios
+      .get(`${BACKEND_URL}/stc/get-all-stc`, config)
+      .then((res) => {
+        if (res.data) {
+          setCourseLists(CourseItems);
         }
       })
       .catch((error) => console.log(error));
@@ -106,21 +118,25 @@ export default function Home() {
                 className="dd-head"
                 onClick={() => setShowOptions(!showOptions)}
               >
-                <p>{graphOptions.find((ele)=> ele.isSelected === true)?.name}</p>
+                <p>
+                  {graphOptions.find((ele) => ele.isSelected === true)?.name}
+                </p>
                 <AngleDownStyles $isSelected={showOptions}>
                   <ColoredArrowDown />
                 </AngleDownStyles>
               </div>
               {showOptions && (
                 <div className="options">
-                  {
-                    graphOptions.map((ele,index)=>(
-                      <div key={index} className="option" onClick={() => handleSelectOption(ele.name)}>
-                        <p>{ele.name}</p>
-                        {ele.isSelected && <TickIcon />}
-                      </div>
-                    ))
-                  }
+                  {graphOptions.map((ele, index) => (
+                    <div
+                      key={index}
+                      className="option"
+                      onClick={() => handleSelectOption(ele.name)}
+                    >
+                      <p>{ele.name}</p>
+                      {ele.isSelected && <TickIcon />}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -130,19 +146,24 @@ export default function Home() {
           </div>
         </div>
         <div className="top-courses">
-          <h5>Top Course Tracking</h5>
+          <h5>Top Course Tracker</h5>
           <div className="content">
-            {courseLists.map((ele, index) => (
-              <CourseItem
-                key={index}
-                percent={ele.percent}
-                name={ele.name}
-                $bgColor={colorGroup[index % 5].bgColor}
-                $lightColor={colorGroup[index % 5].lightColor}
-                $thickColor={colorGroup[index % 5].thickColor}
-                $textColor={colorGroup[index % 5].textColor}
-              />
-            ))}
+            {courseLists &&
+              courseLists.map((ele, index) => (
+                <CourseItem
+                  key={index}
+                  percent={ele.percent}
+                  name={ele.name}
+                  $bgColor={colorGroup[index % 5].bgColor}
+                  $lightColor={colorGroup[index % 5].lightColor}
+                  $thickColor={colorGroup[index % 5].thickColor}
+                  $textColor={colorGroup[index % 5].textColor}
+                />
+              ))}
+            {courseLists === null &&
+              [1, 2, 3, 4, 5].map((ele, index) => (
+                <CourseItemSkeleton key={index} />
+              ))}
           </div>
         </div>
         <div className="track br">6</div>

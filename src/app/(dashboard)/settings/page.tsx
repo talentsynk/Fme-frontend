@@ -1,23 +1,22 @@
 "use client"
 import { Metadata } from "next";
-import { useState } from "react";
-
-// export const metadata: Metadata = {
-//   title: "settings",
-//   description: "settings for FMEs",
-// };
-
-//when you login, the name, Oluwarape Timilehin and the email should be set dynamically
-//what does the Edit Profile Button do
-//Propose using react Toast to show when the profile has been saved
-
-
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Profile from "@/components/fme/settings/Profile";
 import Security from "@/components/fme/settings/Security";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [activeDiv, setActiveDiv] = useState(1);
+  const role = Cookies.get("userRole");
+  const router = useRouter();
+  useEffect(()=>{
+    if(role === "FME"){
+      router.push("/fme");
+    }
+  },[role,router]);
+
     return (
       <section className="">
         <h3 className=" text-3xl font-semibold leading-[120%] text-[#101928]">Settings</h3>

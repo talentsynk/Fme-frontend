@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export interface ICourseItemStyle{
-    $lightColor : string;
-    $thickColor : string;
-    percent : number;
-    $textColor : string;
-    $bgColor : string;
+    $lightColor ?: string;
+    $thickColor ?: string;
+    percent ?: number;
+    $textColor ?: string;
+    $bgColor ?: string;
 }
 export const CourseItemStyles = styled.div<ICourseItemStyle>`
 border-radius: 0.75rem;
@@ -54,7 +54,7 @@ background: ${props => props.$bgColor};
     }
   }
   .pad {
-    padding-left: 1rem;
+    padding-left: 0.5rem;
     margin-top: 0.5rem;
     .bar {
       background: ${props => props.$lightColor};
