@@ -32,6 +32,9 @@ import { sortStudentDataAlphabetically } from "@/components/fme/students/data";
 import { FilterBtns } from "@/components/fme/mda/data";
 import { FilterBtnComp } from "@/components/fme/mda/mda";
 import { MdaItemComp } from "@/components/fme/mda/mda";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fmeSelector } from "@/redux/fme/fmeSlice";
+import { setUnchangedStudentsList, setSelectedStudentId } from "@/redux/fme/fmeSlice";
 
 // the first page on the fme dashboard
 
@@ -88,23 +91,23 @@ export default function Home() {
 				setStudentListDuplicate(studentList);
 			}
 		} else if (tabIndex == 1) {
-			const newStcList = studentList?.filter((ele) => ele.isActive);
-			if (newStcList) {
+			const newStudentsList = studentList?.filter((ele) => ele.isActive);
+			if (newStudentsList) {
 				if (sortStatus) {
-					const sortedSTCData = sortStudentListDataAlphabetically(newStcList, sortStatus == "-1");
-					setStudentListDuplicate(sortedSTCData);
+					const sortedStudentsData = sortStudentListDataAlphabetically(newStudentsList, sortStatus == "-1");
+					setStudentListDuplicate(sortedStudentsData);
 				} else {
-					setStudentListDuplicate(newStcList);
+					setStudentListDuplicate(newStudentsList);
 				}
 			}
 		} else if (tabIndex == 2) {
-			const newStcList = studentList?.filter((ele) => ele.isActive == false);
-			if (newStcList) {
+			const newStudentsList = studentList?.filter((ele) => ele.isActive == false);
+			if (newStudentsList) {
 				if (sortStatus) {
-					const sortedSTCData = sortStudentListDataAlphabetically(newStcList, sortStatus == "-1");
-					setStudentListDuplicate(sortedSTCData);
+					const sortedStudentsData = sortStudentListDataAlphabetically(newStudentsList, sortStatus == "-1");
+					setStudentListDuplicate(sortedStudentsData);
 				} else {
-					setStudentListDuplicate(newStcList);
+					setStudentListDuplicate(newStudentsList);
 				}
 			}
 		}
@@ -113,7 +116,7 @@ export default function Home() {
 	useEffect(() => {
 		setStudentList(StudentData);
 		setStudentListDuplicate(StudentData);
-		setUnchangedStudentList(StudentData);
+		setUnchangedStudentsList(StudentData);
 	}, []);
 
 	const handleSelect = () => {
@@ -129,7 +132,7 @@ export default function Home() {
 	// student data
 	const [studentList, setStudentList] = useState<IStudentData[] | null>(null);
 	// stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
-	const [unchangedStudentList, setUnchangedStudentList] = useState<IStudentData[] | null>(null);
+	const { unchangedStudentsList } = useAppSelector(fmeSelector);
 	// for dynamic student data
 	const [studentListDuplicate, setStudentListDuplicate] = useState<IStudentData[] | null>(null);
 
@@ -149,13 +152,13 @@ export default function Home() {
 		setQueryError({ active: false, text: "" });
 		// return stcList and listDuplicate to default - might involve calling the api
 		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-		if (sortStatus && unchangedStudentList !== null) {
-			const sortedSTCData = sortStudentDataAlphabetically(unchangedStudentList, sortStatus == "-1");
+		if (sortStatus && unchangedStudentsList !== null) {
+			const sortedSTCData = sortStudentDataAlphabetically(unchangedStudentsList, sortStatus == "-1");
 			setStudentListDuplicate(sortedSTCData);
-			setStudentList(unchangedStudentList);
+			setStudentList(unchangedStudentsList);
 		} else {
-			setStudentListDuplicate(unchangedStudentList);
-			setStudentList(unchangedStudentList);
+			setStudentListDuplicate(unchangedStudentsList);
+			setStudentList(unchangedStudentsList);
 		}
 		setShowCancel(false);
 	};
@@ -164,7 +167,7 @@ export default function Home() {
 		event.preventDefault(); // Prevent default form submission
 		if (query.trim().length >= 1) {
 			// filter from the unchanged stc list
-			const newStudentList = unchangedStudentList?.filter((ele) => ele.profile.toLowerCase().includes(query.toLowerCase()));
+			const newStudentList = unchangedStudentsList?.filter((ele) => ele.profile.toLowerCase().includes(query.toLowerCase()));
 			if (newStudentList && newStudentList.length > 0) {
 				// set sort filter to default;
 				const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
@@ -185,6 +188,45 @@ export default function Home() {
 		}
 	};
 
+	const dispatch = useAppDispatch();
+	useEffect(() => {
+		setStudentList(StudentData);
+		setStudentListDuplicate(StudentData);
+		dispatch(setUnchangedStudentsList(StudentData));
+		dispatch(setSelectedStudentId(null));
+	}, [dispatch]);
+
+	useEffect(() => {
+		setStudentList(unchangedStudentsList);
+		setStudentListDuplicate(unchangedStudentsList);
+		setStudentTabSwitches(studentTabSwitches);
+		dispatch(setSelectedStudentId(null));
+	}, [unchangedStudentsList]);
+
+useEffect(() => {
+	const fetchData = async () => {
+		try {
+			const response = await fetch("https://fme-backend-version-1.onrender.com/student/all", {
+				method: "GET",
+				headers: {
+					Authorization:
+						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTYzODM1MDMsInN1YiI6Imp1ZGVAZ21haWwuY29tIn0.WiBYTjJLkDFmDc2EbnQ_4qZgBTbvD6phGCZ0ljq60cU",
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Network response was not ok");
+			}
+
+			const jsonData = await response.json();
+			console.log(jsonData);
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	fetchData();
+}, []);
 	return (
 		<>
 			<TopStyles>
