@@ -11,70 +11,42 @@ import {
 	SortOptionsStyle,
 } from "@/components/fme/mda/styles";
 import { IStudentData, StudentData, StudentsTabSwitches } from "@/components/fme/students/data";
-import {
-	ActiveIcon,
-	CancelInputIcon,
-	FilterIcon,
-	InactiveIcon,
-	MagnifyingGlassIcon,
-	PlusIcon,
-	SortIcon,
-	TotalIcon,
-	UploadIcon,
-} from "@/components/icons/fme/mda";
+import { ActiveIcon, CancelInputIcon, InactiveIcon, MagnifyingGlassIcon, PlusIcon, TotalIcon, UploadIcon } from "@/components/icons/fme/mda";
 import { sortStudentListDataAlphabetically } from "@/utils/sortData";
 import { SortItemDropdownList } from "@/components/fme/mda/data";
 import { motion } from "framer-motion";
 import { useState, useEffect, FormEvent } from "react";
 import { StudentTableRow } from "@/components/fme/students/students";
 import { NewStudentModal } from "@/components/fme/students/modal";
-import { sortStudentDataAlphabetically } from "@/components/fme/students/data";
 import { FilterBtns } from "@/components/fme/mda/data";
-import { FilterBtnComp } from "@/components/fme/mda/mda";
-import { MdaItemComp } from "@/components/fme/mda/mda";
+import { FilterBtnComp, MdaItemComp } from "@/components/fme/mda/mda";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
-import { fmeSelector } from "@/redux/fme/fmeSlice";
-import { setUnchangedStudentsList, setSelectedStudentId } from "@/redux/fme/fmeSlice";
+import axios from "axios";
+import { setUnchangedStudentsList, setSelectedStudentId, fmeSelector, setFakeNewStudentId } from "@/redux/fme/fmeSlice";
+import Cookies from "js-cookie";
+import { IStudentCompData } from "@/types/Student";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
+import { BACKEND_URL } from "@/lib/config";
 
 // the first page on the fme dashboard
 
 export default function Home() {
-	const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
-	const [showSortDropdown, setShowSortDropdown] = useState(false);
-	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-	const [filterBtns, setFilterBtns] = useState(FilterBtns);
+	// const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
+	// const [showSortDropdown, setShowSortDropdown] = useState(false);
+	// const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+	// const [filterBtns, setFilterBtns] = useState(FilterBtns);
 	const [showCancel, setShowCancel] = useState(false);
 	const [studentTabSwitches, setStudentTabSwitches] = useState(StudentsTabSwitches);
-
-	const handleSelectSortDropdownItem = (id: string | undefined) => {
-		if (id) {
-			const newStudentList = sortItemDropdownList.map((ele) => {
-				return { ...ele, isSelected: ele.id === id };
-			});
-			if (id == "1" && studentListDuplicate !== null) {
-				const sortedStudentData = sortStudentDataAlphabetically(studentListDuplicate);
-				setStudentListDuplicate(sortedStudentData);
-			} else if (id == "-1" && studentListDuplicate !== null) {
-				const sortedSTCData = sortStudentDataAlphabetically(studentListDuplicate, true);
-				setStudentListDuplicate(sortedSTCData);
-			} else if (id == "0") {
-				setStudentListDuplicate(studentList);
-				setFilterBtns(FilterBtns);
-			}
-			setSortItemDropdownList(newStudentList);
-			setShowSortDropdown(false);
-		}
-	};
-	const handleClickFilterBtns = (text: string) => {
-		const newFilterBtns = filterBtns.map((ele) => {
-			return { ...ele, isSelected: ele.text == text };
-		});
-		if (text == "Sort") {
-			setShowFilterDropdown(!showFilterDropdown);
-			setShowSortDropdown(!showSortDropdown);
-		}
-		setFilterBtns(newFilterBtns);
-	};
+	const [total, setTotal] = useState({
+		totalStudents: 0,
+		totalActive: 0,
+		totalInactive: 0,
+	});
+	const { unchangedStudentsList, fakeNewStudentId } = useAppSelector(fmeSelector);
+	const dispatch = useAppDispatch();
+	const [studentsListDuplicate, setStudentsListDuplicate] = useState<IStudentCompData[] | null>(null);
 
 	const handleTabSwitch = (tabIndex: number) => {
 		const newMdaTabSwitches = studentTabSwitches.map((ele) => {
@@ -82,46 +54,127 @@ export default function Home() {
 		});
 		setStudentTabSwitches(newMdaTabSwitches);
 
-		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
+		const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
 		if (tabIndex == 0) {
 			if (sortStatus && studentList !== null) {
 				const sortedStudentListData = sortStudentListDataAlphabetically(studentList, sortStatus == "-1");
-				setStudentListDuplicate(sortedStudentListData);
+				setStudentsListDuplicate(sortedStudentListData);
 			} else {
-				setStudentListDuplicate(studentList);
+				setStudentsListDuplicate(studentList);
 			}
 		} else if (tabIndex == 1) {
-			const newStudentsList = studentList?.filter((ele) => ele.isActive);
+			const newStudentsList = studentList?.filter((ele) => ele.IsActive);
 			if (newStudentsList) {
 				if (sortStatus) {
 					const sortedStudentsData = sortStudentListDataAlphabetically(newStudentsList, sortStatus == "-1");
-					setStudentListDuplicate(sortedStudentsData);
+					setStudentsListDuplicate(sortedStudentsData);
 				} else {
-					setStudentListDuplicate(newStudentsList);
+					setStudentsListDuplicate(newStudentsList);
 				}
 			}
 		} else if (tabIndex == 2) {
-			const newStudentsList = studentList?.filter((ele) => ele.isActive == false);
+			const newStudentsList = studentList?.filter((ele) => ele.IsActive == false);
 			if (newStudentsList) {
 				if (sortStatus) {
 					const sortedStudentsData = sortStudentListDataAlphabetically(newStudentsList, sortStatus == "-1");
-					setStudentListDuplicate(sortedStudentsData);
+					setStudentsListDuplicate(sortedStudentsData);
 				} else {
-					setStudentListDuplicate(newStudentsList);
+					setStudentsListDuplicate(newStudentsList);
 				}
 			}
 		}
 	};
 
 	useEffect(() => {
-		setStudentList(StudentData);
-		setStudentListDuplicate(StudentData);
-		setUnchangedStudentsList(StudentData);
-	}, []);
+		let token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/student/all`, config)
+			.then((res) => {
+				const data = res.data.students;
+				setStudentList(data);
+				setStudentsListDuplicate(data);
+				// store data in redux so it can reused across components for easy lookup
+				dispatch(setUnchangedStudentsList(data));
+				dispatch(setSelectedStudentId(null));
+				const maxStudentId = data.reduce((max: number, obj: IStudentCompData) => Math.max(max, obj.ID), 0);
+				dispatch(setFakeNewStudentId(maxStudentId));
+			})
+			.catch((error) => console.log(error));
 
-	const handleSelect = () => {
-		console.log("I was selected");
-	};
+		axios
+			.get(`${BACKEND_URL}/student/all?active=true`, config)
+			.then((res) => {
+				const activeStudents = res.data;
+				axios
+					.get(`${BACKEND_URL}/student/all?active=false`, config)
+					.then((res) => {
+						const inactiveStudents = res.data;
+
+						const totalActive = activeStudents.students.length;
+						const totalInactive = inactiveStudents.students.length;
+						const totalStudents = totalActive + totalInactive;
+
+						setTotal({
+							totalStudents: totalStudents,
+							totalActive: totalActive,
+							totalInactive: totalInactive,
+						});
+					})
+					.catch((error) => {
+						console.error("Error fetching inactive students:", error);
+					});
+			})
+			.catch((error) => {
+				console.error("Error fetching active students:", error);
+			});
+	}, [dispatch, fakeNewStudentId]);
+
+	useEffect(() => {
+		setStudentList(unchangedStudentsList);
+		setStudentsListDuplicate(unchangedStudentsList);
+		dispatch(setSelectedStudentId(null));
+		setStudentTabSwitches(StudentsTabSwitches);
+		let token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		// handle suspend and activate here
+
+		axios
+			.get(`${BACKEND_URL}/student/all?active=true`, config)
+			.then((res) => {
+				const activeStudents = res.data;
+				axios
+					.get(`${BACKEND_URL}/student/all?active=false`, config)
+					.then((res) => {
+						const inactiveStudents = res.data;
+
+						const totalActive = activeStudents.students.length;
+						const totalInactive = inactiveStudents.students.length;
+						const totalStudents = totalActive + totalInactive;
+
+						setTotal({
+							totalStudents: totalStudents,
+							totalActive: totalActive,
+							totalInactive: totalInactive,
+						});
+					})
+					.catch((error) => {
+						console.error("Error fetching inactive students:", error);
+					});
+			})
+			.catch((error) => {
+				console.error("Error fetching active students:", error);
+			});
+	}, [unchangedStudentsList]);
+
 	const [showNewStudentFormModal, setShowNewStudentFormModal] = useState(false);
 	// for search
 	const [query, setQuery] = useState("");
@@ -129,12 +182,6 @@ export default function Home() {
 		active: false,
 		text: "",
 	});
-	// student data
-	const [studentList, setStudentList] = useState<IStudentData[] | null>(null);
-	// stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
-	const { unchangedStudentsList } = useAppSelector(fmeSelector);
-	// for dynamic student data
-	const [studentListDuplicate, setStudentListDuplicate] = useState<IStudentData[] | null>(null);
 
 	const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
@@ -151,32 +198,38 @@ export default function Home() {
 		setQuery("");
 		setQueryError({ active: false, text: "" });
 		// return stcList and listDuplicate to default - might involve calling the api
-		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
+		const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
 		if (sortStatus && unchangedStudentsList !== null) {
-			const sortedSTCData = sortStudentDataAlphabetically(unchangedStudentsList, sortStatus == "-1");
-			setStudentListDuplicate(sortedSTCData);
+			const sortedSTCData = sortStudentListDataAlphabetically(unchangedStudentsList, sortStatus == "-1");
+			setStudentsListDuplicate(sortedSTCData);
 			setStudentList(unchangedStudentsList);
 		} else {
-			setStudentListDuplicate(unchangedStudentsList);
+			setStudentsListDuplicate(unchangedStudentsList);
 			setStudentList(unchangedStudentsList);
 		}
 		setShowCancel(false);
 	};
+	// student data
+	const [studentList, setStudentList] = useState<IStudentCompData[] | null>(null);
+	// stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
+
+	// for dynamic student data
+	// const [studentListDuplicate, setStudentListDuplicate] = useState<IStudentCompData[] | null>(null);
 
 	const handleSearch = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault(); // Prevent default form submission
 		if (query.trim().length >= 1) {
 			// filter from the unchanged stc list
-			const newStudentList = unchangedStudentsList?.filter((ele) => ele.profile.toLowerCase().includes(query.toLowerCase()));
+			const newStudentList = unchangedStudentsList?.filter((ele) => ele.LastName.toLowerCase().includes(query.toLowerCase()));
 			if (newStudentList && newStudentList.length > 0) {
 				// set sort filter to default;
-				const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
+				const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
 				if (sortStatus) {
-					const sortedStudentData = sortStudentDataAlphabetically(newStudentList, sortStatus == "-1");
-					setStudentListDuplicate(sortedStudentData);
+					const sortedStudentData = sortStudentListDataAlphabetically(newStudentList, sortStatus == "-1");
+					setStudentsListDuplicate(sortedStudentData);
 					setStudentList(newStudentList);
 				} else {
-					setStudentListDuplicate(newStudentList);
+					setStudentsListDuplicate(newStudentList);
 					setStudentList(newStudentList);
 				}
 			} else {
@@ -188,45 +241,44 @@ export default function Home() {
 		}
 	};
 
-	const dispatch = useAppDispatch();
-	useEffect(() => {
-		setStudentList(StudentData);
-		setStudentListDuplicate(StudentData);
-		dispatch(setUnchangedStudentsList(StudentData));
-		dispatch(setSelectedStudentId(null));
-	}, [dispatch]);
+	// filter and sort
+	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+	const [showSortDropdown, setShowSortDropdown] = useState(false);
+	const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
 
-	useEffect(() => {
-		setStudentList(unchangedStudentsList);
-		setStudentListDuplicate(unchangedStudentsList);
-		setStudentTabSwitches(studentTabSwitches);
-		dispatch(setSelectedStudentId(null));
-	}, [unchangedStudentsList]);
+	const [filterBtns, setFilterBtns] = useState(FilterBtns);
+	const handleClickFilterBtns = (text: string) => {
+		const newFilterBtns = filterBtns.map((ele) => {
+			return { ...ele, isSelected: ele.text == text };
+		});
+		if (text == "Sort") {
+			setShowFilterDropdown(!showFilterDropdown);
+			setShowSortDropdown(!showSortDropdown);
+		}
+		setFilterBtns(newFilterBtns);
+	};
 
-useEffect(() => {
-	const fetchData = async () => {
-		try {
-			const response = await fetch("https://fme-backend-version-1.onrender.com/student/all", {
-				method: "GET",
-				headers: {
-					Authorization:
-						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTYzODM1MDMsInN1YiI6Imp1ZGVAZ21haWwuY29tIn0.WiBYTjJLkDFmDc2EbnQ_4qZgBTbvD6phGCZ0ljq60cU",
-				},
+	const handleSelectSortDropdownItem = (id: string | undefined) => {
+		if (id) {
+			const newMdaList = sortItemDropdownList.map((ele) => {
+				return { ...ele, isSelected: ele.id === id };
 			});
-
-			if (!response.ok) {
-				throw new Error("Network response was not ok");
+			if (id == "1" && studentsListDuplicate !== null) {
+				const sortedMDAData = sortStudentListDataAlphabetically(studentsListDuplicate);
+				setStudentsListDuplicate(sortedMDAData);
+				console.log(studentsListDuplicate);
+			} else if (id == "-1" && studentsListDuplicate !== null) {
+				const sortedMDAData = sortStudentListDataAlphabetically(studentsListDuplicate, true);
+				setStudentsListDuplicate(sortedMDAData);
+			} else if (id == "0") {
+				setStudentsListDuplicate(studentList);
+				setFilterBtns(FilterBtns);
 			}
-
-			const jsonData = await response.json();
-			console.log(jsonData);
-		} catch (error:any) {
-			console.log(error.message);
+			setSortItemDropdownList(newMdaList);
+			setShowSortDropdown(false);
 		}
 	};
 
-	fetchData();
-}, []);
 	return (
 		<>
 			<TopStyles>
@@ -250,21 +302,21 @@ useEffect(() => {
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Total No of Students</span>
-							<p>4000</p>
+							<p>{total.totalStudents || <Skeleton />}</p>
 						</div>
 						<TotalIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
-							<span>Certified Students</span>
-							<p>3000</p>
+							<span>Active Students</span>
+							<p>{total.totalActive || <Skeleton />}</p>
 						</div>
 						<ActiveIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
-							<span>Non-Certified Students</span>
-							<p>1000</p>
+							<span>Inactive Students</span>
+							<p>{total.totalInactive || <Skeleton />}</p>
 						</div>
 						<InactiveIcon />
 					</StatListItemStyle>
@@ -304,7 +356,7 @@ useEffect(() => {
 									activeIcon={ele.activeIcon}
 									text={ele.text}
 									isSelected={ele.isSelected}
-									handleFilterFunc={() => console.log("I will handle Filter/Sort")}
+									handleFilterFunc={() => {}}
 									handleClick={() => handleClickFilterBtns(ele.text)}
 								/>
 							))}
@@ -333,9 +385,9 @@ useEffect(() => {
 								<TabSwitchStyle key={index} $tabIndex={ele.tabIndex} $isSelected={ele.isSelected} onClick={() => handleTabSwitch(ele.tabIndex)}>
 									<div className="no">
 										<p>{ele.text}</p>
-										{ele.isSelected && studentListDuplicate && (
+										{ele.isSelected && studentsListDuplicate && (
 											<div className="num">
-												<span>{studentListDuplicate?.length}</span>
+												<span>{studentsListDuplicate?.length}</span>
 											</div>
 										)}
 									</div>
@@ -357,18 +409,8 @@ useEffect(() => {
 									</tr>
 								</thead>
 								<tbody>
-									{studentListDuplicate &&
-										studentListDuplicate.map((ele, index) => (
-											<StudentTableRow
-												key={index}
-												isActive={ele.isActive}
-												profile={ele.profile}
-												coursesNo={ele.coursesNo}
-												studentId={ele.studentId}
-												state={ele.state}
-												id={ele.id}
-											/>
-										))}
+									{studentsListDuplicate && studentsListDuplicate.map((ele, index) => <StudentTableRow key={index} {...ele} />)}
+									{studentsListDuplicate === null && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => <TRSkeleton key={index} />)}
 								</tbody>
 							</TableStyles>
 						</div>
