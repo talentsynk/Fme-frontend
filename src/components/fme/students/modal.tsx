@@ -212,18 +212,18 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setForm({ ...form, CourseID: Number(value) });
 			}
 		}
-		 if (input === "DOBstring") {
-				// Convert YYYY-MM-DD to MM/DD/YYYY
-				const parts = value.split("-");
-				const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
-				setDOBstring(value);
-				if (!isValidDate(formattedDate)) {
-					setDOBstringError({ active: true, text: "Invalid date format. Please enter MM/DD/YYYY" });
-				} else {
-					setDOBstringError({ active: false, text: "Date of Birth is valid" });
-					setForm({ ...form, DOBstring: formattedDate });
-				}
+		if (input === "DOBstring") {
+			// Convert YYYY-MM-DD to MM/DD/YYYY
+			const parts = value.split("-");
+			const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+			setDOBstring(value);
+			if (!isValidDate(formattedDate)) {
+				setDOBstringError({ active: true, text: "Invalid date format. Please enter MM/DD/YYYY" });
+			} else {
+				setDOBstringError({ active: false, text: "Date of Birth is valid" });
+				setForm({ ...form, DOBstring: formattedDate });
 			}
+		}
 	};
 
 	const isValidDate = (dateString: string) => {
@@ -704,7 +704,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 		setStudentDetails(unchangedStudentsList?.find((ele) => ele.ID == selectedStudentId));
 	}, [unchangedStudentsList, selectedStudentId]);
 	const fullName = `${studentDetails?.FirstName || ""} ${studentDetails?.LastName || ""}`;
-	console.log(studentDetails)
+	console.log(studentDetails);
 
 	return (
 		<>
@@ -740,14 +740,14 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 									</div>
 									<CopyIcon text={studentDetails.UserID.toString()} />
 								</div>
-								{/* <div className="dx">
+								<div className="dx">
 									<div className="name">
 										<span>Student Phone Number</span>
 										<p className="nm">{studentDetails.PhoneNumber}</p>
 									</div>
 									<CopyIcon text={studentDetails.PhoneNumber} />
 								</div>
-								<div className="dx">
+								{/* <div className="dx">
 									<div className="name">
 										<span>Student Address</span>
 										<p className="nm">1, Ajanaku street, Agege, Lagos State.</p>
