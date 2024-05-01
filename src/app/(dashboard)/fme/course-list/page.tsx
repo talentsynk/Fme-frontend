@@ -3,44 +3,34 @@ interface MyComponentProps {
 	currentItems: number[];
 }
 import { NewMdaModal } from "@/components/fme/course_list/modals";
-import { useState, FormEvent } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { FormEvent, useEffect, useState } from "react";
 // import ReactPaginate from 'react-paginate';
 import CourseCard from "@/components/fme/course_list/CourseCard";
-import CurrentCourse from "@/components/fme/course_list/CurrentCourse";
 import { FilterBtnComp } from "@/components/fme/mda/mda";
 // import SearchSection from "@/components/stc/SearchSection";
+import { Ierror } from "@/app/recovery/page";
+import { CoursesTabSwitches, ICourseData, sortCourseDataAlphabetically } from "@/components/fme/course_list/data";
+import { FilterBtns, SortItemDropdownList } from "@/components/fme/mda/data";
+import { MdaItemComp } from "@/components/fme/mda/mda";
 import {
-	ActiveIcon,
-	CancelInputIcon,
-	CopyIcon,
-	FilterIcon,
-	InactiveIcon,
-	MagnifyingGlassIcon,
-	PlusIcon,
-	SortIcon,
-	TotalIcon,
-	UploadIcon,
-} from "@/components/icons/fme/mda";
-import {
-	DropdownOptionsStyle,
-	FilterBtnStyles,
 	SearchAndResultStyle,
 	SortOptionsStyle,
-	StatListItemStyle,
-	StatListStyle,
-	TabSwitchStyle,
-	TableStyles,
-	TopStyles,
-	WhiteContainer,
+	TopStyles
 } from "@/components/fme/mda/styles";
-import { Ierror } from "@/app/recovery/page";
-import { ICourseData } from "@/components/fme/course_list/data";
-import { SortItemDropdownList } from "@/components/fme/mda/data";
-import { sortCourseDataAlphabetically } from "@/components/fme/course_list/data";
-import { FilterBtns } from "@/components/fme/mda/data";
-import { MdaItemComp } from "@/components/fme/mda/mda";
-import { sortCourseListDataAlphabetically } from "@/utils/sortData";
-import { CoursesTabSwitches } from "@/components/fme/course_list/data";
+import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
+import {
+	CancelInputIcon,
+	MagnifyingGlassIcon,
+	PlusIcon,
+	UploadIcon
+} from "@/components/icons/fme/mda";
+import { BACKEND_URL } from "@/lib/config";
+import { fmeSelector, setFakeNewCourseId, setSelectedCourseId, setUnchangedCoursesList } from "@/redux/fme/fmeSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { ICourseCompData } from "@/types/Course";
+import "react-loading-skeleton/dist/skeleton.css";
 // export const metadata: Metadata = {
 //   title: "dashboard",
 //   description: "dashboard for setting courses",
@@ -50,13 +40,41 @@ const mockArray = [
 	40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56,
 ];
 
-const Items: React.FC<MyComponentProps> = ({ currentItems }) => {
-	return <>{currentItems && currentItems.map((coursecard) => <CourseCard key={coursecard} post={coursecard} />)}</>;
-};
-
 export default function Home() {
-	// const mappedArray=mockArray.map(coursecard=>(<CourseCard key={coursecard} />))
-	//mock data
+	
+	// use app dispatch
+	const { unchangedCoursesList, fakeNewCourseId } = useAppSelector(fmeSelector);
+	const dispatch = useAppDispatch();
+	const [Courses, setCourses] = useState<ICourseCompData[] | null>(null);
+	
+	useEffect(() => {
+		let token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/course/all`, config)
+			.then((res) => {
+				const data = res.data.course;
+				setCourses(data);
+				setCourseList(data);
+				setCourseListDuplicate(data);
+				// store data in redux so it can reused across components for easy lookup
+				dispatch(setUnchangedCoursesList(data));
+				dispatch(setSelectedCourseId(null));
+
+				// store data in redux so it can reused across components for easy lookup
+				// dispatch(setUnchangedMdaList(data));
+				// dispatch(setSelectedMdaId(null));
+				const maxMdaId = data.reduce((max: number, obj: ICourseCompData) => Math.max(max, obj.Id), 0);
+				dispatch(setFakeNewCourseId(maxMdaId));
+			})
+			.catch((error) => console.log(error));
+	}, [dispatch, fakeNewCourseId]);
+	
+
 	const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
 	const [filterBtns, setFilterBtns] = useState(FilterBtns);
 	const [itemOffset, setItemOffset] = useState(0);
@@ -77,7 +95,7 @@ export default function Home() {
 	// student data
 	const [courseList, setCourseList] = useState<ICourseData[] | null>(null);
 	// stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
-	const [unchangedCourseList, setUnchangedCourseList] = useState<ICourseData[] | null>(null);
+  
 	// for dynamic student data
 	const [courseListDuplicate, setCourseListDuplicate] = useState<ICourseData[] | null>(null);
 	const [showCancel, setShowCancel] = useState(false);
@@ -89,44 +107,17 @@ export default function Home() {
 		});
 		setCourseTabSwitches(newMdaTabSwitches);
 
-		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-		// if (tabIndex == 0) {
-		// 	if (sortStatus && courseList !== null) {
-		// 		const sortedCourseListData = sortCourseListDataAlphabetically(courseList, sortStatus == "-1");
-		// 		setCourseListDuplicate(sortedCourseListData);
-		// 	} else {
-		// 		setCourseListDuplicate(courseList);
-		// 	}
-		// } else if (tabIndex == 1) {
-		// 	const newCourseList = courseList?.filter((ele) => ele.isActive);
-		// 	if (newCourseList) {
-		// 		if (sortStatus) {
-		// 			const sortedCourseData = sortCourseListDataAlphabetically(newCourseList, sortStatus == "-1");
-		// 			setCourseListDuplicate(sortedCourseData);
-		// 		} else {
-		// 			setCourseListDuplicate(newCourseList);
-		// 		}
-		// 	}
-		// } else if (tabIndex == 2) {
-		// 	const newStcList = courseList?.filter((ele) => ele.isActive == false);
-		// 	if (newStcList) {
-		// 		if (sortStatus) {
-		// 			const sortedSTCData = sortCourseListDataAlphabetically(newStcList, sortStatus == "-1");
-		// 			setCourseListDuplicate(sortedSTCData);
-		// 		} else {
-		// 			setCourseListDuplicate(newStcList);
-		// 		}
-		// 	}
-		// }
+		
 	};
+
 	const handleSearch = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault(); // Prevent default form submission
+		event.preventDefault();
+
 		if (query.trim().length >= 1) {
-			// filter from the unchanged stc list
-			const newCourseList = unchangedCourseList?.filter((ele) => ele.name.toLowerCase().includes(query.toLowerCase()));
+			const newCourseList = unchangedCoursesList?.filter((ele) => ele.Name.toLowerCase().includes(query.toLowerCase()));
 			if (newCourseList && newCourseList.length > 0) {
 				// set sort filter to default;
-				const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
+				const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
 				if (sortStatus) {
 					const sortedStudentData = sortCourseDataAlphabetically(newCourseList, sortStatus == "-1");
 					setCourseListDuplicate(sortedStudentData);
@@ -160,13 +151,13 @@ export default function Home() {
 		setQueryError({ active: false, text: "" });
 		// return courseList and listDuplicate to default - might involve calling the api
 		const sortStatus = SortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-		if (sortStatus && unchangedCourseList !== null) {
-			const sortedSTCData = sortCourseDataAlphabetically(unchangedCourseList, sortStatus == "-1");
+		if (sortStatus && unchangedCoursesList !== null) {
+			const sortedSTCData = sortCourseDataAlphabetically(unchangedCoursesList, sortStatus == "-1");
 			setCourseListDuplicate(sortedSTCData);
-			setCourseList(unchangedCourseList);
+			setCourseList(unchangedCoursesList);
 		} else {
-			setCourseListDuplicate(unchangedCourseList);
-			setCourseList(unchangedCourseList);
+			setCourseListDuplicate(unchangedCoursesList);
+			setCourseList(unchangedCoursesList);
 		}
 		setShowCancel(false);
 	};
@@ -202,6 +193,34 @@ export default function Home() {
 			setSortItemDropdownList(newCourseList);
 			setShowSortDropdown(false);
 		}
+	};
+	
+	console.log(Courses)
+	// const Items = courseListDuplicate && courseListDuplicate?.map((course) => <CourseCard key={course.Id.toString()} id={course.Id} name={course.Name} />);
+
+	const CurrentCourse = () => {
+		const [activeDiv, setActiveDiv] = useState(1);
+
+		return (
+			<div className="  flex gap-4 border-[#E4E7EC] border-b-2">
+				<div
+					className={` flex items-center gap-1 p-4 cursor-pointer ${
+						activeDiv === 1 ? "text-[#00932E] border-b-2 border-b-[#00932E] font-bold" : "text-[#344054] border-inherit"
+					}`}
+					onClick={() => setActiveDiv(1)}>
+					<p className=" text-sm ">Current Course List</p>
+					{activeDiv === 1 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">{courseListDuplicate?.length}</div>}
+				</div>
+				<div
+					className={`flex gap-1 p-4 cursor-pointer ${
+						activeDiv === 2 ? "text-[#00932E] border-b-2 border-b-[#00932E] font-bold" : "text-[#344054] border-inherit"
+					}`}
+					onClick={() => setActiveDiv(2)}>
+					<p className=" text-sm">Analytics of all Course</p>
+					{activeDiv === 2 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">4</div>}
+				</div>
+			</div>
+		);
 	};
 
 	return (
@@ -281,62 +300,17 @@ export default function Home() {
 						)}
 					</div>
 				</div>
-
-				{/* <div className="pad">
-					<div className="options">
-						{courseTabSwitches.map((ele, index) => (
-							<TabSwitchStyle key={index} $tabIndex={ele.tabIndex} $isSelected={ele.isSelected} onClick={() => handleTabSwitch(ele.tabIndex)}>
-								<div className="no">
-									<p>{ele.text}</p>
-									{ele.isSelected && courseListDuplicate && (
-										<div className="num">
-											<span>{courseListDuplicate?.length}</span>
-										</div>
-									)}
-								</div>
-								{ele.isSelected && <motion.div className="underline" layoutId="underline"></motion.div>}
-							</TabSwitchStyle>
-						))}
-					</div>
-				</div> */}
-				{/* <div className="pad scroll">
-					<div className="result">
-						<TableStyles>
-							<thead>
-								<tr>
-									<th>STUDENT PROFILE</th>
-									<th>STUDENT ID</th>
-									<th>COURSES TAKEN</th>
-									<th>ADDRESS</th>
-									<th className="faint">STATUS</th>
-								</tr>
-							</thead>
-							<tbody>
-								{courseListDuplicate &&
-									courseListDuplicate.map((ele, index) => (
-										<StudentTableRow
-											key={index}
-											isActive={ele.isActive}
-											profile={ele.profile}
-											coursesNo={ele.coursesNo}
-											studentId={ele.studentId}
-											state={ele.state}
-											id={ele.id}
-										/>
-									))}
-							</tbody>
-						</TableStyles>
-					</div>
-				</div> */}
 			</SearchAndResultStyle>
-			<section className="p-4 rounded-lg bg-white">
+			<section className="p-4 rounded-lg bg-white mt-4">
 				<CurrentCourse />
-				<div className=" flex flex-wrap gap-4 p-4 justify-evenly ">
-					<Items currentItems={currentItems} />
+				<div className=" flex flex-wrap gap-2 p-4  ">
+					{courseListDuplicate && courseListDuplicate?.map((course) => <CourseCard key={course.Id.toString()} id={course.Id} name={course.Name} />)}
+					{courseListDuplicate === null && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => <CourseItemSkeleton key={index} />)}
 				</div>
-				
 			</section>
 			{showNewMdaFormModal && <NewMdaModal cancelModal={() => setShowNewMdaFormModal(false)} />}
 		</section>
 	);
 }
+
+

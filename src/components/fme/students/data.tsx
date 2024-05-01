@@ -1,4 +1,5 @@
 import { ITabSwitch, IMdaItemDropdown } from "../mda/data";
+import { IStudentCompData } from "@/types/Student";
 
 export const StudentsTabSwitches: ITabSwitch[] = [
 	{ text: "All Student List", tabIndex: 0, isSelected: true },
@@ -82,13 +83,17 @@ export const StudentItemDropdownList: IMdaItemDropdown[] = [
 	{ text: "Clear Selection", isSelected: false, hasBorder: true },
 ];
 
-export const sortStudentDataAlphabetically = (data: IStudentData[], reverse: boolean = false): IStudentData[] => {
+export const sortStudentDataAlphabetically = (data: IStudentCompData[], reverse: boolean = false): IStudentCompData[] => {
 	const sortedData = data.slice().sort((a, b) => {
 		if (reverse) {
-			return b.profile.localeCompare(a.profile);
+			return b.LastName.localeCompare(a.LastName);
 		} else {
-			return a.profile.localeCompare(b.profile);
+			return a.LastName.localeCompare(b.LastName);
 		}
 	});
 	return sortedData;
 };
+
+export interface IStudentDropdownFunc extends IMdaItemDropdown {
+	handleSelect: () => void;
+}
