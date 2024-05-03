@@ -9,6 +9,10 @@ import { BackSvg } from "@/components/fme/course_list/Svg";
 import { BACKEND_URL } from "@/lib/config";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { AngleDownStyles } from "@/components/icons/header";
+import { ColoredArrowDown, DashboardMdaIcon, DashboardStcIcon, DashboardStudentIcon } from "@/components/icons/fme/main";
+import { IconWrapper, TickIcon } from "@/components/icons/fme/mda";
+import { BarChartComp, CourseItem } from "@/components/fme/index";
 
 interface ICourse {
 	Id: number;
@@ -49,9 +53,23 @@ export default function Slug() {
 	console.log(Course);
 
 	const GridCard = () => {
+		const [showOptions, setShowOptions] = useState(false);
+		const [graphOptions, setGraphOptions] = useState([
+			{ name: "MDAs", isSelected: true },
+			{ name: "STCs", isSelected: false },
+			{ name: "Students", isSelected: false },
+		]);
+		const handleSelectOption = (name: string) => {
+			const newGraphOptions = graphOptions.map((ele) => {
+				return { ...ele, isSelected: ele.name === name };
+			});
+			setGraphOptions(newGraphOptions);
+			setShowOptions(false);
+		};
 		return (
 			<section className=" flex mt-4 gap-4">
-				<section className=" flex-1 flex flex-wrap gap-2">
+				<section className=" flex-1 space-y-2">
+					<section className="flex justify-between">
 					<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#00932E] bg-[#E7F6EC]">
 						<div className="">
 							<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Students</p>
@@ -68,12 +86,12 @@ export default function Slug() {
 						</div>
 						<CertifiedStudent />
 					</div>
+					</section>
+					<section className="flex justify-between">
 					<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#81A2F4] bg-[#F1F5FF]">
 						<div className="">
 							<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of STCs</p>
-							<p className=" text-lg font-semibold text-[#344054] leading-6">
-								{Course?.TotalStc !== undefined ? Course?.TotalStc : <Skeleton />}
-							</p>
+							<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalStc !== undefined ? Course?.TotalStc : <Skeleton />}</p>
 						</div>
 						<MDA />
 					</div>
@@ -84,8 +102,13 @@ export default function Slug() {
 						</div>
 						<STC />
 					</div>
+					</section>
 				</section>
-				<section className=" flex-1 border border-[#E4E7EC] rounded-[10px] px-5 py-[18px]"></section>
+				<section className=" flex-1 border border-[#E4E7EC] rounded-[10px] px-5 py-[18px]">
+					<div className="graph">
+						<BarChartComp />
+					</div>
+				</section>
 			</section>
 		);
 	};
