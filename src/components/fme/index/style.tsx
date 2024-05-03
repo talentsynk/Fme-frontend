@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
-export interface ICourseItemStyle{
-    $lightColor ?: string;
-    $thickColor ?: string;
-    percent ?: number;
-    $textColor ?: string;
-    $bgColor ?: string;
+export interface ICourseItemStyle {
+  $lightColor?: string;
+  $thickColor?: string;
+  percent?: number;
+  $textColor?: string;
+  $bgColor?: string;
 }
 export const CourseItemStyles = styled.div<ICourseItemStyle>`
-border-radius: 0.75rem;
-background: ${props => props.$bgColor};
+  border-radius: 0.75rem;
+  background: ${(props) => props.$bgColor};
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -21,9 +21,9 @@ background: ${props => props.$bgColor};
     justify-content: center;
     align-items: center;
     border-radius: 1.25rem;
-    background: ${props => props.$lightColor};
+    background: ${(props) => props.$lightColor};
     p {
-      color: ${props => props.$thickColor};
+      color: ${(props) => props.$thickColor};
       font-size: 0.875rem;
       font-style: normal;
       font-weight: 600;
@@ -39,14 +39,14 @@ background: ${props => props.$bgColor};
     align-items: center;
     justify-content: space-between;
     .name {
-      color: ${props => props.$textColor};
+      color: ${(props) => props.$textColor};
       font-size: 0.875rem;
       font-style: normal;
       font-weight: 500;
       line-height: 1.25rem; /* 142.857% */
     }
     .percent {
-      color: ${props => props.$thickColor};
+      color: ${(props) => props.$thickColor};
       font-size: 0.875rem;
       font-style: normal;
       font-weight: 400;
@@ -57,15 +57,37 @@ background: ${props => props.$bgColor};
     padding-left: 0.5rem;
     margin-top: 0.5rem;
     .bar {
-      background: ${props => props.$lightColor};
+      background: ${(props) => props.$lightColor};
       height: 9px;
       border-radius: 0.25rem;
     }
     .inner-bar {
-      background: ${props => props.$thickColor};
+      background: ${(props) => props.$thickColor};
       height: 9px;
       border-radius: 0.25rem;
-      width: ${props => props.percent}%;
+      width: ${(props) => props.percent}%;
     }
   }
 `;
+
+export const BarChartCompStyle = styled.div`
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7e7;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0rem 1.5rem 0rem;
+  color: #95969c;
+  font-size: 0.75388rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  .skele{
+    width: 100%;
+    height: 350px;
+    z-index: 5;
+  }
+`;
+
+
