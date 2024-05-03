@@ -666,7 +666,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												phoneError.active !== false ||
 												SIDError.active !== false ||
 												NsqLevelError.active !== false ||
-												state == ""
+												state == ""||
+												DOBstring==""
 											}>
 											{isLoading ? <ButtonLoader /> : "Create Student"}
 										</button>
