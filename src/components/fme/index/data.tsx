@@ -38,3 +38,16 @@ export const ColorGroup = [
     bgColor: "#F5FAFF",
   },
 ];
+
+export interface IGraphplots {
+  name: string;
+  hours: number;
+}
+export const GraphPlots: IGraphplots[] = [
+  { name: "Jan", hours: 40 },
+  { name: "Feb", hours: 30 },
+  { name: "Mar", hours: 20 },
+  { name: "Apr", hours: 25 },
+  { name: "May", hours: 35 },
+  { name: "June", hours: 10 },
+];
