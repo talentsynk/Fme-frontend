@@ -2,9 +2,9 @@ import { ITabSwitch, IMdaItemDropdown } from "../mda/data";
 import { IStudentCompData } from "@/types/Student";
 
 export const StudentsTabSwitches: ITabSwitch[] = [
-	{ text: "All Student List", tabIndex: 0, isSelected: true },
+	{ text: "All Students List", tabIndex: 0, isSelected: true },
 	{ text: "Active Students", tabIndex: 1, isSelected: false },
-	{ text: "Inactive Studentss", tabIndex: 2, isSelected: false },
+	{ text: "Inactive Students", tabIndex: 2, isSelected: false },
 ];
 
 export interface IStudentData {
