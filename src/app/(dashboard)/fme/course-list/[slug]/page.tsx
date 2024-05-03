@@ -1,18 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
-import Link from "next/link";
-import Cookies from "js-cookie";
-import { CertifiedStudent, MDA, STC, TotalStudent } from "@/components/fme/course_list/Svg";
-import { BackSvg } from "@/components/fme/course_list/Svg";
+import { BackSvg, CertifiedStudent, MDA, STC, TotalStudent } from "@/components/fme/course_list/Svg";
+import { BarChartComp } from "@/components/fme/index";
 import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
+import Cookies from "js-cookie";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { AngleDownStyles } from "@/components/icons/header";
-import { ColoredArrowDown, DashboardMdaIcon, DashboardStcIcon, DashboardStudentIcon } from "@/components/icons/fme/main";
-import { IconWrapper, TickIcon } from "@/components/icons/fme/mda";
-import { BarChartComp, CourseItem } from "@/components/fme/index";
 
 interface ICourse {
 	Id: number;
@@ -24,6 +20,7 @@ interface ICourse {
 }
 
 export default function Slug() {
+	//the unique page for each courses
 	const searchParams = useSearchParams();
 
 	const courseID = searchParams.get("course");
@@ -66,42 +63,43 @@ export default function Slug() {
 			setGraphOptions(newGraphOptions);
 			setShowOptions(false);
 		};
+
 		return (
 			<section className=" flex mt-4 gap-4">
 				<section className=" flex-1 space-y-2">
 					<section className="flex justify-between">
-					<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#00932E] bg-[#E7F6EC]">
-						<div className="">
-							<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Students</p>
-							<p className=" text-lg font-semibold text-[#344054] leading-6">
-								{Course?.TotalStudents !== undefined ? Course?.TotalStudents : <Skeleton />}
-							</p>
+						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#00932E] bg-[#E7F6EC]">
+							<div className="">
+								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Students</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">
+									{Course?.TotalStudents !== undefined ? Course?.TotalStudents : <Skeleton />}
+								</p>
+							</div>
+							<TotalStudent />
 						</div>
-						<TotalStudent />
-					</div>
-					<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#7168C8] bg-[#F5F4FF]">
-						<div className="">
-							<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of MDAs</p>
-							<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalMda !== undefined ? Course?.TotalMda : <Skeleton />}</p>
+						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#7168C8] bg-[#F5F4FF]">
+							<div className="">
+								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of MDAs</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalMda !== undefined ? Course?.TotalMda : <Skeleton />}</p>
+							</div>
+							<CertifiedStudent />
 						</div>
-						<CertifiedStudent />
-					</div>
 					</section>
 					<section className="flex justify-between">
-					<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#81A2F4] bg-[#F1F5FF]">
-						<div className="">
-							<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of STCs</p>
-							<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalStc !== undefined ? Course?.TotalStc : <Skeleton />}</p>
+						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#81A2F4] bg-[#F1F5FF]">
+							<div className="">
+								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of STCs</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalStc !== undefined ? Course?.TotalStc : <Skeleton />}</p>
+							</div>
+							<MDA />
 						</div>
-						<MDA />
-					</div>
-					<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#E3C54D] bg-[#FFFBEB]">
-						<div className="">
-							<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Certified Students</p>
-							<p className=" text-lg font-semibold text-[#344054] leading-6">12</p>
+						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#E3C54D] bg-[#FFFBEB]">
+							<div className="">
+								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Certified Students</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">12</p>
+							</div>
+							<STC />
 						</div>
-						<STC />
-					</div>
 					</section>
 				</section>
 				<section className=" flex-1 border border-[#E4E7EC] rounded-[10px] px-5 py-[18px]">
