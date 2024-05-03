@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { CalendarIcon } from "@/components/icons/sidebar";
 import { formatDate } from "@/utils/formatDate";
 import { LogoutModal } from "../sidebar/sidebar";
+import Cookies from "js-cookie";
 
 export const DashboardHeader = () => {
   const [links, setLinks] = useState(DesktopDropdownLinks);
@@ -23,7 +24,7 @@ export const DashboardHeader = () => {
     });
     setLinks(newLinks);
     setShowDropdown(false);
-    if(id == "2"){
+    if (id == "2") {
       setIsLoggingOut(true);
     }
   };
@@ -31,7 +32,7 @@ export const DashboardHeader = () => {
   // for logging out
   const [isloggingout, setIsLoggingOut] = useState(false);
   const router = useRouter();
-
+  const role = Cookies.get("userRole");
   const handleLogout = () => {
     // logout logic
     console.log("I am logging out");
@@ -51,29 +52,29 @@ export const DashboardHeader = () => {
           </div>
           {showDropdown && (
             <div className="dropdown">
-              {links.map((ele, index) => (
-                <DesktopDropdownLink
-                  id={ele.id}
-                  key={index}
-                  link={ele.link}
-                  text={ele.text}
-                  isSelected={ele.isSelected}
-                  icon={ele.icon}
-                  activeBg={ele.activeBg}
-                  activeState={ele.activeState}
-                  activeTextColor={ele.activeTextColor}
-                  textColor={ele.textColor}
-                  handleClick={() => handleClick(ele.id)}
-                />
-              ))}
+              {links.map((ele, index) =>
+                ele.id == "1" && role === "FME" ? null : (
+                  <DesktopDropdownLink
+                    id={ele.id}
+                    key={index}
+                    link={ele.link}
+                    text={ele.text}
+                    isSelected={ele.isSelected}
+                    icon={ele.icon}
+                    activeBg={ele.activeBg}
+                    activeState={ele.activeState}
+                    activeTextColor={ele.activeTextColor}
+                    textColor={ele.textColor}
+                    handleClick={() => handleClick(ele.id)}
+                  />
+                )
+              )}
             </div>
           )}
         </div>
       </div>
       {isloggingout && (
-        <LogoutModal
-          cancelLogout={() => setIsLoggingOut(false)}
-        />
+        <LogoutModal cancelLogout={() => setIsLoggingOut(false)} />
       )}
     </DashboardHeaderStyle>
   );

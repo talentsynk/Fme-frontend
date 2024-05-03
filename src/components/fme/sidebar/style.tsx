@@ -40,6 +40,8 @@ export const SidebarStyles = styled.div`
   }
   .org {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.75rem;
     p {
       color: #000;

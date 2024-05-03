@@ -15,10 +15,9 @@ import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { CourseItem } from "@/components/fme/index";
+import { BarChartComp, CourseItem } from "@/components/fme/index";
 import { ColorGroup, CourseItems } from "@/components/fme/index/data";
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
-
 // the first page on the fme dashboard
 
 export default function Home() {
@@ -142,7 +141,7 @@ export default function Home() {
             </div>
           </div>
           <div className="graph">
-            <h1>Graph Here</h1>
+            <BarChartComp />
           </div>
         </div>
         <div className="top-courses">
@@ -166,7 +165,7 @@ export default function Home() {
               ))}
           </div>
         </div>
-        <div className="track br">6</div>
+        {/* <div className="track br">6</div> */}
       </FMEHomeStyles>
     </>
   );
