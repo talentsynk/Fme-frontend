@@ -14,6 +14,8 @@ export const STCTabSwitches: ITabSwitch[] = [
   { text: "Inactive STCs", tabIndex: 2, isSelected: false },
 ];
 
+// stc-login email: fgwork@gmail.com
+// pwd: Pass123*
 export interface ISTCData {
   id: string;
   name: string;
