@@ -5,7 +5,7 @@ export interface IMDACompData {
     Address: string;
     StateOfOperation ?: string;
     UserId ?: number;
-    Email: string;
+    email: string;
     is_active: boolean;
     stc_count ?: number;
     student_count ?: number;
