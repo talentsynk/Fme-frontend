@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 export const GenericDashboardLayoutStyle = styled.main`
+  .main {
+    background: #f9fafb;
+    padding: 0rem 0rem 2rem 0rem;
+  }
   @media (max-width: 998px) {
     .sidebar {
       display: none;
@@ -17,14 +21,14 @@ export const GenericDashboardLayoutStyle = styled.main`
     background: #fff;
     width: 0.25rem;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     border-radius: 0.125rem;
-    background: #E5E7EB; /* color of the thumb */
+    background: #e5e7eb; /* color of the thumb */
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #E7F6EC; /* color of the thumb on hover */
+    background: #e7f6ec; /* color of the thumb on hover */
   }
   @media (min-width: 998px) {
     display: grid;
@@ -51,7 +55,6 @@ export const GenericDashboardLayoutStyle = styled.main`
       grid-row: 2/3;
       padding: 1.5rem 1.5rem 3rem 1.35rem;
       max-height: fit-content;
-      background: #f9fafb;
     }
   }
 `;
@@ -74,7 +77,7 @@ export const AuthLayoutStyles = styled.main`
     .desktop {
       display: none;
     }
-    .cont{
+    .cont {
       justify-content: flex-start;
     }
     .center {
@@ -87,7 +90,7 @@ export const AuthLayoutStyles = styled.main`
     background: #e7f6ec;
     padding-top: 3rem;
     padding-bottom: 3rem;
-    .cont{
+    .cont {
       justify-content: flex-end;
       gap: 3.375rem;
     }
@@ -114,7 +117,6 @@ export const AuthLayoutStyles = styled.main`
   }
 `;
 
-
 export const RootLayoutStyles = styled.main`
   border: 2px solid #000;
-`
+`;
