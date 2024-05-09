@@ -474,14 +474,14 @@ export const MDADetailStyle = styled(AbsoluteContStyle)`
         line-height: 1.25rem; /* 142.857% */
       }
     }
-    .btn .reactivate{
-      background: #FBEAE9;
-      border: 1px solid #FBEAE9;
-      p{
-        color: #F32D2D;
+    .btn .reactivate {
+      background: #fbeae9;
+      border: 1px solid #fbeae9;
+      p {
+        color: #f32d2d;
       }
     }
-    .btn button:hover{
+    .btn button:hover {
       border: 1px solid #000;
     }
   }
@@ -568,6 +568,7 @@ export const TableStyles = styled.table`
   // width: 100%;
   th {
     padding: 0.75rem 1.5rem;
+    white-space: nowrap;
   }
   thead {
     background: var(--Grey-50, #f9fafb);
@@ -600,6 +601,15 @@ export const TrStyles = styled.tr`
     min-height: 100px;
     overflow: hidden;
     text-align: center;
+    color: var(--text-style, #101928);
+    font-family: "Satoshi";
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.25rem; /* 142.857% */
+  }
+  .name p {
+    font-weight: 700;
   }
   .flex {
     display: flex;
@@ -745,7 +755,7 @@ export const NewMdaFormStyles = styled(FormStyles)`
     justify-content: space-between;
     align-items: flex-start;
   }
-  .form-input{
+  .form-input {
     gap: 1rem;
   }
   .form {

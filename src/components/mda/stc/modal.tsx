@@ -167,7 +167,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         };
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/stc/create-stc`, // change this to the actual Mda create Stc endpoint
+          `${BACKEND_URL}/stc/create-mda-stc`, // change this to the actual Mda create Stc endpoint
           body,
           config
         );
