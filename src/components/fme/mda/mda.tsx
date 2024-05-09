@@ -93,8 +93,8 @@ export const TableRow: React.FC<IMDACompData> = ({
   
   return (
     <TrStyles>
-      <td className="">
-        <p>{truncateString(name,37).toUpperCase()}</p>
+      <td >
+        <p className="name">{truncateString(name,37).toUpperCase()}</p>
       </td>
       <td>
         <p>{stcNo ? stcNo  : 0}</p>

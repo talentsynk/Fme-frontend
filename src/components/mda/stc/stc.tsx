@@ -33,7 +33,6 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
     const newStcList = stcItemList.map((ele) => {
       return { ...ele, isSelected: ele.text === action };
     });
-    console.log("snow");
     setStcItemList(newStcList);
     if (action === "Clear Selection") {
       setStcItemList(StcItemDropdownList);

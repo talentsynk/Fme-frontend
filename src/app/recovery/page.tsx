@@ -154,6 +154,7 @@ export default function AccountRecovery() {
   const handleOtpExpiration = useCallback(() => {
     setHasOtpExpired(true);
   }, [setHasOtpExpired]);
+  
   return (
     <>
       <Head>
