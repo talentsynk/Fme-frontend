@@ -122,7 +122,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-all-stc`, config) //change endpoint to stc
+      .get(`${BACKEND_URL}/stc/get-all-mda-stc`, config) //change endpoint to stc
       .then((res) => {
         const data = res.data.stcs; //change this to stc
         setStcList(data);
