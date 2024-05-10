@@ -33,10 +33,7 @@ import { BACKEND_URL } from "@/lib/config";
 // the first page on the fme dashboard
 
 export default function Home() {
-	// const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
-	// const [showSortDropdown, setShowSortDropdown] = useState(false);
-	// const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-	// const [filterBtns, setFilterBtns] = useState(FilterBtns);
+	
 	const [showCancel, setShowCancel] = useState(false);
 	const [studentTabSwitches, setStudentTabSwitches] = useState(StudentsTabSwitches);
 	const [total, setTotal] = useState({

@@ -109,7 +109,9 @@ export default function AccountRecovery() {
           Otp: userOtp,
         });
         if (data) {
+          // console.log(data);
           // otp verification expires in 5 mins
+          console.log(data);
           let inSetTime = new Date(new Date().getTime() + 5 * 60 * 1000);
           Cookies.set("otp", "otp is set", { expires: inSetTime });
           Cookies.set("email", email);
@@ -152,6 +154,7 @@ export default function AccountRecovery() {
   const handleOtpExpiration = useCallback(() => {
     setHasOtpExpired(true);
   }, [setHasOtpExpired]);
+  
   return (
     <>
       <Head>

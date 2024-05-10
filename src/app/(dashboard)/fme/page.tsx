@@ -82,6 +82,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <FMEHomeStyles>
+        <div className="totals">
         <div className="total">
           <IconWrapper>
             <DashboardMdaIcon />
@@ -108,6 +109,7 @@ export default function Home() {
             <span>Total Students</span>
             <h3>{totalStat.totalStudents || <Skeleton />}</h3>
           </div>
+        </div>
         </div>
         <div className="summary">
           <div className="head">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IStudentData, StudentItemDropdownList, IStudentDropdownFunc } from "./data";
-import { NocenterStyles } from "../stc/styles";
-import { MdaItemComp } from "../mda/mda";
+import { NocenterStyles } from "../../fme/stc/styles";
+import { MdaItemComp } from "../../fme/mda/mda";
 import {
 	CheckboxStyle,
 	DropdownOptionsStyle,
@@ -11,19 +11,20 @@ import {
 	StatusStyles,
 	TableDropdownStyles,
 	TrStyles,
-} from "../mda/styles";
+} from "../../fme/mda/styles";
 import { CheckedBoxIcon, ThreedotsIcon, UncheckedBoxIcon } from "@/components/icons/fme/mda";
 import { ReactivateStudentComp, StudentsDetailModal, SuspendStudentComp } from "./modal";
 import { fmeSelector, setSelectedStudentId } from "@/redux/fme/fmeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { truncateString } from "@/utils/truncateString";
-import { IFilterBtn } from "../mda/data";
+import { IFilterBtn } from "../../fme/mda/data";
 import { IStudentCompData } from "@/types/Student";
 
 interface ICheckbox {
 	isChecked: boolean;
 	handleCheckedAction: () => void;
 }
+
 export const CheckboxComp: React.FC<ICheckbox> = ({ isChecked, handleCheckedAction }) => {
 	return <CheckboxStyle onClick={handleCheckedAction}>{isChecked ? <CheckedBoxIcon /> : <UncheckedBoxIcon />}</CheckboxStyle>;
 };
