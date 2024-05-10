@@ -17,7 +17,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { BarChartComp, CourseItem } from "@/components/fme/index";
 
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
-import { ColorGroup, CourseItems, GraphOptions } from "@/components/fme/mda/index/data";
+import { ColorGroup, CourseItems, GraphOptions } from "@/components/mda/index/data";
 import { FMEHomeStyles } from "../fme/style";
 // the first page on the fme dashboard
 
@@ -57,7 +57,7 @@ export default function Home() {
     axios
       .get(`${BACKEND_URL}/stc/get-all-mda-stc`, config)
       .then((res) => {
-        if (res.data.response) {
+        if (res.data) { // change to res.data.response
           // const { TotalStcs, TotalMdas, TotalStudents } = res.data.response;
           setTotalStat({
             totalMdas: 20,
@@ -92,7 +92,7 @@ export default function Home() {
               <DashboardMdaIcon />
             </IconWrapper>
             <div className="stat">
-              <span>Total MDAs</span>
+              <span>Total STCs</span>
               <h3>{totalStat.totalMdas || <Skeleton />}</h3>
             </div>
           </div>
