@@ -58,6 +58,7 @@ export const CoatOfArm = styled.div`
   img {
     width: 5rem;
     height: 5rem;
+    object-fit: contain;
   }
   @media (max-width: 998px) {
     img {
@@ -68,6 +69,9 @@ export const CoatOfArm = styled.div`
 `;
 
 export const CoderinaLogo = styled.div`
+  img{
+    object-fit: contain;
+  }
   @media (max-width: 998px) {
     img {
       width: 116px;

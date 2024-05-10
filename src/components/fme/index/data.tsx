@@ -40,14 +40,25 @@ export const ColorGroup = [
 ];
 
 export interface IGraphplots {
-  name: string;
-  hours: number;
+  name : string;
+  students: number;
 }
 export const GraphPlots: IGraphplots[] = [
-  { name: "Jan", hours: 40 },
-  { name: "Feb", hours: 30 },
-  { name: "Mar", hours: 20 },
-  { name: "Apr", hours: 25 },
-  { name: "May", hours: 35 },
-  { name: "June", hours: 10 },
+  { name : "MICT", students: 135 },
+  { name : "NITDA" , students: 100 },
+  { name : "NIIT"  , students: 90 },
+  { name : "NESMA" , students: 55 },
+  { name : "FED MINISTRY OF WORKS & HOUSING" , students: 35 },
+  { name : "NABTEB" , students: 25 },
 ];
+
+interface IGraphOption{
+  name : string;
+  isSelected : boolean;
+  api : string;
+}
+export const GraphOptions:IGraphOption[] = [
+  { name: "MDAs", isSelected: true, api : "mda/get-all-mdas" },
+  { name: "STCs", isSelected: false , api : "stc/get-all-stc"},
+  { name: "Students", isSelected: false, api : "mda/total-mda" },
+]

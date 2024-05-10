@@ -285,12 +285,13 @@ const FGLogostyles = styled.div`
   justify-content: center;
   img {
     width: 3.8125rem;
-    height: 5rem;
+    height: auto;
+    object-fit: contain;
   }
   @media (min-width: 998px){
     img {
       width: 5rem;
-      height: 5rem;
+      height: auto;
     }
   }
 `;

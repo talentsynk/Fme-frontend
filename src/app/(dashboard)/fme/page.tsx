@@ -16,7 +16,11 @@ import { BACKEND_URL } from "@/lib/config";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { BarChartComp, CourseItem } from "@/components/fme/index";
-import { ColorGroup, CourseItems } from "@/components/fme/index/data";
+import {
+  ColorGroup,
+  CourseItems,
+  GraphOptions,
+} from "@/components/fme/index/data";
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
 // the first page on the fme dashboard
 
@@ -31,16 +35,18 @@ export default function Home() {
     { name: string; percent: number }[] | null
   >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
-  const [graphOptions, setGraphOptions] = useState([
-    { name: "MDAs", isSelected: true },
-    { name: "STCs", isSelected: false },
-    { name: "Students", isSelected: false },
-  ]);
+  const [graphOptions, setGraphOptions] = useState(GraphOptions);
+  const [selectedGraphOption, setSelectedGraphOption] = useState(
+    GraphOptions.find((ele) => ele.isSelected === true)
+  );
   const handleSelectOption = (name: string) => {
     const newGraphOptions = graphOptions.map((ele) => {
       return { ...ele, isSelected: ele.name === name };
     });
     setGraphOptions(newGraphOptions);
+    setSelectedGraphOption(
+      newGraphOptions.find((ele) => ele.isSelected === true)
+    );
     setShowOptions(false);
   };
   // task left: work on add New Mda and Stc, plug in the APIs on wednesday
@@ -66,6 +72,7 @@ export default function Home() {
       .catch((error) => console.log(error));
 
     // simulating get-request for the top course tracker API
+
     axios
       .get(`${BACKEND_URL}/stc/get-all-stc`, config)
       .then((res) => {
@@ -83,45 +90,43 @@ export default function Home() {
       </Head>
       <FMEHomeStyles>
         <div className="totals">
-        <div className="total">
-          <IconWrapper>
-            <DashboardMdaIcon />
-          </IconWrapper>
-          <div className="stat">
-            <span>Total MDAs</span>
-            <h3>{totalStat.totalMdas || <Skeleton />}</h3>
+          <div className="total">
+            <IconWrapper>
+              <DashboardMdaIcon />
+            </IconWrapper>
+            <div className="stat">
+              <span>Total MDAs</span>
+              <h3>{totalStat.totalMdas || <Skeleton />}</h3>
+            </div>
           </div>
-        </div>
-        <div className="total">
-          <IconWrapper>
-            <DashboardStcIcon />
-          </IconWrapper>
-          <div className="stat">
-            <span>Total STCs</span>
-            <h3>{totalStat.totalStcs || <Skeleton />}</h3>
+          <div className="total">
+            <IconWrapper>
+              <DashboardStcIcon />
+            </IconWrapper>
+            <div className="stat">
+              <span>Total STCs</span>
+              <h3>{totalStat.totalStcs || <Skeleton />}</h3>
+            </div>
           </div>
-        </div>
-        <div className="total">
-          <IconWrapper>
-            <DashboardStudentIcon />
-          </IconWrapper>
-          <div className="stat">
-            <span>Total Students</span>
-            <h3>{totalStat.totalStudents || <Skeleton />}</h3>
+          <div className="total">
+            <IconWrapper>
+              <DashboardStudentIcon />
+            </IconWrapper>
+            <div className="stat">
+              <span>Total Students</span>
+              <h3>{totalStat.totalStudents || <Skeleton />}</h3>
+            </div>
           </div>
-        </div>
         </div>
         <div className="summary">
           <div className="head">
-            <h4>Summary</h4>
+            <h4>Statistics</h4>
             <div className="dropdown">
               <div
                 className="dd-head"
                 onClick={() => setShowOptions(!showOptions)}
               >
-                <p>
-                  {graphOptions.find((ele) => ele.isSelected === true)?.name}
-                </p>
+                <p>{selectedGraphOption?.name}</p>
                 <AngleDownStyles $isSelected={showOptions}>
                   <ColoredArrowDown />
                 </AngleDownStyles>
@@ -143,7 +148,10 @@ export default function Home() {
             </div>
           </div>
           <div className="graph">
-            <BarChartComp />
+            <BarChartComp
+              option={selectedGraphOption?.name}
+              api={selectedGraphOption?.api}
+            />
           </div>
         </div>
         <div className="top-courses">
