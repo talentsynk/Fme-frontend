@@ -34,7 +34,7 @@ export const CourseItem: React.FC<ICourseItem> = ({
   return (
     <CourseItemStyles
       $lightColor={$lightColor}
-      percent={percent}
+      percent={percent ? Math.round(percent) : 0}
       $textColor={$textColor}
       $thickColor={$thickColor}
       $bgColor={$bgColor}
@@ -45,7 +45,7 @@ export const CourseItem: React.FC<ICourseItem> = ({
       <div className="body">
         <div className="top">
           <p className="name">{name}</p>
-          <p className="percent">{percent}%</p>
+          <p className="percent">{percent ? Math.round(percent) : 0}%</p>
         </div>
         <div className="pad">
           <div className="bar">
@@ -63,7 +63,7 @@ interface IBarchartComp {
   api?: string;
 }
 export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
-  const [data, setData] = useState<IGraphplots[] | null>(null);
+  const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const token = Cookies.get("token");
@@ -78,12 +78,17 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
       .get(`${BACKEND_URL}/${api}`, config)
       .then((res) => {
         if (res.data) {
-          setData(GraphPlots);
+          console.log(res.data);
+          if(option === "Courses"){
+            setData(res.data.coursePercentages);
+          }else{
+            setData(GraphPlots);
+          }
           setIsLoading(false);
         }
       })
       .catch((error) => console.log(error));
-  }, [api]);
+  }, [api, option]);
   return (
     <>
       {!isLoading && (
@@ -99,11 +104,11 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
                   data={data}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
-                  <XAxis dataKey="name" stroke="#8884d8" />
+                  <XAxis dataKey={option === "Courses" ? "CourseName" : "name"} stroke="#8884d8" />
                   <YAxis />
                   <Tooltip />
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <Bar dataKey="students" fill="#00932E" barSize={30} />
+                  <Bar dataKey={option === "Courses" ? "StudentCount" : "students"} fill="#00932E" barSize={30} />
                 </BarChart>
               </ResponsiveContainer>
             </>

@@ -60,5 +60,5 @@ interface IGraphOption{
 export const GraphOptions:IGraphOption[] = [
   { name: "MDAs", isSelected: true, api : "mda/get-all-mdas" },
   { name: "STCs", isSelected: false , api : "stc/get-all-stc"},
-  { name: "Students", isSelected: false, api : "mda/total-mda" },
+  { name: "Courses", isSelected: false, api : "dashboard/course-percentage" },
 ]

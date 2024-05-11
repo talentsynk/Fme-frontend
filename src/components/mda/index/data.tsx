@@ -59,5 +59,5 @@ export const CourseItems = [
   }
   export const GraphOptions:IGraphOption[] = [
     { name: "STCs", isSelected: true , api : "stc/get-all-mda-stc"},
-    { name: "Students", isSelected: false, api : "stc/get-total-count" },
+    { name: "Courses", isSelected: false, api : "dashboard/course-percentage" },
   ]

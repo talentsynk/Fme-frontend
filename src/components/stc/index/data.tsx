@@ -6,6 +6,9 @@ export const CourseItems = [
     { name: "Weldering", percent: 90 },
   ];
   
+  // stc-login email: fgwork@gmail.com
+// pwd: Pass123*
+
   export const ColorGroup = [
     {
       lightColor: "#D1E9FF",

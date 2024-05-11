@@ -140,7 +140,7 @@ export default function Home() {
       .catch((error) => console.log(error));
 
     axios
-      .get(`${BACKEND_URL}/stc/get-total-count`, config) // change to stc endpoint
+      .get(`${BACKEND_URL}/stc/get-mda-total`, config) // change to stc endpoint
       .then((res) => {
         const { total_active_stc, total_stc, total_inactive_stc } = res.data;
         setTotal({
@@ -164,7 +164,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-total-count`, config)
+      .get(`${BACKEND_URL}/stc/get-mda-total`, config)
       .then((res) => {
         const { total_active_stc, total_stc, total_inactive_stc } = res.data;
         setTotal({

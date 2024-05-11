@@ -29,7 +29,7 @@ export default function Home() {
     totalStudents: 0,
   });
   const [courseLists, setCourseLists] = useState<
-    { name: string; percent: number }[] | null
+    { CourseName: string; StudentCount: number, TotalPercent : number }[] | null
   >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState(GraphOptions);
@@ -71,10 +71,10 @@ export default function Home() {
     // simulating get-request for the top course tracker API
 
     axios
-      .get(`${BACKEND_URL}/stc/get-all-mda-stc`, config)
+      .get(`${BACKEND_URL}/dashboard/course-percentage`, config)
       .then((res) => {
         if (res.data) {
-          setCourseLists(CourseItems);
+          setCourseLists(res.data.coursePercentages);
         }
       })
       .catch((error) => console.log(error));
@@ -158,8 +158,8 @@ export default function Home() {
               courseLists.map((ele, index) => (
                 <CourseItem
                   key={index}
-                  percent={ele.percent}
-                  name={ele.name}
+                  percent={ele.TotalPercent}
+                  name={ele.CourseName}
                   $bgColor={colorGroup[index % 5].bgColor}
                   $lightColor={colorGroup[index % 5].lightColor}
                   $thickColor={colorGroup[index % 5].thickColor}
