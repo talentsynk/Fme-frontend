@@ -5,6 +5,7 @@ import {
   SortItemDropdownList,
 } from "@/components/fme/mda/data";
 import {
+  NoDataStyles,
   SearchAndResultStyle,
   SortOptionsStyle,
   StatListItemStyle,
@@ -32,7 +33,9 @@ import { sortMDADataAlphabetically } from "@/utils/sortData";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import {
   fmeSelector,
+  resetPageNo,
   setFakeNewMdaId,
+  setPageNo,
   setSelectedMdaId,
   setUnchangedMdaList,
 } from "@/redux/fme/fmeSlice";
@@ -41,21 +44,22 @@ import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import { IMDACompData } from "@/types/Mda";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
-
+import { Paginator } from "@/components/fme/paginator/Paginator";
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [mdaTabSwitches, setMDATabSwitches] = useState(MDATabSwitches);
   const [total, setTotal] = useState({
-    totalMda : 0,
-    totalActive : 0,
-    totalInactive : 0
+    totalMda: 0,
+    totalActive: 0,
+    totalInactive: 0,
   });
   // get data from redux
   // stores the unchanged mda initial data, this is useful to prevent multiple API calls when no data is changing
-  const { unchangedMdaList, fakeNewMdaId } = useAppSelector(fmeSelector);
+  const { unchangedMdaList, fakeNewMdaId, pageNo } =
+    useAppSelector(fmeSelector);
   // use app dispatch
   const dispatch = useAppDispatch();
   // mda data
@@ -64,9 +68,9 @@ export default function Home() {
   //   null
   // );
   // for dynamic mda data
-  const [mdaListDuplicate, setMdaListDuplicate] = useState<IMDACompData[] | null>(
-    null
-  );
+  const [mdaListDuplicate, setMdaListDuplicate] = useState<
+    IMDACompData[] | null
+  >(null);
 
   const handleTabSwitch = (tabIndex: number) => {
     const newMdaTabSwitches = mdaTabSwitches.map((ele) => {
@@ -115,43 +119,42 @@ export default function Home() {
       }
     }
   };
-
   useEffect(() => {
-    
     let token = Cookies.get("token");
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-    }
+    };
     axios
-    .get(`${BACKEND_URL}/mda/get-all-mdas`, config)
-    .then((res) => {
-      const data = res.data.mdas;
-      setMdaList(data);
-      setMdaListDuplicate(data);
-      // store data in redux so it can reused across components for easy lookup
-      dispatch(setUnchangedMdaList(data));
-      dispatch(setSelectedMdaId(null));
-      const maxMdaId = data.reduce((max:number, obj:IMDACompData) => Math.max(max, obj.Id), 0);
-      dispatch(setFakeNewMdaId(maxMdaId));
+      .get(`${BACKEND_URL}/mda/get-all-mdas?page=${pageNo}`, config)
+      .then((res) => {
+        const data = res.data.mdas;
+        setMdaList(data);
+        setMdaListDuplicate(data);
+        // store data in redux so it can reused across components for easy lookup
+        dispatch(setUnchangedMdaList(data));
+        dispatch(setSelectedMdaId(null));
+        const maxMdaId = data.reduce(
+          (max: number, obj: IMDACompData) => Math.max(max, obj.Id),
+          0
+        );
+        dispatch(setFakeNewMdaId(maxMdaId));
       })
       .catch((error) => console.log(error));
-    
-    axios
-    .get(`${BACKEND_URL}/mda/total-mda`, config)
-    .then((res) => {
-      const {total_active_mda, total_mda, total_inactive_mda} = res.data;
-      setTotal({
-        totalMda : total_mda,
-        totalActive : total_active_mda,
-        totalInactive : total_inactive_mda
-      });
-      })
-      .catch((error) => console.log(error));
-    
 
-  }, [dispatch, fakeNewMdaId]);
+    axios
+      .get(`${BACKEND_URL}/mda/total-mda`, config)
+      .then((res) => {
+        const { total_active_mda, total_mda, total_inactive_mda } = res.data;
+        setTotal({
+          totalMda: total_mda,
+          totalActive: total_active_mda,
+          totalInactive: total_inactive_mda,
+        });
+      })
+      .catch((error) => console.log(error));
+  }, [dispatch, fakeNewMdaId, pageNo]);
 
   // do stuff here
   useEffect(() => {
@@ -162,20 +165,20 @@ export default function Home() {
     let token = Cookies.get("token");
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-    }
+    };
     // handle suspend and activate here
-    
+
     axios
-    .get(`${BACKEND_URL}/mda/total-mda`, config)
-    .then((res) => {
-      const {total_active_mda, total_mda, total_inactive_mda} = res.data;
-      setTotal({
-        totalMda : total_mda,
-        totalActive : total_active_mda,
-        totalInactive : total_inactive_mda
-      });
+      .get(`${BACKEND_URL}/mda/total-mda`, config)
+      .then((res) => {
+        const { total_active_mda, total_mda, total_inactive_mda } = res.data;
+        setTotal({
+          totalMda: total_mda,
+          totalActive: total_active_mda,
+          totalInactive: total_inactive_mda,
+        });
       })
       .catch((error) => console.log(error));
   }, [unchangedMdaList]);
@@ -220,7 +223,7 @@ export default function Home() {
     setShowCancel(false);
   };
 
-  //  to handle the state for searching, when the searchApi is called, 
+  //  to handle the state for searching, when the searchApi is called,
   // I will store the result in unChangedList
   // but when the cancel is clicked, the normal api is called
   // this way i only modify the unchangedList and don't need to change many things
@@ -294,6 +297,10 @@ export default function Home() {
   };
 
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  // for paginator
+  useEffect(() => {
+    dispatch(resetPageNo());
+  }, []);
 
   return (
     <>
@@ -377,7 +384,7 @@ export default function Home() {
                   activeIcon={ele.activeIcon}
                   text={ele.text}
                   isSelected={ele.isSelected}
-                  handleFilterFunc={() =>{}}
+                  handleFilterFunc={() => {}}
                   handleClick={() => handleClickFilterBtns(ele.text)}
                 />
               ))}
@@ -444,20 +451,28 @@ export default function Home() {
                 <tbody>
                   {mdaListDuplicate &&
                     mdaListDuplicate.map((ele, index) => (
-                      <TableRow
-                        key={index}
-                        {...ele}
-                      />
+                      <TableRow key={index} {...ele} />
                     ))}
-                    {mdaListDuplicate === null && [1,2,3,4,5,6,7,8,9,10].map((ele,index)=> (
+                  {mdaListDuplicate === null &&
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => (
                       <TRSkeleton key={index} />
-                    ) )  }
+                    ))}
                 </tbody>
               </TableStyles>
+              {mdaListDuplicate !== null && mdaListDuplicate?.length === 0 && (
+                <NoDataStyles>
+                  <h2>No Data Found</h2>
+                </NoDataStyles>
+              )}
             </div>
           </div>
           {/* when a particular mda is clicked */}
         </SearchAndResultStyle>
+        <Paginator
+          value={pageNo}
+          incrementFunc={() => dispatch(setPageNo(pageNo + 1))}
+          decrementFunc={() => dispatch(setPageNo(pageNo - 1))}
+        />
       </WhiteContainer>
       {showNewMdaFormModal && (
         <NewMdaModal cancelModal={() => setShowNewMdaFormModal(false)} />

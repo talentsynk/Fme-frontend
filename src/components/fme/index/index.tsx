@@ -19,6 +19,7 @@ import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
+import { truncateString } from "@/utils/truncateString";
 
 export interface ICourseItem extends ICourseItemStyle {
   name: string;
@@ -44,7 +45,7 @@ export const CourseItem: React.FC<ICourseItem> = ({
       </div>
       <div className="body">
         <div className="top">
-          <p className="name">{name}</p>
+          <p className="name">{truncateString(name, 20)}</p>
           <p className="percent">{percent ? Math.round(percent) : 0}%</p>
         </div>
         <div className="pad">
@@ -56,7 +57,6 @@ export const CourseItem: React.FC<ICourseItem> = ({
     </CourseItemStyles>
   );
 };
-
 
 interface IBarchartComp {
   option?: string;
@@ -78,10 +78,13 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
       .get(`${BACKEND_URL}/${api}`, config)
       .then((res) => {
         if (res.data) {
-          console.log(res.data);
-          if(option === "Courses"){
+          if (option === "Courses") {
+            console.log(res.data.coursePercentages);
             setData(res.data.coursePercentages);
-          }else{
+          } else if (option === "MDAs") {
+            console.log(res.data.top5mdas);
+            setData(res.data.top5mdas);
+          } else {
             setData(GraphPlots);
           }
           setIsLoading(false);
@@ -104,11 +107,24 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
                   data={data}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
-                  <XAxis dataKey={option === "Courses" ? "CourseName" : "name"} stroke="#8884d8" />
+                  <XAxis
+                    dataKey={
+                      option === "Courses"
+                        ? "CourseName"
+                        : option === "MDAs"
+                        ? "RegisterName"
+                        : "name"
+                    }
+                    stroke="#8884d8"
+                  />
                   <YAxis />
                   <Tooltip />
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <Bar dataKey={option === "Courses" ? "StudentCount" : "students"} fill="#00932E" barSize={30} />
+                  <Bar
+                    dataKey={option === "STCs" ? "students" : "StudentCount"}
+                    fill="#00932E"
+                    barSize={30}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </>

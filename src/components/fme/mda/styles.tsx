@@ -633,6 +633,23 @@ export const TrStyles = styled.tr`
     position: absolute;
   }
 `;
+export const NoDataStyles = styled.td`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60%;
+  h2 {
+    color: var(--Grey-900, var(--text-style, #101928));
+    font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
+    font-family: "Satoshi";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 2rem; /* 133.333% */
+    letter-spacing: -0.03rem;
+  }
+`;
 
 export interface IStatusStyles {
   $isActive: boolean;

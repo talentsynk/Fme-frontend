@@ -4,6 +4,7 @@ import { Ierror } from "@/app/recovery/page";
 import { FilterBtns, SortItemDropdownList } from "@/components/fme/mda/data";
 import { FilterBtnComp, MdaItemComp } from "@/components/fme/mda/mda";
 import {
+  NoDataStyles,
   SearchAndResultStyle,
   SortOptionsStyle,
   StatListItemStyle,
@@ -44,6 +45,8 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
+import { Paginator } from "@/components/fme/paginator/Paginator";
+import { setPageNo } from "@/redux/mda/mdaSlice";
 
 // the first page on the Mda dashboard
 // this page uses non-sateful components from the FME dashboard, but all stateful components are in its own folder
@@ -59,7 +62,7 @@ export default function Home() {
   // stc data
   const [stcList, setStcList] = useState<ISTCCompData[] | null>(null);
   // stores the unchanged stc initial data, this is useful to prevent multiple API calls when no data is changing
-  const { unchangedStcList, fakeNewStcId } = useAppSelector(mdaSelector);
+  const { unchangedStcList, fakeNewStcId, pageNo } = useAppSelector(mdaSelector);
   // for dynamic stc data
   const [stcListDuplicate, setStcListDuplicate] = useState<
     ISTCCompData[] | null
@@ -122,7 +125,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-all-mda-stc`, config) //change endpoint to stc
+      .get(`${BACKEND_URL}/stc/get-all-mda-stc?page=${pageNo}`, config) //change endpoint to stc
       .then((res) => {
         const data = res.data.stcs; //change this to stc
         setStcList(data);
@@ -150,7 +153,7 @@ export default function Home() {
         });
       })
       .catch((error) => console.log(error));
-  }, [dispatch, fakeNewStcId]);
+  }, [dispatch, fakeNewStcId, pageNo]);
 
   useEffect(() => {
     setStcList(unchangedStcList);
@@ -441,10 +444,20 @@ export default function Home() {
                     ))}
                 </tbody>
               </TableStyles>
+              {stcListDuplicate !== null && stcListDuplicate?.length === 0 && (
+                <NoDataStyles>
+                  <h2>No Data Found</h2>
+                </NoDataStyles>
+              )}
             </div>
           </div>
           {/* when a particular mda is clicked */}
         </SearchAndResultStyle>
+        <Paginator
+          value={pageNo}
+          incrementFunc={() => dispatch(setPageNo(pageNo + 1))}
+          decrementFunc={() => dispatch(setPageNo(pageNo - 1))}
+        />
       </WhiteContainer>
       {showNewStcFormModal && (
         <NewStcModal cancelModal={() => setShowNewStcFormModal(false)} />
