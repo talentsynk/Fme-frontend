@@ -258,7 +258,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			};
 			const response = await axios.get(`${BACKEND_URL}/course/all`, config);
 			// Assuming the API response is an array of state names
-			console.log(response.data);
 			setCourses(response.data.course);
 		} catch (error) {
 			console.error("Error fetching courses:", error);

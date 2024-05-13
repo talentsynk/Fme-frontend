@@ -62,3 +62,19 @@ export const GraphOptions:IGraphOption[] = [
   { name: "STCs", isSelected: false , api : "stc/get-all-stc"},
   { name: "Students", isSelected: false, api : "mda/total-mda" },
 ]
+
+export const CourseGraphPlots: IGraphplots[] = [
+	{ name: "MA", students: 135 },
+	{ name: "ME", students: 100 },
+	{ name: "EL", students: 90 },
+	{ name: "IN", students: 55 },
+	{ name: "SU", students: 35 },
+	{ name: "HU", students: 25 },
+];
+
+export const CourseGraphOptions: IGraphOption[] = [
+	{ name: "Courses", isSelected: true, api: "mda/get-all-mdas" }
+];
+export const MDACourseGraphOptions: IGraphOption[] = [
+	{ name: "Courses", isSelected: true, api: "course/all" }
+];

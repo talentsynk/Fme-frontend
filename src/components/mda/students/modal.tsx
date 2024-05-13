@@ -312,6 +312,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		) {
 			// call createMDA API
 			const token = Cookies.get("token");
+			console.log(token)
 			const config = {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -332,7 +333,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				};
 				console.log("Request Body:", body);
 				setIsLoading(true);
-				const { data } = await axios.post(`${BACKEND_URL}/student/create-fme`, body, config);
+				const { data } = await axios.post(`${BACKEND_URL}/student/create-mda`, body, config);
 				if (data) {
 					setIsLoading(false);
 					// update fakeMdaId

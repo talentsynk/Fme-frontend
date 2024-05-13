@@ -14,7 +14,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { GraphPlots, IGraphplots } from "./data";
+import { GraphPlots,CourseGraphPlots, IGraphplots } from "./data";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
@@ -113,4 +113,54 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
       {isLoading && <Skeleton className="skele" height={350} />}
     </>
   );
+};
+
+export const CourseBarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
+	const [data, setData] = useState<IGraphplots[] | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
+	useEffect(() => {
+		const token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		// test api call
+		setIsLoading(true);
+		axios
+			.get(`${BACKEND_URL}/${api}`, config)
+			.then((res) => {
+				if (res.data) {
+					setData(CourseGraphPlots);
+					setIsLoading(false);
+				}
+			})
+			.catch((error) => console.log(error));
+	}, [api]);
+	return (
+		<>
+			{!isLoading && (
+				<BarChartCompStyle>
+					{data !== null && (
+						<>
+							<div className="label">
+								<div className="box"></div>
+								<p>Top 6 {option}</p>
+							</div>
+							<ResponsiveContainer width="100%" height={350}>
+								<BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+									<XAxis dataKey="name" stroke="#8884d8" />
+									<YAxis />
+									<Tooltip />
+									<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+									<Bar dataKey="students" fill="#00932E" barSize={30} />
+								</BarChart>
+							</ResponsiveContainer>
+						</>
+					)}
+				</BarChartCompStyle>
+			)}
+			{isLoading && <Skeleton className="skele" height={350} />}
+		</>
+	);
 };
