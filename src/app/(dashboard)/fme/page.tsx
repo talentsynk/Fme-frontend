@@ -26,13 +26,17 @@ import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton
 
 export default function Home() {
   const [showOptions, setShowOptions] = useState(false);
-  const [totalStat, setTotalStat] = useState({
-    totalMdas: 0,
-    totalStcs: 0,
-    totalStudents: 0,
+  const [totalStat, setTotalStat] = useState<{
+    totalMdas: number | null;
+    totalStcs: number | null;
+    totalStudents: number | null;
+  }>({
+    totalMdas: null,
+    totalStcs: null,
+    totalStudents: null,
   });
   const [courseLists, setCourseLists] = useState<
-    { name: string; percent: number }[] | null
+    { CourseName: string; StudentCount: number; TotalPercent: number }[] | null
   >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState(GraphOptions);
@@ -74,10 +78,10 @@ export default function Home() {
     // simulating get-request for the top course tracker API
 
     axios
-      .get(`${BACKEND_URL}/stc/get-all-stc`, config)
+      .get(`${BACKEND_URL}/dashboard/course-percentage`, config)
       .then((res) => {
         if (res.data) {
-          setCourseLists(CourseItems);
+          setCourseLists(res.data.coursePercentages);
         }
       })
       .catch((error) => console.log(error));
@@ -96,7 +100,13 @@ export default function Home() {
             </IconWrapper>
             <div className="stat">
               <span>Total MDAs</span>
-              <h3>{totalStat.totalMdas || <Skeleton />}</h3>
+              <h3>
+                {totalStat.totalMdas === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.totalMdas
+                )}
+              </h3>
             </div>
           </div>
           <div className="total">
@@ -105,7 +115,13 @@ export default function Home() {
             </IconWrapper>
             <div className="stat">
               <span>Total STCs</span>
-              <h3>{totalStat.totalStcs || <Skeleton />}</h3>
+              <h3>
+                {totalStat.totalStcs === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.totalStcs
+                )}
+              </h3>
             </div>
           </div>
           <div className="total">
@@ -114,7 +130,13 @@ export default function Home() {
             </IconWrapper>
             <div className="stat">
               <span>Total Students</span>
-              <h3>{totalStat.totalStudents || <Skeleton />}</h3>
+              <h3>
+                {totalStat.totalStudents === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.totalStudents
+                )}
+              </h3>
             </div>
           </div>
         </div>
@@ -161,8 +183,8 @@ export default function Home() {
               courseLists.map((ele, index) => (
                 <CourseItem
                   key={index}
-                  percent={ele.percent}
-                  name={ele.name}
+                  percent={ele.TotalPercent}
+                  name={ele.CourseName}
                   $bgColor={colorGroup[index % 5].bgColor}
                   $lightColor={colorGroup[index % 5].lightColor}
                   $thickColor={colorGroup[index % 5].thickColor}

@@ -22,6 +22,7 @@ interface IFMEState {
 	fakeNewStcId: number | null;
 	fakeNewStudentId: number | null;
 	fakeNewCourseId: number | null;
+	pageNo : number;
 }
 
 const initialState: IFMEState = {
@@ -39,6 +40,7 @@ const initialState: IFMEState = {
 	fakeNewStcId: null,
 	fakeNewStudentId: null,
 	fakeNewCourseId: null,
+	pageNo : 1,
 };
 
 export const fmeSlice = createSlice({
@@ -85,6 +87,14 @@ export const fmeSlice = createSlice({
 		setUnchangedCoursesList: (state, action: PayloadAction<ICourseData[] | null>) => {
 			state.unchangedCoursesList = action.payload;
 		},
+		setPageNo :(state, action: PayloadAction<number>)=>{
+			if(action.payload >= 1){
+				state.pageNo = action.payload;
+			}
+		},
+		resetPageNo :(state)=>{
+			state.pageNo = 1;
+		}
 	},
 });
 
@@ -104,5 +114,7 @@ export const {
 	setUnchangedCoursesList,
 	setSelectedStudentId,
 	setSelectedCourseId,
+	setPageNo,
+	resetPageNo
 } = fmeSlice.actions;
 export default fmeSlice.reducer;

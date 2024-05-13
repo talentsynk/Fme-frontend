@@ -6,6 +6,9 @@ export const CourseItems = [
     { name: "Weldering", percent: 90 },
   ];
   
+  // stc-login email: fgwork@gmail.com
+// pwd: Pass123*
+
   export const ColorGroup = [
     {
       lightColor: "#D1E9FF",
@@ -58,5 +61,5 @@ export const CourseItems = [
     api : string;
   }
   export const GraphOptions:IGraphOption[] = [
-    { name: "Students", isSelected: true, api : "stc/get-total-count" },
+    { name: "Courses", isSelected: true, api : "dashboard/course-percentage" },
   ]
