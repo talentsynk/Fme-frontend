@@ -15,7 +15,7 @@ export default function Home() {
       <section className=" text-white">
         <div className=" h-[450px] rounded-[10px] justify-center items-center  flex flex-col  support-img">
           <h3 className=" text-[32px] font-bold mt-20">We would always love to hear from you</h3>
-          <p className=" font-medium ">We are herre to support you 24/7, please contact us through the following mediums</p>
+          <p className=" font-medium ">We are here to support you 24/7, please contact us through the following mediums</p>
         </div>
         <section className=" w-[95%] mx-auto flex gap-4 relative bottom-9">
         <div className=" flex-1 flex justify-between rounded-[10px] bg-[#00932E] p-6">
