@@ -19,6 +19,8 @@ import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
+import { truncateString } from "@/utils/truncateString";
+import { NoDataStyles } from "../mda/styles";
 
 export interface ICourseItem extends ICourseItemStyle {
   name: string;
@@ -34,7 +36,7 @@ export const CourseItem: React.FC<ICourseItem> = ({
   return (
     <CourseItemStyles
       $lightColor={$lightColor}
-      percent={percent}
+      percent={percent ? Math.round(percent) : 0}
       $textColor={$textColor}
       $thickColor={$thickColor}
       $bgColor={$bgColor}
@@ -44,8 +46,8 @@ export const CourseItem: React.FC<ICourseItem> = ({
       </div>
       <div className="body">
         <div className="top">
-          <p className="name">{name}</p>
-          <p className="percent">{percent}%</p>
+          <p className="name">{truncateString(name, 20)}</p>
+          <p className="percent">{percent ? Math.round(percent) : 0}%</p>
         </div>
         <div className="pad">
           <div className="bar">
@@ -57,14 +59,13 @@ export const CourseItem: React.FC<ICourseItem> = ({
   );
 };
 
-
 interface IBarchartComp {
   option?: string;
   api?: string;
 }
 export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
-  const [data, setData] = useState<IGraphplots[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<null | boolean>(null);
   useEffect(() => {
     const token = Cookies.get("token");
     const config = {
@@ -78,15 +79,24 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
       .get(`${BACKEND_URL}/${api}`, config)
       .then((res) => {
         if (res.data) {
-          setData(GraphPlots);
+          if (option === "Courses") {
+            console.log(res.data.coursePercentages);
+            setData(res.data.coursePercentages);
+          } else if (option === "MDAs") {
+            console.log(res.data.top5mdas);
+            setData(res.data.top5mdas);
+          } else {
+            console.log(res.data);
+            setData(res.data.top5stcs);
+          }
           setIsLoading(false);
         }
       })
       .catch((error) => console.log(error));
-  }, [api]);
+  }, [api, option]);
   return (
     <>
-      {!isLoading && (
+      {isLoading === false && (
         <BarChartCompStyle>
           {data !== null && (
             <>
@@ -99,14 +109,34 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
                   data={data}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
-                  <XAxis dataKey="name" stroke="#8884d8" />
+                  <XAxis
+                    dataKey={
+                      option === "Courses"
+                        ? "CourseName"
+                        : option === "MDAs"
+                        ? "RegisterName"
+                        : "StcName"
+                    }
+                    stroke="#8884d8"
+                  />
                   <YAxis />
                   <Tooltip />
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <Bar dataKey="students" fill="#00932E" barSize={30} />
+                  <Bar
+                    dataKey={
+                      option === "MDAs" ? "StudentCount" : "TotalStudents"
+                    }
+                    fill="#00932E"
+                    barSize={30}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </>
+          )}
+          {data === null && (
+            <NoDataStyles>
+              <h2>No Data Found</h2>
+            </NoDataStyles>
           )}
         </BarChartCompStyle>
       )}

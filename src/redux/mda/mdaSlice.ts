@@ -18,6 +18,7 @@ interface IMDAState {
 	fakeNewCourseId: number | null;
 	selectedCourseId: number | null;
 	unchangedCoursesList: ICourseData[] | null;
+	pageNo : number;
 }
 
 const initialState: IMDAState = {
@@ -30,7 +31,7 @@ const initialState: IMDAState = {
 	selectedCourseId: null,
 	fakeNewStudentId: null,
 	fakeNewCourseId: null,
-
+	pageNo : 1,
 };
 
 export const mdaSlice = createSlice({
@@ -64,6 +65,14 @@ export const mdaSlice = createSlice({
 		setUnchangedCoursesList: (state, action: PayloadAction<ICourseData[] | null>) => {
 			state.unchangedCoursesList = action.payload;
 		},
+		setPageNo :(state, action: PayloadAction<number>)=>{
+			if(action.payload >= 1){
+				state.pageNo = action.payload;
+			}
+		},
+		resetPageNo :(state)=>{
+			state.pageNo = 1;
+		}
 	},
 });
 
@@ -79,5 +88,7 @@ export const {
 	setUnchangedCoursesList,
 	setSelectedStudentId,
 	setSelectedCourseId,
+	setPageNo,
+	resetPageNo
 } = mdaSlice.actions;
 export default mdaSlice.reducer;
