@@ -20,6 +20,7 @@ import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import { truncateString } from "@/utils/truncateString";
+import { NoDataStyles } from "../mda/styles";
 
 export interface ICourseItem extends ICourseItemStyle {
   name: string;
@@ -64,7 +65,7 @@ interface IBarchartComp {
 }
 export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
   const [data, setData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<null | boolean>(null);
   useEffect(() => {
     const token = Cookies.get("token");
     const config = {
@@ -85,7 +86,8 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
             console.log(res.data.top5mdas);
             setData(res.data.top5mdas);
           } else {
-            setData(GraphPlots);
+            console.log(res.data);
+            setData(res.data.top5stcs);
           }
           setIsLoading(false);
         }
@@ -94,7 +96,7 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
   }, [api, option]);
   return (
     <>
-      {!isLoading && (
+      {isLoading === false && (
         <BarChartCompStyle>
           {data !== null && (
             <>
@@ -113,7 +115,7 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
                         ? "CourseName"
                         : option === "MDAs"
                         ? "RegisterName"
-                        : "name"
+                        : "StcName"
                     }
                     stroke="#8884d8"
                   />
@@ -121,13 +123,20 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
                   <Tooltip />
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                   <Bar
-                    dataKey={option === "STCs" ? "students" : "StudentCount"}
+                    dataKey={
+                      option === "MDAs" ? "StudentCount" : "TotalStudents"
+                    }
                     fill="#00932E"
                     barSize={30}
                   />
                 </BarChart>
               </ResponsiveContainer>
             </>
+          )}
+          {data === null && (
+            <NoDataStyles>
+              <h2>No Data Found</h2>
+            </NoDataStyles>
           )}
         </BarChartCompStyle>
       )}

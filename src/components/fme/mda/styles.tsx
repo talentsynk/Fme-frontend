@@ -633,7 +633,7 @@ export const TrStyles = styled.tr`
     position: absolute;
   }
 `;
-export const NoDataStyles = styled.td`
+export const NoDataStyles = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

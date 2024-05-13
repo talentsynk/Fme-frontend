@@ -22,14 +22,19 @@ import {
 } from "@/components/stc/index/data";
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
 import { FMEHomeStyles } from "../fme/style";
+import { NoDataStyles } from "@/components/fme/mda/styles";
 // the first page on the fme dashboard
 
 export default function Home() {
   const [showOptions, setShowOptions] = useState(false);
-  const [totalStat, setTotalStat] = useState({
-    totalMdas: 0,
-    totalStcs: 0,
-    totalStudents: 0,
+  const [totalStat, setTotalStat] = useState<{
+    totalStudents: number | null;
+    totalCertified: number | null;
+    totalUnCertified: number | null;
+  }>({
+    totalCertified: null,
+    totalUnCertified: null,
+    totalStudents: null,
   });
   const [courseLists, setCourseLists] = useState<
     { name: string; percent: number }[] | null
@@ -50,6 +55,7 @@ export default function Home() {
     setShowOptions(false);
   };
   // task left: work on add New Mda and Stc, plug in the APIs on wednesday
+  const [isLoading, setIsLoading] = useState<boolean | null>(null);
   useEffect(() => {
     const token = Cookies.get("token");
     const config = {
@@ -58,26 +64,30 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-mda-stc/2`, config)
+      .get(`${BACKEND_URL}/dashboard/summary`, config)
       .then((res) => {
-        if (res.data) { // changed res.data.response
-          // const { TotalStcs, TotalMdas, TotalStudents } = res.data.response;
+        if (res.data) {
+          // changed res.data.response
+          console.log(res.data.response);
+          const { TotalCertified, TotalUncertified, TotalStudents } =
+            res.data.response;
           setTotalStat({
-            totalMdas: 20,
-            totalStcs: 10,
-            totalStudents: 40,
+            totalCertified: TotalCertified,
+            totalUnCertified: TotalUncertified,
+            totalStudents: TotalStudents,
           });
         }
       })
       .catch((error) => console.log(error));
 
     // simulating get-request for the top course tracker API
-
+    setIsLoading(true);
     axios
-      .get(`${BACKEND_URL}/stc/get-all-stc`, config)
+      .get(`${BACKEND_URL}/dashboard/course-percentage`, config)
       .then((res) => {
         if (res.data) {
-          setCourseLists(CourseItems);
+          setCourseLists(res.data.coursePercentages);
+          setIsLoading(false);
         }
       })
       .catch((error) => console.log(error));
@@ -95,8 +105,14 @@ export default function Home() {
               <DashboardMdaIcon />
             </IconWrapper>
             <div className="stat">
-              <span>Total MDAs</span>
-              <h3>{totalStat.totalMdas || <Skeleton />}</h3>
+              <span>Total Students</span>
+              <h3>
+                {totalStat.totalStudents === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.totalStudents
+                )}
+              </h3>
             </div>
           </div>
           <div className="total">
@@ -104,8 +120,14 @@ export default function Home() {
               <DashboardStcIcon />
             </IconWrapper>
             <div className="stat">
-              <span>Total STCs</span>
-              <h3>{totalStat.totalStcs || <Skeleton />}</h3>
+              <span>Total Certified Students</span>
+              <h3>
+                {totalStat.totalCertified === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.totalCertified
+                )}
+              </h3>
             </div>
           </div>
           <div className="total">
@@ -113,8 +135,14 @@ export default function Home() {
               <DashboardStudentIcon />
             </IconWrapper>
             <div className="stat">
-              <span>Total Students</span>
-              <h3>{totalStat.totalStudents || <Skeleton />}</h3>
+              <span>Total UnCertified Students</span>
+              <h3>
+                {totalStat.totalUnCertified === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.totalUnCertified
+                )}
+              </h3>
             </div>
           </div>
         </div>
@@ -170,9 +198,16 @@ export default function Home() {
                 />
               ))}
             {courseLists === null &&
+              isLoading &&
               [1, 2, 3, 4, 5].map((ele, index) => (
                 <CourseItemSkeleton key={index} />
               ))}
+            {courseLists === null && isLoading === false && (
+              <NoDataStyles>
+                {" "}
+                <h2>No Courses Found</h2>
+              </NoDataStyles>
+            )}
           </div>
         </div>
         {/* <div className="track br">6</div> */}

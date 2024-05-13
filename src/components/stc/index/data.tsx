@@ -61,5 +61,5 @@ export const CourseItems = [
     api : string;
   }
   export const GraphOptions:IGraphOption[] = [
-    { name: "Students", isSelected: true, api : "stc/get-total-count" },
+    { name: "Courses", isSelected: true, api : "dashboard/course-percentage" },
   ]

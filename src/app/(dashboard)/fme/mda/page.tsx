@@ -51,10 +51,14 @@ import { Paginator } from "@/components/fme/paginator/Paginator";
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [mdaTabSwitches, setMDATabSwitches] = useState(MDATabSwitches);
-  const [total, setTotal] = useState({
-    totalMda: 0,
-    totalActive: 0,
-    totalInactive: 0,
+  const [total, setTotal] = useState<{
+    totalMda: number | null;
+    totalActive: number | null;
+    totalInactive: number | null;
+  }>({
+    totalMda: null,
+    totalActive: null,
+    totalInactive: null,
   });
   // get data from redux
   // stores the unchanged mda initial data, this is useful to prevent multiple API calls when no data is changing
@@ -329,21 +333,29 @@ export default function Home() {
           <StatListItemStyle>
             <div className="stat">
               <span>Total No of MDAs</span>
-              <p>{total.totalMda || <Skeleton />}</p>
+              <p>{total.totalMda === null ? <Skeleton /> : total.totalMda}</p>
             </div>
             <TotalIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Active MDAs</span>
-              <p>{total.totalActive || <Skeleton />}</p>
+              <p>
+                {total.totalActive === null ? <Skeleton /> : total.totalActive}
+              </p>
             </div>
             <ActiveIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Inactive MDAs</span>
-              <p>{total.totalInactive || <Skeleton />}</p>
+              <p>
+                {total.totalInactive === null ? (
+                  <Skeleton />
+                ) : (
+                  total.totalInactive
+                )}
+              </p>
             </div>
             <InactiveIcon />
           </StatListItemStyle>

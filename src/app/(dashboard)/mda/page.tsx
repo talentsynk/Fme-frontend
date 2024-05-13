@@ -17,19 +17,28 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { BarChartComp, CourseItem } from "@/components/fme/index";
 
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
-import { ColorGroup, CourseItems, GraphOptions } from "@/components/mda/index/data";
+import {
+  ColorGroup,
+  CourseItems,
+  GraphOptions,
+} from "@/components/mda/index/data";
 import { FMEHomeStyles } from "../fme/style";
+import { NoDataStyles } from "@/components/fme/mda/styles";
 // the first page on the fme dashboard
 
 export default function Home() {
   const [showOptions, setShowOptions] = useState(false);
-  const [totalStat, setTotalStat] = useState({
-    totalMdas: 0,
-    totalStcs: 0,
-    totalStudents: 0,
+  const [totalStat, setTotalStat] = useState<{
+    GraduatedCount: number | null;
+    NonGraduatedCount: number | null;
+    STCsCount: number | null;
+  }>({
+    GraduatedCount: null,
+    NonGraduatedCount: null,
+    STCsCount: null,
   });
   const [courseLists, setCourseLists] = useState<
-    { CourseName: string; StudentCount: number, TotalPercent : number }[] | null
+    { CourseName: string; StudentCount: number; TotalPercent: number }[] | null
   >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState(GraphOptions);
@@ -47,6 +56,7 @@ export default function Home() {
     setShowOptions(false);
   };
   // task left: work on add New Mda and Stc, plug in the APIs on wednesday
+  const [isLoading, setIsLoading] = useState<boolean | null>(null);
   useEffect(() => {
     const token = Cookies.get("token");
     const config = {
@@ -55,26 +65,29 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-all-mda-stc`, config)
+      .get(`${BACKEND_URL}/dashboard/summary`, config)
       .then((res) => {
-        if (res.data) { // change to res.data.response
-          // const { TotalStcs, TotalMdas, TotalStudents } = res.data.response;
+        if (res.data) {
+          console.log(res.data);
+          // change to res.data.response
+          const { GraduatedCount, NonGraduatedCount, STCsCount } = res.data.response;
           setTotalStat({
-            totalMdas: 20,
-            totalStcs: 24,
-            totalStudents: 30,
+            GraduatedCount: GraduatedCount,
+            NonGraduatedCount: NonGraduatedCount,
+            STCsCount: STCsCount,
           });
         }
       })
       .catch((error) => console.log(error));
 
     // simulating get-request for the top course tracker API
-
+    setIsLoading(true);
     axios
       .get(`${BACKEND_URL}/dashboard/course-percentage`, config)
       .then((res) => {
         if (res.data) {
           setCourseLists(res.data.coursePercentages);
+          setIsLoading(false);
         }
       })
       .catch((error) => console.log(error));
@@ -93,7 +106,13 @@ export default function Home() {
             </IconWrapper>
             <div className="stat">
               <span>Total STCs</span>
-              <h3>{totalStat.totalMdas || <Skeleton />}</h3>
+              <h3>
+                {totalStat.STCsCount === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.STCsCount
+                )}
+              </h3>
             </div>
           </div>
           <div className="total">
@@ -101,8 +120,14 @@ export default function Home() {
               <DashboardStcIcon />
             </IconWrapper>
             <div className="stat">
-              <span>Total STCs</span>
-              <h3>{totalStat.totalStcs || <Skeleton />}</h3>
+              <span>Total Graduated Students</span>
+              <h3>
+                {totalStat.GraduatedCount === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.GraduatedCount
+                )}
+              </h3>
             </div>
           </div>
           <div className="total">
@@ -110,8 +135,14 @@ export default function Home() {
               <DashboardStudentIcon />
             </IconWrapper>
             <div className="stat">
-              <span>Total Students</span>
-              <h3>{totalStat.totalStudents || <Skeleton />}</h3>
+              <span>Total UnGraduated Students</span>
+              <h3>
+                {totalStat.NonGraduatedCount === null ? (
+                  <Skeleton />
+                ) : (
+                  totalStat.NonGraduatedCount
+                )}
+              </h3>
             </div>
           </div>
         </div>
@@ -167,9 +198,16 @@ export default function Home() {
                 />
               ))}
             {courseLists === null &&
+              isLoading &&
               [1, 2, 3, 4, 5].map((ele, index) => (
                 <CourseItemSkeleton key={index} />
               ))}
+            {courseLists === null && isLoading === false && (
+              <NoDataStyles>
+                {" "}
+                <h2>No Courses Found</h2>
+              </NoDataStyles>
+            )}
           </div>
         </div>
         {/* <div className="track br">6</div> */}

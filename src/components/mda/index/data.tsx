@@ -58,6 +58,6 @@ export const CourseItems = [
     api : string;
   }
   export const GraphOptions:IGraphOption[] = [
-    { name: "STCs", isSelected: true , api : "stc/get-all-mda-stc"},
+    { name: "STCs", isSelected: true , api : "dashboard/top-5-stc"},
     { name: "Courses", isSelected: false, api : "dashboard/course-percentage" },
   ]

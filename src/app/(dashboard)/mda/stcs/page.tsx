@@ -54,15 +54,20 @@ import { setPageNo } from "@/redux/mda/mdaSlice";
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
   const [stcTabSwitches, setStcTabSwitches] = useState(STCTabSwitches);
-  const [total, setTotal] = useState({
-    totalStc: 0,
-    totalActive: 0,
-    totalInactive: 0,
+  const [total, setTotal] = useState<{
+    totalStc: number | null;
+    totalActive: number | null;
+    totalInactive: number | null;
+  }>({
+    totalStc: null,
+    totalActive: null,
+    totalInactive: null,
   });
   // stc data
   const [stcList, setStcList] = useState<ISTCCompData[] | null>(null);
   // stores the unchanged stc initial data, this is useful to prevent multiple API calls when no data is changing
-  const { unchangedStcList, fakeNewStcId, pageNo } = useAppSelector(mdaSelector);
+  const { unchangedStcList, fakeNewStcId, pageNo } =
+    useAppSelector(mdaSelector);
   // for dynamic stc data
   const [stcListDuplicate, setStcListDuplicate] = useState<
     ISTCCompData[] | null
@@ -314,21 +319,27 @@ export default function Home() {
           <StatListItemStyle>
             <div className="stat">
               <span>Total No of STCs</span>
-              <p>{total.totalStc || <Skeleton />}</p>
+              <p>{total.totalStc === null ? <Skeleton /> : total.totalStc}</p>
             </div>
             <TotalIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Active STCs</span>
-              <p>{total.totalActive || <Skeleton />}</p>
+              <p>{total.totalActive === null ? <Skeleton /> : total.totalActive}</p>
             </div>
             <ActiveIcon />
           </StatListItemStyle>
           <StatListItemStyle>
             <div className="stat">
               <span>Inactive STCs</span>
-              <p>{total.totalInactive || <Skeleton />}</p>
+              <p>
+                {total.totalInactive === null ? (
+                  <Skeleton />
+                ) : (
+                  total.totalInactive
+                )}
+              </p>
             </div>
             <InactiveIcon />
           </StatListItemStyle>
