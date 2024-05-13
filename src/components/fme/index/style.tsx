@@ -44,6 +44,7 @@ export const CourseItemStyles = styled.div<ICourseItemStyle>`
       font-style: normal;
       font-weight: 500;
       line-height: 1.25rem; /* 142.857% */
+      text-transform: capitalize;
     }
     .percent {
       color: ${(props) => props.$thickColor};

@@ -22,13 +22,14 @@ import { FilterBtns } from "@/components/fme/mda/data";
 import { FilterBtnComp, MdaItemComp } from "@/components/fme/mda/mda";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import axios from "axios";
-import { setUnchangedStudentsList, setSelectedStudentId, fmeSelector, setFakeNewStudentId } from "@/redux/fme/fmeSlice";
+import { setUnchangedStudentsList, setSelectedStudentId, fmeSelector, setFakeNewStudentId, setPageNo, resetPageNo } from "@/redux/fme/fmeSlice";
 import Cookies from "js-cookie";
 import { IStudentCompData } from "@/types/Student";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
+import { Paginator } from "@/components/fme/paginator/Paginator";
 
 // the first page on the fme dashboard
 
@@ -44,7 +45,7 @@ export default function Home() {
 		totalActive: 0,
 		totalInactive: 0,
 	});
-	const { unchangedStudentsList, fakeNewStudentId } = useAppSelector(fmeSelector);
+	const { unchangedStudentsList, fakeNewStudentId, pageNo } = useAppSelector(fmeSelector);
 	const dispatch = useAppDispatch();
 	const [studentsListDuplicate, setStudentsListDuplicate] = useState<IStudentCompData[] | null>(null);
 
@@ -93,7 +94,7 @@ export default function Home() {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/student/all`, config)
+			.get(`${BACKEND_URL}/student/all`, config)	//add page parameter here
 			.then((res) => {
 				const data = res.data.students;
 				setStudentList(data);
@@ -132,7 +133,7 @@ export default function Home() {
 			.catch((error) => {
 				console.error("Error fetching active students:", error);
 			});
-	}, [dispatch, fakeNewStudentId]);
+	}, [dispatch, fakeNewStudentId]);	// add the pageNo to the dependency array
 
 	useEffect(() => {
 		setStudentList(unchangedStudentsList);
@@ -279,6 +280,11 @@ export default function Home() {
 		}
 	};
 
+	// for paginator, resets the page number
+	useEffect(() => {
+		dispatch(resetPageNo());
+	  }, []);
+
 	return (
 		<>
 			<TopStyles>
@@ -416,6 +422,11 @@ export default function Home() {
 						</div>
 					</div>
 				</SearchAndResultStyle>
+				<Paginator
+          value={pageNo}
+          incrementFunc={() => dispatch(setPageNo(pageNo + 1))}
+          decrementFunc={() => dispatch(setPageNo(pageNo - 1))}
+        />
 			</WhiteContainer>
 			{showNewStudentFormModal && <NewStudentModal cancelModal={() => setShowNewStudentFormModal(false)} />}
 		</>
