@@ -58,7 +58,24 @@ interface IGraphOption{
   api : string;
 }
 export const GraphOptions:IGraphOption[] = [
-  { name: "MDAs", isSelected: true, api : "dashboard/top-5-mda" },
+ { name: "MDAs", isSelected: true, api : "dashboard/top-5-mda" },
   { name: "STCs", isSelected: false , api : "dashboard/top-5-stc"},
   { name: "Courses", isSelected: false, api : "dashboard/course-percentage" },
 ]
+
+export const CourseGraphPlots: IGraphplots[] = [
+	{ name: "MA", students: 135 },
+	{ name: "ME", students: 100 },
+	{ name: "EL", students: 90 },
+	{ name: "IN", students: 55 },
+	{ name: "SU", students: 35 },
+	{ name: "HU", students: 25 },
+];
+
+export const CourseGraphOptions: IGraphOption[] = [
+	{ name: "Courses", isSelected: true, api: "mda/get-all-mdas" }
+];
+export const MDACourseGraphOptions: IGraphOption[] = [
+	{ name: "Courses", isSelected: true, api: "course/all" }
+];
+  

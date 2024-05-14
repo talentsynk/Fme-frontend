@@ -9,6 +9,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { CourseBarChartComp } from "@/components/fme/index";
+import { MDACourseGraphOptions } from "@/components/fme/index/data";
 
 interface ICourse {
 	Id: number;
@@ -24,6 +26,8 @@ export default function Slug() {
 	const searchParams = useSearchParams();
 
 	const courseID = searchParams.get("course");
+
+		const [selectedGraphOption, setSelectedGraphOption] = useState(MDACourseGraphOptions.find((ele) => ele.isSelected === true));
 
 	console.log(courseID);
 	const [Course, setCourse] = useState<ICourse | null>(null);
@@ -50,19 +54,7 @@ export default function Slug() {
 	console.log(Course);
 
 	const GridCard = () => {
-		const [showOptions, setShowOptions] = useState(false);
-		const [graphOptions, setGraphOptions] = useState([
-			{ name: "MDAs", isSelected: true },
-			{ name: "STCs", isSelected: false },
-			{ name: "Students", isSelected: false },
-		]);
-		const handleSelectOption = (name: string) => {
-			const newGraphOptions = graphOptions.map((ele) => {
-				return { ...ele, isSelected: ele.name === name };
-			});
-			setGraphOptions(newGraphOptions);
-			setShowOptions(false);
-		};
+	
 
 		return (
 			<section className=" flex mt-4 gap-4">
@@ -104,7 +96,7 @@ export default function Slug() {
 				</section>
 				<section className=" flex-1 border border-[#E4E7EC] rounded-[10px] px-5 py-[18px]">
 					<div className="graph">
-						<BarChartComp />
+						<CourseBarChartComp option={selectedGraphOption?.name} api={selectedGraphOption?.api} />
 					</div>
 				</section>
 			</section>
