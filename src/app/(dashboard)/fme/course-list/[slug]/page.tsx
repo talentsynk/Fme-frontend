@@ -1,6 +1,6 @@
 "use client";
 import { BackSvg, CertifiedStudent, MDA, STC, TotalStudent } from "@/components/fme/course_list/Svg";
-import { BarChartComp } from "@/components/fme/index";
+import { CourseBarChartComp } from "@/components/fme/index";
 import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { CourseGraphOptions } from "@/components/fme/index/data";
 
 interface ICourse {
 	Id: number;
@@ -22,6 +23,8 @@ interface ICourse {
 export default function Slug() {
 	//the unique page for each courses
 	const searchParams = useSearchParams();
+
+	const [selectedGraphOption, setSelectedGraphOption] = useState(CourseGraphOptions.find((ele) => ele.isSelected === true));
 
 	const courseID = searchParams.get("course");
 
@@ -50,19 +53,8 @@ export default function Slug() {
 	console.log(Course);
 
 	const GridCard = () => {
-		const [showOptions, setShowOptions] = useState(false);
-		const [graphOptions, setGraphOptions] = useState([
-			{ name: "MDAs", isSelected: true },
-			{ name: "STCs", isSelected: false },
-			{ name: "Students", isSelected: false },
-		]);
-		const handleSelectOption = (name: string) => {
-			const newGraphOptions = graphOptions.map((ele) => {
-				return { ...ele, isSelected: ele.name === name };
-			});
-			setGraphOptions(newGraphOptions);
-			setShowOptions(false);
-		};
+		
+		
 
 		return (
 			<section className=" flex mt-4 gap-4">
@@ -96,7 +88,7 @@ export default function Slug() {
 						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#E3C54D] bg-[#FFFBEB]">
 							<div className="">
 								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Certified Students</p>
-								<p className=" text-lg font-semibold text-[#344054] leading-6">12</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">3</p>
 							</div>
 							<STC />
 						</div>
@@ -104,7 +96,7 @@ export default function Slug() {
 				</section>
 				<section className=" flex-1 border border-[#E4E7EC] rounded-[10px] px-5 py-[18px]">
 					<div className="graph">
-						<BarChartComp />
+						<CourseBarChartComp option={selectedGraphOption?.name} api={selectedGraphOption?.api} />
 					</div>
 				</section>
 			</section>
