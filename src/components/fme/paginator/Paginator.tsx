@@ -49,7 +49,6 @@ export const PaginatorStyles = styled.div`
     button {
       width: 2rem;
       height: 2rem;
-      border: 2px solid #red;
       display: flex;
       justify-content: center;
       align-items: center;

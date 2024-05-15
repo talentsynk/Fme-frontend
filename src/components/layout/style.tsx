@@ -24,11 +24,7 @@ export const GenericDashboardLayoutStyle = styled.main`
 
   ::-webkit-scrollbar-thumb {
     border-radius: 0.125rem;
-    background: #e5e7eb; /* color of the thumb */
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #e7f6ec; /* color of the thumb on hover */
+    background: #bfc3c8; /* color of the thumb */
   }
   @media (min-width: 998px) {
     display: grid;

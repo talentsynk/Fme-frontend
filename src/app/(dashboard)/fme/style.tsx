@@ -11,6 +11,61 @@ export const FMEHomeStyles = styled.div`
     column-gap: 1.1875rem;
     row-gap: 1.25rem;
   }
+  .course-stat,.summary,.top-courses{
+    min-height: 200px;
+  }
+  .course-stat{
+    grid-column: 1/4;
+    border-radius: 0.5rem;
+    background: #FFF;
+    display: flex;
+    flex-direction: column;
+    gap: 0.87rem;
+    position: relative;
+    overflow: hidden;
+    padding: 1.13rem 0.94rem 1.13rem 0.94rem;
+    .head h4 {
+      color: #000;
+      font-feature-settings: "cv01" on, "cv04" on, "cv03" on;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 1.5rem; /* 133.333% */
+    }
+  }
+  .cont{
+    position: relative;
+    overflow-x: scroll;
+    max-width : 100%;
+    transition: 'left 0.5s ease';
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .coursecards{
+    display: flex;
+    align-items: center;
+    transform : translateX(0%);
+    gap: 1rem;
+  }
+  .slide-r, .slide-l{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: fit-content;
+    button{
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--text-style, #101928);
+      border-radius: 1.6875rem;
+    }
+  }
+  .slide-l{
+    left: 0;
+  }
   .total {
     height: 8.0625rem;
     background: #fff;
@@ -144,3 +199,4 @@ export const FMEHomeStyles = styled.div`
     }
   }
 `;
+
