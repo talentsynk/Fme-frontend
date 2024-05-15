@@ -8,7 +8,7 @@ import {
 import { FMEHomeStyles } from "./style";
 import Head from "next/head";
 import { AngleDownStyles } from "@/components/icons/header";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IconWrapper, TickIcon } from "@/components/icons/fme/mda";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -22,6 +22,10 @@ import {
   GraphOptions,
 } from "@/components/fme/index/data";
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
+import { STCCourseCard } from "@/components/stc/index/coursecard";
+import { CourseCardSkeleton } from "@/components/fme/skeleton/CourseCardSkeleton";
+import { NoDataStyles } from "@/components/fme/mda/styles";
+import { WhiteArrowLeft, WhiteArrowRight } from "@/components/icons/main";
 // the first page on the fme dashboard
 
 export default function Home() {
@@ -36,7 +40,14 @@ export default function Home() {
     totalStudents: null,
   });
   const [courseLists, setCourseLists] = useState<
-    { CourseName: string; StudentCount: number; TotalPercent: number }[] | null
+    | {
+        CourseName: string;
+        TotalStudents: number;
+        TotalPercent: number;
+        CertifiedCount: number;
+        UncertifiedCount: number;
+      }[]
+    | null
   >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState(GraphOptions);
@@ -53,6 +64,7 @@ export default function Home() {
     );
     setShowOptions(false);
   };
+  const [isLoading, setIsLoading] = useState<boolean | null>(null);
   // task left: work on add New Mda and Stc, plug in the APIs on wednesday
   useEffect(() => {
     const token = Cookies.get("token");
@@ -76,16 +88,30 @@ export default function Home() {
       .catch((error) => console.log(error));
 
     // simulating get-request for the top course tracker API
-
+    setIsLoading(true);
     axios
       .get(`${BACKEND_URL}/dashboard/course-percentage`, config)
       .then((res) => {
         if (res.data) {
           setCourseLists(res.data.coursePercentages);
+          setIsLoading(false);
         }
       })
       .catch((error) => console.log(error));
   }, []);
+
+  // slider
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (scrollOffset: number) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: scrollOffset,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -140,6 +166,48 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="course-stat">
+          <div className="head">
+            <h4>Course Statistics</h4>
+          </div>
+          <div className="cont" ref={containerRef} >
+            <div className="coursecards" >
+              {courseLists &&
+                courseLists.map((ele, index) => (
+                  <STCCourseCard
+                    key={index}
+                    name={ele.CourseName}
+                    noGraduated={ele.CertifiedCount}
+                    noEnrolled={ele.TotalStudents}
+                    $bgColor={colorGroup[index % 5].lightColor}
+                    $lightColor={colorGroup[index % 5].bgColor}
+                    $thickColor={colorGroup[index % 5].thickColor}
+                  />
+                ))}
+              {courseLists === null &&
+                isLoading &&
+                [1, 2, 3, 4, 5, 6].map((ele, index) => (
+                  <CourseCardSkeleton key={index} />
+                ))}
+              {courseLists === null && isLoading === false && (
+                <NoDataStyles>
+                  {" "}
+                  <h2>No Courses Found</h2>
+                </NoDataStyles>
+              )}
+            </div>
+          </div>
+          {courseLists && <div className="slide-r">
+            <button type="button" onClick={() => handleScroll(150)}>
+              <WhiteArrowRight />{" "}
+            </button>
+          </div>}
+         {courseLists &&  <div className="slide-l">
+            <button type="button" onClick={() => handleScroll(-150)}>
+              <WhiteArrowLeft /> {" "}
+            </button>
+          </div>}
+        </div>
         <div className="summary">
           <div className="head">
             <h4>Statistics</h4>
@@ -180,7 +248,7 @@ export default function Home() {
           <h5>Top Course Tracker</h5>
           <div className="content">
             {courseLists &&
-              courseLists.map((ele, index) => (
+              courseLists.map((ele, index: number) => (
                 <CourseItem
                   key={index}
                   percent={ele.TotalPercent}
@@ -192,9 +260,16 @@ export default function Home() {
                 />
               ))}
             {courseLists === null &&
+              isLoading &&
               [1, 2, 3, 4, 5].map((ele, index) => (
                 <CourseItemSkeleton key={index} />
               ))}
+            {courseLists === null && isLoading === false && (
+              <NoDataStyles>
+                {" "}
+                <h2>No Courses Found</h2>
+              </NoDataStyles>
+            )}
           </div>
         </div>
         {/* <div className="track br">6</div> */}

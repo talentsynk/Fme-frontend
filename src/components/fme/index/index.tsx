@@ -14,7 +14,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { GraphPlots,CourseGraphPlots, IGraphplots } from "./data";
+import { CourseGraphPlots, IGraphplots } from "./data";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";

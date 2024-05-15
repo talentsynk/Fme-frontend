@@ -7,7 +7,7 @@ import {
 } from "@/components/icons/fme/main";
 import Head from "next/head";
 import { AngleDownStyles } from "@/components/icons/header";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IconWrapper, TickIcon } from "@/components/icons/fme/mda";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -24,6 +24,9 @@ import {
 } from "@/components/mda/index/data";
 import { FMEHomeStyles } from "../fme/style";
 import { NoDataStyles } from "@/components/fme/mda/styles";
+import { STCCourseCard } from "@/components/stc/index/coursecard";
+import { CourseCardSkeleton } from "@/components/fme/skeleton/CourseCardSkeleton";
+import { WhiteArrowLeft, WhiteArrowRight } from "@/components/icons/main";
 // the first page on the fme dashboard
 
 export default function Home() {
@@ -38,7 +41,14 @@ export default function Home() {
     STCsCount: null,
   });
   const [courseLists, setCourseLists] = useState<
-    { CourseName: string; StudentCount: number; TotalPercent: number }[] | null
+    | {
+        CourseName: string;
+        TotalStudents: number;
+        TotalPercent: number;
+        CertifiedCount: number;
+        UncertifiedCount: number;
+      }[]
+    | null
   >(null);
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState(GraphOptions);
@@ -70,7 +80,8 @@ export default function Home() {
         if (res.data) {
           console.log(res.data);
           // change to res.data.response
-          const { GraduatedCount, NonGraduatedCount, STCsCount } = res.data.response;
+          const { GraduatedCount, NonGraduatedCount, STCsCount } =
+            res.data.response;
           setTotalStat({
             GraduatedCount: GraduatedCount,
             NonGraduatedCount: NonGraduatedCount,
@@ -92,6 +103,19 @@ export default function Home() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  // slider
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (scrollOffset: number) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: scrollOffset,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -145,6 +169,52 @@ export default function Home() {
               </h3>
             </div>
           </div>
+        </div>
+        <div className="course-stat">
+          <div className="head">
+            <h4>Course Statistics</h4>
+          </div>
+          <div className="cont">
+            <div className="coursecards">
+              {courseLists &&
+                courseLists.map((ele, index) => (
+                  <STCCourseCard
+                    key={index}
+                    name={ele.CourseName}
+                    noGraduated={ele.CertifiedCount}
+                    noEnrolled={ele.TotalStudents}
+                    $bgColor={colorGroup[index % 5].lightColor}
+                    $lightColor={colorGroup[index % 5].bgColor}
+                    $thickColor={colorGroup[index % 5].thickColor}
+                  />
+                ))}
+              {courseLists === null &&
+                isLoading &&
+                [1, 2, 3, 4, 5, 6].map((ele, index) => (
+                  <CourseCardSkeleton key={index} />
+                ))}
+              {courseLists === null && isLoading === false && (
+                <NoDataStyles>
+                  {" "}
+                  <h2>No Courses Found</h2>
+                </NoDataStyles>
+              )}
+            </div>
+          </div>
+          {courseLists && (
+            <div className="slide-r">
+              <button type="button" onClick={() => handleScroll(150)}>
+                <WhiteArrowRight />{" "}
+              </button>
+            </div>
+          )}
+          {courseLists && (
+            <div className="slide-l">
+              <button type="button" onClick={() => handleScroll(-150)}>
+                <WhiteArrowLeft />{" "}
+              </button>
+            </div>
+          )}
         </div>
         <div className="summary">
           <div className="head">
