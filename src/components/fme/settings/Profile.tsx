@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Letter } from "@/app/(dashboard)/support/Icons";
+import Cookies from "js-cookie";
 
 const Profile = () => {
+	const role = Cookies.get("userRole");
 	const [settingsData, setSettingsData] = useState({
 		name: "",
 		email: "",
@@ -36,11 +38,8 @@ const Profile = () => {
 		}
 	};
 
-	//  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-	//     e.preventDefault();
-	//     console.log(settingsData);
-	//     // Handle form submission logic here
-	//  };
+	
+	
 
 	return (
 		<div className="flex p-8">
@@ -61,7 +60,7 @@ const Profile = () => {
 			<form action="" className="w-[70%] space-y-4">
 				<div className="">
 					<label htmlFor="firstName" className="text-[#101928] font-semibold text-sm">
-						Name of FME
+						{`Name of ${role==='MDA'?'MDA':'STC'}`}
 					</label>
 					<input
 						className="w-full border-[#D0D5DD] border-solid rounded-md p-4 border focus:border-[#00932E]"
