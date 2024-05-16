@@ -29,14 +29,12 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
+import { Paginator } from "@/components/fme/paginator/Paginator";
+import { setPageNo } from "@/redux/mda/mdaSlice";
 
-// the first page on the fme dashboard
 
 export default function Home() {
-	// const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
-	// const [showSortDropdown, setShowSortDropdown] = useState(false);
-	// const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-	// const [filterBtns, setFilterBtns] = useState(FilterBtns);
+	
 	const [showCancel, setShowCancel] = useState(false);
 	const [studentTabSwitches, setStudentTabSwitches] = useState(StudentsTabSwitches);
 	const [total, setTotal] = useState({
@@ -87,6 +85,7 @@ export default function Home() {
 
 	useEffect(() => {
 		let token = Cookies.get("token");
+		console.log(token)
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -110,14 +109,16 @@ export default function Home() {
 			.get(`${BACKEND_URL}/student/all?active=true`, config)
 			.then((res) => {
 				const activeStudents = res.data;
+				console.log(activeStudents);
 				axios
 					.get(`${BACKEND_URL}/student/all?active=false`, config)
 					.then((res) => {
 						const inactiveStudents = res.data;
-
-						const totalActive = activeStudents.students.length;
-						const totalInactive = inactiveStudents.students.length;
+						console.log(inactiveStudents);
+						const totalActive = activeStudents?.students?.length;
+						const totalInactive = inactiveStudents?.students!==null? inactiveStudents?.students?.length:0;
 						const totalStudents = totalActive + totalInactive;
+						console.log(totalActive,totalInactive)
 
 						setTotal({
 							totalStudents: totalStudents,
@@ -157,7 +158,7 @@ export default function Home() {
 						const inactiveStudents = res.data;
 
 						const totalActive = activeStudents.students.length;
-						const totalInactive = inactiveStudents.students.length;
+						const totalInactive = inactiveStudents?.students!==null? inactiveStudents?.students.length:0;
 						const totalStudents = totalActive + totalInactive;
 
 						setTotal({
