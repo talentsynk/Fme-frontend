@@ -216,7 +216,7 @@ export default function Home() {
 			<TopStyles>
 				<div className="text">
 					<h1>Course List</h1>
-					<p>This shows all the courses that are being offered by STCs </p>
+					<p>This shows all the courses that are being offered by MDAs </p>
 				</div>
 				<div className="buttons">
 					<button type="button" className="add" onClick={() => setShowNewMdaFormModal(true)}>
