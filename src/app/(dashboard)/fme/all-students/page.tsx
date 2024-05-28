@@ -308,21 +308,21 @@ export default function Home() {
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Total No of Students</span>
-							<p>{total.totalStudents || <Skeleton />}</p>
+							<p>{typeof(total.totalStudents)==='number'?total.totalStudents:<Skeleton />}</p>
 						</div>
 						<TotalIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Active Students</span>
-							<p>{total.totalActive || <Skeleton />}</p>
+							<p>{typeof(total.totalActive)==='number'?total.totalActive:<Skeleton />}</p>
 						</div>
 						<ActiveIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Inactive Students</span>
-							<p>{total.totalInactive || <Skeleton />}</p>
+							<p>{typeof(total.totalInactive)==='number'?total.totalInactive:<Skeleton />}</p>
 						</div>
 						<InactiveIcon />
 					</StatListItemStyle>

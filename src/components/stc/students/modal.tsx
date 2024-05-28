@@ -1,0 +1,1168 @@
+import {
+	CheckedBoxIcon,
+	CopyIcon,
+	CreationSuccessIcon,
+	ErrorAlertIcon,
+	GraphIcon,
+	IconWrapper,
+	LargeCheckedIcon,
+	LocationIcon,
+	NameIcon,
+	ReactivateIcon,
+	SuspendIcon,
+	ThreedotsIcon,
+	TotalCoursesIcon,
+	TotalSTCIcon,
+	TotalStudentsIcon,
+	TryAgainIcon,
+	UncheckedBoxIcon,
+} from "@/components/icons/fme/mda";
+import { XIcon } from "@/components/icons/sidebar";
+import { CheckedIcon, EmailIcon, FormErrorIcon } from "@/components/icons/recovery";
+import { BackBtn } from "@/components/recovery/recovery";
+import { FormEvent, ReactNode, useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Ierror } from "@/app/recovery/page";
+import { validateEmail } from "@/utils/validateEmail";
+import { AngleDown, AngleDownStyles } from "@/components/icons/header";
+import { States } from "@/components/fme/mda/data";
+import {
+	ErrorIconWrapper,
+	FlexAbsoluteModalStyles,
+	MDADetailStyle,
+	NewMdaAbsoluteStyles,
+	NewMdaFormStyles,
+	OneButtonModalStyles,
+	StateCompStyles,
+	StatesDropdownStyles,
+	TwoButtonModalStyles,
+} from "@/components/fme/mda/styles";
+import { StatusComp } from "@/components/fme/mda/mda";
+import { CertifiedStudentIcon, UncertifiedStudentIcon } from "@/components/icons/fme/stc";
+import { SuccessModal } from "@/components/fme/mda/modals";
+import { truncateString } from "@/utils/truncateString";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { stcSelector, setFakeNewStudentId, setUnchangedStudentsList } from "@/redux/stc/stcSlice";
+import { formatDate } from "@/utils/formatDate";
+import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { ButtonLoader } from "@/components/recovery/style";
+
+interface IOneButtonModal {
+	cancelModal: () => void;
+}
+
+//The interface for the form,, come back to it
+interface IForm {
+	Email: string;
+	Lastname: string;
+	Gender: string;
+	StateOfResidence: string;
+	PhoneNumber: string;
+	DOBstring: string;
+	SID: string;
+	NsqLevel: string;
+	Firstname: string;
+	CourseID: number;
+}
+
+export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
+	const [form, setForm] = useState<IForm>({
+		Email: "",
+		Lastname: "",
+		Gender: "",
+		StateOfResidence: "",
+		PhoneNumber: "",
+		DOBstring: "",
+		SID: "",
+		NsqLevel: "",
+		Firstname: "",
+		CourseID: 1,
+	});
+
+	const [email, setEmail] = useState<string>("");
+	const [emailError, setEmailError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setEmail(value);
+
+		if (!validateEmail(value)) {
+			setEmailError({ active: true, text: "Invalid email address" });
+		} else {
+			setEmailError({ active: false, text: "Valid Email" });
+			setForm({ ...form, Email: value });
+		}
+	};
+
+	const [Firstname, setFirstName] = useState("");
+	const [firstNameError, setFirstNameError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+	const [Lastname, setLastName] = useState("");
+	const [lastNameError, setLastNameError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+	const [Phone, setPhone] = useState("");
+	const [phoneError, setPhoneError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+	const [SID, setSID] = useState("");
+	const [SIDError, setSIDError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const [NsqLevel, setNsqLevel] = useState("");
+	const [NsqLevelError, setNsqLevelError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+	const [Nin, setNin] = useState<number>();
+	const [NinError, setNinError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const [CourseID, setCourseID] = useState<number>();
+	const [CourseIDError, setCourseIDError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const [DOBstring, setDOBstring] = useState("");
+	const [DOBstringError, setDOBstringError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const [gender, setGender] = useState("");
+	const [genderError, setGenderError] = useState({ active: false, text: "" });
+
+	const [otherError, setOtherError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const handleInput = (e: React.ChangeEvent<HTMLInputElement>, input: string) => {
+		const value = e.target.value;
+		if (input == "Firstname") {
+			setFirstName(value);
+			if (value.trim().length < 1) {
+				setFirstNameError({ active: true, text: "First Name is required" });
+			} else {
+				setFirstNameError({ active: false, text: "First Name is valid" });
+				setForm({ ...form, Firstname: value });
+			}
+		}
+		if (input == "Lastname") {
+			setLastName(value);
+			if (value.trim().length < 1) {
+				setLastNameError({ active: true, text: "LastName is required" });
+			} else {
+				setLastNameError({ active: false, text: "Last Name is valid" });
+				setForm({ ...form, Lastname: value });
+			}
+		}
+		if (input == "Phone") {
+			setPhone(value);
+			if (value.trim().length < 1) {
+				setPhoneError({ active: true, text: "Phone Number is required" });
+			} else {
+				setPhoneError({ active: false, text: "Phone Number is valid" });
+				setForm({ ...form, PhoneNumber: value });
+			}
+		}
+		if (input == "SID") {
+			setSID(value);
+			if (value.trim().length < 1) {
+				setPhoneError({ active: true, text: "Student ID is required" });
+			} else {
+				setSIDError({ active: false, text: "Student ID is valid" });
+				setForm({ ...form, SID: value });
+			}
+		}
+
+		if (input == "NsqLevel") {
+			setNsqLevel(value);
+			if (value.trim().length < 1) {
+				setNsqLevelError({ active: true, text: "NSQ Level is required" });
+			} else {
+				setNsqLevelError({ active: false, text: "NSQ Level is valid" });
+				setForm({ ...form, NsqLevel: value });
+			}
+		}
+		if (input == "gender") {
+			setGender(value);
+			if (value.trim().length < 1) {
+				setGenderError({ active: true, text: "Gender is required" });
+			} else {
+				setGenderError({ active: false, text: "Gender is valid" });
+				setForm({ ...form, Gender: value });
+			}
+		}
+		if (input == "CourseID") {
+			setCourseID(Number(value));
+			if (value.trim().length < 1) {
+				setCourseIDError({ active: true, text: "Course ID is required" });
+			} else {
+				setCourseIDError({ active: false, text: "Course ID is valid" });
+				setForm({ ...form, CourseID: Number(value) });
+			}
+		}
+		if (input == "Nin") {
+			setNin(Number(value));
+			if (value.trim().length < 1) {
+				setNinError({ active: true, text: "NIN is required" });
+			} else {
+				setNinError({ active: false, text: "NIN is valid" });
+				setForm({ ...form, CourseID: Number(value) });
+			}
+		}
+		if (input === "DOBstring") {
+			// Convert YYYY-MM-DD to MM/DD/YYYY
+			const parts = value.split("-");
+			const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+			setDOBstring(value);
+			if (!isValidDate(formattedDate)) {
+				setDOBstringError({ active: true, text: "Invalid date format. Please enter MM/DD/YYYY" });
+			} else {
+				setDOBstringError({ active: false, text: "Date of Birth is valid" });
+				setForm({ ...form, DOBstring: formattedDate });
+			}
+		}
+	};
+
+	const isValidDate = (dateString: string) => {
+		const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+		return regex.test(dateString);
+	};
+	// for states
+	const [state, setState] = useState("");
+	const [lga, setLga] = useState("");
+	const [states, setStates] = useState(States);
+	const [lgas, setLgas] = useState(States);
+
+	interface ICourse {
+		Id: number;
+		Name: string;
+		Description: string;
+	}
+
+	const [course, setCourse] = useState<string>("");
+	const [courses, setCourses] = useState<ICourse[]>([]);
+
+	useEffect(() => {
+		// Fetch states from API when component mounts
+		fetchCourses();
+	}, []);
+
+	const fetchCourses = async () => {
+		try {
+			const token = Cookies.get("token");
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			const response = await axios.get(`${BACKEND_URL}/course/all`, config);
+			// Assuming the API response is an array of state names
+			console.log(response.data);
+			setCourses(response.data.course);
+		} catch (error) {
+			console.error("Error fetching courses:", error);
+		}
+	};
+
+	const [showDropdown, setShowDropdown] = useState(false);
+	const [showLGADropdown, setShowLGADropdown] = useState(false);
+	const [showCourseDropdown, setShowCourseDropdown] = useState(false);
+
+	const handleCourseSelection = (name: string, value: number) => {
+		setForm({ ...form, CourseID: value });
+		setCourse(name);
+		setShowCourseDropdown(false);
+	};
+	//when each state is clicked, an api call should be made to the api for the lga
+	//the api would be dynamic maybe with route parameters like /${state}
+	const handleStateSelection = (name: string) => {
+		setForm({ ...form, StateOfResidence: name });
+		setState(name);
+		setShowDropdown(false);
+	};
+	const handleLGASelection = (name: string) => {
+		// setForm({ ...form, StateOfResidence: name });
+		setLga(name);
+		setShowLGADropdown(false);
+		console.log(state)
+		axios.get(`/get-lga/${state}`)
+		.then(data=>{
+			console.log(data)
+			// setLgas(data)
+		})
+		.catch(err=>{
+            console.log(err)
+        })
+
+	};
+
+	// login button loader state
+	const [isLoading, setIsLoading] = useState(false);
+	const { fakeNewStudentId } = useAppSelector(stcSelector);
+	const dispatch = useAppDispatch();
+
+	const [isSuccess, setIsSuccess] = useState(false);
+
+	const isFormValid = () => {
+		return (
+			!emailError.active &&
+			!firstNameError.active &&
+			!lastNameError.active &&
+			emailError.text !== "" &&
+			lastNameError.text !== "" &&
+			state !== "" &&
+			firstNameError.text !== ""
+		);
+	};
+
+	const handleCreateStc = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		if (
+			!emailError.active &&
+			!firstNameError.active &&
+			!lastNameError.active &&
+			emailError.text !== "" &&
+			lastNameError.text !== "" &&
+			state !== "" &&
+			firstNameError.text !== ""
+		) {
+			// call createMDA API
+			const token = Cookies.get("token");
+			console.log(token)
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			try {
+				const body = {
+					Email: form.Email,
+					Lastname: form.Lastname,
+					Gender: form.Gender,
+					StateOfResidence: form.StateOfResidence,
+					PhoneNumber: form.PhoneNumber,
+					DOBstring: form.DOBstring,
+					SID: form.SID,
+					NsqLevel: form.NsqLevel,
+					CourseID: form.CourseID,
+					Firstname: form.Firstname,
+				};
+				console.log("Request Body:", body);
+				setIsLoading(true);
+				const { data } = await axios.post(`${BACKEND_URL}/student/create-stc`, body, config);
+				if (data) {
+					setIsLoading(false);
+					// update fakeMdaId
+					let newFakeId = fakeNewStudentId ? fakeNewStudentId + 1 : 1;
+					dispatch(setFakeNewStudentId(newFakeId));
+					setIsSuccess(true);
+				}
+			} catch (error: any) {
+				if (error.response) {
+					setEmailError({
+						active: true,
+						text: error.response.data.error,
+					});
+					setFirstNameError({
+						active: true,
+						text: error.response.data.error,
+					});
+					setLastNameError({
+						active: true,
+						text: error.response.data.error,
+					});
+				} else {
+					console.log(error);
+					setOtherError({
+						active: true,
+						text: error.message,
+					});
+				}
+				setIsLoading(false);
+			}
+		}
+	};
+	const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
+	const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+	const handleContinue = () => {
+		// Assuming formData is already populated with the first modal's data
+		setIsFirstModalOpen(false);
+		setIsSecondModalOpen(true);
+	};
+
+	const handlePrevious = () => {
+		setIsFirstModalOpen(true);
+		setIsSecondModalOpen(false);
+	};
+
+	const router = useRouter();
+
+	return (
+		<>
+			{isSuccess === false && (
+				<NewMdaAbsoluteStyles>
+					<div className="form">
+						<NewMdaFormStyles className="bd">
+							<div className="fl">
+								<div className="form-head">
+									<h3>Add New Student</h3>
+									<p>Fill in the necessary details to add a new Student</p>
+								</div>
+								<IconWrapper onClick={cancelModal}>
+									<XIcon />
+								</IconWrapper>
+							</div>
+							<form className="form" onSubmit={handleCreateStc}>
+								{isFirstModalOpen && (
+									<div className="form-input">
+										<div className="flex justify-between gap-4">
+											<div className="form-ele flex-1">
+												<label htmlFor="firstName">First Name</label>
+												<div className="inp">
+													<input
+														type="text"
+														name="Firstname"
+														value={Firstname}
+														className={firstNameError.active ? "error-bdr" : ""}
+														onChange={(e) => handleInput(e, "Firstname")}
+														placeholder="Please type in your first name here"
+													/>
+													<div className="abs">
+														{firstNameError.active === false && firstNameError.text === "" && <NameIcon />}
+														{firstNameError.active === false && firstNameError.text !== "" && <CheckedIcon />}
+														{firstNameError.active === true && <FormErrorIcon />}
+													</div>
+													<p role="alert" aria-live="assertive" aria-atomic="true" className={firstNameError.active ? "error-msg" : "correct"}>
+														{firstNameError.text}
+													</p>
+												</div>
+											</div>
+											<div className="form-ele flex-1">
+												<label htmlFor="lastName">Last Name</label>
+												<div className="inp">
+													<input
+														type="text"
+														name="Lastname"
+														value={Lastname}
+														className={lastNameError.active ? "error-bdr" : ""}
+														onChange={(e) => handleInput(e, "Lastname")}
+														placeholder="Please type in your last name here"
+													/>
+													<div className="abs">
+														{lastNameError.active === false && lastNameError.text === "" && <NameIcon />}
+														{lastNameError.active === false && lastNameError.text !== "" && <CheckedIcon />}
+														{lastNameError.active === true && <FormErrorIcon />}
+													</div>
+													<p role="alert" aria-live="assertive" aria-atomic="true" className={lastNameError.active ? "error-msg" : "correct"}>
+														{lastNameError.text}
+													</p>
+												</div>
+											</div>
+										</div>
+										<div className="form-ele">
+											<label htmlFor="otherNames">Phone Number</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="Phone"
+													value={Phone}
+													onChange={(e) => handleInput(e, "Phone")}
+													placeholder="Please type in your Phone Number here"
+												/>
+												<div className="abs">
+													{phoneError.active === false && phoneError.text === "" && <NameIcon />}
+													{phoneError.active === false && phoneError.text !== "" && <CheckedIcon />}
+													{phoneError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele">
+											<label htmlFor="email">Email Address</label>
+											<div className="inp">
+												<input
+													type="email"
+													name="email"
+													value={email}
+													onChange={handleEmailChange}
+													placeholder="Please type in your Email Address"
+													className={emailError.active ? "error-bdr" : ""}
+													autoComplete="email"
+												/>
+												<div className="abs">
+													{emailError.active === false && emailError.text === "" && <EmailIcon />}
+													{emailError.active === false && emailError.text !== "" && <CheckedIcon />}
+													{emailError.active === true && <FormErrorIcon />}
+												</div>
+												<p role="alert" aria-live="assertive" aria-atomic="true" className={emailError.active ? "error-msg" : "correct"}>
+													{emailError.text}
+												</p>
+											</div>
+										</div>
+										<div className="form-ele ">
+											<label htmlFor="address">Date Of Birth</label>
+											<div className="inp">
+												<input
+													type="date"
+													name="DOB"
+													value={DOBstring}
+													onChange={(e) => handleInput(e, "DOBstring")}
+													className={DOBstringError.active ? "error-bdr" : ""}
+													placeholder="MM/DD/YYYY"
+												/>
+												<div className="abs">
+													{DOBstringError.active === false && DOBstringError.text === "" && <LocationIcon />}
+													{DOBstringError.active === false && DOBstringError.text !== "" && <CheckedIcon />}
+													{DOBstringError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele">
+											<label htmlFor="state">State of Operation</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
+													<>
+														{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
+													</>
+													<AngleDownStyles $isSelected={showDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showDropdown && (
+													<div className="dropdown">
+														{states.map((ele, index) => (
+															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
+																<p>{ele.name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+										
+										<div className="">
+											<label htmlFor="gender" className=" text-[#101928] font-semibold">
+												Gender
+											</label>
+											<div className="">
+												<div className=" flex gap-4">
+													<input
+														type="radio"
+														name="gender"
+														value="male"
+														id="gender"
+														checked={gender === "male"}
+														onChange={(e) => handleInput(e, "gender")}
+													/>{" "}
+													<span>Male</span>
+												</div>
+												<div className="flex gap-4">
+													<input
+														type="radio"
+														name="gender"
+														value="female"
+														id="gender"
+														checked={gender === "female"}
+														onChange={(e) => handleInput(e, "gender")}
+													/>{" "}
+													<span>Female</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								)}
+								{isSecondModalOpen && (
+									<div className="form-input">
+										
+										<div className="form-ele">
+											<label htmlFor="state">Local Government Area</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
+													<>
+														{state === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+													</>
+													<AngleDownStyles $isSelected={showLGADropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showLGADropdown && (
+													<div className="dropdown">
+														{lgas.map((ele, index) => (
+															<StateCompStyles $isSelected={lga === ele.name} key={index} onClick={() => handleLGASelection(ele.name)}>
+																<p>{ele.name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="firstName">Student ID</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="studentID"
+													value={SID}
+													className={SIDError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "SID")}
+													placeholder="Please type in your Student ID"
+												/>
+												<div className="abs">
+													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
+													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
+													{SIDError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="Nin">NIN</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="lastName"
+													id="Nin"
+													// value={NsqLevel}
+													className={NsqLevelError.active ? "error-bdr" : ""}
+													// onChange={(e) => handleInput(e, "NsqLevel")}
+													placeholder="Please input NIN"
+												/>
+												<div className="abs">
+													{NsqLevelError.active === false && NsqLevelError.text === "" && <NameIcon />}
+													{NsqLevelError.active === false && NsqLevelError.text !== "" && <CheckedIcon />}
+													{NsqLevelError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="lastName">NSQ Level</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="lastName"
+													value={NsqLevel}
+													className={NsqLevelError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "NsqLevel")}
+													placeholder="Please select Training center"
+												/>
+												<div className="abs">
+													{NsqLevelError.active === false && NsqLevelError.text === "" && <NameIcon />}
+													{NsqLevelError.active === false && NsqLevelError.text !== "" && <CheckedIcon />}
+													{NsqLevelError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele">
+											<label htmlFor="state">Courses Taken</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowCourseDropdown(!showCourseDropdown)}>
+													<>
+														{course === "" ? <p className="placeholder">Please select the course taken</p> : <p className="state-name">{course}</p>}
+													</>
+													<AngleDownStyles $isSelected={showCourseDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showCourseDropdown && (
+													<div className="dropdown">
+														{courses.map((ele, index) => (
+															<StateCompStyles $isSelected={course === ele.Name} key={index} onClick={() => handleCourseSelection(ele.Name, ele.Id)}>
+																<p>{ele.Name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+										
+									</div>
+								)}
+								{isFirstModalOpen && (
+									<div className="flex gap-4">
+										<button
+											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+											onClick={cancelModal}>
+											Cancel
+										</button>
+										<button
+											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+											}`}
+											onClick={handleContinue}
+											disabled={!isFormValid()}>
+											Continue
+										</button>
+									</div>
+								)}
+								{isSecondModalOpen && (
+									<div className="flex gap-4">
+										<button
+											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+											onClick={handlePrevious}>
+											Previous Page
+										</button>
+										<button
+											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+											}`}
+											type="submit"
+											disabled={
+												firstNameError.text == "" ||
+												lastNameError.text == "" ||
+												emailError.text == "" ||
+												phoneError.text == "" ||
+												SIDError.text == "" ||
+												NsqLevelError.text == "" ||
+												firstNameError.active !== false ||
+												lastNameError.active !== false ||
+												emailError.active !== false ||
+												phoneError.active !== false ||
+												SIDError.active !== false ||
+												NsqLevelError.active !== false ||
+												state == "" ||
+												DOBstring == ""
+											}>
+											{isLoading ? <ButtonLoader /> : "Create Student"}
+										</button>
+									</div>
+								)}
+							</form>
+						</NewMdaFormStyles>
+					</div>
+				</NewMdaAbsoluteStyles>
+			)}
+			{isSuccess && (
+				<FlexAbsoluteModalStyles>
+					<SuccessModal
+						head="New Student has been successfully created !"
+						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						cancelModal={cancelModal}
+						icon={<CreationSuccessIcon />}
+						hasCancel={true}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				</FlexAbsoluteModalStyles>
+			)}
+		</>
+	);
+};
+
+export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
+	const [showSuspendModal, setShowSuspendModal] = useState(false);
+	const [showActiveModal, setShowActivateModal] = useState(false);
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(stcSelector);
+
+	const [studentDetails, setStudentDetails] = useState(unchangedStudentsList?.find((ele) => ele.ID == selectedStudentId));
+	useEffect(() => {
+		setStudentDetails(unchangedStudentsList?.find((ele) => ele.ID == selectedStudentId));
+	}, [unchangedStudentsList, selectedStudentId]);
+	const fullName = `${studentDetails?.FirstName || ""} ${studentDetails?.LastName || ""}`;
+	console.log(studentDetails);
+
+	return (
+		<>
+			{!showSuspendModal && studentDetails && (
+				<MDADetailStyle>
+					<div className="left" onClick={cancelModal}></div>
+					<div className="right">
+						<div className="r-1">
+							<BackBtn backFunction={cancelModal} />
+							<div className="name">
+								<div className="avatar">
+									<p>{fullName.slice(0, 2).toUpperCase()}</p>
+								</div>
+								<div className="deet">
+									<h4>{truncateString(fullName, 40)}</h4>
+									<p>Added on Jul 11, 2023</p>
+								</div>
+							</div>
+						</div>
+						<div className="r-2">
+							<div className="details">
+								<div className="dx">
+									<div className="name">
+										<span>Name of Student</span>
+										<p>{truncateString(fullName, 40)}</p>
+									</div>
+									<CopyIcon text={fullName} />
+								</div>
+								<div className="dx">
+									<div className="name">
+										<span>Student ID</span>
+										<p className="nm">#{studentDetails.UserID}</p>
+									</div>
+									<CopyIcon text={studentDetails.UserID.toString()} />
+								</div>
+								<div className="dx">
+									<div className="name">
+										<span>Student Phone Number</span>
+										<p className="nm">{studentDetails.PhoneNumber}</p>
+									</div>
+									<CopyIcon text={studentDetails.PhoneNumber} />
+								</div>
+								{/* <div className="dx">
+									<div className="name">
+										<span>Student Address</span>
+										<p className="nm">1, Ajanaku street, Agege, Lagos State.</p>
+									</div>
+									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
+								</div> */}
+								<div className="dx">
+									<div className="name">
+										<span>State of Residence</span>
+										<p className="nm">{studentDetails.StateOfResidence}</p>
+									</div>
+									<CopyIcon text={studentDetails.StateOfResidence} />
+								</div>
+								<div className="dx">
+									<div className="name">
+										<span>Course Taken</span>
+										<p className="nm">{studentDetails.CoursesTaken}</p>
+									</div>
+									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
+								</div>
+								{/* <div className="dx">
+									<div className="name">
+										<span>Student Certificate</span>
+										<p className="nm">{studentDetails.profile} PDF.pdf</p>
+									</div>
+									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
+								</div> */}
+								<div className="dx">
+									<div className="name">
+										<span>Status</span>
+										<StatusComp $isActive={studentDetails.IsActive} />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="r-3">
+							<h4>{studentDetails.IsActive ? "Suspend Student" : "Re-activate"}</h4>
+							<div className="btn">
+								{studentDetails.IsActive ? (
+									<button type="button" onClick={() => setShowSuspendModal(true)}>
+										<SuspendIcon />
+										<p>Suspend Student</p>
+									</button>
+								) : (
+									<button type="button" className="reactivate" onClick={() => setShowActivateModal(true)}>
+										<ReactivateIcon />
+										<p>Re-Activate Student</p>
+									</button>
+								)}
+							</div>
+						</div>
+					</div>
+				</MDADetailStyle>
+			)}
+			{showSuspendModal && <SuspendStudentComp handleModalAction={cancelModal} cancelModal={() => setShowSuspendModal(false)} />}
+			{showActiveModal && <ReactivateStudentComp handleModalAction={cancelModal} cancelModal={() => setShowActivateModal(false)} />}
+		</>
+	);
+};
+
+interface ITwoActions {
+	cancelModal: () => void;
+	handleModalAction?: () => void;
+}
+
+export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(stcSelector);
+	const dispatch = useAppDispatch();
+	const suspend = async () => {
+		// make Suspend STC API call to suspend MDA
+		// if successful, change the data on the frontend
+		// display error / success message
+		// let's assume the API call was successful
+		const token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
+		if (userId) {
+			try {
+				setIsLoading(true);
+				const { data } = await axios.get(`${BACKEND_URL}/user/suspend/${userId}`, config);
+				if (data) {
+					if (unchangedStudentsList !== null) {
+						const newMdalist = unchangedStudentsList.map((ele) => {
+							return {
+								...ele,
+								is_active: ele.ID === selectedStudentId ? false : ele.IsActive,
+							};
+						});
+						setIsLoading(false);
+						// why does this state not update Immediately on the UI?
+						dispatch(setUnchangedStudentsList(newMdalist));
+						setIsSuccess(true);
+					}
+				}
+			} catch (error: any) {
+				setIsLoading(false);
+				if (error.response) {
+					// if the server responds with an error msg
+					setMsgError({
+						active: true,
+						text: error.response.data.message,
+					});
+					// error.response.data.message
+				} else {
+					setMsgError({
+						active: true,
+						text: error.message,
+					});
+				}
+			}
+		}
+	};
+	const router = useRouter();
+	return (
+		<>
+			<FlexAbsoluteModalStyles>
+				{!isSuccess && !msgError.active && (
+					<TwoButtonModalStyles>
+						<div className="pop">
+							<div className="up">
+								<div className="x" onClick={cancelModal}>
+									{" "}
+									<ErrorIconWrapper>
+										<ErrorAlertIcon />
+									</ErrorIconWrapper>
+									<XIcon />
+								</div>
+								<h4>Suspend Student?</h4>
+								<p>Are you sure you want to suspend this Student? It will no longer be visible and not able to take any course for.</p>
+							</div>
+							<div className="down">
+								<button type="button" onClick={cancelModal} className="cancel">
+									Cancel
+								</button>
+								<button type="button" onClick={suspend}>
+									{isLoading ? <ButtonLoader /> : "Suspend Student"}
+								</button>
+							</div>
+						</div>
+					</TwoButtonModalStyles>
+				)}
+				{isSuccess && (
+					<SuccessModal
+						head="Student has been successfully suspended !"
+						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						cancelModal={cancelModal}
+						hasCancel={true}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				)}
+				{msgError.active && (
+					<FailureModal
+						cancelModal={() =>
+							setMsgError({
+								active: false,
+								text: "",
+							})
+						}
+						head="Failed to suspend Student !"
+						msg={msgError.text}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+					/>
+				)}
+			</FlexAbsoluteModalStyles>
+		</>
+	);
+};
+
+export const ReactivateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(stcSelector);
+	const dispatch = useAppDispatch();
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const reactivate = async () => {
+		const token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
+		if (userId) {
+			try {
+				setIsLoading(true);
+				const { data } = await axios.get(`${BACKEND_URL}/user/activate/${userId}`, config);
+				if (data) {
+					if (unchangedStudentsList !== null) {
+						const newMdalist = unchangedStudentsList.map((ele) => {
+							return {
+								...ele,
+								is_active: ele.ID === selectedStudentId ? true : ele.IsActive,
+							};
+						});
+						setIsLoading(false);
+						dispatch(setUnchangedStudentsList(newMdalist));
+						setIsSuccess(true);
+					}
+				}
+			} catch (error: any) {
+				setIsLoading(false);
+				if (error.response) {
+					// if the server responds with an error msg
+					setMsgError({
+						active: true,
+						text: error.response.data.message,
+					});
+					// error.response.data.message
+				} else {
+					setMsgError({
+						active: true,
+						text: error.message,
+					});
+				}
+			}
+		}
+	};
+	const router = useRouter();
+	return (
+		<>
+			<FlexAbsoluteModalStyles>
+				{!isSuccess && (
+					<TwoButtonModalStyles>
+						<div className="pop">
+							<div className="up">
+								<div className="x" onClick={cancelModal}>
+									{" "}
+									<ErrorIconWrapper>
+										<ErrorAlertIcon />
+									</ErrorIconWrapper>
+									<XIcon />
+								</div>
+								<h4>Re-activate Student?</h4>
+								<p>You are about to re-activate this student and restore it to its latter glory. Are you sure you want to take this action?</p>
+							</div>
+							<div className="down">
+								<button type="button" onClick={cancelModal} className="cancel">
+									Cancel
+								</button>
+								<button type="button" onClick={reactivate}>
+									{isLoading ? <ButtonLoader /> : "Re-activate"}
+								</button>
+							</div>
+						</div>
+					</TwoButtonModalStyles>
+				)}
+				{isSuccess && (
+					<SuccessModal
+						head="Student has been successfully re-activated !"
+						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						cancelModal={() => window.location.reload()}
+						hasCancel={true}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				)}
+				{msgError.active && (
+					<FailureModal
+						cancelModal={() =>
+							setMsgError({
+								active: false,
+								text: "",
+							})
+						}
+						head="Failed to re-activate Student !"
+						msg={msgError.text}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+					/>
+				)}
+			</FlexAbsoluteModalStyles>
+		</>
+	);
+};
+
+interface IMessageModal extends IOneButtonModal {
+	head: string;
+	msg: string;
+	icon?: ReactNode;
+	hasCancel?: boolean;
+	navigationText: string;
+	navigationFunction: () => void;
+}
+
+export const FailureModal: React.FC<IMessageModal> = ({ cancelModal, head, msg, navigationText, hasCancel, navigationFunction }) => {
+	const router = useRouter();
+	return (
+		<OneButtonModalStyles $isError={true}>
+			<div className="pop">
+				<div className="up">
+					{hasCancel && (
+						<div className="x" onClick={cancelModal}>
+							{" "}
+							<XIcon />
+						</div>
+					)}
+					<div className="l">
+						<TryAgainIcon />
+					</div>
+					<h4>{head}</h4>
+					<p>{msg}</p>
+				</div>
+				<div className="down">
+					<button type="button" onClick={navigationFunction}>
+						{navigationText}
+					</button>
+				</div>
+			</div>
+		</OneButtonModalStyles>
+	);
+};
+export const NewComp = () => {
+	return <></>;
+};
