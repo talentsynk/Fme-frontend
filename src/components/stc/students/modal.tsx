@@ -649,14 +649,14 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													name="lastName"
 													id="Nin"
 													// value={NsqLevel}
-													className={NsqLevelError.active ? "error-bdr" : ""}
+													className={NinError.active ? "error-bdr" : ""}
 													// onChange={(e) => handleInput(e, "NsqLevel")}
 													placeholder="Please input NIN"
 												/>
 												<div className="abs">
-													{NsqLevelError.active === false && NsqLevelError.text === "" && <NameIcon />}
-													{NsqLevelError.active === false && NsqLevelError.text !== "" && <CheckedIcon />}
-													{NsqLevelError.active === true && <FormErrorIcon />}
+													{NinError.active === false && NinError.text === "" && <NameIcon />}
+													{NinError.active === false && NinError.text !== "" && <CheckedIcon />}
+													{NinError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
 										</div>

@@ -120,6 +120,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		text: "",
 	});
 
+	const [Nin, setNin] = useState<number>();
+	const [NinError, setNinError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
 	const [NsqLevel, setNsqLevel] = useState("");
 	const [NsqLevelError, setNsqLevelError] = useState<Ierror>({
 		active: false,
@@ -194,6 +200,15 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setForm({ ...form, NsqLevel: value });
 			}
 		}
+		if (input == "Nin") {
+			setNin(Number(value));
+			if (value.trim().length < 1) {
+				setNinError({ active: true, text: "NIN is required" });
+			} else {
+				setNinError({ active: false, text: "NIN is valid" });
+				setForm({ ...form, CourseID: Number(value) });
+			}
+		}
 		if (input == "gender") {
 			setGender(value);
 			if (value.trim().length < 1) {
@@ -232,7 +247,10 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	};
 	// for states
 	const [state, setState] = useState("");
+	const [lga, setLga] = useState("");
 	const [states, setStates] = useState(States);
+	const [lgas, setLgas] = useState(States);
+	const [showLGADropdown, setShowLGADropdown] = useState(false);
 
 	interface ICourse {
 		Id: number;
@@ -277,6 +295,22 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		setForm({ ...form, StateOfResidence: name });
 		setState(name);
 		setShowDropdown(false);
+	};
+
+	const handleLGASelection = (name: string) => {
+		// setForm({ ...form, StateOfResidence: name });
+		setLga(name);
+		setShowLGADropdown(false);
+		console.log(state)
+		axios.get(`/get-lga/${state}`)
+		.then(data=>{
+			console.log(data)
+			// setLgas(data)
+		})
+		.catch(err=>{
+            console.log(err)
+        })
+
 	};
 
 	// login button loader state
@@ -542,6 +576,33 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 								)}
 								{isSecondModalOpen && (
 									<div className="form-input">
+										<div className="form-ele">
+											<label htmlFor="state">Local Government Area</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
+													<>
+														{state === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+													</>
+													<AngleDownStyles $isSelected={showLGADropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showLGADropdown && (
+													<div className="dropdown">
+														{lgas.map((ele, index) => (
+															<StateCompStyles $isSelected={lga === ele.name} key={index} onClick={() => handleLGASelection(ele.name)}>
+																<p>{ele.name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
 										<div className="form-ele flex-1">
 											<label htmlFor="firstName">Student ID</label>
 											<div className="inp">
@@ -557,6 +618,25 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
 													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
 													{SIDError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="Nin">NIN</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="lastName"
+													id="Nin"
+													// value={NsqLevel}
+													className={NsqLevelError.active ? "error-bdr" : ""}
+													// onChange={(e) => handleInput(e, "NsqLevel")}
+													placeholder="Please input NIN"
+												/>
+												<div className="abs">
+													{NinError.active === false && NinError.text === "" && <NameIcon />}
+													{NinError.active === false && NinError.text !== "" && <CheckedIcon />}
+													{NinError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
 										</div>

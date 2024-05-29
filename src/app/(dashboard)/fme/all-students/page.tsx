@@ -116,8 +116,8 @@ export default function Home() {
 					.then((res) => {
 						const inactiveStudents = res.data;
 
-						const totalActive = activeStudents.students.length;
-						const totalInactive = inactiveStudents.students.length;
+						const totalActive = activeStudents?.students? activeStudents?.students.length:0;
+						const totalInactive = inactiveStudents?.students!==null? inactiveStudents?.students.length:0;
 						const totalStudents = totalActive + totalInactive;
 
 						setTotal({
@@ -157,8 +157,8 @@ export default function Home() {
 					.then((res) => {
 						const inactiveStudents = res.data;
 
-						const totalActive = activeStudents.students.length;
-						const totalInactive = inactiveStudents.students.length;
+						const totalActive = activeStudents?.students? activeStudents?.students.length:0;
+						const totalInactive = inactiveStudents?.students!==null? inactiveStudents?.students.length:0;
 						const totalStudents = totalActive + totalInactive;
 
 						setTotal({
