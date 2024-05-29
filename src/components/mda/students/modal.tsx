@@ -120,6 +120,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		text: "",
 	});
 
+	const [Nin, setNin] = useState<number>();
+	const [NinError, setNinError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
 	const [NsqLevel, setNsqLevel] = useState("");
 	const [NsqLevelError, setNsqLevelError] = useState<Ierror>({
 		active: false,
@@ -194,6 +200,15 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setForm({ ...form, NsqLevel: value });
 			}
 		}
+		if (input == "Nin") {
+			setNin(Number(value));
+			if (value.trim().length < 1) {
+				setNinError({ active: true, text: "NIN is required" });
+			} else {
+				setNinError({ active: false, text: "NIN is valid" });
+				setForm({ ...form, CourseID: Number(value) });
+			}
+		}
 		if (input == "gender") {
 			setGender(value);
 			if (value.trim().length < 1) {
@@ -231,8 +246,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		return regex.test(dateString);
 	};
 	// for states
-	const [state, setState] = useState("");
-	const [states, setStates] = useState(States);
+
+	const [showLGADropdown, setShowLGADropdown] = useState(false);
 
 	interface ICourse {
 		Id: number;
@@ -278,6 +293,26 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		setState(name);
 		setShowDropdown(false);
 	};
+
+	const [state, setState] = useState("");
+	const [lga, setLga] = useState("");
+	const NaijaStates = require('naija-state-local-government');
+	const [states, setStates] = useState(States);
+	const [lgas, setLgas] = useState([]);
+
+	const handleLGASelection = (name: string) => {
+		// setForm({ ...form, StateOfResidence: name });
+		setLga(name);
+		setShowLGADropdown(false);
+		console.log(lgas)
+		
+	};
+	useEffect(() => {
+		if (state) {
+		  const newLgas = NaijaStates.lgas(state).lgas;
+		  setLgas(newLgas);
+		}
+	  }, [state]);
 
 	// login button loader state
 	const [isLoading, setIsLoading] = useState(false);
@@ -482,6 +517,24 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											</div>
 										</div>
+										<div className="form-ele ">
+											<label htmlFor="address">Date Of Birth</label>
+											<div className="inp">
+												<input
+													type="date"
+													name="DOB"
+													value={DOBstring}
+													onChange={(e) => handleInput(e, "DOBstring")}
+													className={DOBstringError.active ? "error-bdr" : ""}
+													placeholder="MM/DD/YYYY"
+												/>
+												<div className="abs">
+													{DOBstringError.active === false && DOBstringError.text === "" && <LocationIcon />}
+													{DOBstringError.active === false && DOBstringError.text !== "" && <CheckedIcon />}
+													{DOBstringError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
 										<div className="form-ele">
 											<label htmlFor="state">State of Operation</label>
 											<StatesDropdownStyles>
@@ -541,7 +594,35 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 									</div>
 								)}
 								{isSecondModalOpen && (
+									
 									<div className="form-input">
+										<div className="form-ele">
+											<label htmlFor="state">Local Government Area</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
+													<>
+														{state === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+													</>
+													<AngleDownStyles $isSelected={showLGADropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showLGADropdown && (
+													<div className="dropdown">
+														{lgas.map((ele, index) => (
+															<StateCompStyles $isSelected={lga === ele} key={index} onClick={() => handleLGASelection(ele)}>
+																<p>{ele}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
 										<div className="form-ele flex-1">
 											<label htmlFor="firstName">Student ID</label>
 											<div className="inp">
@@ -557,6 +638,25 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
 													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
 													{SIDError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="Nin">NIN</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="lastName"
+													id="Nin"
+													// value={NsqLevel}
+													className={NinError.active ? "error-bdr" : ""}
+													// onChange={(e) => handleInput(e, "NsqLevel")}
+													placeholder="Please input NIN"
+												/>
+												<div className="abs">
+													{NinError.active === false && NinError.text === "" && <NameIcon />}
+													{NinError.active === false && NinError.text !== "" && <CheckedIcon />}
+													{NinError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
 										</div>
@@ -605,24 +705,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											)}
 										</div>
-										<div className="form-ele ">
-											<label htmlFor="address">Date Of Birth</label>
-											<div className="inp">
-												<input
-													type="date"
-													name="DOB"
-													value={DOBstring}
-													onChange={(e) => handleInput(e, "DOBstring")}
-													className={DOBstringError.active ? "error-bdr" : ""}
-													placeholder="MM/DD/YYYY"
-												/>
-												<div className="abs">
-													{DOBstringError.active === false && DOBstringError.text === "" && <LocationIcon />}
-													{DOBstringError.active === false && DOBstringError.text !== "" && <CheckedIcon />}
-													{DOBstringError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
+										
 									</div>
 								)}
 								{isFirstModalOpen && (
@@ -667,8 +750,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												phoneError.active !== false ||
 												SIDError.active !== false ||
 												NsqLevelError.active !== false ||
-												state == "" ||
-												DOBstring == ""
+												state == ""||
+												DOBstring==""
 											}>
 											{isLoading ? <ButtonLoader /> : "Create Student"}
 										</button>

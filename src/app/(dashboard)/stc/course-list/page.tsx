@@ -242,7 +242,7 @@ export default function Home() {
 								name="query"
 								id=""
 								placeholder="Search All Students"
-								value={query}
+								value={query} 
 								className={queryError.active ? "error-bdr" : ""}
 								onChange={handleQueryChange}
 								onFocus={() => setShowCancel(true)}
