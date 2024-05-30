@@ -13,6 +13,7 @@
     "axios": "^1.6.8",
     "framer-motion": "^11.0.5",
     "js-cookie": "^3.0.5",
+    "naija-state-local-government": "^1.1.2",
     "next": "14.1.0",
     "papaparse": "^5.4.1",
     "react": "^18",
