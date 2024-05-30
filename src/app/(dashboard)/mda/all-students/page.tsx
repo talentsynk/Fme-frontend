@@ -10,6 +10,8 @@ import {
 	TableStyles,
 	SortOptionsStyle,
 } from "@/components/fme/mda/styles";
+import { AngleDownStyles } from "@/components/icons/header";
+import { ColoredArrowDown } from "@/components/icons/fme/main";
 import { IStudentData, StudentData, StudentsTabSwitches } from "@/components/fme/students/data";
 import { ActiveIcon, CancelInputIcon, InactiveIcon, MagnifyingGlassIcon, PlusIcon, TotalIcon, UploadIcon } from "@/components/icons/fme/mda";
 import { sortStudentListDataAlphabetically } from "@/utils/sortData";
@@ -31,7 +33,7 @@ import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
-
+import Papa from 'papaparse';
 
 export default function Home() {
 	
@@ -279,7 +281,56 @@ export default function Home() {
 			setShowSortDropdown(false);
 		}
 	};
-
+	const [showDropdown, setShowDropdown] = useState(false);
+	const [fileError, setFileError] = useState<string | null>(null);
+	const [uploading, setUploading] = useState(false);
+	const toggleDropdown = () => {
+		setShowDropdown(!showDropdown);
+	  };
+	  const handleAddStudentClick = () => {
+		setShowNewStudentFormModal(true);
+		setShowDropdown(false); // Close dropdown after action
+	  };
+	  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		const MAX_SIZE = 5 * 1024 * 1024; // 5 MB limit
+	
+		if (file && file.size > MAX_SIZE) {
+		  setFileError('File size exceeds 5 MB limit.');
+		} else {
+		  setFileError(null);
+		  if (file) {
+			parseCSV(file);
+		  }
+		}
+	  };
+	  const parseCSV = (file: File) => {
+		Papa.parse(file, {
+		  complete: (result) => {
+			console.log('Parsed CSV data:', result.data);
+			uploadCSVData(result.data);
+		  },
+		  header: true,
+		  skipEmptyLines: true
+		});
+	  };
+	  const uploadCSVData = async (data: any) => {
+		setUploading(true);
+		try {
+		  const response = await axios.post('YOUR_BACKEND_ENDPOINT', { data });
+	
+		  if (response.status !== 200) {
+			throw new Error('Failed to upload CSV data');
+		  }
+	
+		  console.log('CSV data uploaded successfully');
+		} catch (error) {
+		  console.error('Error uploading CSV data:', error);
+		  setFileError('Failed to upload CSV data');
+		} finally {
+		  setUploading(false);
+		}
+	  };
 	return (
 		<>
 			<TopStyles>
@@ -288,10 +339,38 @@ export default function Home() {
 					<p>Take a look at your policies and the new policy to see what is covered</p>
 				</div>
 				<div className="buttons">
-					<button type="button" className="add" onClick={() => setShowNewStudentFormModal(true)}>
+					<button type="button" className="add" onClick={toggleDropdown}>
 						<PlusIcon />
 						<span>Add New Student</span>
+						<AngleDownStyles $isSelected={showDropdown}>
+                  <ColoredArrowDown />
+                </AngleDownStyles>
 					</button>
+					{showDropdown && (
+        <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+          <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={handleAddStudentClick}
+          >
+            Add Student Manually
+          </div>
+          
+		  <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
+            <label htmlFor="file-upload" className="cursor-pointer">
+              <span>Upload CSV</span>
+              <input 
+                id="file-upload" 
+                type="file" 
+                accept=".csv" 
+                className="hidden" 
+                onChange={handleFileUpload}
+              />
+            </label>
+          </div>
+        </div>
+      )}
+	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
+      {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
 					<button type="button" className="import">
 						<UploadIcon />
 						<span>Import CSV</span>
