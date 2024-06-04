@@ -59,12 +59,14 @@ interface IForm {
 	Lastname: string;
 	Gender: string;
 	StateOfResidence: string;
+	LGA:string;
 	PhoneNumber: string;
 	DOBstring: string;
 	SID: string;
 	NsqLevel: string;
 	Firstname: string;
 	CourseID: number;
+	Nin:number|null;
 }
 
 export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
@@ -73,6 +75,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		Lastname: "",
 		Gender: "",
 		StateOfResidence: "",
+		LGA:"",
+		Nin:null,
 		PhoneNumber: "",
 		DOBstring: "",
 		SID: "",
@@ -120,7 +124,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		text: "",
 	});
 
-	const [Nin, setNin] = useState<number>();
+	const [Nin, setNin] = useState("");
 	const [NinError, setNinError] = useState<Ierror>({
 		active: false,
 		text: "",
@@ -201,12 +205,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			}
 		}
 		if (input == "Nin") {
-			setNin(Number(value));
+			setNin(value);
 			if (value.trim().length < 1) {
 				setNinError({ active: true, text: "NIN is required" });
 			} else {
 				setNinError({ active: false, text: "NIN is valid" });
-				setForm({ ...form, CourseID: Number(value) });
+				setForm({ ...form, Nin: Number(value) });
 			}
 		}
 		if (input == "gender") {
@@ -295,13 +299,13 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	};
 
 	const [state, setState] = useState("");
-	const [lga, setLga] = useState("");
 	const NaijaStates = require('naija-state-local-government');
 	const [states, setStates] = useState(States);
 	const [lgas, setLgas] = useState([]);
+	const [lga, setLga] = useState("");
 
 	const handleLGASelection = (name: string) => {
-		// setForm({ ...form, StateOfResidence: name });
+		setForm({ ...form, LGA: name });
 		setLga(name);
 		setShowLGADropdown(false);
 		console.log(lgas)
@@ -359,12 +363,14 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					Lastname: form.Lastname,
 					Gender: form.Gender,
 					StateOfResidence: form.StateOfResidence,
+					LGA:form.LGA,
 					PhoneNumber: form.PhoneNumber,
 					DOBstring: form.DOBstring,
 					SID: form.SID,
 					NsqLevel: form.NsqLevel,
 					CourseID: form.CourseID,
 					Firstname: form.Firstname,
+					Nin: form.Nin,
 				};
 				console.log("Request Body:", body);
 				setIsLoading(true);
@@ -601,7 +607,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 											<StatesDropdownStyles>
 												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
 													<>
-														{state === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+														{lga === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
 													</>
 													<AngleDownStyles $isSelected={showLGADropdown}>
 														<AngleDown />
@@ -646,11 +652,11 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 											<div className="inp">
 												<input
 													type="text"
-													name="lastName"
+													name="Nin"
 													id="Nin"
-													// value={NsqLevel}
+													value={Nin}
 													className={NinError.active ? "error-bdr" : ""}
-													// onChange={(e) => handleInput(e, "NsqLevel")}
+													onChange={(e) => handleInput(e, "Nin")}
 													placeholder="Please input NIN"
 												/>
 												<div className="abs">
