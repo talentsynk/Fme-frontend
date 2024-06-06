@@ -20,10 +20,10 @@ export const SidebarStyles = styled.div`
   .lg p {
     color: var(--Primary-Color, #00932e);
     font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
-    font-size: 16px;
+    font-size: 0.7rem;
     font-style: normal;
     font-weight: 700;
-    line-height: 24px; /* 150% */
+    line-height: 15px; /* 150% */
   }
   .btm {
     display: flex;

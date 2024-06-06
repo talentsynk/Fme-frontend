@@ -37,7 +37,7 @@ export const FMEHomeStyles = styled.div`
     position: relative;
     overflow-x: scroll;
     max-width : 100%;
-    transition: 'left 0.5s ease';
+    transition: left 0.5s ease;
     &::-webkit-scrollbar {
       display: none;
     }

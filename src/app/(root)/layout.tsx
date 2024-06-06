@@ -4,6 +4,8 @@ import { RootLayoutStyles } from "@/components/layout/style";
 import "../globals.css";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import { RootHeader } from "@/components/root/header/header";
+import { RootFooter } from "@/components/root/footer/footer";
 
 
 // client layout comp unlike other ones because there's no meta data here
@@ -20,9 +22,9 @@ export default function ServerSideLayout({
   })
   return (
     <RootLayoutStyles>
-      <div className="header">I am header</div>
-      {children}
-      <div className="footer">I am footer</div>
+      <RootHeader />
+      <>{children}</>
+      <RootFooter />
     </RootLayoutStyles>
   );
 }
