@@ -51,7 +51,7 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
       <div className="top">
         <div className="lg">
           <FGLogo />
-          <p>National Skills Database (NSD)</p>
+          <p>National Skills Information Center (NASIC)</p>
         </div>
         <div className="links">
           {pageLinks.map(

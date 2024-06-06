@@ -534,7 +534,7 @@ export const TabSwitchStyle = styled.div<ITabSwitchStyle>`
     position: absolute;
     bottom: -1px;
     left: 0;
-    right: 0;
+    right: 0; 
   }
   ${(props) =>
     props.$isSelected &&
