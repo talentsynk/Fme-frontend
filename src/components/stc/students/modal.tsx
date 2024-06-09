@@ -59,6 +59,8 @@ interface IForm {
 	Lastname: string;
 	Gender: string;
 	StateOfResidence: string;
+	StateOfOrigin: string;
+	Address:string,
 	LocalGovernment:string;
 	PhoneNumber: string;
 	DOBstring: string;
@@ -66,7 +68,7 @@ interface IForm {
 	NsqLevel: string;
 	Firstname: string;
 	CourseID: number;
-	NationalIdentityNumber:number|null;
+	NationalIdentityNumber:string;
 }
 
 export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
@@ -75,8 +77,10 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		Lastname: "",
 		Gender: "",
 		StateOfResidence: "",
+		StateOfOrigin: "",
+		Address:"",
 		LocalGovernment:"",
-		NationalIdentityNumber:null,
+		NationalIdentityNumber:"",
 		PhoneNumber: "",
 		DOBstring: "",
 		SID: "",
@@ -126,6 +130,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 	const [NsqLevel, setNsqLevel] = useState("");
 	const [NsqLevelError, setNsqLevelError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const [Address, setAddress] = useState("");
+	const [AddressError, setAddressError] = useState<Ierror>({
 		active: false,
 		text: "",
 	});
@@ -198,6 +208,15 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setForm({ ...form, NsqLevel: value });
 			}
 		}
+		if (input == "Address") {
+			setAddress(value);
+			if (value.trim().length < 1) {
+				setAddressError({ active: true, text: "Address is required" });
+			} else {
+				setAddressError({ active: false, text: "Address is valid" });
+				setForm({ ...form, Address: value });
+			}
+		}
 		if (input == "gender") {
 			setGender(value);
 			if (value.trim().length < 1) {
@@ -234,7 +253,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setNationalIdentityNumberError({ active: true, text: "NIN is required" });
 			} else {
 				setNationalIdentityNumberError({ active: false, text: "NIN is valid" });
-				setForm({ ...form, NationalIdentityNumber: Number(value) });
+				setForm({ ...form, NationalIdentityNumber:value });
 			}
 		}
 	};
@@ -250,7 +269,9 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	};
 	// for states
 	const [state, setState] = useState("");
+	const [stateOfOrigin, setStateOfOrigin] = useState("");
 	const [states, setStates] = useState(States);
+	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
 	const NaijaStates = require('naija-state-local-government');
 	const [lgas, setLgas] = useState([]);
 	const [lga, setLga] = useState("");
@@ -299,6 +320,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		setState(name);
 		setShowDropdown(false);
 	};
+	
 
 	const [showLGADropdown, setShowLGADropdown] = useState(false);
 
@@ -315,12 +337,20 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		console.log(lgas)
 		
 	};
+	const [showStateDropdown, setShowStateDropdown] = useState(false);
+	const handleStateOfOriginSelection = (name: string) => {
+		setForm({ ...form, StateOfOrigin: name });
+		setStateOfOrigin(name);
+		setShowStateDropdown(false);
+	};
 	useEffect(() => {
-		if (state) {
-		  const newLgas = NaijaStates.lgas(state).lgas;
+		if (stateOfOrigin) {
+		  const newLgas = NaijaStates.lgas(stateOfOrigin).lgas;
 		  setLgas(newLgas);
+		  console.log(newLgas)
+		  console.log(1)
 		}
-	  }, [state]);
+	  }, [stateOfOrigin]);
 
 	const isFormValid = () => {
 		return (
@@ -360,6 +390,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					Lastname: form.Lastname,
 					Gender: form.Gender,
 					StateOfResidence: form.StateOfResidence,
+					StateOfOrigin: form.StateOfOrigin,
+					Address:form.Address,
 					LocalGovernment:form.LocalGovernment,
 					PhoneNumber: form.PhoneNumber,
 					DOBstring: form.DOBstring,
@@ -535,6 +567,52 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													<div className="dropdown">
 														{states.map((ele, index) => (
 															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
+																<p>{ele.name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="firstName">Address</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="Address"
+													value={Address}
+													className={AddressError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "Address")}
+													placeholder="Please type in your Address"
+												/>
+												<div className="abs">
+													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
+													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
+													{AddressError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										
+										<div className="form-ele">
+											<label htmlFor="state">State of Origin</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowStateDropdown(!showStateDropdown)}>
+													<>
+														{stateOfOrigin === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{stateOfOrigin}</p>}
+													</>
+													<AngleDownStyles $isSelected={showStateDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showStateDropdown && (
+													<div className="dropdown">
+														{statesOfOrigin.map((ele, index) => (
+															<StateCompStyles $isSelected={stateOfOrigin === ele.name} key={index} onClick={() => handleStateOfOriginSelection(ele.name)}>
 																<p>{ele.name}</p>
 															</StateCompStyles>
 														))}

@@ -10,6 +10,7 @@ import {
 	TableStyles,
 	SortOptionsStyle,
 } from "@/components/fme/mda/styles";
+
 import { AngleDownStyles } from "@/components/icons/header";
 import { ColoredArrowDown } from "@/components/icons/fme/main";
 import { IStudentData, StudentData, StudentsTabSwitches } from "@/components/fme/students/data";
@@ -308,25 +309,30 @@ export default function Home() {
     } else {
       setFileError(null);
       if (file) {
-        parseCSV(file);
+        uploadCSVData(file);
       }
     }
   };
-  const parseCSV = (file: File) => {
-    Papa.parse(file, {
-      complete: (result) => {
-        console.log('Parsed CSV data:', result.data);
-        uploadCSVData(result.data);
-      },
-      header: true,
-      skipEmptyLines: true
-    });
-  };
-  const uploadCSVData = async (data: any) => {
+
+
+  const uploadCSVData = async (file: File) => {
     setUploading(true);
     try {
-    //   const response = await axios.post('https://fme-backend-version-1.onrender.com/student/create-fme-csv', { data });
-	  const response = await axios.post(`${BACKEND_URL}/student/create-fme-csv`, { data });
+      const formData = new FormData();
+      formData.append('file', file);
+
+	  const token = Cookies.get("token");
+
+      const response = await axios.post(
+        `${BACKEND_URL}/student/create-fme-csv`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       if (response.status !== 200) {
         throw new Error('Failed to upload CSV data');
