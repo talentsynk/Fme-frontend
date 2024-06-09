@@ -59,14 +59,14 @@ interface IForm {
 	Lastname: string;
 	Gender: string;
 	StateOfResidence: string;
-	LGA:string;
+	LocalGovernment:string;
 	PhoneNumber: string;
 	DOBstring: string;
 	SID: string;
 	NsqLevel: string;
 	Firstname: string;
 	CourseID: number;
-	Nin:number|null;
+	NationalIdentityNumber:number|null;
 }
 
 export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
@@ -75,8 +75,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		Lastname: "",
 		Gender: "",
 		StateOfResidence: "",
-		LGA:"",
-		Nin:null,
+		LocalGovernment:"",
+		NationalIdentityNumber:null,
 		PhoneNumber: "",
 		DOBstring: "",
 		SID: "",
@@ -228,18 +228,18 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setForm({ ...form, DOBstring: formattedDate });
 			}
 		}
-		if (input == "Nin") {
-			setNin(value);
+		if (input == "NationalIdentityNumber") {
+			setNationalIdentityNumber(value);
 			if (value.trim().length < 1) {
-				setNinError({ active: true, text: "NIN is required" });
+				setNationalIdentityNumberError({ active: true, text: "NIN is required" });
 			} else {
-				setNinError({ active: false, text: "NIN is valid" });
-				setForm({ ...form, Nin: Number(value) });
+				setNationalIdentityNumberError({ active: false, text: "NIN is valid" });
+				setForm({ ...form, NationalIdentityNumber: Number(value) });
 			}
 		}
 	};
-	const [Nin, setNin] = useState("");
-	const [NinError, setNinError] = useState<Ierror>({
+	const [NationalIdentityNumber, setNationalIdentityNumber] = useState("");
+	const [NationalIdentityNumberError, setNationalIdentityNumberError] = useState<Ierror>({
 		active: false,
 		text: "",
 	});
@@ -309,7 +309,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 	const [isSuccess, setIsSuccess] = useState(false);
 	const handleLGASelection = (name: string) => {
-		setForm({ ...form, LGA: name });
+		setForm({ ...form, LocalGovernment: name });
 		setLga(name);
 		setShowLGADropdown(false);
 		console.log(lgas)
@@ -360,14 +360,14 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					Lastname: form.Lastname,
 					Gender: form.Gender,
 					StateOfResidence: form.StateOfResidence,
-					LGA:form.LGA,
+					LocalGovernment:form.LocalGovernment,
 					PhoneNumber: form.PhoneNumber,
 					DOBstring: form.DOBstring,
 					SID: form.SID,
 					NsqLevel: form.NsqLevel,
 					CourseID: form.CourseID,
 					Firstname: form.Firstname,
-					Nin: form.Nin,
+					NationalIdentityNumber: form.NationalIdentityNumber,
 				};
 				console.log("Request Body:", body);
 				setIsLoading(true);
@@ -650,15 +650,15 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													type="text"
 													name="Nin"
 													id="Nin"
-													value={Nin}
-													className={NinError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "Nin")}
+													value={NationalIdentityNumber}
+													className={NationalIdentityNumberError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "NationalIdentityNumber")}
 													placeholder="Please input NIN"
 												/>
 												<div className="abs">
-													{NinError.active === false && NinError.text === "" && <NameIcon />}
-													{NinError.active === false && NinError.text !== "" && <CheckedIcon />}
-													{NinError.active === true && <FormErrorIcon />}
+													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text === "" && <NameIcon />}
+													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text !== "" && <CheckedIcon />}
+													{NationalIdentityNumberError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
 										</div>

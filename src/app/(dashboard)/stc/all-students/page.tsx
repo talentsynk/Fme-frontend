@@ -18,7 +18,7 @@ import { ActiveIcon, CancelInputIcon, InactiveIcon, MagnifyingGlassIcon, PlusIco
 import { sortStudentListDataAlphabetically } from "@/utils/sortData";
 import { SortItemDropdownList } from "@/components/fme/mda/data";
 import { motion } from "framer-motion";
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent,useRef } from "react";
 import { StudentTableRow } from "@/components/stc/students/students";
 import { NewStudentModal } from "@/components/stc/students/modal";
 import { FilterBtns } from "@/components/fme/mda/data";
@@ -36,6 +36,7 @@ import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
 
 export default function Home() {
+	
 	const [showCancel, setShowCancel] = useState(false);
 	const [studentTabSwitches, setStudentTabSwitches] = useState(StudentsTabSwitches);
 	const [total, setTotal] = useState({
@@ -282,6 +283,7 @@ export default function Home() {
 	};
 	const [fileError, setFileError] = useState<string | null>(null);
 	const [uploading, setUploading] = useState(false);
+	const fileInputRef = useRef();
 	const [showDropdown, setShowDropdown] = useState(false);
 
   const toggleDropdown = () => {
@@ -317,8 +319,9 @@ export default function Home() {
   const uploadCSVData = async (data: any) => {
     setUploading(true);
     try {
-      const response = await axios.post('YOUR_BACKEND_ENDPOINT', { data });
-
+    //   const response = await axios.post('https://fme-backend-version-1.onrender.com/student/create-fme-csv', { data });
+	const response = await axios.post(`${BACKEND_URL}/student/create-mda-csv`, { data });
+	
       if (response.status !== 200) {
         throw new Error('Failed to upload CSV data');
       }
@@ -359,14 +362,13 @@ export default function Home() {
 		  <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
             <label htmlFor="file-upload" className="cursor-pointer">
               <span>Upload CSV</span>
-              <input 
+			  <input 
                 id="file-upload" 
                 type="file" 
                 accept=".csv" 
                 className="hidden" 
                 onChange={handleFileUpload}
-              />
-            </label>
+              /></label>
           </div>
         </div>
       )}
@@ -374,7 +376,7 @@ export default function Home() {
       {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
 					<button type="button" className="import">
 						<UploadIcon />
-						<span>Import CSV</span>
+						<span>Download</span>
 					</button>
 				</div>
 			</TopStyles>

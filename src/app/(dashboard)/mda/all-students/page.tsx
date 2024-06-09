@@ -317,7 +317,8 @@ export default function Home() {
 	  const uploadCSVData = async (data: any) => {
 		setUploading(true);
 		try {
-		  const response = await axios.post('YOUR_BACKEND_ENDPOINT', { data });
+		//   const response = await axios.post('https://fme-backend-version-1.onrender.com/student/create-mda-csv', { data });
+		  const response = await axios.post(`${BACKEND_URL}/student/create-mda-csv`, { data });
 	
 		  if (response.status !== 200) {
 			throw new Error('Failed to upload CSV data');
@@ -373,7 +374,7 @@ export default function Home() {
       {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
 					<button type="button" className="import">
 						<UploadIcon />
-						<span>Import CSV</span>
+						<span>Download</span>
 					</button>
 				</div>
 			</TopStyles>
