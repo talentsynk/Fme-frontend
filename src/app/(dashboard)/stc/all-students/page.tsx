@@ -307,14 +307,13 @@ export default function Home() {
     }
   };
 
-
-  const uploadCSVData = async (file: File) => {
+const uploadCSVData = async (file: File) => {
     setUploading(true);
     try {
       const formData = new FormData();
       formData.append('file', file);
 
-	  const token = Cookies.get("token");
+      const token = Cookies.get("token");
 
       const response = await axios.post(
         `${BACKEND_URL}/student/create-stc-csv`,
@@ -333,7 +332,13 @@ export default function Home() {
 
       console.log('CSV data uploaded successfully');
     } catch (error) {
-      console.error('Error uploading CSV data:', error);
+      if (axios.isAxiosError(error)) {
+        // Handle Axios specific errors
+        console.error('Axios error response:', error.response);
+      } else {
+        // Handle other errors
+        console.error('Error uploading CSV data:', error);
+      }
       setFileError('Failed to upload CSV data');
     } finally {
       setUploading(false);
@@ -364,17 +369,18 @@ export default function Home() {
             Add Student Manually
           </div>
           
-		  <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
-            <label htmlFor="file-upload" className="cursor-pointer">
-              <span>Upload CSV</span>
-			  <input 
-                id="file-upload" 
-                type="file" 
-                accept=".csv" 
-                className="hidden" 
-                onChange={handleFileUpload}
-              /></label>
-          </div>
+		  	  <label htmlFor="file-upload" className="cursor-pointer">
+  <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
+    <span>Upload CSV</span>
+  </div>
+  <input 
+    id="file-upload" 
+    type="file" 
+    accept=".csv" 
+    className="hidden" 
+    onChange={handleFileUpload}
+  />
+</label>
         </div>
       )}
 	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
