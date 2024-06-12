@@ -307,6 +307,8 @@ export default function Home() {
     }
   };
 
+  //uploading of CSV
+
 const uploadCSVData = async (file: File) => {
     setUploading(true);
     try {
