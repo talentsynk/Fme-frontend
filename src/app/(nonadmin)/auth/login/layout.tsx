@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "User-Login",
+  title: "User Login",
   description: "login to account",
 };
 

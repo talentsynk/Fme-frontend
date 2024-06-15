@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const GenericDashboardLayoutStyle = styled.main`
   .main {
@@ -47,7 +47,6 @@ export const GenericDashboardLayoutStyle = styled.main`
     }
     .main {
       grid-column: 2/3;
-      // border: 2px solid #000;
       grid-row: 2/3;
       padding: 1.5rem 1.5rem 3rem 1.35rem;
       max-height: fit-content;
@@ -90,9 +89,6 @@ export const AuthLayoutStyles = styled.main`
       justify-content: flex-end;
       gap: 3.375rem;
     }
-    .main {
-      // border: 2px solid #000;
-    }
     .mobile {
       display: none;
     }
@@ -115,4 +111,126 @@ export const AuthLayoutStyles = styled.main`
 
 export const RootLayoutStyles = styled.main`
   border: 2px solid #000;
+`;
+export const UserAuthLayoutStyles = styled.main`
+  min-height: 100vh;
+  display: flex;
+  .abs {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5%;
+  }
+  .main {
+    // border: 2px solid red;
+    width: 100%;
+  }
+  .text {
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 2rem;
+    h3 {
+      color: var(--Shade-White, var(--Neutrals-Colors-100, #fff));
+      font-size: 3.25rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 3.5rem; /* 107.692% */
+      letter-spacing: -0.065rem;
+    }
+    p {
+      color: var(--Office-Brown-100, #e4dbdb);
+      font-feature-settings: "cv04" on, "cv03" on, "cv01" on, "salt" on;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.5rem; /* 133.333% */
+    }
+  }
+  @media (max-width: 998px) {
+    flex-direction: column;
+    padding: 0.5rem;
+    padding-top: 2rem;
+    .desktop {
+      display: none;
+    }
+    .two {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0.1) 100%
+      ),
+      url("/images/userauth.svg") lightgray 50% / cover no-repeat;
+  }
+  @media screen and (min-width: 500px) and (max-width: 998px) {
+    .two {
+      width: 75%;
+      margin: 0 auto;
+    }
+  }
+
+  @media (min-width: 998px) {
+    padding: 1.2rem;
+    gap: 3.81rem;
+    .one,
+    .two {
+      width: 50%;
+    }
+    .two {
+      display: flex;
+      flex: 1;
+      height: auto;
+    }
+    .mobile {
+      display: none;
+    }
+    .main {
+      padding-right: 3.81rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .one {
+      border-radius: 1rem;
+      display: flex;
+      padding-bottom: 2%;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.1) 0%,
+          rgba(0, 0, 0, 0.1) 100%
+        ),
+        url("/images/userauth.svg") lightgray 50% / cover no-repeat;
+    }
+  }
+`;
+
+export interface IMode {
+  color?: string;
+}
+export const PoweredByStyles = styled.div<IMode>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6875rem;
+  // width: fit-content;
+  p {
+    color: #000;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.25rem; /* 133.333% */
+  }
+  ${(props) =>
+    props.color &&
+    css`
+      p {
+        color: ${props.color};
+      }
+    `}
 `;
