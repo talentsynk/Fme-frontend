@@ -245,7 +245,7 @@ export default function Login() {
                 </div>
                 <div className="btm">
                   <p>Not an Admin user?</p>
-                  <button type="button" onClick={() => router.push("/login")}>
+                  <button type="button" onClick={() => router.push("/auth/login")}>
                     Sign in
                   </button>
                 </div>
@@ -366,7 +366,7 @@ export default function Login() {
                 </form>
                 <div className="btm">
                   <p>Don’t have an account?</p>
-                  <button type="button">Sign up</button>
+                  <button type="button" onClick={() => router.push("/auth/signup")}>Sign up</button>
                 </div>
               </AuthFormStyles>
             )}

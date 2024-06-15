@@ -1,5 +1,7 @@
 import Image from "next/image";
-import styled from "styled-components";
+import { useRouter } from "next/navigation";
+import styled, { css } from "styled-components";
+import { IMode } from "../layout/style";
 
 export const HomeIcon = () => {
   return (
@@ -266,6 +268,10 @@ export const AdminUserIcon = () => {
   );
 };
 
+interface ILogoText {
+  link?: string;
+  textcolor?: string;
+}
 export const FGLogo = () => {
   return (
     <FGLogostyles>
@@ -278,6 +284,20 @@ export const FGLogo = () => {
     </FGLogostyles>
   );
 };
+export const FullLogo: React.FC<ILogoText> = ({ link, textcolor }) => {
+  const router = useRouter();
+  const goTo = () => {
+    if (link) {
+      router.push(link);
+    }
+  };
+  return (
+    <OurLogostyles color={textcolor}>
+      <FGLogo />
+      <p>National Skills Information Center</p>
+    </OurLogostyles>
+  );
+};
 
 const FGLogostyles = styled.div`
   display: flex;
@@ -288,12 +308,36 @@ const FGLogostyles = styled.div`
     height: auto;
     object-fit: contain;
   }
-  @media (min-width: 998px){
+  @media (min-width: 998px) {
     img {
-      width: 5rem;
+      width: 4rem;
       height: auto;
     }
   }
+`;
+const OurLogostyles = styled.div<IMode>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  p {
+    color: var(--Primary-Color, #00932e);
+    font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 15px; /* 150% */
+    width: 60%;
+    padding: 0;
+    text-transform: uppercase;
+  }
+  ${(props) =>
+    props.color &&
+    css`
+      p {
+        color: ${props.color};
+      }
+    `}
 `;
 
 // active states

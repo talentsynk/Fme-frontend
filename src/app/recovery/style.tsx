@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { IMode } from "@/components/layout/style";
+import styled, { css } from "styled-components";
 
 export const RecoveryPageStyles = styled.div`
   width: 100%;
@@ -53,7 +54,7 @@ export const NewPwdpageStyles = styled(RecoveryPageStyles)`
    background: url("/public/images/recovery/mobile-bg.svg);
 }
 
-`
+`;
 export const CoatOfArm = styled.div`
   img {
     width: 5rem;
@@ -68,8 +69,8 @@ export const CoatOfArm = styled.div`
   }
 `;
 
-export const CoderinaLogo = styled.div`
-  img{
+export const CoderinaLogo = styled.div<IMode>`
+  img {
     object-fit: contain;
   }
   @media (max-width: 998px) {
@@ -78,6 +79,15 @@ export const CoderinaLogo = styled.div`
       height: 25px;
     }
   }
+  ${(props) =>
+    props.color &&
+    css`
+      & {
+        border-radius: 0.5rem;
+        padding: 0.35rem;
+        background: ${props.color};
+      }
+    `}
 `;
 
 export const FormStyles = styled.div`
@@ -89,18 +99,13 @@ export const FormStyles = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-
-  button:disabled {
-    opacity: 0.6; /* Reduce opacity to indicate disabled state */
-    cursor: not-allowed; /* Change cursor to indicate unclickable */
-  }
-
+  
   .form-input {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
-  .form{
+  .form {
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -138,7 +143,7 @@ export const FormStyles = styled.div`
       padding-right: 2.5rem;
       width: 100%;
     }
-    textarea{
+    textarea {
       border-radius: 0.375rem;
       border: 1px solid #d0d5dd;
       background: var(--Shade-White, #fff);
@@ -161,14 +166,15 @@ export const FormStyles = styled.div`
       cursor: pointer;
     }
   }
-  .def{
+  .def {
     display: flex;
     align-items: center;
-    svg{
+    svg {
       scale: 0.9;
     }
   }
-  .btn, .btn-m {
+  .btn,
+  .btn-m {
     margin-top: 2rem;
     button {
       border-radius: 0.625rem;
@@ -284,7 +290,6 @@ export const FormStyles = styled.div`
   }
 `;
 
-
 export const ImprovisedStyle = styled.div`
   display: flex;
   gap: 2rem;
@@ -292,21 +297,21 @@ export const ImprovisedStyle = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  .btn{
+  .btn {
     width: 100%;
     margin-top: 0rem;
   }
-  .form-head{
-    p{
+  .form-head {
+    p {
       font-weight: 400;
     }
   }
-  @media (min-width: 998px){
-    .image{
-      img{
+  @media (min-width: 998px) {
+    .image {
+      img {
         width: 14.5rem;
         height: 10.4375rem;
       }
     }
   }
-`
+`;
