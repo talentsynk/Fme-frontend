@@ -10,6 +10,8 @@ import {
 	TableStyles,
 	SortOptionsStyle,
 } from "@/components/fme/mda/styles";
+import { AngleDownStyles } from "@/components/icons/header";
+import { ColoredArrowDown } from "@/components/icons/fme/main";
 import { IStudentData, StudentData, StudentsTabSwitches } from "@/components/fme/students/data";
 import { ActiveIcon, CancelInputIcon, InactiveIcon, MagnifyingGlassIcon, PlusIcon, TotalIcon, UploadIcon } from "@/components/icons/fme/mda";
 import { sortStudentListDataAlphabetically } from "@/utils/sortData";
@@ -31,7 +33,7 @@ import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
-
+import Papa from 'papaparse';
 
 export default function Home() {
 	
@@ -279,7 +281,67 @@ export default function Home() {
 			setShowSortDropdown(false);
 		}
 	};
-
+	const [showDropdown, setShowDropdown] = useState(false);
+	const [fileError, setFileError] = useState<string | null>(null);
+	const [uploading, setUploading] = useState(false);
+	const toggleDropdown = () => {
+		setShowDropdown(!showDropdown);
+	  };
+	  const handleAddStudentClick = () => {
+		setShowNewStudentFormModal(true);
+		setShowDropdown(false); // Close dropdown after action
+	  };
+	  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		const MAX_SIZE = 5 * 1024 * 1024; // 5 MB limit
+	
+		if (file && file.size > MAX_SIZE) {
+		  setFileError('File size exceeds 5 MB limit.');
+		} else {
+		  setFileError(null);
+		  if (file) {
+			uploadCSVData(file);
+		  }
+		}
+	  };
+	
+	const uploadCSVData = async (file: File) => {
+		setUploading(true);
+		try {
+		  const formData = new FormData();
+		  formData.append('file', file);
+	
+		  const token = Cookies.get("token");
+	
+		  const response = await axios.post(
+			`${BACKEND_URL}/student/create-mda-csv`,
+			formData,
+			{
+			  headers: {
+				'Content-Type': 'multipart/form-data',
+				Authorization: `Bearer ${token}`
+			  }
+			}
+		  );
+	
+		  if (response.status !== 200) {
+			throw new Error('Failed to upload CSV data');
+		  }
+	
+		  console.log('CSV data uploaded successfully');
+		} catch (error) {
+		  if (axios.isAxiosError(error)) {
+			// Handle Axios specific errors
+			console.error('Axios error response:', error.response);
+		  } else {
+			// Handle other errors
+			console.error('Error uploading CSV data:', error);
+		  }
+		  setFileError('Failed to upload CSV data');
+		} finally {
+		  setUploading(false);
+		}
+	  };
 	return (
 		<>
 			<TopStyles>
@@ -288,13 +350,41 @@ export default function Home() {
 					<p>Take a look at your policies and the new policy to see what is covered</p>
 				</div>
 				<div className="buttons">
-					<button type="button" className="add" onClick={() => setShowNewStudentFormModal(true)}>
+					<button type="button" className="add" onClick={toggleDropdown}>
 						<PlusIcon />
 						<span>Add New Student</span>
+						<AngleDownStyles $isSelected={showDropdown}>
+                  <ColoredArrowDown />
+                </AngleDownStyles>
 					</button>
+					{showDropdown && (
+        <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+          <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={handleAddStudentClick}
+          >
+            Add Student Manually
+          </div>
+          
+		  <label htmlFor="file-upload" className="cursor-pointer">
+  <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
+    <span>Upload CSV</span>
+  </div>
+  <input 
+    id="file-upload" 
+    type="file" 
+    accept=".csv" 
+    className="hidden" 
+    onChange={handleFileUpload}
+  />
+</label>
+        </div>
+      )}
+	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
+      {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
 					<button type="button" className="import">
 						<UploadIcon />
-						<span>Import CSV</span>
+						<span>Download</span>
 					</button>
 				</div>
 			</TopStyles>
@@ -303,21 +393,21 @@ export default function Home() {
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Total No of Students</span>
-							<p>{typeof(total.totalStudents)==='number'?total.totalStudents:<Skeleton />}</p>
+							<p>{total.totalStudents || <Skeleton />}</p>
 						</div>
 						<TotalIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Active Students</span>
-							<p>{typeof(total.totalActive)==='number'?total.totalActive:<Skeleton />}</p>
+							<p>{total.totalActive || <Skeleton />}</p>
 						</div>
 						<ActiveIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Inactive Students</span>
-							<p>{typeof(total.totalInactive)==='number'?total.totalInactive:<Skeleton />}</p>
+							<p>{total.totalInactive || <Skeleton />}</p>
 						</div>
 						<InactiveIcon />
 					</StatListItemStyle>

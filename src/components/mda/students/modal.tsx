@@ -59,12 +59,16 @@ interface IForm {
 	Lastname: string;
 	Gender: string;
 	StateOfResidence: string;
+	StateOfOrigin: string;
+	Address:string,
+	LocalGovernment:string;
 	PhoneNumber: string;
 	DOBstring: string;
 	SID: string;
 	NsqLevel: string;
 	Firstname: string;
 	CourseID: number;
+	NationalIdentityNumber:string;
 }
 
 export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
@@ -73,6 +77,10 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		Lastname: "",
 		Gender: "",
 		StateOfResidence: "",
+		StateOfOrigin: "",
+	Address:"",
+		LocalGovernment:"",
+		NationalIdentityNumber:"",
 		PhoneNumber: "",
 		DOBstring: "",
 		SID: "",
@@ -120,8 +128,14 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		text: "",
 	});
 
-	const [Nin, setNin] = useState<number>();
-	const [NinError, setNinError] = useState<Ierror>({
+	const [NationalIdentityNumber, setNationalIdentityNumber] = useState("");
+	const [NationalIdentityNumberError, setNationalIdentityNumberError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const [Address, setAddress] = useState("");
+	const [AddressError, setAddressError] = useState<Ierror>({
 		active: false,
 		text: "",
 	});
@@ -200,13 +214,22 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				setForm({ ...form, NsqLevel: value });
 			}
 		}
-		if (input == "Nin") {
-			setNin(Number(value));
+		if (input == "Address") {
+			setAddress(value);
 			if (value.trim().length < 1) {
-				setNinError({ active: true, text: "NIN is required" });
+				setAddressError({ active: true, text: "Address is required" });
 			} else {
-				setNinError({ active: false, text: "NIN is valid" });
-				setForm({ ...form, CourseID: Number(value) });
+				setAddressError({ active: false, text: "Address is valid" });
+				setForm({ ...form, Address: value });
+			}
+		}
+		if (input == "NationalIdentityNumber") {
+			setNationalIdentityNumber(value);
+			if (value.trim().length < 1) {
+				setNationalIdentityNumberError({ active: true, text: "NIN is required" });
+			} else {
+				setNationalIdentityNumberError({ active: false, text: "NIN is valid" });
+				setForm({ ...form, NationalIdentityNumber: value });
 			}
 		}
 		if (input == "gender") {
@@ -246,10 +269,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		return regex.test(dateString);
 	};
 	// for states
-	const [state, setState] = useState("");
-	const [lga, setLga] = useState("");
-	const [states, setStates] = useState(States);
-	const [lgas, setLgas] = useState(States);
+
 	const [showLGADropdown, setShowLGADropdown] = useState(false);
 
 	interface ICourse {
@@ -297,21 +317,37 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		setShowDropdown(false);
 	};
 
+	const [state, setState] = useState("");
+	const [stateOfOrigin, setStateOfOrigin] = useState("");
+	const NaijaStates = require('naija-state-local-government');
+	const [states, setStates] = useState(States);
+	const [lgas, setLgas] = useState([]);
+	const [lga, setLga] = useState("");
+	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
+
+	const [showStateDropdown, setShowStateDropdown] = useState(false);
+	const handleStateOfOriginSelection = (name: string) => {
+		setForm({ ...form, StateOfOrigin: name });
+		setStateOfOrigin(name);
+		setShowStateDropdown(false);
+	};
+
 	const handleLGASelection = (name: string) => {
-		// setForm({ ...form, StateOfResidence: name });
+		setForm({ ...form, LocalGovernment: name });
 		setLga(name);
 		setShowLGADropdown(false);
-		console.log(state)
-		axios.get(`/get-lga/${state}`)
-		.then(data=>{
-			console.log(data)
-			// setLgas(data)
-		})
-		.catch(err=>{
-            console.log(err)
-        })
-
+		console.log(lgas)
+		
 	};
+	
+	useEffect(() => {
+		if (stateOfOrigin) {
+		  const newLgas = NaijaStates.lgas(stateOfOrigin).lgas;
+		  setLgas(newLgas);
+		  console.log(newLgas)
+		  console.log(1)
+		}
+	  }, [stateOfOrigin]);
 
 	// login button loader state
 	const [isLoading, setIsLoading] = useState(false);
@@ -358,12 +394,16 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					Lastname: form.Lastname,
 					Gender: form.Gender,
 					StateOfResidence: form.StateOfResidence,
+					StateOfOrigin: form.StateOfOrigin,
+					Address:form.Address,
+					LocalGovernment:form.LocalGovernment,
 					PhoneNumber: form.PhoneNumber,
 					DOBstring: form.DOBstring,
 					SID: form.SID,
 					NsqLevel: form.NsqLevel,
 					CourseID: form.CourseID,
 					Firstname: form.Firstname,
+					NationalIdentityNumber: form.NationalIdentityNumber,
 				};
 				console.log("Request Body:", body);
 				setIsLoading(true);
@@ -516,6 +556,24 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											</div>
 										</div>
+										<div className="form-ele ">
+											<label htmlFor="address">Date Of Birth</label>
+											<div className="inp">
+												<input
+													type="date"
+													name="DOB"
+													value={DOBstring}
+													onChange={(e) => handleInput(e, "DOBstring")}
+													className={DOBstringError.active ? "error-bdr" : ""}
+													placeholder="MM/DD/YYYY"
+												/>
+												<div className="abs">
+													{DOBstringError.active === false && DOBstringError.text === "" && <LocationIcon />}
+													{DOBstringError.active === false && DOBstringError.text !== "" && <CheckedIcon />}
+													{DOBstringError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
 										<div className="form-ele">
 											<label htmlFor="state">State of Operation</label>
 											<StatesDropdownStyles>
@@ -531,6 +589,51 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 													<div className="dropdown">
 														{states.map((ele, index) => (
 															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
+																<p>{ele.name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="firstName">Address</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="Address"
+													value={Address}
+													className={AddressError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "Address")}
+													placeholder="Please type in your Address"
+												/>
+												<div className="abs">
+													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
+													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
+													{AddressError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele">
+											<label htmlFor="state">State of Origin</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowStateDropdown(!showStateDropdown)}>
+													<>
+														{stateOfOrigin === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{stateOfOrigin}</p>}
+													</>
+													<AngleDownStyles $isSelected={showStateDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showStateDropdown && (
+													<div className="dropdown">
+														{statesOfOrigin.map((ele, index) => (
+															<StateCompStyles $isSelected={stateOfOrigin === ele.name} key={index} onClick={() => handleStateOfOriginSelection(ele.name)}>
 																<p>{ele.name}</p>
 															</StateCompStyles>
 														))}
@@ -575,13 +678,14 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 									</div>
 								)}
 								{isSecondModalOpen && (
+									
 									<div className="form-input">
 										<div className="form-ele">
 											<label htmlFor="state">Local Government Area</label>
 											<StatesDropdownStyles>
 												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
 													<>
-														{state === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+														{lga === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
 													</>
 													<AngleDownStyles $isSelected={showLGADropdown}>
 														<AngleDown />
@@ -590,8 +694,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												{showLGADropdown && (
 													<div className="dropdown">
 														{lgas.map((ele, index) => (
-															<StateCompStyles $isSelected={lga === ele.name} key={index} onClick={() => handleLGASelection(ele.name)}>
-																<p>{ele.name}</p>
+															<StateCompStyles $isSelected={lga === ele} key={index} onClick={() => handleLGASelection(ele)}>
+																<p>{ele}</p>
 															</StateCompStyles>
 														))}
 													</div>
@@ -626,17 +730,17 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 											<div className="inp">
 												<input
 													type="text"
-													name="lastName"
+													name="Nin"
 													id="Nin"
-													// value={NsqLevel}
-													className={NsqLevelError.active ? "error-bdr" : ""}
-													// onChange={(e) => handleInput(e, "NsqLevel")}
+													value={NationalIdentityNumber}
+													className={NationalIdentityNumberError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "NationalIdentityNumber")}
 													placeholder="Please input NIN"
 												/>
 												<div className="abs">
-													{NinError.active === false && NinError.text === "" && <NameIcon />}
-													{NinError.active === false && NinError.text !== "" && <CheckedIcon />}
-													{NinError.active === true && <FormErrorIcon />}
+													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text === "" && <NameIcon />}
+													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text !== "" && <CheckedIcon />}
+													{NationalIdentityNumberError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
 										</div>
@@ -685,24 +789,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											)}
 										</div>
-										<div className="form-ele ">
-											<label htmlFor="address">Date Of Birth</label>
-											<div className="inp">
-												<input
-													type="date"
-													name="DOB"
-													value={DOBstring}
-													onChange={(e) => handleInput(e, "DOBstring")}
-													className={DOBstringError.active ? "error-bdr" : ""}
-													placeholder="MM/DD/YYYY"
-												/>
-												<div className="abs">
-													{DOBstringError.active === false && DOBstringError.text === "" && <LocationIcon />}
-													{DOBstringError.active === false && DOBstringError.text !== "" && <CheckedIcon />}
-													{DOBstringError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
+										
 									</div>
 								)}
 								{isFirstModalOpen && (
@@ -747,8 +834,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												phoneError.active !== false ||
 												SIDError.active !== false ||
 												NsqLevelError.active !== false ||
-												state == "" ||
-												DOBstring == ""
+												state == ""||
+												DOBstring==""
 											}>
 											{isLoading ? <ButtonLoader /> : "Create Student"}
 										</button>
