@@ -13,6 +13,7 @@ import {
   StateCompStyles,
   StatesDropdownStyles,
 } from "@/components/fme/mda/styles";
+import { NinIcon, PhoneIcon } from "@/components/icons/auth";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import {
   CheckedIcon,
@@ -316,9 +317,6 @@ export default function Signup() {
                   className={fnameError.active ? "error-bdr" : ""}
                 />
                 <div className="ind">
-                  {fnameError.active === false && fname === "" && (
-                    <EmailIcon />
-                  )}
                   {fnameError.active === false && fname !== "" && (
                     <CheckedIcon />
                   )}
@@ -346,9 +344,6 @@ export default function Signup() {
                   className={lnameError.active ? "error-bdr" : ""}
                 />
                 <div className="ind">
-                  {lnameError.active === false && lname === "" && (
-                    <EmailIcon />
-                  )}
                   {lnameError.active === false && lname !== "" && (
                     <CheckedIcon />
                   )}
@@ -377,9 +372,7 @@ export default function Signup() {
                   autoComplete="email"
                 />
                 <div className="ind">
-                  {emailError.active === false && email === "" && (
-                    <EmailIcon />
-                  )}
+                  {emailError.active === false && email === "" && <EmailIcon />}
                   {emailError.active === false && email !== "" && (
                     <CheckedIcon />
                   )}
@@ -408,7 +401,7 @@ export default function Signup() {
                 />
                 <div className="ind">
                   {numberError.active === false && phonenumber === "" && (
-                    <EmailIcon />
+                    <PhoneIcon />
                   )}
                   {numberError.active === false && phonenumber !== "" && (
                     <CheckedIcon />
@@ -439,12 +432,8 @@ export default function Signup() {
                   className={ninError.active ? "error-bdr" : ""}
                 />
                 <div className="ind">
-                  {ninError.active === false && nin === "" && (
-                    <EmailIcon />
-                  )}
-                  {ninError.active === false && nin !== "" && (
-                    <CheckedIcon />
-                  )}
+                  {ninError.active === false && nin === "" && <NinIcon />}
+                  {ninError.active === false && nin !== "" && <CheckedIcon />}
                   {ninError.active === true && <FormErrorIcon />}
                 </div>
                 <p
