@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Signup",
+  title: "User Signup",
   description: "Signup/Create an Account",
 };
 
