@@ -5,9 +5,9 @@ import Image from "next/image";
 
 export default function Faqs() {
     return (
-      <section className=" flex p-8 gap-4">
+      <section className=" flex p-8 gap-4 flex-col md:flex-row">
         <section className=" space-y-2">
-          <h1 className=" text-[#00932E] text-[48px] font-medium leading-[48px]">Frequently Asked Questions</h1>
+          <h1 className=" text-[#00932E] text-[32px] md:text-[48px] font-medium leading-[40px] md:leading-[48px]">Frequently Asked Questions</h1>
           <p className="mb-4 font-medium leading-[24px] text-[#101928]">Need help? Check out the answers to your questions about National Skills Information Center, or send an email to support@nskic.com</p>
           <Accordion />
         </section>

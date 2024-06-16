@@ -8,9 +8,9 @@ export default function Home() {
 
     return (
       <section className="">
-       <div className=" flex p-8">
+       <div className=" bg-[#E7F6EC] flex flex-col md:flex-row p-8 space-y-4">
         <div className=" flex-1 space-y-4">
-          <h1 className=" text-[56px] leading-[77px] font-medium">Hiring Skilled <span className=" text-[#00932E]">Artisans</span>  just got easy!</h1>
+          <h1 className="text-[32px] md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hiring Skilled <span className=" text-[#00932E]">Artisans</span>  just got easy!</h1>
           <p className=" font-medium text-[16px] leading-[24px] text-black">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore nostrum, atque voluptates eveniet ex quod dolores asperiores ullam officia repudiandae accusamus laudantium sint aspernatur maiores doloremque, nihil tempora quae quasi nam delectus voluptatum. Alias possimus quos dicta et eligendi eaque.</p>
           <button className=" rounded-md py-4 px-6 text-white font-bold bg-[#00932E]">Get started today!</button>
         </div>
@@ -20,12 +20,14 @@ export default function Home() {
        </div>
        <div className=" bg-[#00932E] pt-4">
         <h5 className="text-[18px] leading-[24px] text-white font-medium text-center">ENDORSED BY THE </h5>
-        <div className=" text-center my-8">NATIONAL LOGO SVG</div>
-        <div className=" flex ">
+        <div className="  flex justify-center my-2">
+          <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />
+        </div>
+        <div className=" flex flex-col md:flex-row ">
           <Image src="/images/second.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
           <Image src="/images/third.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
         </div>
-        <div className=" flex p-8 justify-between py-16">
+        <div className=" flex flex-col md:flex-row space-y-2 p-8 justify-between py-16">
           <div className="text-white flex-1 space-y-6">
             <h4 className=" text-[18px] leading-[24px] font-medium">WHO WE ARE?</h4>
             <p className=" text-[44px] font-medium leading-[48px]">We are all about</p>
@@ -36,7 +38,7 @@ export default function Home() {
           </div>
         </div>
        </div>
-       <div className=" flex gap-4 p-8 py-16">
+       <div className=" flex flex-col md:flex-row gap-4 p-8 py-16">
         <div className=" flex-1 space-y-4">
           <h5 className=" text-[18px] font-medium leading-[24px] text-[#101928]">OUR NEXT MILESTONE</h5>
           <h2 className="text-[44px] font-medium leading-[48px] text-[#101928]">We Are National Skills Information Center</h2>
@@ -64,8 +66,8 @@ export default function Home() {
        </div>
        <div className=" space-y-4 py-16">
         <h3 className=" text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">artisans</span></h3>
-        <p className="text-center w-1/2 mx-auto  text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum exercitationem ullam expedita aut dolore impedit deleniti cumque nemo sit tempora.</p>
-        <div className=" flex gap-2 overflow-scroll">
+        <p className="text-center md:w-1/2 mx-2 md:mx-auto  text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum exercitationem ullam expedita aut dolore impedit deleniti cumque nemo sit tempora.</p>
+        <div className=" flex flex-col md:flex-row gap-2 items-center md:overflow-scroll">
           <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
           <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
           <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
@@ -78,13 +80,13 @@ export default function Home() {
           <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
         </div>
        </div>
-       <div className=" bg-[#00932E] flex justify-between p-16">
-        <div className=" flex gap-16">
-        <div className=" space-y-4">
+       <div className=" bg-[#00932E] space-y-4 md:space-y-0 flex flex-col md:flex-row justify-between p-16">
+        <div className=" flex flex-col md:flex-row space-y-4 md:space-y-0 gap-16">
+        <div className=" space-y-4 md:space-y-0">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">3132+</h2>
           <p className=" text-[18px] font-medium leading-[24px] text-white">TOTAL TRAINED ARTISANS</p>
         </div>
-        <div className=" space-y-4">
+        <div className=" space-y-4 md:space-y-0">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">10000</h2>
           <div className=" flex items-center gap-1">
             <GradCap />
@@ -97,10 +99,10 @@ export default function Home() {
           <p className=" text-[44px] text-gradient-to-r from-[#04E750] to-[#EAFFF1] leading-[48px] font-medium">We&apos;ve built a sustainable solution</p>
         </div>
        </div>
-       <div className=" flex p-16 gap-4">
+       <div className=" flex p-16 gap-4 flex-col md:flex-row">
         <div className=" flex flex-col gap-4 flex-1 pb-28">
-          <h2 className=" text-[44px] leading-[48px] font-medium text-[#101928] ">We are National Skills Information Center</h2>
-          <p className=" text-[#101928] font-normal text-[18px] leading-[24px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam esse optio error ducimus repudiandae! Quae placeat expedita rerum ducimus libero rem ipsam, enim perferendis ipsa aperiam, ipsum assumenda. Sequi saepe illo eveniet, minima veritatis minus iste repudiandae cumque perferendis eos nesciunt, facere, ratione dicta cum beatae. Eligendi a laborum magni.</p>
+          <h2 className=" text-[36px] md:text-[44px] leading-[32px] md:leading-[48px] font-medium text-[#101928] ">We are National Skills Information Center</h2>
+          <p className=" text-[#101928] font-normal text-[16px] md:text-[18px] leading-[24px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam esse optio error ducimus repudiandae! Quae placeat expedita rerum ducimus libero rem ipsam, enim perferendis ipsa aperiam, ipsum assumenda. Sequi saepe illo eveniet, minima veritatis minus iste repudiandae cumque perferendis eos nesciunt, facere, ratione dicta cum beatae. Eligendi a laborum magni.</p>
           <button className="w-fit mt-auto rounded-md py-4 px-6 text-white font-bold bg-[#00932E]">View profile</button>
         </div>
         <div className=" flex-1 flex justify-end">
