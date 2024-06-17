@@ -1,25 +1,30 @@
+'use client'
+import { useState } from 'react';
+import Image from 'next/image'
 import { Diploma, GradCap, Organise, TailoredSearch } from "@/components/landing/faqs/Svgs";
 import "../globals.css";
-import Image from 'next/image'
 import { Verified } from "@/components/fme/course_list/Svg";
 
 // client
 export default function Home() {
+  const [showEmployee,setShowEmployee]= useState(true)
+  const handleEmployee=()=>{
+    setShowEmployee(true)
+  }
+  const handleArtisans=()=>{
+    setShowEmployee(false)
+  }
 
     return (
       <section className="">
-       <div className=" bg-[#E7F6EC] flex flex-col md:flex-row p-8 space-y-4">
-        <div className=" flex-1 space-y-4">
-          <h1 className="text-[32px] md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hiring Skilled <span className=" text-[#00932E]">Artisans</span>  just got easy!</h1>
-          <p className=" font-medium text-[16px] leading-[24px] text-black">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore nostrum, atque voluptates eveniet ex quod dolores asperiores ullam officia repudiandae accusamus laudantium sint aspernatur maiores doloremque, nihil tempora quae quasi nam delectus voluptatum. Alias possimus quos dicta et eligendi eaque.</p>
-          <button className=" rounded-md py-4 px-6 text-white font-bold bg-[#00932E]">Get started today!</button>
-        </div>
-        <div className="flex-1 flex justify-end">
-          <Image src="/images/first.png" alt="hero-image" width={407} height={455} />
-        </div>
+       <div className=" bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
+          <h1 className="text-[32px] text-center md:text-left md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Artisans</span>  like a (super) human</h1>
+          <p className=" font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
+          <button className="w-fit rounded-md py-4 px-6 hover:text-[#00932E] hover:bg-white hover:border-[1px] hover:border-solid hover:border-[#00932E] text-white font-bold bg-[#00932E]">Get started today!</button>
+
        </div>
-       <div className=" bg-[#00932E] pt-4">
-        <h5 className="text-[18px] leading-[24px] text-white font-medium text-center">ENDORSED BY THE </h5>
+       <div className=" bg-[#00932E] py-8 all-about">
+        <h5 className="text-[18px] leading-[24px] text-white font-normal text-center">ENDORSED BY THE </h5>
         <div className="  flex justify-center my-2">
           <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />
         </div>
@@ -38,12 +43,18 @@ export default function Home() {
           </div>
         </div>
        </div>
-       <div className=" flex flex-col md:flex-row gap-4 p-8 py-16">
+       <div className=" flex flex-col space-y-4 md:space-y-0 md:flex-row gap-4 p-8 py-16">
         <div className=" flex-1 space-y-4">
-          <h5 className=" text-[18px] font-medium leading-[24px] text-[#101928]">OUR NEXT MILESTONE</h5>
-          <h2 className="text-[44px] font-medium leading-[48px] text-[#101928]">We Are National Skills Information Center</h2>
-          <p className="text-[18px] font-normal leading-[24px] text-[#101928]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati incidunt iusto ullam autem laborum harum, possimus nihil deleniti sint impedit debitis vero repellendus ab magnam ratione aperiam sequi. Minus sapiente fugiat, officia tempora accusantium numquam corporis dolorem maxime eaque recusandae!</p>
+          <div className=" flex gap-2">
+            <div onClick={handleEmployee} className={`cursor-pointer ${showEmployee?"bg-[#E7F6EC] text-[#00932E]":"text-[#98A2B3]"}  rounded-lg px-4 py-2.5 `}>For Employers</div>
+            <div onClick={handleArtisans} className={`cursor-pointer ${!showEmployee?"bg-[#E7F6EC] text-[#00932E]":"text-[#98A2B3]"}  rounded-lg px-4 py-2.5 `}>For Artisans</div>
+          </div>
+          <h5 className=" text-[18px] text-center md:text-left font-medium leading-[24px] text-[#101928]">OUR NEXT MILESTONE</h5>
+          <h2 className=" text-[36px] md:text-[44px] text-center md:text-left font-medium leading-[48px] text-[#101928]">We Are National Skills Information Center</h2>
+          <p className="text-[18px] text-center md:text-left font-normal leading-[24px] text-[#101928]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati incidunt iusto ullam autem laborum harum, possimus nihil deleniti sint impedit debitis vero repellendus ab magnam ratione aperiam sequi. Minus sapiente fugiat, officia tempora accusantium numquam corporis dolorem maxime eaque recusandae!</p>
+          <div className=" flex justify-center md:justify-start">
           <button className=" mt-12 rounded-md py-4 px-6 text-white font-bold bg-[#00932E]">Get started today!</button>
+          </div>
         </div>
         <div className=" flex-1 flex flex-wrap gap-4 justify-end">
           <div className="w-[325px] flex-col flex justify-center items-center h-[223px] bg-[#E7F6EC] rounded-[15px]">
@@ -64,29 +75,60 @@ export default function Home() {
           </div>
         </div>
        </div>
-       <div className=" space-y-4 py-16">
+       <div className=" space-y-8 py-16">
         <h3 className=" text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">artisans</span></h3>
         <p className="text-center md:w-1/2 mx-2 md:mx-auto  text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum exercitationem ullam expedita aut dolore impedit deleniti cumque nemo sit tempora.</p>
-        <div className=" flex flex-col md:flex-row gap-2 items-center md:overflow-scroll">
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
-          <Image src="/images/artisans.png" alt="" width={280} height={320} className=" rounded-[10px]" />
+        <div className=" flex flex-col space-y-4 px-2  md:flex-row gap-4 items-center md:overflow-scroll">
+          <div className=" my-2  relative h-[350px]">
+
+          <Image src="/images/landing/image 15.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Fashion Designer</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 16.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Furniture making</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 19.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Make-up artist</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 17.png" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Interior Design</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 19.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Make-up artist</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 18.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Hair stylist</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 19.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Make-up artist</h6>
+          </div>
+          <div className=" my-2 relative h-[350px]">
+
+<Image src="/images/landing/image 16.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+<h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Furniture making</h6>
+</div>
+
         </div>
        </div>
-       <div className=" bg-[#00932E] space-y-4 md:space-y-0 flex flex-col md:flex-row justify-between p-16">
+       <div className="artisan bg-[#00932E] space-y-16  md:space-y-0 flex flex-col md:flex-row justify-between py-32 p-16">
         <div className=" flex flex-col md:flex-row space-y-4 md:space-y-0 gap-16">
-        <div className=" space-y-4 md:space-y-0">
+        <div className=" space-y-4 ">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">3132+</h2>
           <p className=" text-[18px] font-medium leading-[24px] text-white">TOTAL TRAINED ARTISANS</p>
         </div>
-        <div className=" space-y-4 md:space-y-0">
+        <div className=" space-y-4 ">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">10000</h2>
           <div className=" flex items-center gap-1">
             <GradCap />
@@ -94,16 +136,16 @@ export default function Home() {
           </div>
         </div>
         </div>
-        <div className="">
+        <div className=" space-y-4">
           <h2 className=" text-[18px] leading-[24px] text-white">OUR NEXT MILESTONE</h2>
-          <p className=" text-[44px] text-gradient-to-r from-[#04E750] to-[#EAFFF1] leading-[48px] font-medium">We&apos;ve built a sustainable solution</p>
+          <p  className=" text-[44px] text-[#04E750] leading-[48px] font-medium">We&apos;ve built a sustainable solution</p>
         </div>
        </div>
        <div className=" flex p-16 gap-4 flex-col md:flex-row">
-        <div className=" flex flex-col gap-4 flex-1 pb-28">
-          <h2 className=" text-[36px] md:text-[44px] leading-[32px] md:leading-[48px] font-medium text-[#101928] ">We are National Skills Information Center</h2>
-          <p className=" text-[#101928] font-normal text-[16px] md:text-[18px] leading-[24px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam esse optio error ducimus repudiandae! Quae placeat expedita rerum ducimus libero rem ipsam, enim perferendis ipsa aperiam, ipsum assumenda. Sequi saepe illo eveniet, minima veritatis minus iste repudiandae cumque perferendis eos nesciunt, facere, ratione dicta cum beatae. Eligendi a laborum magni.</p>
-          <button className="w-fit mt-auto rounded-md py-4 px-6 text-white font-bold bg-[#00932E]">View profile</button>
+        <div className=" flex flex-col gap-4 flex-1 md:pt-12 md:pb-28">
+          <h2 className=" text-[36px] md:text-[44px] text-center md:text-left leading-[32px] md:leading-[48px] font-medium text-[#101928] ">We are National Skills Information Center</h2>
+          <p className=" text-center md:text-left text-[#101928] font-normal text-[16px] md:text-[18px] leading-[24px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam esse optio error ducimus repudiandae! Quae placeat expedita rerum ducimus libero rem ipsam, enim perferendis ipsa aperiam, ipsum assumenda. Sequi saepe illo eveniet, minima veritatis minus iste repudiandae cumque perferendis eos nesciunt, facere, ratione dicta cum beatae. Eligendi a laborum magni.</p>
+          <button className="w-fit mt-auto mx-auto md:mx-0 rounded-md py-4 px-6 hover:border-[1px] hover:border-solid hover:bg-white hover:text-[#00932E] text-white font-bold bg-[#00932E]">View profile</button>
         </div>
         <div className=" flex-1 flex justify-end">
           <Image src="/images/Frame 1618868532.png" width={564} height={600} className=" rounded-[20px]" alt="" />

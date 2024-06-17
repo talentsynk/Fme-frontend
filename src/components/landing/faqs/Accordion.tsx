@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import { Down, Up } from "./Svgs";
 interface Accordion{
     title: string;
     number:number;
@@ -19,7 +20,7 @@ const AccordionItem:React.FC<Accordion> = ({ number, title, children }) => {
             </span>
             <span className="text-gray-800">{title}</span>
           </span>
-          <span className="text-gray-500">{isOpen ? '-' : '+'}</span>
+          <span className="text-gray-500">{isOpen ? <Down /> : <Up />}</span>
         </button>
         {isOpen && <div className="p-4 bg-gray-50">{children}</div>}
       </div>
