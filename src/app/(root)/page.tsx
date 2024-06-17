@@ -53,7 +53,7 @@ export default function Home() {
           <h2 className=" text-[36px] md:text-[44px] text-center md:text-left font-medium leading-[48px] text-[#101928]">We Are National Skills Information Center</h2>
           <p className="text-[18px] text-center md:text-left font-normal leading-[24px] text-[#101928]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati incidunt iusto ullam autem laborum harum, possimus nihil deleniti sint impedit debitis vero repellendus ab magnam ratione aperiam sequi. Minus sapiente fugiat, officia tempora accusantium numquam corporis dolorem maxime eaque recusandae!</p>
           <div className=" flex justify-center md:justify-start">
-          <button className=" mt-12 rounded-md py-4 px-6 text-white font-bold bg-[#00932E]">Get started today!</button>
+          <button className=" mt-12 rounded-md hover:border-[1px] hover:border-solid hover:bg-white hover:text-[#00932E] py-4 px-6 text-white font-bold bg-[#00932E]">Get started today!</button>
           </div>
         </div>
         <div className=" flex-1 flex flex-wrap gap-4 justify-end">
