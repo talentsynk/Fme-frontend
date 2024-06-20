@@ -16,6 +16,7 @@ export const RootHeader = () => {
         setShowNav(false)
     }
     return ( 
+        // hea
         
            <header className=" flex  items-center p-2 md:px-8 md:py-6">
             <Link href="/" className=" flex flex-1  gap-1">
