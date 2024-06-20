@@ -1,15 +1,19 @@
 'use client'
+import { Cancel, Hamburger } from '@/components/landing/faqs/Svgs';
 import './HeaderStyle.css'
 import Image from 'next/image'
 import Link from "next/link";
-import { useRef,useState } from 'react';
+import { useState } from 'react';
 
 
 export const RootHeader = () => {
     const [showNav,setShowNav]=useState(false)
     // const navRef = useRef<HTMLElement | null>(null);
     const ShowNav = () => {
-        setShowNav(prev=>!prev)
+        setShowNav(true)
+    }
+    const ShowNavv = () => {
+        setShowNav(false)
     }
     return ( 
         
@@ -20,18 +24,19 @@ export const RootHeader = () => {
             </Link>
            <nav className={` flex-col ${!showNav?'md:flex hidden':'flex'} space-y-4 md:space-y-0 md:flex-row flex-1 justify-between` }>
                 <ul className=" flex flex-col md:flex-row md:gap-12 md:items-center">
-                    <li className=" hover:text-[#00932E]"><Link href="/faqs">FAQs</Link></li>
-                    <li className=" hover:text-[#00932E]"><Link href="/about">About</Link></li>
+                    <li className=" md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white rounded-md md:rounded-none p-2 md:p-2 hover:text-white"><Link href="/faqs">FAQs</Link></li>
+                    <li className=" md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white rounded-md md:rounded-none p-2 md:p-2 hover:text-white"><Link href="/about">About</Link></li>
                 </ul>
                 <div className="flex flex-col md:flex-row gap-2 space-y-4 md:space-y-0 md:items-center">
-                <button className="w-fit  hover:bg-[#00932E] hover:text-white  rounded-md px-4 py-2 font-semibold text-sm text-[#00932E] bg-white border border-solid border-[#00932E]">Login</button>
-                <button className="w-fit hover:border-[#00932E] hover:border-solid hover:border-[1px] hover:bg-white hover:text-[#00932E] rounded-md px-4 py-2 font-semibold text-sm text-white bg-[#00932E]">Signup</button>
+                <Link href="/auth/login"><button className="w-fit  hover:bg-[#00932E] hover:text-white  rounded-md px-4 py-2 font-semibold text-sm text-[#00932E] bg-white border border-solid border-[#00932E]">Login</button></Link>
+                <Link href="/auth/signup"><button className="w-fit hover:border-[#00932E] hover:border-solid hover:border-[1px] hover:bg-white hover:text-[#00932E] rounded-md px-4 py-2 font-semibold text-sm text-white bg-[#00932E]">Signup</button></Link>
             </div>
             </nav>
             
-            <div onClick={ShowNav}  className="  flex md:hidden rounded-md px-4 py-2 font-semibold text-sm text-white bg-[#00932E] ml-auto">
+          {!showNav?  <div onClick={ShowNav}  className="  flex gap-2 items-center md:hidden rounded-md px-4 py-2 font-semibold text-sm text-white bg-[#00932E] ml-auto">
+                <Hamburger />
                 <h6 className="">Menu</h6>
-            </div>
+            </div>:<div className='flex  md:hidden px-4 py-2 ml-auto' onClick={ShowNavv}><Cancel /></div>}
            </header>
    
      );

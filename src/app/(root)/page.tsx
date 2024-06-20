@@ -18,7 +18,7 @@ export default function Home() {
     return (
       <section className="">
        <div className=" bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
-          <h1 className="text-[32px] text-center md:text-left md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Artisans</span>  like a (super) human</h1>
+          <h1 className="text-[32px] text-center md:text-left md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Artisans</span>  effortlessly with a <span className=" text-[#00932E]">click</span> </h1>
           <p className=" font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
           <button className="w-fit rounded-md py-4 px-6 hover:text-[#00932E] hover:bg-white hover:border-[1px] hover:border-solid hover:border-[#00932E] text-white font-bold bg-[#00932E]">Get started today!</button>
 
@@ -78,46 +78,46 @@ export default function Home() {
        <div className=" space-y-8 py-16">
         <h3 className=" text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">artisans</span></h3>
         <p className="text-center md:w-1/2 mx-2 md:mx-auto  text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum exercitationem ullam expedita aut dolore impedit deleniti cumque nemo sit tempora.</p>
-        <div className=" flex flex-col space-y-4 px-2  md:flex-row gap-4 items-center md:overflow-scroll">
+        <div className="carousel-item flex-none   carousel-item  flex flex-col space-y-4 px-2 carousel  md:flex-row gap-4 items-center md:items-start md:overflow-x-scroll w-full">
           <div className=" my-2  relative h-[350px]">
 
-          <Image src="/images/landing/image 15.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Fashion Designer</h6>
+          <Image src="/images/landing/image 15.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px]  left-[30%]">Fashion Designer</h6>
+          </div>
+          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 16.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Furniture making</h6>
+          </div>
+          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 19.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
+          </div>
+          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
+
+          <Image src="/images/landing/image 17.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Interior Design</h6>
           </div>
           <div className=" my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 16.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Furniture making</h6>
+          <Image src="/images/landing/image 19.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
           </div>
-          <div className=" my-2 relative h-[350px]">
+          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 19.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Make-up artist</h6>
+          <Image src="/images/landing/image 18.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Hair stylist</h6>
           </div>
-          <div className=" my-2 relative h-[350px]">
+          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 17.png" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Interior Design</h6>
+          <Image src="/images/landing/image 19.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%] ">Make-up artist</h6>
           </div>
-          <div className=" my-2 relative h-[350px]">
+          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 19.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Make-up artist</h6>
-          </div>
-          <div className=" my-2 relative h-[350px]">
-
-          <Image src="/images/landing/image 18.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Hair stylist</h6>
-          </div>
-          <div className=" my-2 relative h-[350px]">
-
-          <Image src="/images/landing/image 19.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Make-up artist</h6>
-          </div>
-          <div className=" my-2 relative h-[350px]">
-
-<Image src="/images/landing/image 16.jpeg" alt="" width={280} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-<h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] translate-x-[50%]">Furniture making</h6>
+<Image src="/images/landing/image 16.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+<h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%] ">Furniture making</h6>
 </div>
 
         </div>
