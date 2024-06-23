@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Profile",
   description: "Learn about the skills database platform dashboards powered by coderina",
 };
 

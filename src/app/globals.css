@@ -73,10 +73,20 @@ img{
 #stc-searchbar{
   border-width: 2px solid green;
 }
-
+.all-about{
+  background-image: url(/images/Asset\ 1\ 1.svg);
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+}
 
 .support-img{
   background: url(/images/settings/ELON\ MUSK\ SVG.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.artisan{
+  background-image: url(/images/landing/Frame\ 123.jpeg);
   background-repeat: no-repeat;
   background-size: cover;
 }
