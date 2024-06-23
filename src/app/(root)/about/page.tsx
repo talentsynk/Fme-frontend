@@ -1,7 +1,10 @@
 "use client";
+
 import Image from "next/image";
 
+
 export default function About() {
+ 
   
     return (
       <section className="">
@@ -48,5 +51,7 @@ export default function About() {
       </section>
     
       </section>
+      
+      
     );
   }
