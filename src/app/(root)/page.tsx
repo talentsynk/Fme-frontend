@@ -22,9 +22,10 @@ export default function Home() {
        <div className=" bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
           <h1 className="animate-fadeIn  text-[32px] text-center md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Artisans</span>  effortlessly<br /> with a <span className=" text-[#00932E]">click</span> </h1>
           <p className="animate-slideInLeft font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
-          <button className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-300 ease-in-out hover:text-[#00932E] hover:bg-white  hover:border-[#00932E]">
+          <button className="w-auto rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-300 ease-in-out hover:text-[#00932E] hover:bg-white hover:border-[#00932E]">
   Get started today!
 </button>
+
 
 
        </div>
@@ -127,13 +128,13 @@ export default function Home() {
 
         </div>
        </div>
-       <div className="artisan bg-[#00932E] animate-fadeIn  space-y-16  md:space-y-0 flex gap-8 flex-col md:flex-row justify-between py-32 p-16">
-        <div className=" flex flex-col md:flex-row space-y-4 md:space-y-0 gap-8">
-        <div className=" space-y-4 ">
+       <div className="artisan bg-[#00932E] p-4 gap-12 md:gap-0 justify-between animate-fadeIn flex flex-col md:flex-row md:h-[400px] py-16 md:py-0 items-center  ">
+        <div className=" md:w-[55%] flex flex-col gap-12 md:gap-0 md:flex-row justify-around">
+        <div className=" ">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">3132+</h2>
           <p className=" text-[18px] font-medium leading-[24px] text-white">TOTAL TRAINED ARTISANS</p>
         </div>
-        <div className=" space-y-4 ">
+        <div className="  ">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">10000</h2>
           <div className=" flex items-center gap-1">
             <GradCap />
@@ -141,9 +142,9 @@ export default function Home() {
           </div>
         </div>
         </div>
-        <div className=" space-y-4">
-          <h2 className=" text-[18px] leading-[24px] text-white">OUR NEXT MILESTONE</h2>
-          <p  className=" text-[44px] text-[#04E750] leading-[48px] font-medium">We&apos;ve built a sustainable solution</p>
+        <div className=" space-y-4 md:w-[35%] flex flex-col items-center md:items-start  ">
+          <h2 className=" text-[18px] leading-[24px] text-white ">OUR NEXT MILESTONE</h2>
+          <p  className=" text-[44px] text-[#04E750] leading-[48px] text-center md:text-left font-medium">We&apos;ve built a <br/> sustainable solution</p>
         </div>
        </div>
        <div className=" flex p-16 gap-4 flex-col md:flex-row bg-white">

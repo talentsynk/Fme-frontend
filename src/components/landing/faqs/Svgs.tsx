@@ -197,6 +197,17 @@ const Instagram = () => {
       
     )
   }
+  const Location = () => {
+    return (
+      <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.625 5.07165C0.625 2.62214 2.57751 0.625 5 0.625C7.42249 0.625 9.375 2.62214 9.375 5.07165C9.375 6.2542 9.03799 7.52395 8.44222 8.62093C7.84719 9.71656 6.97781 10.6686 5.89026 11.1769C5.32528 11.441 4.67472 11.441 4.10974 11.1769C3.02219 10.6686 2.15281 9.71656 1.55778 8.62093C0.962014 7.52395 0.625 6.2542 0.625 5.07165ZM5 1.375C3.00422 1.375 1.375 3.02374 1.375 5.07165C1.375 6.12018 1.67632 7.26771 2.21685 8.26299C2.75812 9.25962 3.52301 10.0748 4.42732 10.4975C4.79103 10.6675 5.20897 10.6675 5.57268 10.4975C6.47699 10.0748 7.24188 9.25962 7.78315 8.26299C8.32368 7.26771 8.625 6.12018 8.625 5.07165C8.625 3.02374 6.99578 1.375 5 1.375ZM5 3.875C4.37868 3.875 3.875 4.37868 3.875 5C3.875 5.62132 4.37868 6.125 5 6.125C5.62132 6.125 6.125 5.62132 6.125 5C6.125 4.37868 5.62132 3.875 5 3.875ZM3.125 5C3.125 3.96447 3.96447 3.125 5 3.125C6.03553 3.125 6.875 3.96447 6.875 5C6.875 6.03553 6.03553 6.875 5 6.875C3.96447 6.875 3.125 6.03553 3.125 5Z" fill="#1C274C"/>
+</svg>
+
+
+     
+      
+    )
+  }
   const Organise = () => {
     return (
       <svg width="44" height="40" viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -245,7 +256,25 @@ const Instagram = () => {
       <path d="M18.5 6L6.5 18M18.5 18L6.5 6" stroke="#101928" stroke-linecap="round"/>
       </svg>
       
+    )
+  }
+  const Tick = () => {
+    return (
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.01516 5.01516C8.16161 4.86872 8.16161 4.63128 8.01516 4.48483C7.86872 4.33839 7.63128 4.33839 7.48483 4.48483L5.25 6.71967L4.51517 5.98483C4.36872 5.83839 4.13128 5.83839 3.98483 5.98483C3.83839 6.13128 3.83839 6.36872 3.98483 6.51517L4.98483 7.51517C5.13128 7.66161 5.36872 7.66161 5.51517 7.51517L8.01516 5.01516Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6 0.625C3.03147 0.625 0.625 3.03147 0.625 6C0.625 8.96853 3.03147 11.375 6 11.375C8.96853 11.375 11.375 8.96853 11.375 6C11.375 3.03147 8.96853 0.625 6 0.625ZM1.375 6C1.375 3.44568 3.44568 1.375 6 1.375C8.55432 1.375 10.625 3.44568 10.625 6C10.625 8.55432 8.55432 10.625 6 10.625C3.44568 10.625 1.375 8.55432 1.375 6Z" fill="white"/>
+</svg>
+
       
+    )
+  }
+  const X = () => {
+    return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
       
       
     )
@@ -293,4 +322,4 @@ const Instagram = () => {
     )
   }
 
-export  {Call,WhiteCall,Message,Messaging,WhiteMessaging,Search,Diploma,Organise,TailoredSearch,GradCap,Up,Down,Mail,WhiteMail,LinkedIn,Twitter,Facebook,Instagram,Hamburger,Cancel,WhiteMessage,Profile,Bag,Like,Padlock,Star,BigStar}
+export  {Call,WhiteCall,Message,Messaging,WhiteMessaging,Search,Diploma,Organise,TailoredSearch,GradCap,Up,Down,Mail,WhiteMail,LinkedIn,Twitter,Facebook,Instagram,Hamburger,Cancel,WhiteMessage,Profile,Bag,Like,Padlock,Star,BigStar,X,Tick,Location}
