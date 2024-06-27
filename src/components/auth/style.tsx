@@ -165,6 +165,9 @@ export const UserLoginStyles = styled.div`
     flex-direction: column;
     gap: 1.25rem;
   }
+  .max {
+    z-index: 11;
+  }
   .head {
     h3 {
       color: #000;

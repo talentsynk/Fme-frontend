@@ -8,11 +8,15 @@ import {
   EyeIcon,
   FormErrorIcon,
 } from "@/components/icons/recovery";
+import { ButtonLoader } from "@/components/recovery/style";
+import { setSessionExpiration } from "@/redux/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks/hooks";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 interface IForm {
   email: string;
@@ -28,9 +32,6 @@ export default function Login() {
     active: false,
     text: "",
   });
-
-  // login button loader state
-  const [isLoading, setIsLoading] = useState(false);
 
   // handle validation as user types
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,9 +74,37 @@ export default function Login() {
     }
   };
 
+  // login button loader state
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (
+      !emailError.active &&
+      !pwdError.active &&
+      emailError.text !== "" &&
+      pwdError.text !== ""
+    ) {
+      // mimick API
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        const roleString = "artisan";
+        let inSetTime = new Date(new Date().getTime() + 60 * 60 * 1000);
+        Cookies.set("userRole", roleString, { expires: inSetTime });
+        Cookies.set("token", "meeeeeeeeeeeeeee", { expires: inSetTime });
+        dispatch(setSessionExpiration(false));
+        if (roleString == "artisan") {
+          router.push("/dashboard/artisan");
+        } else if (roleString == "employer") {
+          router.push("/dashboard/employer");
+        }
+      }, 1500);
+    }
+  };
   return (
     <UserLoginStyles>
-      <form className="form">
+      <form className="form" onSubmit={handleLogin}>
         <div className="head">
           <h3>Welcome, Login Here!</h3>
           <p>
@@ -148,7 +177,7 @@ export default function Login() {
               emailError.active !== false
             }
           >
-            Continue
+            {isLoading ? <ButtonLoader /> : "Continue"}
           </button>
         </div>
       </form>

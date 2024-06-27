@@ -1,11 +1,12 @@
 // dashboard root-layout
-
+import { UserDashboardLayout } from "@/components/layout/dashboardlayout";
 import type { Metadata } from "next";
-
+import "../../globals.css";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Learn about the skills database platform dashboards powered by coderina",
+  description:
+    "Learn about the skills database platform dashboards powered by coderina",
 };
 
 export default function ServerSideLayout({
@@ -13,10 +14,9 @@ export default function ServerSideLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <>
-      <>{children}</>
+      <UserDashboardLayout>{children}</UserDashboardLayout>
     </>
   );
 }

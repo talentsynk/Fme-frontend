@@ -339,8 +339,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		if (stateOfOrigin) {
 		  const newLgas = NaijaStates.lgas(stateOfOrigin).lgas;
 		  setLgas(newLgas);
-		  console.log(newLgas)
-		  console.log(1)
 		}
 	  }, [stateOfOrigin]);
 

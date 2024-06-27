@@ -109,8 +109,43 @@ export const AuthLayoutStyles = styled.main`
   }
 `;
 
-export const RootLayoutStyles = styled.main`
-  border: 2px solid #000;
+export const UserDashboardLayoutStyles = styled.main`
+  footer {
+    background: #e7f6ec;
+    margin-top: 2rem;
+  }
+  min-height: 100vh;
+  @media (max-width: 500px) {
+    .footer {
+      padding: 1.9375rem 2.5625rem 2rem 1.4375rem;
+    }
+  }
+  @media (min-width: 500px) {
+    .footer {
+      padding: 2.5rem;
+    }
+  }
+  @media (min-width: 998px) {
+    .main {
+      // height: 100vh;
+      overflow: hidden;
+    }
+    .footer {
+      padding: 5rem;
+    }
+  }
+`;
+
+export const PaddedSectionStyles = styled.div`
+  @media (max-width: 500px) {
+    padding: 0rem 0.94rem 1rem 0.94rem;
+  }
+  @media (min-width: 500px) {
+    padding: 0rem 2rem 2rem 2rem;
+  }
+  @media (min-width: 998px) {
+    padding: 0rem 3.9rem 3.9rem 3.9rem;
+  }
 `;
 export const UserAuthLayoutStyles = styled.main`
   min-height: 100vh;
@@ -121,7 +156,6 @@ export const UserAuthLayoutStyles = styled.main`
     margin-top: 5%;
   }
   .main {
-    // border: 2px solid red;
     width: 100%;
   }
   .text {

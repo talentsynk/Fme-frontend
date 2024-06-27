@@ -1,10 +1,12 @@
 'use client'
 import { WhiteCall, WhiteMail, WhiteMessaging } from "@/components/landing/faqs/Svgs";
+import { PaddedSectionStyles } from "@/components/layout/style";
 import Image from "next/image";
 
 export default function SupportPage(){
   return (
-    <section className="">
+    <PaddedSectionStyles>
+      <section className="">
         <div className=" ">
           <Image src="/images/landing/support.png" alt="" width={1302} height={350} className=" w-full"  />
 
@@ -37,6 +39,7 @@ export default function SupportPage(){
           </div>
         </div>
       </section>
+    </PaddedSectionStyles>
   )
 }
 

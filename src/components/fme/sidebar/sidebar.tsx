@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {  ILinkFunc } from "./data";
+import { ILinkFunc } from "./data";
 import { LinkCompStyles, LogoutModalStyles, SidebarStyles } from "./style";
 import {
   AdminUserIcon,
@@ -14,12 +14,15 @@ import { usePathname, useRouter } from "next/navigation";
 import { FlexAbsoluteModalStyles } from "../mda/styles";
 import Cookies from "js-cookie";
 
-interface ISidebar{
-  uniquePageLinks : ILinkFunc[];
-  splitIndex : number;
+interface ISidebar {
+  uniquePageLinks: ILinkFunc[];
+  splitIndex: number;
 }
 
-export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex}) => {
+export const DashboardSidebar: React.FC<ISidebar> = ({
+  uniquePageLinks,
+  splitIndex,
+}) => {
   const [pageLinks, setPageLinks] = useState(uniquePageLinks);
   const role = Cookies.get("userRole");
   const name = usePathname();
@@ -32,7 +35,10 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
   useEffect(() => {
     const selected = pageLinks.find((ele) => ele.isSelected == true);
     // if the user types the route
-    if(selected){
+
+    // Check if name exists in pageLinks
+    const nameExists = pageLinks.some((ele) => ele.href === name);
+    if (selected && nameExists) {
       if (name != selected?.href) {
         const newLinks = pageLinks.map((ele) => {
           return { ...ele, isSelected: ele.href == name };
@@ -40,12 +46,12 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
         setPageLinks(newLinks);
       }
     }
-  }, [name,pageLinks]);
+  }, [name, pageLinks]);
 
   // for logout
   const [isloggingout, setIsLoggingOut] = useState(false);
   const router = useRouter();
-  
+
   return (
     <SidebarStyles suppressHydrationWarning={true}>
       <div className="top">
@@ -112,12 +118,11 @@ export const DashboardSidebar:React.FC<ISidebar> = ({uniquePageLinks, splitIndex
         </div>
       </div>
       {isloggingout && (
-        <LogoutModal cancelLogout={()=> setIsLoggingOut(false)} />
+        <LogoutModal cancelLogout={() => setIsLoggingOut(false)} />
       )}
     </SidebarStyles>
   );
 };
-
 
 interface ILinkComp extends ILinkFunc {
   clickLink: () => void;
@@ -150,9 +155,11 @@ export const LinkComp: React.FC<ILinkComp> = ({
 
 interface ILogoutActionsModal {
   cancelLogout: () => void;
+  naviHref?: string;
 }
 export const LogoutModal: React.FC<ILogoutActionsModal> = ({
   cancelLogout,
+  naviHref,
 }) => {
   const router = useRouter();
   const [isloggingout, setIsLoggingOut] = useState(false);
@@ -160,7 +167,11 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
     setIsLoggingOut(true);
     Cookies.set("userRole", "");
     Cookies.set("token", "");
-    router.push("/admin");
+    if (naviHref) {
+      router.push(naviHref);
+    } else {
+      router.push("/admin");
+    }
   };
   return (
     <FlexAbsoluteModalStyles>
@@ -174,14 +185,63 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
             <div className="l">
               <LogoutPopIcon />
             </div>
-            <h4>Done performing Admin duties for the day?</h4>
+            <h4>Done performing your duties for the day?</h4>
             <p>
               Some other message that may be necessary here we’ll think of
               something. Have a lovely day!
             </p>
           </div>
           <div className="down">
-            <button type="button" onClick={handleLogout} disabled={isloggingout}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={isloggingout}
+            >
+              {isloggingout ? "Logging out" : "Sign Out"}
+            </button>
+          </div>
+        </div>
+      </LogoutModalStyles>
+    </FlexAbsoluteModalStyles>
+  );
+};
+
+export const SessionsModal: React.FC<ILogoutActionsModal> = ({
+  cancelLogout,
+  naviHref,
+}) => {
+  const router = useRouter();
+  const [isloggingout, setIsLoggingOut] = useState(false);
+  const handleLogout = () => {
+    setIsLoggingOut(true);
+    Cookies.set("userRole", "");
+    Cookies.set("token", "");
+    if (naviHref) {
+      router.push(naviHref);
+    } else {
+      router.push("/admin");
+    }
+  };
+  return (
+    <FlexAbsoluteModalStyles>
+      <LogoutModalStyles>
+        <div className="pop">
+          <div className="up">
+            <div className="l">
+              <LogoutPopIcon />
+            </div>
+            <h4>Your Session has expired!!!</h4>
+            <p>
+              Hello user your session has expired! You need to logout and login
+              again to continue working!
+            </p>
+          </div>
+          <div className="down">
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={isloggingout}
+            >
               {isloggingout ? "Logging out" : "Sign Out"}
             </button>
           </div>
