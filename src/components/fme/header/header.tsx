@@ -3,18 +3,37 @@ import {
   CalendarComponentStyle,
   DashboardHeaderStyle,
   DesktopDropdownLinkStyle,
+  LinkItemStyle,
+  UserDashboardHeaderStyle,
 } from "./style";
 import {
   DesktopDropdownLinks,
   IDesktopDropdown,
   IDesktopDropdownFunc,
+  UserDesktopDropdownLinks,
 } from "./data";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { CalendarIcon } from "@/components/icons/sidebar";
+import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { CalendarIcon, FullLogo, XIcon } from "@/components/icons/sidebar";
 import { formatDate } from "@/utils/formatDate";
 import { LogoutModal } from "../sidebar/sidebar";
 import Cookies from "js-cookie";
+import { Hamburger } from "@/components/landing/faqs/Svgs";
+import {
+  MenuIcon,
+  SignOutRight,
+  WhiteBriefcase,
+} from "@/components/icons/artisan/icons";
+import { IUserLink } from "@/components/employer/data";
+import { motion } from "framer-motion";
+import { ArrowLeft } from "@/components/icons/recovery";
+import {
+  AngleDown,
+  AngleDownStyles,
+  SignOutIcon,
+} from "@/components/icons/header";
+import { PoweredByStyles } from "@/components/layout/style";
+import { CoderinaLogo } from "@/app/recovery/style";
 
 export const DashboardHeader = () => {
   const [links, setLinks] = useState(DesktopDropdownLinks);
@@ -55,16 +74,8 @@ export const DashboardHeader = () => {
               {links.map((ele, index) =>
                 ele.id == "1" && role === "FME" ? null : (
                   <DesktopDropdownLink
-                    id={ele.id}
                     key={index}
-                    link={ele.link}
-                    text={ele.text}
-                    isSelected={ele.isSelected}
-                    icon={ele.icon}
-                    activeBg={ele.activeBg}
-                    activeState={ele.activeState}
-                    activeTextColor={ele.activeTextColor}
-                    textColor={ele.textColor}
+                    {...ele}
                     handleClick={() => handleClick(ele.id)}
                   />
                 )
@@ -196,5 +207,189 @@ export const DesktopDropdownLink: React.FC<IDesktopDropdownFunc> = ({
       <>{isSelected ? activeState : icon}</>
       <p>{text}</p>
     </DesktopDropdownLinkStyle>
+  );
+};
+
+interface IHeader {
+  uniquePageLinks: IUserLink[];
+}
+export const UserDashboardHeader: React.FC<IHeader> = ({ uniquePageLinks }) => {
+  const [pageLinks, setPageLinks] = useState(uniquePageLinks);
+  const role = Cookies.get("userRole");
+  const name = usePathname();
+  const clickLink = (id: string) => {
+    const newLinks = pageLinks.map((ele) => {
+      return { ...ele, isSelected: ele.name == id };
+    });
+    setPageLinks(newLinks);
+  };
+  const mobileClickLink = (id: string) => {
+    clickLink(id);
+    setShowDropdown(false);
+  };
+  useEffect(() => {
+    const selected = pageLinks.find((ele) => ele.isSelected == true);
+    // if the user types the route
+    // Check if name exists in pageLinks
+    const nameExists = pageLinks.some((ele) => ele.href === name);
+    if (selected && nameExists) {
+      if (name != selected?.href) {
+        const newLinks = pageLinks.map((ele) => {
+          return { ...ele, isSelected: ele.href == name };
+        });
+        setPageLinks(newLinks);
+      }
+    }
+  }, [name, pageLinks]);
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const handleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const [links, setLinks] = useState(UserDesktopDropdownLinks);
+  const [isloggingout, setIsLoggingOut] = useState(false);
+
+  const handleClick = (id: string) => {
+    const newLinks = links.map((ele) => {
+      return { ...ele, isSelected: ele.id == id };
+    });
+    setLinks(newLinks);
+    setShowDropdown(false);
+    if (id == "2") {
+      setIsLoggingOut(true);
+    }
+  };
+  const handleMobileLogout = () => {
+    setShowDropdown(false);
+    setIsLoggingOut(true);
+  };
+  return (
+    <UserDashboardHeaderStyle>
+      <div className="logo">
+        <FullLogo />
+      </div>
+      <div className="desktop-links desktop">
+        {pageLinks.map((ele, index) => (
+          <LinkItem
+            key={index}
+            {...ele}
+            showUnderline={true}
+            handleLink={() => clickLink(ele.name)}
+          />
+        ))}
+      </div>
+      <div className="desktop-menu desktop" onClick={handleDropdown}>
+        <div className="one">
+          <div className="circle">
+            <p>OC</p>
+          </div>
+          <div className="text">
+            <h3>Oragon Confectionaries</h3>
+            <p>alarapetimi05@gmail.com</p>
+          </div>
+        </div>
+        <AngleDownStyles $isSelected={showDropdown}>
+          <AngleDown />
+        </AngleDownStyles>
+        {showDropdown && (
+          <div className="dropdown">
+            {links.map((ele, index) => (
+              <DesktopDropdownLink
+                key={index}
+                {...ele}
+                handleClick={() => handleClick(ele.id)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="menu mobile" onClick={handleDropdown}>
+        {showDropdown ? (
+          <XIcon />
+        ) : (
+          <div className="scale">
+            <MenuIcon /> <p>Menu</p>
+          </div>
+        )}
+      </div>
+      {showDropdown && (
+        <div className="mobile-dropdown mobile">
+          <div className="x-one">
+            <div className="m-links">
+              {pageLinks.map((ele, index) => (
+                <LinkItem
+                  key={index}
+                  {...ele}
+                  handleLink={() => mobileClickLink(ele.name)}
+                />
+              ))}
+            </div>
+            <div className="post">
+              <button type="button">
+                <p>Post a job</p>
+                <WhiteBriefcase />
+              </button>
+            </div>
+          </div>
+          <div className="x-two">
+            <div className="avatar">
+              <div className="bb">
+                <div className="circle">
+                  <p>OC</p>
+                  <div className="gre"></div>
+                </div>
+                <div className="text">
+                  <h3>Oragon Confectionaries</h3>
+                  <p>alarapetimi05@gmail.com</p>
+                </div>
+              </div>
+              <div className="" onClick={handleMobileLogout}>
+                <SignOutRight />
+              </div>
+            </div>
+            <PoweredByStyles>
+              <p>Powered by</p>
+              <CoderinaLogo>
+                <Image
+                  width={152}
+                  height={33}
+                  alt="coderina logo"
+                  src="/images/coderina.svg"
+                />
+              </CoderinaLogo>
+            </PoweredByStyles>
+          </div>
+        </div>
+      )}
+      {isloggingout && (
+        <LogoutModal naviHref="/auth/login" cancelLogout={() => setIsLoggingOut(false)} />
+      )}
+    </UserDashboardHeaderStyle>
+  );
+};
+
+interface IUserFunc extends IUserLink {
+  handleLink: () => void;
+  showUnderline?: boolean;
+}
+export const LinkItem: React.FC<IUserFunc> = ({
+  name,
+  href,
+  isSelected,
+  handleLink,
+  showUnderline,
+}) => {
+  const router = useRouter();
+  const goToLink = () => {
+    handleLink();
+    router.push(href);
+  };
+  return (
+    <LinkItemStyle onClick={goToLink} $isSelected={isSelected}>
+      <p>{name}</p>
+      {isSelected && showUnderline && (
+        <motion.div className="btl" layoutId="btl"></motion.div>
+      )}
+    </LinkItemStyle>
   );
 };

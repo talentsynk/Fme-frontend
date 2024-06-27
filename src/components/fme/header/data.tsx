@@ -40,3 +40,27 @@ export const DesktopDropdownLinks: IDesktopDropdown[] = [
     isSelected: false,
   },
 ];
+export const UserDesktopDropdownLinks: IDesktopDropdown[] = [
+  {
+    id : "1",
+    link: "/dashboard/profile",
+    icon: <PfIcon />,
+    text: "View Profile",
+    activeBg: "#00932E",
+    textColor: "#111",
+    activeState: <ActivePfIcon />,
+    activeTextColor: "#FFFFFF",
+    isSelected: false,
+  },
+  {
+    id : "2",
+    link: "/auth/login",
+    text: "Sign Out",
+    icon: <SignOutIcon />,
+    activeBg: "#FFE5DD",
+    textColor: "#FF3717",
+    activeState: <SignOutIcon />,
+    activeTextColor: "",
+    isSelected: false,
+  },
+];

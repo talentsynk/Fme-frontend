@@ -26,7 +26,7 @@ import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 interface IForm {
   email: string;
@@ -190,6 +190,7 @@ export default function Signup() {
   const handleStateSelection = (name: string) => {
     setForm({ ...form, state: name });
     setState(name);
+    setLga(""); // when a new state is selected, it sets the lga selected to empty
     setShowStateDropdown(false);
   };
 
@@ -262,6 +263,28 @@ export default function Signup() {
       setIsLoading(false);
     }, 1000);
   };
+
+  // lga stuff
+  const [showLGADropdown, setShowLGADropdown] = useState(false);
+  const NaijaStates = require("naija-state-local-government");
+  const [lgas, setLgas] = useState([]);
+  const [lga, setLga] = useState("");
+
+  const handleLGASelection = (name: string) => {
+    setForm({ ...form, lga: name });
+    setLga(name);
+    setShowLGADropdown(false);
+  };
+
+  // get lga based on state selected
+  useEffect(() => {
+    if (state) {
+      const newLgas = NaijaStates.lgas(state).lgas;
+      console.log(newLgas);
+      setLgas(newLgas);
+    }
+  }, [state]);
+
   return (
     <UserLoginStyles>
       {formState === 0 && (
@@ -448,7 +471,7 @@ export default function Signup() {
             </div>
             <div className="form-ele">
               <label htmlFor="fname">State of Residence</label>
-              <StatesDropdownStyles>
+              <StatesDropdownStyles className="max">
                 <div
                   className="head"
                   onClick={() => setShowStateDropdown(!showStateDropdown)}
@@ -483,9 +506,38 @@ export default function Signup() {
             </div>
             <div className="form-ele">
               <label htmlFor="lga">L.G.A (Local Government Area)</label>
-              <div className="inp">
-                <input type="text" name="lga" placeholder="Enter L.G.A" />
-              </div>
+              <StatesDropdownStyles>
+                <div
+                  className="head"
+                  onClick={() => setShowLGADropdown(!showLGADropdown)}
+                >
+                  <>
+                    {lga === "" ? (
+                      <p className="placeholder">
+                        Please select local government area
+                      </p>
+                    ) : (
+                      <p className="state-name">{lga}</p>
+                    )}
+                  </>
+                  <AngleDownStyles $isSelected={showLGADropdown}>
+                    <AngleDown />
+                  </AngleDownStyles>
+                </div>
+                {showLGADropdown && (
+                  <div className="dropdown">
+                    {lgas.map((ele, index) => (
+                      <StateCompStyles
+                        $isSelected={lga === ele}
+                        key={index}
+                        onClick={() => handleLGASelection(ele)}
+                      >
+                        <p>{ele}</p>
+                      </StateCompStyles>
+                    ))}
+                  </div>
+                )}
+              </StatesDropdownStyles>
             </div>
           </div>
           <div className="btn">
@@ -503,7 +555,8 @@ export default function Signup() {
                 numberError.active !== false ||
                 ninError.active !== false ||
                 emailError.active !== false ||
-                state === ""
+                state === "" ||
+                lga === ""
               }
             >
               {isLoading ? <ButtonLoader /> : "Continue"}
