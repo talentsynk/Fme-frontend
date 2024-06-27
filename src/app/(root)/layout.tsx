@@ -3,7 +3,7 @@
 import "../globals.css";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { RootHeader } from "@/components/root/header/header";
+import { RootHeader } from "@/app/(root)/header/header";
 import { RootFooter } from "@/components/root/footer/footer";
 
 // client layout comp unlike other ones because there's no meta data here

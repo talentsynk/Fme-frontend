@@ -1,0 +1,50 @@
+@media screen and (max-width:768px){
+    nav{
+
+        background:#fff;
+        position: absolute;
+        /* color: white; */
+        top: 70px;
+        width: 100vw;
+        transition: all ease-in-out 3s;
+        padding: 10px 1rem;
+        margin-left: -8px;
+        margin-top: -8px;
+        border-top: 1px solid gray;
+        z-index: 100;
+    }
+    
+    ul{
+        width:100%;
+        padding-block: 3rem;
+        gap:16px;
+    }
+
+}
+
+/* Header.module.css */
+@keyframes underline {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  .active {
+    position: relative;
+    color: #00932E;
+  }
+  
+  .active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 2px;
+    width: 100%;
+    background-color: #00932E;
+    animation: underline 0.5s ease-in-out forwards;
+  }
+  
