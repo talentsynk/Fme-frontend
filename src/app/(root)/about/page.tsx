@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
 
-import { usePathname } from 'next/navigation'
+
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
+
 
 
 export default function About() {
@@ -24,7 +25,7 @@ export default function About() {
       <section className="">
       <section className="">
       <div className=" space-y-4 text-center py-16 bg-[#E4F5EA]">
-          <h3 className="animate-slideInLeft text-[18px] font-medium leading-[24px] text-black-70">ABOUT US</h3>
+          <h3 className="animate-slideInLeft text-[18px] font-medium leading-[24px] -70">ABOUT US</h3>
           <h1 className="animate-fadeIn text-[32px] md:text-[44px] leading-[48px] font-medium text-[#00932E]">We are National Skills Information Center</h1>
           <p className="animate-bounce px-4  md:px-2 md:w-3/4 mx-auto text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci voluptate voluptatem delectus optio, est pariatur ullam, explicabo ab impedit dolores nesciunt ex quae porro odit animi aut minus incidunt quisquam quibusdam, recusandae ducimus sequi ut! Delectus eligendi laboriosam rerum tempore!</p>
         </div>
@@ -66,7 +67,7 @@ export default function About() {
     
       </section>
      
-      
+    
      
     );
   }
