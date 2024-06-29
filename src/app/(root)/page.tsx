@@ -34,8 +34,8 @@ export default function Home() {
           <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />
         </div>
         <div className=" animate-fadeIn  flex flex-col md:flex-row ">
-          <Image src="/images/second.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
-          <Image src="/images/third.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
+          <Image src="/images/landing/hero1.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
+          <Image src="/images/landing/hero2.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
         </div>
         <div className=" flex flex-col md:flex-row space-y-2 p-8 justify-between py-16">
           <div className="text-white flex-1 space-y-6">
@@ -83,49 +83,52 @@ export default function Home() {
        <div className=" space-y-8 py-16">
         <h3 className="animate-slideInLeft text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">artisans</span></h3>
         <p className="animate-bounce text-center md:w-1/2 mx-2 md:mx-auto  text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum exercitationem ullam expedita aut dolore impedit deleniti cumque nemo sit tempora.</p>
-        <div className="carousel-item flex-none   carousel-item  flex flex-col space-y-4 px-2 carousel  md:flex-row gap-4 items-center md:items-start md:overflow-x-scroll w-full">
+        <div className="carousel-item flex-none   carousel-item  flex flex-col space-y-4 px-2 carousel  md:flex-row gap-4 items-center md:items-start md:overflow-x-auto scrollbar-hide w-full">
           <div className=" my-2  relative h-[350px]">
 
-          <Image src="/images/landing/image 15.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/fashion.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px]  left-[30%]">Fashion Designer</h6>
           </div>
           <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 16.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/carpenmter.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Furniture making</h6>
           </div>
           <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 19.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/make-up.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
           </div>
           <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 17.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/interior.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Interior Design</h6>
           </div>
           <div className=" my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 19.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/make-up.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
           </div>
           <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 18.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/hair.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Hair stylist</h6>
           </div>
           <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-          <Image src="/images/landing/image 19.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+          <Image src="/images/landing/make-up.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
           <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%] ">Make-up artist</h6>
           </div>
           <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
 
-<Image src="/images/landing/image 16.jpeg" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
+<Image src="/images/landing/carpenmter.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
 <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%] ">Furniture making</h6>
 </div>
 
         </div>
+      
+
+
        </div>
        <div className="artisan bg-[#00932E] animate-fadeIn  space-y-16  md:space-y-0 flex gap-8 flex-col md:flex-row justify-between py-32 p-16">
         <div className=" flex flex-col md:flex-row space-y-4 md:space-y-0 gap-8">
