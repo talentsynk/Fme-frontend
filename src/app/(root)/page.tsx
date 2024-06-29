@@ -156,7 +156,7 @@ export default function Home() {
           <button className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-300 ease-in-out  mx-auto md:mx-0  mt-24">View profile</button>
         </div>
         <div className=" flex-1 flex justify-end">
-          <Image src="/images/Frame 1618868532.png" width={564} height={600} className=" rounded-[20px]" alt="" />
+          <Image src="/images/landing/cobler.png" width={564} height={600} className=" rounded-[20px]" alt="" />
         </div>
        </div>
       </section>

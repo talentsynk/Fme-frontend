@@ -8,7 +8,7 @@ export default function ArtisansHome(){
         <section className="bg-white p-4">
         <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Oluwatimilehin,</h2>
         <p className=" text-[#626C70] my-4 font-medium text-sm leading-[20px]">Welcome to your dashboard, this is where you get an overview and analytics of all your activities.</p>
-        <section className=" bg-black md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
+        <section className=" bg-black humanity md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
           <div className=" flex justify-between">
             <div className=" flex flex-col md:flex-row md:items-center gap-2">
             <ProgressBar progress={80} />

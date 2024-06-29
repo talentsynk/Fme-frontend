@@ -97,3 +97,8 @@ img{
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
+.humanity{
+  background-image: url(/images/landing/humanity.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
