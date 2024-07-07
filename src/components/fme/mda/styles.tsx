@@ -534,7 +534,7 @@ export const TabSwitchStyle = styled.div<ITabSwitchStyle>`
     position: absolute;
     bottom: -1px;
     left: 0;
-    right: 0; 
+    right: 0;
   }
   ${(props) =>
     props.$isSelected &&
@@ -560,6 +560,67 @@ export const TabSwitchStyle = styled.div<ITabSwitchStyle>`
         background: #ffe5dd;
       }
     `}
+`;
+export const UserTabSwitchStyle = styled.div<ITabSwitchStyle>`
+  position: relative;
+  cursor: pointer;
+  padding: 1rem 1rem 0.9375rem 1rem;
+  p {
+    color: #979797;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.25rem; /* 142.857% */
+    text-align: center;
+  }
+  span {
+    color: #979797;
+    text-align: center;
+    font-feature-settings: "cv04" on, "cv03" on;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 145%; /* 1.0875rem */
+    letter-spacing: -0.00375rem;
+  }
+  .no {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .num {
+    border-radius: 0.625rem;
+    background: #e7f6ec;
+    padding: 0rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .underline {
+    height: 0.0625rem;
+    flex-shrink: 0;
+    align-self: stretch;
+    background: var(--Primary-Color, #00932e);
+    width: 100%;
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+  }
+  ${(props) =>
+    props.$isSelected &&
+    css`
+      p,
+      span {
+        color: var(--Primary-Color, #00932e);
+        font-weight: 700;
+      }
+    `}
+  @media (max-width: 500px) {
+    p {
+      font-size: 0.75rem;
+    }
+  }
 `;
 
 export const TableStyles = styled.table`

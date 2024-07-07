@@ -164,7 +164,7 @@ export const UserDashboardHeaderStyle = styled.header`
     }
   }
   @media (max-width: 900px) {
-    margin-bottom: 0.75rem;
+    // margin-bottom: 0.75rem;
     padding: 0.75rem 0.95rem 0.75rem 0.5rem;
     position: relative;
     .desktop {
@@ -230,7 +230,7 @@ export const UserDashboardHeaderStyle = styled.header`
   }
   @media (min-width: 900px) {
     padding: 3rem;
-    margin-bottom: 1rem;
+    // margin-bottom: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
     .mobile {
