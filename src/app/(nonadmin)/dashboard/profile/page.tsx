@@ -1,14 +1,30 @@
 'use client'
-import { useState } from "react";
-import Image from "next/image";
-import { Letter } from "@/app/(dashboard)/support/Icons";
-import { Profile } from "@/components/fme/course_list/Svg";
+import { useState,useEffect } from "react";
 import Security from "@/components/fme/settings/Security";
+import { CircularProfile } from "@/components/landing/faqs/Svgs";
+import Image from "next/image";
+
 
 const ArtisanProfile = () => {
-  
+
 
   const [activeDiv, setActiveDiv] = useState(1);
+  const [text, setText] = useState<string>('');
+  const [borderColor, setBorderColor] = useState<string>('border-[#D0D5DD]');
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputValue = e.target.value;
+    setText(inputValue);
+
+    const wordCount = inputValue.split(' ').filter((word: string) => word).length;
+
+    if (wordCount > 200) {
+      setBorderColor('border-red-500');
+    } else if (wordCount > 0) {
+      setBorderColor('border-[#00932E]');
+    } else {
+      setBorderColor('border-[#D0D5DD]');
+    }
+  };
 
   return (
     <section className="md:p-4 p-2">
@@ -63,7 +79,7 @@ const ArtisanProfile = () => {
 							<label htmlFor="firstName" className="text-[#101928] font-semibold text-sm">
 								First Name
 							</label>
-							<div className="w-full relative">
+							<div className="w-full relative flex">
 							<input
 								className="w-full border-[#D0D5DD] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								type="text"
@@ -73,7 +89,7 @@ const ArtisanProfile = () => {
 								// value={formData.name}
 								// onChange={handleChange}
 							/>
-							{/* <Profile /> */}
+							<div className=" absolute right-2 top-[50%]"><CircularProfile /></div>
 							</div>
 						</div>
 						<div className="">
@@ -99,9 +115,16 @@ const ArtisanProfile = () => {
 							<label htmlFor="about" className="text-[#101928] font-semibold text-sm">
 								About
 							</label>
-							<textarea rows={5} placeholder="Please input a short description about yourself and the services you offer to optimise your bio" className="w-full border-[#D0D5DD] border-solid rounded-md p-4 border focus:border-[#00932E]" name="" id=""></textarea>
+							<textarea
+        rows={5}
+        placeholder="Please input a short description about yourself and the services you offer to optimise your bio"
+        className={`w-full border-solid rounded-md p-4 border focus:outline-none ${borderColor}`}
+        value={text}
+        onChange={handleChange}
+      />
 							{/* {!isPasswordValid && <p className="text-red-500 text-xs mt-1">{passwordError}</p>} */}
 						</div>
+						
 					</form>
 					<div className="md:w-[30%] space-y-2">
 						<h5 className="hidden md:flex font-semibold text-[#101928]">Account Information</h5>

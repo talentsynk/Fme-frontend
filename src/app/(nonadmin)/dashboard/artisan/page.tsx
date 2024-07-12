@@ -1,9 +1,86 @@
-
+import Link from "next/link";
 import ProgressBar from "@/components/artisan/ProgressBar";
 import {OragonCard, SavedOragonCard} from "@/components/landing/OragonCard";
-import { Bag, BigStar, Cancel, Like, X } from "@/components/landing/faqs/Svgs";
+import { Bag, Bigtar,BigStar, Cancel, Like, WhiteBag, X,GreenBag, Star } from "@/components/landing/faqs/Svgs";
+import Image from "next/image";
+
 
 export default function ArtisansHome(){
+
+  const dummy=[
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:1
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:false,
+      id:2
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:3
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:false,
+      id:4
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:5
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:6
+    }
+  ]
+
+  const savedOragon=[
+    {
+    title:"Oragon Confectionaries",
+    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+    status:"Part time",
+    id:1,
+    state:"Oyo state",
+    price:"200k"
+  },
+    {
+    title:"Oragon Confectionaries",
+    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+    status:"Part time",
+    id:2,
+    state:"Edo state",
+    price:"150k"
+  },
+    {
+    title:"Oragon Confectionaries",
+    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+    status:"Part time",
+    id:3,
+    state:"Osun state",
+    price:"400k"
+  },
+    {
+    title:"Oragon Confectionaries",
+    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+    status:"Part time",
+    id:4,
+    state:"Abia state",
+    price:"200k"
+  },
+]
+ 
     return (
         <section className="bg-white p-4">
         <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Oluwatimilehin,</h2>
@@ -21,7 +98,7 @@ export default function ArtisansHome(){
             <h3 className="md:text-[24px] text-[18px] leading-[24px] font-medium md:leading-[32px] text-white md:font-bold">Update your profile</h3>
             <p className=" md:text-[16px] text-[12px] leading-[17px]  md:leading-[24px] text-white font-medium">To gain more visibility and credibility, update your profile here to gain a higher chance of being eligible to employers</p>
           </div>
-          <button className="w-fit bg-[#00932E] rounded-md px-4 py-2 text-sm md:text-[16px] leading-[24px] text-white font-medium md:font-bold">Update Profile</button>
+          <Link href="/dashboard/profile"><button className="w-fit bg-[#00932E] rounded-md px-4 py-2 text-sm md:text-[16px] leading-[24px] text-white font-medium md:font-bold">Update Profile</button></Link>
           </div>
         </section>
         <section className="bg-[#00932E] p-4 space-y-4 mt-4 rounded-[10px]">
@@ -45,23 +122,49 @@ export default function ArtisansHome(){
           </div>
         </section>
         <section className=" flex flex-col md:flex-row justify-between py-8">
-          <section className="p-4 md:w-[55%] bg-[#E7F6EC] rounded-[10px] h-fit   ">
+          <section className={`p-4 md:w-[55%] bg-[#E7F6EC] rounded-[10px] ${dummy.length>0?"h-fit":""}  `}>
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs applied for</h4>
-            <div className=" flex flex-col gap-2">
-            <OragonCard />
-            <OragonCard />
-            <OragonCard />
-            <OragonCard />
+            <section className={`${dummy.length==0&&" flex justify-center items-center my-auto h-full"}`}>
+
+            <div className={`flex flex-col gap-2 ${dummy.length==0&&" justify-center items-center"}`}>
+              
+              {dummy.length>0?(
+                dummy.map(dum=>(<OragonCard key={dum.id} title={dum.title} text={dum.text} status={dum.status}/>))
+              ):(
+                <section className=" flex justify-center items-center flex-col gap-8">
+                    <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
+                      <GreenBag />
+                      {/* <Image src="/images/landing/Suitcase.svg" width={48} height={48} alt="" /> */}
+                    </div>
+                      <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t applied for any job yet.
+To apply for a job click on this button </p>
+                      <button className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
+                </section>
+              )}
             </div>
+            </section>
           </section>
           <section className="p-4 md:w-[42%]  rounded-[10px]  ">
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold flex text-black"><BigStar />Jobs saved for later</h4>
-            <div className=" flex flex-col gap-2">
-            <SavedOragonCard />
-            <SavedOragonCard />
-            <SavedOragonCard />
-            <SavedOragonCard />
+            <section className={`${savedOragon.length==0&&" flex justify-center items-center my-auto h-full"}`}>
+
+            <div className={`flex flex-col gap-2 ${savedOragon.length==0&&" justify-center items-center"}`}>
+              
+              {savedOragon.length>0?(
+                savedOragon.map(dum=>(<SavedOragonCard key={dum.id} {...dum} />))
+              ):(
+                <section className=" flex justify-center items-center flex-col gap-8">
+                    <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
+                      <Bigtar />
+                    </div>
+                      <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t saved any job for later yet.
+To get started click on this button</p>
+                      <button className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
+                </section>
+              )}
             </div>
+            </section>
+            
           </section>
         </section>
       </section>
