@@ -292,7 +292,7 @@ export const FullLogo: React.FC<ILogoText> = ({ link, textcolor }) => {
     }
   };
   return (
-    <OurLogostyles color={textcolor}>
+    <OurLogostyles color={textcolor} onClick={goTo}>
       <FGLogo />
       <p>National Skills Information Center</p>
     </OurLogostyles>
@@ -303,6 +303,7 @@ const FGLogostyles = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
   img {
     width: 3.8125rem;
     height: auto;
@@ -320,6 +321,7 @@ const OurLogostyles = styled.div<IMode>`
   align-items: center;
   gap: 0.5rem;
   width: fit-content;
+  cursor: pointer;
   p {
     color: var(--Primary-Color, #00932e);
     font-feature-settings: "cv04" on, "cv03" on, "cv01" on;

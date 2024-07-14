@@ -1,8 +1,9 @@
+import { AccessRestrictionWrapper } from "@/components/layout/dashboardlayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Dashboard for MDAs",
+  title: "Dashboard | MDA",
+  description: "Dashboard for MDA accounts",
 };
 
 export default function ServerLayout({
@@ -11,6 +12,8 @@ export default function ServerLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>{children}</>
+    <AccessRestrictionWrapper userRole="MDA" redirectUrl="/admin">
+      {children}
+    </AccessRestrictionWrapper>
   )
 }
