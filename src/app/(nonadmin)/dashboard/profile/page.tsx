@@ -7,24 +7,24 @@ import Image from "next/image";
 
 const ArtisanProfile = () => {
 
+	const [formData, setFormData] = useState({
+		firstName:"",
+		lastName:"",
+		aboutText:""
+	})
 
+	const isFormEmpty = () => {
+		return Object.values(formData).every((value) => value === "");
+	};
+	const handleChange = (name:string, value:string) => {
+		setFormData({
+		  ...formData,
+		  [name]: value
+		});
+	  };
   const [activeDiv, setActiveDiv] = useState(1);
-  const [text, setText] = useState<string>('');
   const [borderColor, setBorderColor] = useState<string>('border-[#D0D5DD]');
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const inputValue = e.target.value;
-    setText(inputValue);
 
-    const wordCount = inputValue.split(' ').filter((word: string) => word).length;
-
-    if (wordCount > 200) {
-      setBorderColor('border-red-500');
-    } else if (wordCount > 0) {
-      setBorderColor('border-[#00932E]');
-    } else {
-      setBorderColor('border-[#D0D5DD]');
-    }
-  };
 
   return (
     <section className="md:p-4 p-2">
@@ -86,8 +86,8 @@ const ArtisanProfile = () => {
 								id="firstName"
 								name="firstName"
 								placeholder="please type in your first name here"
-								// value={formData.name}
-								// onChange={handleChange}
+								value={formData.firstName}
+								onChange={(e) => handleChange('firstName', e.target.value)}
 							/>
 							<div className=" absolute right-2 top-[50%]"><CircularProfile /></div>
 							</div>
@@ -96,20 +96,20 @@ const ArtisanProfile = () => {
 							<label htmlFor="lastName" className="text-[#101928] font-semibold text-sm">
 								Last Name
 							</label>
-							<div className="w-full relative">
+							<div className="w-full relative flex">
 								<input
 								placeholder="please type in your last name here"
 									type="text"
 									id="lastName"
 									name="lastName"
-									
-									// onChange={handleChange}
-									// value={formData.email}
+									value={formData.lastName}
+									onChange={(e) => handleChange('lastName', e.target.value)}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
-								{/* <Profile /> */}
+								<div className=" absolute right-2 top-[50%]"><CircularProfile /></div>
+								
 							</div>
-							{/* {!isEmailValid && <p className="text-red-500 text-xs mt-1">{emailError}</p>} */}
+
 						</div>
 						<div className="">
 							<label htmlFor="about" className="text-[#101928] font-semibold text-sm">
@@ -118,28 +118,27 @@ const ArtisanProfile = () => {
 							<textarea
         rows={5}
         placeholder="Please input a short description about yourself and the services you offer to optimise your bio"
-        className={`w-full border-solid rounded-md p-4 border focus:outline-none ${borderColor}`}
-        value={text}
-        onChange={handleChange}
+        className={`w-full border-solid rounded-md p-4 border focus:outline-none ${borderColor} focus:border-[#00932E]`}
+        value={formData.aboutText}
+		name="aboutText"
+onChange={(e) => handleChange('aboutText', e.target.value)}
       />
-							{/* {!isPasswordValid && <p className="text-red-500 text-xs mt-1">{passwordError}</p>} */}
 						</div>
 						
 					</form>
 					<div className="md:w-[30%] space-y-2">
 						<h5 className="hidden md:flex font-semibold text-[#101928]">Account Information</h5>
 						<p className="hidden md:flex text-[14px] text-[#667185]">update relevant account information here</p>
-						{/* <button
+						<button
 							className={`w-[129px] h-9 text-white font-semibold border-[1px] rounded-md ${
-								isFormEmpty() || !isEmailValid || !isPasswordValid
+								isFormEmpty() 
 									? "bg-[#D0D5DD] cursor-not-allowed"
 									: "bg-[#00932E] border-[#00932E] hover:bg-[#007427]"
 							}`}
-							disabled={isFormEmpty() || !isEmailValid || !isPasswordValid}
+							disabled={isFormEmpty()}
 							type="submit">
 							Save changes{" "}
-						</button> */}
-            <button className="w-[129px] bg-[#00932E] h-9 text-white font-semibold border-[1px] rounded-md border-[#00932E] hover:bg-[#007427]">Save changes</button>
+						</button>
 					</div>
 				</div>
 			</section>}

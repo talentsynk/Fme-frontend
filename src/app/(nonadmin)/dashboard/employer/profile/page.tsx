@@ -9,7 +9,24 @@ import { States } from "@/components/fme/mda/data";
 import { AngleDown } from "@/components/icons/header";
 import { StateCompStyles } from "@/components/fme/mda/styles";
 
-const ArtisanProfile = () => {
+const EmployersProfile = () => {
+
+	const [isEmailValid, setIsEmailValid] = useState(true);
+	const [formData, setFormData] = useState({
+		firstName:"",
+		lastName:"",
+		phone:"",
+		email:"",
+        address:"",
+        stateOfResidence:"",
+        stateOfOrigin:"",
+        localGovernment:"",
+		Nin:""
+	})
+
+	const isFormEmpty = () => {
+		return Object.values(formData).every((value) => value === "");
+	};
   
 	const [state, setState] = useState("");
 	const [stateOfOrigin, setStateOfOrigin] = useState("");
@@ -33,6 +50,18 @@ const ArtisanProfile = () => {
 		setShowStateDropdown(false);
 	};
 
+	const handleChange = (name:string, value:string) => {
+		setFormData({
+		  ...formData,
+		  [name]: value
+		});
+
+		if (name === "email") {
+			const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			setIsEmailValid(regex.test(value));
+		}
+	  };
+
 	const handleLGASelection = (name: string) => {
 		// setForm({ ...form, LocalGovernment: name });
 		setLga(name);
@@ -50,20 +79,7 @@ const ArtisanProfile = () => {
   const [activeDiv, setActiveDiv] = useState(1);
   const [text, setText] = useState<string>('');
   const [borderColor, setBorderColor] = useState<string>('border-[#D0D5DD]');
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const inputValue = e.target.value;
-    setText(inputValue);
-
-    const wordCount = inputValue.split(' ').filter((word: string) => word).length;
-
-    if (wordCount > 200) {
-      setBorderColor('border-red-500');
-    } else if (wordCount > 0) {
-      setBorderColor('border-[#00932E]');
-    } else {
-      setBorderColor('border-[#D0D5DD]');
-    }
-  };
+  
 
   return (
     <section className="md:p-4 p-2">
@@ -125,8 +141,8 @@ const ArtisanProfile = () => {
 								id="firstName"
 								name="firstName"
 								placeholder="please type in your first name here"
-								// value={formData.name}
-								// onChange={handleChange}
+								onChange={(e) => handleChange('firstName', e.target.value)}
+								value={formData.firstName}
 							/>
 							<div className=" absolute right-2 top-[40%]"><CircularProfile /></div>
 							</div>
@@ -141,35 +157,33 @@ const ArtisanProfile = () => {
 									type="text"
 									id="lastName"
 									name="lastName"
-									
-									// onChange={handleChange}
-									// value={formData.email}
+									onChange={(e) => handleChange('lastName', e.target.value)}
+								value={formData.lastName}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><CircularProfile /></div>
 							</div>
 						</div>
 						<div className="">
-							<label htmlFor="lastName" className="text-[#101928] font-semibold text-sm">
+							<label htmlFor="phone" className="text-[#101928] font-semibold text-sm">
 								Phone Number
 							</label>
 							<div className="w-full relative flex">
 								<input
 								placeholder="please type in your phone nuumber"
 									type="text"
-									id="lastName"
-									name="lastName"
-									
-									// onChange={handleChange}
-									// value={formData.email}
+									id="phone"
+									name="phone"
+									onChange={(e) => handleChange('phone', e.target.value)}
+								value={formData.phone}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightCall /></div>
 							</div>
-							{/* {!isEmailValid && <p className="text-red-500 text-xs mt-1">{emailError}</p>} */}
+							
 						</div>
                         <div className="">
-							<label htmlFor="lastName" className="text-[#101928] font-semibold text-sm">
+							<label htmlFor="email" className="text-[#101928] font-semibold text-sm">
 								Email
 							</label>
 							<div className="w-full relative flex">
@@ -185,10 +199,10 @@ const ArtisanProfile = () => {
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightMail /></div>
 							</div>
-							{/* {!isEmailValid && <p className="text-red-500 text-xs mt-1">{emailError}</p>} */}
+							
 						</div>
                         <div className="">
-							<label htmlFor="lastName" className="text-[#101928] font-semibold text-sm">
+							<label htmlFor="address" className="text-[#101928] font-semibold text-sm">
 								Address
 							</label>
 							<div className="w-full relative flex">
@@ -197,14 +211,13 @@ const ArtisanProfile = () => {
 									type="text"
 									id="address"
 									name="address"
-									
-									// onChange={handleChange}
-									// value={formData.email}
+									onChange={(e) => handleChange('address', e.target.value)}
+								value={formData.address}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightContent /></div>
 							</div>
-							{/* {!isEmailValid && <p className="text-red-500 text-xs mt-1">{emailError}</p>} */}
+							
 						</div>
                         <div className="form-ele">
 											<label htmlFor="state" className=" font-semibold text-sm text-[#101928]">State of Origin</label>
@@ -227,11 +240,7 @@ const ArtisanProfile = () => {
 													</div>
 												)}
 											</StatesDropdownStyles>
-											{/* {otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)} */}
+											
 										</div>
 										<div className="form-ele">
 											<label htmlFor="state" className=" font-semibold text-sm text-[#101928]">Local Government Area</label>
@@ -254,11 +263,7 @@ const ArtisanProfile = () => {
 													</div>
 												)}
 											</StatesDropdownStyles>
-											{/* {otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)} */}
+											
 										</div>
 										<div className="">
 							<label htmlFor="lastName" className="text-[#101928] font-semibold text-sm">
@@ -270,30 +275,29 @@ const ArtisanProfile = () => {
 									type="text"
 									id="Nin"
 									name="Nin"
-									
-									// onChange={handleChange}
-									// value={formData.email}
+									onChange={(e) => handleChange('Nin', e.target.value)}
+								value={formData.Nin}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 							
 							</div>
-							{/* {!isEmailValid && <p className="text-red-500 text-xs mt-1">{emailError}</p>} */}
+
 						</div>
 					</form>
 					<div className="md:w-[30%] space-y-2">
 						<h5 className="hidden md:flex font-semibold text-[#101928]">Account Information</h5>
 						<p className="hidden md:flex text-[14px] text-[#667185]">update relevant account information here</p>
-						{/* <button
+						<button
 							className={`w-[129px] h-9 text-white font-semibold border-[1px] rounded-md ${
-								isFormEmpty() || !isEmailValid || !isPasswordValid
+								isFormEmpty() || !isEmailValid 
 									? "bg-[#D0D5DD] cursor-not-allowed"
 									: "bg-[#00932E] border-[#00932E] hover:bg-[#007427]"
 							}`}
-							disabled={isFormEmpty() || !isEmailValid || !isPasswordValid}
+							disabled={isFormEmpty() || !isEmailValid}
 							type="submit">
 							Save changes{" "}
-						</button> */}
-            <button className="w-[129px] bg-[#00932E] h-9 text-white font-semibold border-[1px] rounded-md border-[#00932E] hover:bg-[#007427]">Save changes</button>
+						</button>
+            {/* <button className="w-[129px] bg-[#00932E] h-9 text-white font-semibold border-[1px] rounded-md border-[#00932E] hover:bg-[#007427]">Save changes</button> */}
 					</div>
 				</div>
 			</section>}
@@ -302,4 +306,4 @@ const ArtisanProfile = () => {
   )
 }
 
-export default ArtisanProfile
+export default EmployersProfile

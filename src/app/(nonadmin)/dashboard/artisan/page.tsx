@@ -1,11 +1,21 @@
-import Link from "next/link";
+'use client'
 import ProgressBar from "@/components/artisan/ProgressBar";
-import {OragonCard, SavedOragonCard} from "@/components/landing/OragonCard";
-import { Bag, Bigtar,BigStar, Cancel, Like, WhiteBag, X,GreenBag, Star } from "@/components/landing/faqs/Svgs";
-import Image from "next/image";
+import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
+import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/faqs/Svgs";
+import Cookies from "js-cookie";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 
 export default function ArtisansHome(){
+
+  useEffect(()=>{
+    let token = Cookies.get("token");
+    console.log(token)
+
+  },[])
+  console.log(1)
+  
 
   const dummy=[
     {
@@ -80,18 +90,23 @@ export default function ArtisansHome(){
     price:"200k"
   },
 ]
+const  [showProfile,setShowProfile]=useState(true)
+
+const cancelProfile=()=>{
+  setShowProfile(false)
+}
  
     return (
         <section className="bg-white p-4">
         <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Oluwatimilehin,</h2>
         <p className=" text-[#626C70] my-4 font-medium text-sm leading-[20px]">Welcome to your dashboard, this is where you get an overview and analytics of all your activities.</p>
-        <section className=" bg-black humanity md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
+       {showProfile&& <section className=" bg-black humanity md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
           <div className=" flex justify-between">
             <div className=" flex flex-col md:flex-row md:items-center gap-2">
             <ProgressBar progress={80} />
             <h3 className=" md:text-[18px] text-[16px] text-white leading-[24px] font-bold">80% completed</h3>
             </div>
-            <X />
+            <div onClick={cancelProfile} className=""><X /></div>
           </div>
           <div className=" flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 md:items-center">
           <div className=" space-y-2">
@@ -100,7 +115,7 @@ export default function ArtisansHome(){
           </div>
           <Link href="/dashboard/profile"><button className="w-fit bg-[#00932E] rounded-md px-4 py-2 text-sm md:text-[16px] leading-[24px] text-white font-medium md:font-bold">Update Profile</button></Link>
           </div>
-        </section>
+        </section>}
         <section className="bg-[#00932E] p-4 space-y-4 mt-4 rounded-[10px]">
           <h3 className=" text-[24px] font-bold leading-[32px] text-white">Dashboard</h3>
           <div className=" flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 items-center md:items-start">
