@@ -30,6 +30,8 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import Cookies from "js-cookie";
 import { setSessionExpiration } from "@/redux/auth/authSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IForm {
   email: string;
@@ -38,7 +40,7 @@ interface IForm {
 export default function Login() {
   const router = useRouter();
 
-// for dispatching redux actions
+  // for dispatching redux actions
   const dispatch = useAppDispatch();
   // handle first state
   const [admins, setAdmins] = useState<IAdmin[] | null>(Admins);
@@ -123,37 +125,44 @@ export default function Login() {
     ) {
       // call signup API
 
-      try{
-        const body ={
-          Email : form.email,
-          Password : form.pwd
+      try {
+        const body = {
+          Email: form.email,
+          Password: form.pwd,
         };
         // console.log(body);
         setIsLoading(true);
-        const {data} = await axios.post(`${BACKEND_URL}/user/login`,body);
-        if(data){
+        const { data } = await axios.post(`${BACKEND_URL}/user/login`, body);
+        if (data) {
           setIsLoading(false);
-          if(data.role == 1 || data.role == 2 || data.role == 3){
+          if (data.role == 1 || data.role == 2 || data.role == 3) {
             const roleString = roles[data.role - 1];
             dispatch(setSessionExpiration(false));
-            let inSetTime = new Date(new Date().getTime() + data.expires_in * 1000);
-            Cookies.set("userRole",roleString, {expires : inSetTime});
-            Cookies.set("token",data.jwt, {expires : inSetTime});
-            
-            if(roleString == "FME"){
-              router.push("/fme");
-            }else if (roleString == "MDA"){
-              router.push("/mda")
-            }else if(roleString == "STC"){
-              router.push("/stc");
-            }
-          }else{
-            console.log("This login is meant for just admins")
-            // 
+            let inSetTime = new Date(
+              new Date().getTime() + data.expires_in * 1000
+            );
+            Cookies.set("userRole", roleString, { expires: inSetTime });
+            Cookies.set("token", data.jwt, { expires: inSetTime });
+            toast.success(`Login successful!`);
+            setTimeout(() => {
+              if (roleString == "FME") {
+                router.push("/fme");
+              } else if (roleString == "MDA") {
+                router.push("/mda");
+              } else if (roleString == "STC") {
+                router.push("/stc");
+              }
+            }, 1200);
+          } else {
+            toast.error(`This login is meant for just Admins`);
+            setTimeout(() => {
+              router.push("/auth/login");
+            }, 1300);
+            // toastify message then redirect to the right login
           }
         }
-      }catch(error : any){
-        if(error.response){
+      } catch (error: any) {
+        if (error.response) {
           setPwdError({
             active: true,
             text: error.response.data.message,
@@ -162,7 +171,7 @@ export default function Login() {
             active: true,
             text: error.response.data.message,
           });
-        }else{
+        } else {
           setPwdError({
             active: true,
             text: error.message,
@@ -185,6 +194,7 @@ export default function Login() {
       </Head>
       <AuthCardStyle>
         <div className="flx">
+          <ToastContainer />
           <div className="one desktop">
             <div className="loc">
               <CoatOfArm>
@@ -245,7 +255,10 @@ export default function Login() {
                 </div>
                 <div className="btm">
                   <p>Not an Admin user?</p>
-                  <button type="button" onClick={() => router.push("/auth/login")}>
+                  <button
+                    type="button"
+                    onClick={() => router.push("/auth/login")}
+                  >
                     Sign in
                   </button>
                 </div>
@@ -330,7 +343,9 @@ export default function Login() {
                             )}
                           {pwdError.active === false &&
                             pwdError.text !== "" && <CheckedIcon />}
-                          {pwdError.active === true && <EyeIcon isShown={showPwd} />}
+                          {pwdError.active === true && (
+                            <EyeIcon isShown={showPwd} />
+                          )}
                         </div>
                       </div>
                       <p
@@ -366,7 +381,12 @@ export default function Login() {
                 </form>
                 <div className="btm">
                   <p>Don’t have an account?</p>
-                  <button type="button" onClick={() => router.push("/auth/signup")}>Sign up</button>
+                  <button
+                    type="button"
+                    onClick={() => router.push("/auth/signup")}
+                  >
+                    Sign up
+                  </button>
                 </div>
               </AuthFormStyles>
             )}
