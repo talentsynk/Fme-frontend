@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 export default function ArtisansHome(){
 
   useEffect(()=>{
-    let token = Cookies.get("token");
+    let token = Cookies.get("role");
     console.log(token)
 
   },[])

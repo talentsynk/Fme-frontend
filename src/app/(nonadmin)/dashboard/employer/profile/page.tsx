@@ -12,7 +12,7 @@ import { StateCompStyles } from "@/components/fme/mda/styles";
 const EmployersProfile = () => {
 
 	const [isEmailValid, setIsEmailValid] = useState(true);
-	const [formData, setFormData] = useState({
+	const [formDataa, setFormDataa] = useState({
 		firstName:"",
 		lastName:"",
 		phone:"",
@@ -24,8 +24,8 @@ const EmployersProfile = () => {
 		Nin:""
 	})
 
-	const isFormEmpty = () => {
-		return Object.values(formData).every((value) => value === "");
+	const isEmpty = () => {
+		return Object.values(formDataa).every((value) => value === "");
 	};
   
 	const [state, setState] = useState("");
@@ -50,9 +50,9 @@ const EmployersProfile = () => {
 		setShowStateDropdown(false);
 	};
 
-	const handleChange = (name:string, value:string) => {
-		setFormData({
-		  ...formData,
+	const handleChangee = (name:string, value:string) => {
+		setFormDataa({
+		  ...formDataa,
 		  [name]: value
 		});
 
@@ -76,10 +76,10 @@ const EmployersProfile = () => {
 		  setLgas(newLgas);
 		}
 	  }, [stateOfOrigin]);
-  const [activeDiv, setActiveDiv] = useState(1);
-  const [text, setText] = useState<string>('');
-  const [borderColor, setBorderColor] = useState<string>('border-[#D0D5DD]');
-  
+
+
+  const [activeDivv, setActiveDivv] = useState(1);
+
 
   return (
     <section className="md:p-4 p-2">
@@ -87,16 +87,16 @@ const EmployersProfile = () => {
 			<p className=" text-[12px] text-[#667185] mt-2 mb-4">Take a look at your policies and the new policy to see what is covered</p>
 			<div className=" flex border-[#E4E7EC] border-[1px] w-fit rounded-lg">
 				<div
-					onClick={() => setActiveDiv(1)}
+					onClick={() => setActiveDivv(1)}
 					className={`" px-4 py-2 border-r-[1px] cursor-pointer border-[#E4E7EC]  ${
-						activeDiv == 1 ? "bg-[#E7F6EC] text-[#00932E] font-semibold " : " text-[#98A2B3] font-normal"
+						activeDivv == 1 ? "bg-[#E7F6EC] text-[#00932E] font-semibold " : " text-[#98A2B3] font-normal"
 					}  "`}>
 					Profile
 				</div>
 				<div
-					onClick={() => setActiveDiv(2)}
+					onClick={() => setActiveDivv(2)}
 					className={`${
-						activeDiv == 2 ? " text-[#00932E] bg-[#E7F6EC] font-semibold " : " text-[#98A2B3] font-normal"
+						activeDivv == 2 ? " text-[#00932E] bg-[#E7F6EC] font-semibold " : " text-[#98A2B3] font-normal"
 					} px-4 py-2 border-r-[1px] cursor-pointer border-[#E4E7EC] `}>
 					Security
 				</div>
@@ -118,14 +118,14 @@ const EmployersProfile = () => {
 						</div>
 					</div>
 					<div className=" flex items-center gap-4">
-						{activeDiv == 1 && (
+						{activeDivv == 1 && (
 							<button className="w-[170px] text-sm h-12 rounded-md bg-[#00932E] hidden md:flex justify-center items-center font-semibold text-white">
 								Upload picture
 							</button>
 						)}
 					</div>
 				</div>
-			{activeDiv==1&&<section className=" p-4 bg-white mt-4 rounded-[10px] ">
+			{activeDivv==1&&<section className=" p-4 bg-white mt-4 rounded-[10px] ">
 				
 				<div className="flex flex-col md:flex-row-reverse p-8">
 					
@@ -141,8 +141,8 @@ const EmployersProfile = () => {
 								id="firstName"
 								name="firstName"
 								placeholder="please type in your first name here"
-								onChange={(e) => handleChange('firstName', e.target.value)}
-								value={formData.firstName}
+								onChange={(e) => handleChangee('firstName', e.target.value)}
+								value={formDataa.firstName}
 							/>
 							<div className=" absolute right-2 top-[40%]"><CircularProfile /></div>
 							</div>
@@ -157,8 +157,8 @@ const EmployersProfile = () => {
 									type="text"
 									id="lastName"
 									name="lastName"
-									onChange={(e) => handleChange('lastName', e.target.value)}
-								value={formData.lastName}
+									onChange={(e) => handleChangee('lastName', e.target.value)}
+								value={formDataa.lastName}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><CircularProfile /></div>
@@ -174,8 +174,8 @@ const EmployersProfile = () => {
 									type="text"
 									id="phone"
 									name="phone"
-									onChange={(e) => handleChange('phone', e.target.value)}
-								value={formData.phone}
+									onChange={(e) => handleChangee('phone', e.target.value)}
+								value={formDataa.phone}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightCall /></div>
@@ -193,8 +193,8 @@ const EmployersProfile = () => {
 									id="email"
 									name="email"
 									
-									// onChange={handleChange}
-									// value={formData.email}
+									// onChange={handleChangee}
+									// value={formDataa.email}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightMail /></div>
@@ -211,8 +211,8 @@ const EmployersProfile = () => {
 									type="text"
 									id="address"
 									name="address"
-									onChange={(e) => handleChange('address', e.target.value)}
-								value={formData.address}
+									onChange={(e) => handleChangee('address', e.target.value)}
+								value={formDataa.address}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightContent /></div>
@@ -275,8 +275,8 @@ const EmployersProfile = () => {
 									type="text"
 									id="Nin"
 									name="Nin"
-									onChange={(e) => handleChange('Nin', e.target.value)}
-								value={formData.Nin}
+									onChange={(e) => handleChangee('Nin', e.target.value)}
+								value={formDataa.Nin}
 									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								/>
 							
@@ -289,11 +289,11 @@ const EmployersProfile = () => {
 						<p className="hidden md:flex text-[14px] text-[#667185]">update relevant account information here</p>
 						<button
 							className={`w-[129px] h-9 text-white font-semibold border-[1px] rounded-md ${
-								isFormEmpty() || !isEmailValid 
+								isEmpty() || !isEmailValid 
 									? "bg-[#D0D5DD] cursor-not-allowed"
 									: "bg-[#00932E] border-[#00932E] hover:bg-[#007427]"
 							}`}
-							disabled={isFormEmpty() || !isEmailValid}
+							disabled={isEmpty() || !isEmailValid}
 							type="submit">
 							Save changes{" "}
 						</button>
@@ -301,7 +301,7 @@ const EmployersProfile = () => {
 					</div>
 				</div>
 			</section>}
-			{activeDiv==2&&<Security />}
+			{activeDivv==2&&<Security />}
 		</section>
   )
 }

@@ -1,3 +1,4 @@
+'use client'
 import { EmployersOragonCard } from "@/components/landing/OragonCard";
 import Image from "next/image";
 import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
@@ -43,6 +44,7 @@ const EmployerHome = () => {
       id:6
     }
   ]
+
   
 
   return (
