@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import ProgressBar from "@/components/artisan/ProgressBar";
 import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/faqs/Svgs";
@@ -96,6 +96,7 @@ const cancelProfile=()=>{
   setShowProfile(false)
 }
  
+
     return (
         <section className="bg-white p-4">
         <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Oluwatimilehin,</h2>

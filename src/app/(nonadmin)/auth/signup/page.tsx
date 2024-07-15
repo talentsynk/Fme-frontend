@@ -22,11 +22,15 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { ButtonLoader } from "@/components/recovery/style";
+import { BACKEND_URL } from "@/lib/config";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IForm {
   email: string;
@@ -246,22 +250,83 @@ export default function Signup() {
       });
     }
   };
+  const resetForm = () => {
+    setForm({
+      email: "",
+      pwd: "",
+      fname: "",
+      lname: "",
+      number: "",
+      nin: "",
+      state: "",
+      lga: "",
+    });
+    setEmail("");
+    setFname("");
+    setLname("");
+    setLga("");
+    setPhoneNumber("");
+    setState("");
+    setNin("");
+  };
   const handleSubmit1 = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log(form);
-      setFormState(2);
-    }, 1200);
+    if (
+      form.email !== "" &&
+      form.fname !== "" &&
+      form.lga !== "" &&
+      form.lname !== "" &&
+      form.state !== "" &&
+      form.nin !== ""
+    ) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        setFormState(2);
+      }, 1200);
+    }
   };
-  const handleSubmit2 = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit2 = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      console.log(form);
-      setIsLoading(false);
-    }, 1000);
+    if (form.pwd !== "") {
+      try {
+        const body = {
+          FirstName: form.fname,
+          LastName: form.fname,
+          Email: form.email,
+          PhoneNumber: form.number,
+          NIN: form.nin,
+          State: form.state,
+          LGA: form.lga,
+          Password: form.pwd,
+        };
+        setIsLoading(true);
+        const { data } = await axios.post(
+          `${BACKEND_URL}/employer/create-employer`,
+          body
+        );
+        if (data) {
+          // use a toastify message then redirect to login page
+          setIsLoading(false);
+          toast.success("Account Created successfully");
+          setTimeout(() => {
+            router.push("/auth/login");
+          }, 1200);
+        }
+      } catch (error: any) {
+        setIsLoading(false);
+        setFormState(1);
+        // reset password field
+        setPwd("");
+        setPwd2("");
+        setForm({...form,pwd : ""});
+        if (error.response) {
+          toast.error(`${error.response.data.message}`);
+        } else {
+          toast.error(`${error.message}`);
+        }
+      }
+    }
   };
 
   // lga stuff
@@ -280,13 +345,13 @@ export default function Signup() {
   useEffect(() => {
     if (state) {
       const newLgas = NaijaStates.lgas(state).lgas;
-      console.log(newLgas);
       setLgas(newLgas);
     }
   }, [state]);
 
   return (
     <UserLoginStyles>
+      <ToastContainer />
       {formState === 0 && (
         <div className="form">
           <div className="head">
@@ -361,7 +426,7 @@ export default function Signup() {
                 <input
                   type="text"
                   name="lname"
-                  placeholder="Enter Lastt Name"
+                  placeholder="Enter Last Name"
                   value={lname}
                   onChange={(e) => handleNameChange(e, "lname")}
                   className={lnameError.active ? "error-bdr" : ""}
@@ -603,7 +668,7 @@ export default function Signup() {
               </div>
             </div>
             <div className="form-ele">
-              <label htmlFor="pwd">New Password</label>
+              <label htmlFor="pwd">Confirm Password</label>
               <div className="inp">
                 <input
                   type={showPwd2 ? "text" : "password"}

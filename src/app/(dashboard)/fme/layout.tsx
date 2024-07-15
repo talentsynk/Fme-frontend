@@ -1,21 +1,19 @@
-// authentication root-layout
-import "@/app/globals.css";
 import { AccessRestrictionWrapper } from "@/components/layout/dashboardlayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard | Artisan",
-  description: "Artisan Dashboard powered by coderina",
+  title: "Dashboard | FME",
+  description: "Dashboard for FME account",
 };
 
-export default function ArtisanRootLayout({
+export default function ServerLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <AccessRestrictionWrapper userRole="ARTISAN" redirectUrl="/auth/login">
+    <AccessRestrictionWrapper userRole="FME" redirectUrl="/admin">
       {children}
     </AccessRestrictionWrapper>
-  );
+  )
 }

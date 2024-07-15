@@ -109,7 +109,7 @@ export const UserDashboardLayout = ({
   const role = Cookies.get("userRole");
   const token = Cookies.get("token");
   const dispatch = useAppDispatch();
-  const {isSessionExpired} = useAppSelector(authSelector);
+  const { isSessionExpired } = useAppSelector(authSelector);
   useEffect(() => {
     // console.log(role,token);
     // update the permissions to this dashboard
@@ -129,10 +129,10 @@ export const UserDashboardLayout = ({
   return (
     <UserDashboardLayoutStyles>
       <div className="header">
-        {role === "artisan" && artisanPageLinks !== null && (
+        {role === "ARTISAN" && artisanPageLinks !== null && (
           <UserDashboardHeader uniquePageLinks={artisanPageLinks} />
         )}
-        {role === "employer" && employerPageLinks !== null && (
+        {role === "EMPLOYER" && employerPageLinks !== null && (
           <UserDashboardHeader uniquePageLinks={employerPageLinks} />
         )}
       </div>
@@ -153,8 +153,34 @@ export const UserDashboardLayout = ({
         </PoweredByStyles>
       </footer>
       {isSessionExpired && (
-        <SessionsModal naviHref="/auth/login" cancelLogout={() => router.push("/auth/login")} />
+        <SessionsModal
+          naviHref="/auth/login"
+          cancelLogout={() => router.push("/auth/login")}
+        />
       )}
     </UserDashboardLayoutStyles>
   );
+};
+
+// prevent others from accessing
+export const AccessRestrictionWrapper = ({
+  children,
+  userRole,
+  redirectUrl,
+}: {
+  children: React.ReactNode;
+  userRole: "STC" | "MDA" | "FME" | "ARTISAN" | "EMPLOYER";
+  redirectUrl: string;
+}) => {
+  // prevent others from accessing
+  const router = useRouter();
+  useEffect(() => {
+    const role = Cookies.get("userRole");
+    if (role !== userRole) {
+      router.push(redirectUrl);
+      Cookies.set("userRole", "");
+      Cookies.set("token", "");
+    }
+  }, []);
+  return <>{children}</>;
 };
