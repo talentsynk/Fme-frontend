@@ -316,6 +316,10 @@ export default function Signup() {
       } catch (error: any) {
         setIsLoading(false);
         setFormState(1);
+        // reset password field
+        setPwd("");
+        setPwd2("");
+        setForm({...form,pwd : ""});
         if (error.response) {
           toast.error(`${error.response.data.message}`);
         } else {
