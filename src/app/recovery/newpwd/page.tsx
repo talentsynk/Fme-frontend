@@ -159,6 +159,7 @@ export default function AccountRecovery() {
               height={110}
               alt="coat of arm"
               src="/images/coatofarm.svg"
+              priority
             />
           </CoatOfArm>
 

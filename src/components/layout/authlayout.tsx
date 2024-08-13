@@ -15,6 +15,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                 height={110}
                 alt="coat of arm"
                 src="/images/coatofarm.svg"
+                priority
               />
             </CoatOfArm>
           </div>

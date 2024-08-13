@@ -1,5 +1,6 @@
 // authentication root-layout
 import "@/app/globals.css";
+import { AccessRestrictionWrapper } from "@/components/layout/dashboardlayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,5 +13,9 @@ export default function ArtisanRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <AccessRestrictionWrapper userRole="EMPLOYER" redirectUrl="/auth/login">
+      {children}
+    </AccessRestrictionWrapper>
+  );
 }

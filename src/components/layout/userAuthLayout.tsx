@@ -25,7 +25,7 @@ export const UserAuthLayout = ({ children }: { children: React.ReactNode }) => {
     <UserAuthLayoutStyles>
       <div className="one desktop">
         <div className="abs">
-          <FullLogo textcolor="#fff" />
+          <FullLogo textcolor="#fff" link="/"  />
         </div>
         <div className="text">
           <h3>

@@ -9,14 +9,19 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { ButtonLoader } from "@/components/recovery/style";
+import { roles } from "@/constants/roleList";
+import { BACKEND_URL } from "@/lib/config";
 import { setSessionExpiration } from "@/redux/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks/hooks";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
+import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IForm {
   email: string;
@@ -77,7 +82,7 @@ export default function Login() {
   // login button loader state
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       !emailError.active &&
@@ -85,25 +90,67 @@ export default function Login() {
       emailError.text !== "" &&
       pwdError.text !== ""
     ) {
-      // mimick API
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        const roleString = "artisan";
-        let inSetTime = new Date(new Date().getTime() + 60 * 60 * 1000);
-        Cookies.set("userRole", roleString, { expires: inSetTime });
-        Cookies.set("token", "meeeeeeeeeeeeeee", { expires: inSetTime });
-        dispatch(setSessionExpiration(false));
-        if (roleString == "artisan") {
-          router.push("/dashboard/artisan");
-        } else if (roleString == "employer") {
-          router.push("/dashboard/employer");
+      // call signin api
+      try {
+        const body = {
+          Email: form.email,
+          Password: form.pwd,
+        };
+        setIsLoading(true);
+        const { data } = await axios.post(`${BACKEND_URL}/user/login`, body);
+        if (data) {
+          setIsLoading(false);
+          if (data.role == 5 || data.role == 6) {
+            const roleString = roles[data.role - 1];
+            dispatch(setSessionExpiration(false));
+            let inSetTime = new Date(
+              new Date().getTime() + data.expires_in * 1000
+            );
+            Cookies.set("userRole", roleString, { expires: inSetTime });
+            Cookies.set("token", data.jwt, { expires: inSetTime });
+            toast.success(`Login successful!`);
+            setTimeout(() => {
+              if (roleString == "ARTISAN") {
+                router.push("/dashboard/artisan");
+              } else if (roleString == "EMPLOYER") {
+                router.push("/dashboard/employer");
+              }
+            }, 1200);
+          } else {
+            // toastify message then redirect to the right login
+            toast.error(`This login is meant for Artisans and Employers`);
+            setTimeout(() => {
+              router.push("/admin");
+            }, 1300);
+          }
         }
-      }, 1500);
+      } catch (error: any) {
+        if (error.response) {
+          setPwdError({
+            active: true,
+            text: error.response.data.message,
+          });
+          setEmailError({
+            active: true,
+            text: error.response.data.message,
+          });
+        } else {
+          setPwdError({
+            active: true,
+            text: error.message,
+          });
+          setEmailError({
+            active: true,
+            text: error.message,
+          });
+        }
+        setIsLoading(false);
+      }
     }
   };
   return (
     <UserLoginStyles>
+      <ToastContainer />
       <form className="form" onSubmit={handleLogin}>
         <div className="head">
           <h3>Welcome, Login Here!</h3>

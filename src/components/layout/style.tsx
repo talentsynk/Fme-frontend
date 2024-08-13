@@ -138,13 +138,13 @@ export const UserDashboardLayoutStyles = styled.main`
 
 export const PaddedSectionStyles = styled.div`
   @media (max-width: 500px) {
-    padding: 0rem 0.94rem 1rem 0.94rem;
+    padding: 0.75rem 0.94rem 1rem 0.94rem;
   }
   @media (min-width: 500px) {
-    padding: 0rem 2rem 2rem 2rem;
+    padding: 0.75rem 2rem 2rem 2rem;
   }
   @media (min-width: 998px) {
-    padding: 0rem 3.9rem 3.9rem 3.9rem;
+    padding: 1rem 3.9rem 3.9rem 3.9rem;
   }
 `;
 export const UserAuthLayoutStyles = styled.main`

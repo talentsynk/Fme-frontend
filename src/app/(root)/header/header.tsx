@@ -61,10 +61,10 @@ export const RootHeader = () => {
             </Link>
             <nav className={`flex-col ${!showNav ? 'md:flex hidden' : 'flex'} space-y-4 md:space-y-0 md:flex-row flex-1 justify-between`}>
                 <ul className="flex flex-col md:flex-row md:gap-12 md:items-center">
-                    <li className={`md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${pathname === '/faqs' ? 'text-[#00932E] md:border-b-4 md:border-[#00932E]' : ''}`}>
+                    <li className={`md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${pathname === '/faqs' ? 'text-[#00932E] md:border-b-4 font-bold md:border-[#00932E]' : ''}`}>
                         <Link href="/faqs">FAQs</Link>
                     </li>
-                    <li className={`md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${pathname === '/about' ? 'text-[#00932E] md:border-b-4 md:border-[#00932E]' : ''}`}>
+                    <li className={`md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white  rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${pathname === '/about' ? 'text-[#00932E] md:border-b-4 font-bold md:border-[#00932E]' : ''}`}>
                         <Link href="/about">About</Link>
                     </li>
                 </ul>
