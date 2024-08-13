@@ -111,7 +111,7 @@ export default function AccountRecovery() {
         if (data) {
           // console.log(data);
           // otp verification expires in 5 mins
-          console.log(data);
+          // console.log(data);
           let inSetTime = new Date(new Date().getTime() + 5 * 60 * 1000);
           Cookies.set("otp", "otp is set", { expires: inSetTime });
           Cookies.set("email", email);
@@ -170,6 +170,7 @@ export default function AccountRecovery() {
               height={110}
               alt="coat of arm"
               src="/images/coatofarm.svg"
+              priority
             />
           </CoatOfArm>
 

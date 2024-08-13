@@ -280,6 +280,7 @@ export const FGLogo = () => {
         width={61}
         height={46}
         alt="coat of arms"
+        priority
       />
     </FGLogostyles>
   );

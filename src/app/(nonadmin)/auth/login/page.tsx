@@ -100,7 +100,7 @@ export default function Login() {
         const { data } = await axios.post(`${BACKEND_URL}/user/login`, body);
         if (data) {
           setIsLoading(false);
-          if (data.role == 4 || data.role == 5) {
+          if (data.role == 5 || data.role == 6) {
             const roleString = roles[data.role - 1];
             dispatch(setSessionExpiration(false));
             let inSetTime = new Date(

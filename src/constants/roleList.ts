@@ -1,1 +1,1 @@
-export const roles = ["FME", "MDA", "STC", "ARTISAN","EMPLOYER"];
+export const roles = ["FME", "MDA", "STC", "STUDENT" ,"EMPLOYER", "ARTISAN"];
