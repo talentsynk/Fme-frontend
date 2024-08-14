@@ -1,10 +1,12 @@
 'use client';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
 import ProgressBar from "@/components/artisan/ProgressBar";
 import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/faqs/Svgs";
-import Cookies from "js-cookie";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 
 
 export default function ArtisansHome(){
@@ -95,6 +97,26 @@ const  [showProfile,setShowProfile]=useState(true)
 const cancelProfile=()=>{
   setShowProfile(false)
 }
+
+const [data,setData]= useState(null)
+
+	useEffect(() => {
+		let token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/jobs/get-jobs`, config)
+			.then((res) => {
+        console.log(res)
+        //log res to the console before you know its constituents
+				const data = res.data.course;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
  
 
     return (

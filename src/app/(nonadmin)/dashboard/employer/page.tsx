@@ -1,7 +1,11 @@
 'use client'
+import { useState,useEffect } from "react";
+import axios from "axios";
 import { EmployersOragonCard } from "@/components/landing/OragonCard";
 import Image from "next/image";
 import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
+import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
 
 
 const EmployerHome = () => {
@@ -44,8 +48,25 @@ const EmployerHome = () => {
       id:6
     }
   ]
+  const [data,setData]= useState(null)
 
-  
+	useEffect(() => {
+		let token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/jobs/get-jobs`, config)
+			.then((res) => {
+        console.log(res)
+        //log res to the console before you know its constituents
+				const data = res.data.course;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
 
   return (
     <section className=" p-4">

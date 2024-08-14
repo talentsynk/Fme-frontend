@@ -12,6 +12,19 @@ import { StateCompStyles } from "@/components/fme/mda/styles";
 
 const ArtisanProfile = () => {
 
+	const validateForm = () => {
+
+		const isValidFirstName = formDataa.firstName.trim().length > 0;
+		const isValidLastName = formDataa.lastName.trim().length > 0;
+		const isValidPhone = formDataa.phone.trim().length > 0;
+		// const isValidEmail = !!formDataa.email.trim() && formDataa.email.includes('@'); // Basic email validation
+		const isValidNin = formDataa.Nin.trim().length === 11; // NIN must be exactly 11 characters
+	  
+		// Return true if all validations pass
+		return isValidFirstName && isValidLastName && isValidPhone  && isValidNin;
+	  };
+	  
+
 	const [isEmailValid, setIsEmailValid] = useState(true);
 	const [formDataa, setFormDataa] = useState({
 		firstName:"",
@@ -63,6 +76,11 @@ const ArtisanProfile = () => {
 		}
 	  };
 
+	  const isValidEmail = (email:string) => {
+		return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+	  };
+	  
+
 	const handleLGASelection = (name: string) => {
 		// setForm({ ...form, LocalGovernment: name });
 		setLga(name);
@@ -105,6 +123,14 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 	  };
   const [activeDiv, setActiveDiv] = useState(1);
   const [borderColor, setBorderColor] = useState<string>('border-[#D0D5DD]');
+
+  const getInputClass = (value:string) => {
+    if (value.length === 0) {
+      return 'input-invalid';
+    } else {
+      return 'input-valid';
+    }
+  };
 
 
   return (
@@ -165,13 +191,33 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 							</label>
 							<div className="w-full relative flex">
 							<input
-								className="w-full border-[#D0D5DD] border-solid rounded-md p-4 border focus:border-[#00932E]"
+								className={`w-full border-gray border-solid rounded-md p-4 border ${formDataa.firstName ? "border-green" : formDataa.firstName === "" ? "border-red" : ""}`}
 								type="text"
 								id="firstName"
 								name="firstName"
 								placeholder="please type in your first name here"
 								onChange={(e) => handleChangee('firstName', e.target.value)}
 								value={formDataa.firstName}
+								onInput={(e) => {
+									const target = e.target as HTMLInputElement; // Type assertion
+									if (target.value.length > 0) {
+									  // Change border to green if not empty
+									  target.classList.add("border-green");
+									  target.classList.remove("border-red", "border-gray");
+									} else if (target.value.length === 0) {
+									  // Change border to red if empty
+									  target.classList.add("border-red");
+									  target.classList.remove("border-green", "border-gray");
+									}
+								  }}
+								  onFocus={(e) => {
+									const target = e.target as HTMLInputElement; // Type assertion
+									// Reset border to gray when focused
+									target.classList.remove("border-green", "border-red");
+									target.classList.add("border-gray");
+								  }}
+								  
+								  
 							/>
 							<div className=" absolute right-2 top-[40%]"><CircularProfile /></div>
 							</div>
@@ -188,7 +234,25 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 									name="lastName"
 									onChange={(e) => handleChangee('lastName', e.target.value)}
 								value={formDataa.lastName}
-									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
+								onInput={(e) => {
+									const target = e.target as HTMLInputElement; // Type assertion
+									if (target.value.length > 0) {
+									  // Change border to green if not empty
+									  target.classList.add("border-green");
+									  target.classList.remove("border-red", "border-gray");
+									} else if (target.value.length === 0) {
+									  // Change border to red if empty
+									  target.classList.add("border-red");
+									  target.classList.remove("border-green", "border-gray");
+									}
+								  }}
+								  onFocus={(e) => {
+									const target = e.target as HTMLInputElement; // Type assertion
+									// Reset border to gray when focused
+									target.classList.remove("border-green", "border-red");
+									target.classList.add("border-gray");
+								  }}
+								  className={`w-full border-gray border-solid rounded-md p-4 border ${formDataa.lastName ? "border-green" : formDataa.lastName === "" ? "border-red" : ""}`}
 								/>
 								<div className=" absolute right-2 top-[40%]"><CircularProfile /></div>
 							</div>
@@ -205,7 +269,27 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 									name="phone"
 									onChange={(e) => handleChangee('phone', e.target.value)}
 								value={formDataa.phone}
-									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
+								onInput={(e) => {
+									const target = e.target as HTMLInputElement; 
+									let borderColorClass = ""; 
+									if (target.value.length < 11) {
+									  borderColorClass = "border-red"; 
+									} else if (target.value.length === 11) {
+									  borderColorClass = "border-green";
+									} else {
+									  borderColorClass = "border-green"; 
+									}
+									target.classList.remove("border-green", "border-red", "border-gray"); 
+									target.classList.add(borderColorClass); 
+								  }}
+								  
+								onFocus={(e) => {
+								  const target = e.target as HTMLInputElement; 
+								  
+								  target.classList.remove("border-green", "border-red");
+								  target.classList.add("border-gray");
+								}}
+								className={`w-full border-gray border-solid rounded-md p-4 border`} 
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightCall /></div>
 							</div>
@@ -224,7 +308,22 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 									
 									// onChange={handleChangee}
 									// value={formDataa.email}
-									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
+									onInput={(e) => {
+										const target = e.target as HTMLInputElement;
+										if (isValidEmail(target.value)) {
+										  target.classList.add("border-green");
+										  target.classList.remove("border-red", "border-gray");
+										} else if (target.value.length === 0 || !isValidEmail(target.value)) {
+										  target.classList.add("border-red");
+										  target.classList.remove("border-green", "border-gray");
+										}
+									  }}
+									  onFocus={(e) => {
+										const target = e.target as HTMLInputElement;
+										target.classList.remove("border-green", "border-red");
+										target.classList.add("border-gray");
+									  }}
+									  className={`w-full border-gray border-solid rounded-md p-4 border ${formDataa.email ? "border-green" : formDataa.email === "" ? "border-red" : ""}`}
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightMail /></div>
 							</div>
@@ -242,7 +341,25 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 									name="address"
 									onChange={(e) => handleChangee('address', e.target.value)}
 								value={formDataa.address}
-									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
+								onInput={(e) => {
+									const target = e.target as HTMLInputElement; // Type assertion
+									if (target.value.length > 0) {
+									  // Change border to green if not empty
+									  target.classList.add("border-green");
+									  target.classList.remove("border-red", "border-gray");
+									} else if (target.value.length === 0) {
+									  // Change border to red if empty
+									  target.classList.add("border-red");
+									  target.classList.remove("border-green", "border-gray");
+									}
+								  }}
+								  onFocus={(e) => {
+									const target = e.target as HTMLInputElement; // Type assertion
+									// Reset border to gray when focused
+									target.classList.remove("border-green", "border-red");
+									target.classList.add("border-gray");
+								  }}
+								  className={`w-full border-gray border-solid rounded-md p-4 border ${formDataa.address ? "border-green" : formDataa.address === "" ? "border-red" : ""}`}
 								/>
 								<div className=" absolute right-2 top-[40%]"><RightContent /></div>
 							</div>
@@ -299,24 +416,44 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 								NIN
 							</label>
 							<div className="w-full relative">
-								<input
-								placeholder="please type in your last name here"
-									type="text"
-									id="Nin"
-									name="Nin"
-									onChange={(e) => handleChangee('Nin', e.target.value)}
-								value={formDataa.Nin}
-									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
-								/>
-							
-							</div>
+  <input
+    placeholder="please type in your NIN here"
+    type="text"
+    id="Nin"
+    name="Nin"
+    onChange={(e) => setFormDataa({ ...formDataa, Nin: e.target.value })} 
+    value={formDataa.Nin}
+	onInput={(e) => {
+		const target = e.target as HTMLInputElement; // Type assertion
+		let borderColorClass = ""; // Initialize an empty string for the class
+		if (target.value.length < 11) {
+		  borderColorClass = "border-red"; // Set to red if less than 11 characters
+		} else if (target.value.length === 11) {
+		  borderColorClass = "border-green"; // Set to green if exactly 11 characters
+		} else {
+		  borderColorClass = "border-green"; // Keep green if more than 11 characters
+		}
+		target.classList.remove("border-green", "border-red", "border-gray"); // Clean up previous classes
+		target.classList.add(borderColorClass); // Apply the new class
+	  }}
+	  
+    onFocus={(e) => {
+      const target = e.target as HTMLInputElement; 
+      
+      target.classList.remove("border-green", "border-red");
+      target.classList.add("border-gray");
+    }}
+    className={`w-full border-gray border-solid rounded-md p-4 border`} 
+  />
+</div>
+
 
 						</div>
 					</form>
 					<div className="md:w-[30%] space-y-2">
 						<h5 className="hidden md:flex font-semibold text-[#101928]">Account Information</h5>
 						<p className="hidden md:flex text-[14px] text-[#667185]">update relevant account information here</p>
-						<button
+						{/* <button
 							className={`w-[129px] h-9 text-white font-semibold border-[1px] rounded-md ${
 								isEmpty() || !isEmailValid 
 									? "bg-[#D0D5DD] cursor-not-allowed"
@@ -325,8 +462,16 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 							disabled={isEmpty() || !isEmailValid}
 							type="submit">
 							Save changes{" "}
-						</button>
-            {/* <button className="w-[129px] bg-[#00932E] h-9 text-white font-semibold border-[1px] rounded-md border-[#00932E] hover:bg-[#007427]">Save changes</button> */}
+						</button> */}
+											{validateForm() ? (
+  <button className="w-[129px] bg-[#00932E] h-9 text-white font-semibold border-[1px] rounded-md border-[#00932E] hover:bg-[#007427]">
+    Save changes
+  </button>
+):(<button
+	className='w-[129px] h-9  bg-[#D0D5DD] text-white font-semibold border-[1px] rounded-md'
+	type="submit">
+	Save changes{" "}
+</button>)}
 					</div>
 				</div>
 			</section>}
@@ -387,13 +532,31 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 							</label>
 							<div className="w-full relative flex">
 							<input
-								className="w-full border-[#D0D5DD] border-solid rounded-md p-4 border focus:border-[#00932E]"
 								type="text"
 								id="firstName"
 								name="firstName"
 								placeholder="please type in your first name here"
 								value={formData.firstName}
 								onChange={(e) => handleChange('firstName', e.target.value)}
+								onInput={(e) => {
+									const target = e.target as HTMLInputElement; 
+									if (target.value.length > 0) {
+									  // Change border to green if not empty
+									  target.classList.add("border-green");
+									  target.classList.remove("border-red", "border-gray");
+									} else if (target.value.length === 0) {
+									  // Change border to red if empty
+									  target.classList.add("border-red");
+									  target.classList.remove("border-green", "border-gray");
+									}
+								  }}
+								  onFocus={(e) => {
+									const target = e.target as HTMLInputElement; 
+									// Reset border to gray when focused
+									target.classList.remove("border-green", "border-red");
+									target.classList.add("border-gray");
+								  }}
+								  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.firstName ? "border-green" : formData.firstName === "" ? "border-red" : ""}`}
 							/>
 							<div className=" absolute right-2 top-[50%]"><CircularProfile /></div>
 							</div>
@@ -410,7 +573,25 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 									name="lastName"
 									value={formData.lastName}
 									onChange={(e) => handleChange('lastName', e.target.value)}
-									className="w-full border-[#d3d6db] border-solid rounded-md p-4 border focus:border-[#00932E]"
+									onInput={(e) => {
+										const target = e.target as HTMLInputElement; // Type assertion
+										if (target.value.length > 0) {
+										  // Change border to green if not empty
+										  target.classList.add("border-green");
+										  target.classList.remove("border-red", "border-gray");
+										} else if (target.value.length === 0) {
+										  // Change border to red if empty
+										  target.classList.add("border-red");
+										  target.classList.remove("border-green", "border-gray");
+										}
+									  }}
+									  onFocus={(e) => {
+										const target = e.target as HTMLInputElement; // Type assertion
+										// Reset border to gray when focused
+										target.classList.remove("border-green", "border-red");
+										target.classList.add("border-gray");
+									  }}
+									  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.lastName ? "border-green" : formData.lastName === "" ? "border-red" : ""}`}
 								/>
 								<div className=" absolute right-2 top-[50%]"><CircularProfile /></div>
 								
@@ -424,10 +605,26 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 							<textarea
         rows={5}
         placeholder="Please input a short description about yourself and the services you offer to optimise your bio"
-        className={`w-full border-solid rounded-md p-4 border focus:outline-none ${borderColor} focus:border-[#00932E]`}
+        // className={`w-full border-solid rounded-md p-4 border focus:outline-none ${borderColor} focus:border-[#00932E]`}
         value={formData.aboutText}
 		name="aboutText"
 onChange={(e) => handleChange('aboutText', e.target.value)}
+onInput={(e) => {
+    const target = e.target as HTMLTextAreaElement;
+    if (target.value.length > 0) {
+      target.classList.add("border-green");
+      target.classList.remove("border-red", "border-gray");
+    } else if (target.value.length === 0) {
+      target.classList.add("border-red");
+      target.classList.remove("border-green", "border-gray");
+    }
+  }}
+  onFocus={(e) => {
+    const target = e.target as HTMLTextAreaElement;
+    target.classList.remove("border-green", "border-red");
+    target.classList.add("border-gray");
+  }}
+  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.aboutText ? "border-green" : formData.firstName === "" ? "border-red" : ""}`}
       />
 						</div>
 						
@@ -445,6 +642,7 @@ onChange={(e) => handleChange('aboutText', e.target.value)}
 							type="submit">
 							Save changes{" "}
 						</button>
+	
 					</div>
 				</div>
 			</section>}
