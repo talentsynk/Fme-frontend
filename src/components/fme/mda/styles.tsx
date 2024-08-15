@@ -258,6 +258,53 @@ export const SearchAndResultStyle = styled.div`
   }
 `;
 
+export const JobSearchStyle = styled(SearchAndResultStyle)`
+  margin-top: 0rem;
+  .searchbar {
+    padding: 0rem;
+    gap: 1rem;
+  }
+  .loc,
+  .sort {
+    height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      gap: 0.25rem;
+      display: flex;
+      padding: 0.125rem 0.25rem;
+      height: 80%;
+      min-width: 100px;
+      align-items: center;
+      justify-content: space-evenly;
+      p {
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 1.25rem; /* 142.857% */
+      }
+    }
+  }
+  .sort button {
+    border: 1px solid #00932e;
+  }
+  .loc button {
+    border-radius: 0.3125rem;
+    background: var(--Primary-Color, #00932e);
+    p {
+      color: var(--Neutrals-Colors-100, #fff);
+    }
+  }
+  @media (max-width: 500px) {
+    .searchbar {
+      border: 2px solid #000;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+`;
+
 export const FilterBtnStyles = styled.button<ISelectedcompStyle>`
   height: 100%;
   width: fit-content;

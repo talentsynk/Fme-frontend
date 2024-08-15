@@ -40,3 +40,58 @@ export const BannerStyle = styled.div`
     }
   }
 `;
+
+export const JobCompStyles = styled.div`
+  border-radius: 1rem;
+  border: 1px solid #f0f0f0;
+  background: #fff;
+  padding: 1.5rem 0.75rem 0.75rem 0.75rem;
+  .sec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .v {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .bg {
+      display: flex;
+      border-radius: 0.25rem;
+      background: #f5f5f5;
+      align-items: center;
+      width: fit-content;
+      height: 1.5rem;
+      gap: 0.375rem;
+      padding: 0.5rem 0.5rem;
+    }
+    button {
+      border-radius: 0.375rem;
+      background: var(--Primary-Color, #00932e);
+      color: var(--Shade-White, var(--Neutrals-Colors-100, #fff));
+      text-align: center;
+      height: 2.25rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.25rem; /* 142.857% */
+    }
+  }
+`;
+
+export const TinyBriefcaseBg = styled.div`
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.625rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.3125rem;
+  background: #e7f6ec;
+`;
