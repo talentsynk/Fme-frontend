@@ -10,6 +10,7 @@ import { BACKEND_URL } from "@/lib/config";
 
 const EmployerHome = () => {
 
+  console.log(1)
   const dummy=[
     {
       title:"Oragon Confectionaries",
@@ -61,6 +62,7 @@ const EmployerHome = () => {
 			.get(`${BACKEND_URL}/jobs/get-jobs`, config)
 			.then((res) => {
         console.log(res)
+        console.log(10)
         //log res to the console before you know its constituents
 				const data = res.data.course;
 				setData(data);
