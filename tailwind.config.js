@@ -8,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors:{
+        customColorWithOpacity: 'rgba(52, 202, 165, 0.1)',
+      },
+
       keyframes: {
         fadeIn: {
           '0%': { opacity: 0 },
@@ -23,12 +27,13 @@ module.exports = {
         },
       },
       animation: {
-        fadeIn: 'fadeIn 4s ease-in-out',
-        slideInLeft: 'slideInLeft 4s ease-in-out',
+        fadeIn: 'fadeIn 2s ease-in-out',
+        slideInLeft: 'slideInLeft 2s ease-in-out',
         bounce: 'bounce 1s ',
       },
       textColor: {
         'black-70': 'rgba(0, 0, 0, 0.7)',
+        'light-green':''
       },
     },
   },
