@@ -26,7 +26,7 @@ import { Ierror } from "@/app/recovery/page";
 import { MdaItemComp } from "@/components/fme/mda/mda";
 import { JobSortItemDropdownList } from "./data";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
-import { JobComp } from "@/components/artisan/Job";
+import { JobComp, SelectLocationModal } from "@/components/artisan/Job";
 
 const ArtisanJobs = () => {
   const [pageNo, setPageNo] = useState(1);
@@ -76,7 +76,8 @@ const ArtisanJobs = () => {
   const [sortItemDropdownList, setSortItemDropdownList] = useState(
     JobSortItemDropdownList
   );
-
+  // location
+  const [showLocationModal, setShowLocationModal] = useState(false);
   return (
     <ArtisanJobPageStyle>
       <Banner
@@ -145,10 +146,21 @@ const ArtisanJobs = () => {
                     </p>
                   </div>
                   <div className="loc">
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowLocationModal(true);
+                        setShowSortDropdown(false);
+                      }}
+                    >
                       <LocationIcon />
                       <p>Location</p>
                     </button>
+                    {showLocationModal && (
+                      <SelectLocationModal
+                        closeModal={() => setShowLocationModal(false)}
+                      />
+                    )}
                   </div>
                   <div className="sort">
                     <button
@@ -190,6 +202,10 @@ const ArtisanJobs = () => {
               <h2>Latest Jobs</h2>
             </div>
             <div className="job-list">
+              <JobComp />
+              <JobComp />
+              <JobComp />
+              <JobComp />
               <JobComp />
               <JobComp />
               <JobComp />

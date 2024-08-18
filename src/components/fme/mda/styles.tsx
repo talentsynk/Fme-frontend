@@ -289,6 +289,9 @@ export const JobSearchStyle = styled(SearchAndResultStyle)`
   .sort button {
     border: 1px solid #00932e;
   }
+  .loc {
+    position: relative;
+  }
   .loc button {
     border-radius: 0.3125rem;
     background: var(--Primary-Color, #00932e);
@@ -664,6 +667,9 @@ export const UserTabSwitchStyle = styled.div<ITabSwitchStyle>`
       }
     `}
   @media (max-width: 500px) {
+    .no {
+      flex-direction: column;
+    }
     p {
       font-size: 0.75rem;
     }

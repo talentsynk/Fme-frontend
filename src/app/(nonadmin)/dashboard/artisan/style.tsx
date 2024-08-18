@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const ArtisanJobPageStyle = styled.div`
-  border: 2px solid #000;
   .cont {
     display: flex;
     flex-direction: column;
