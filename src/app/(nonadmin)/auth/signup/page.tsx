@@ -535,7 +535,7 @@ export default function Signup() {
               </div>
             </div>
             <div className="form-ele">
-              <label htmlFor="fname">State of Residence</label>
+              <label htmlFor="state">State of Residence</label>
               <StatesDropdownStyles className="max">
                 <div
                   className="head"
