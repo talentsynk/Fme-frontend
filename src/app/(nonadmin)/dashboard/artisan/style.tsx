@@ -32,12 +32,6 @@ export const ArtisanJobPageStyle = styled.div`
       }
     }
   }
-  .job-list {
-    display: flex;
-    flex-direction: column;
-    column-gap: 2rem;
-    row-gap: 1.5rem;
-  }
   @media (max-width: 500px) {
     .head {
       h2 {
@@ -45,16 +39,19 @@ export const ArtisanJobPageStyle = styled.div`
       }
     }
   }
+`;
+
+export const JobGridList = styled.div`
+  display: flex;
+  flex-direction: column;
+  column-gap: 2rem;
+  row-gap: 1.5rem;
   @media (min-width: 500px) {
-    .job-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
-      gap: 0.75rem;
-    }
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    gap: 0.75rem;
   }
   @media (min-width: 998px) {
-    .job-list {
-      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
-    }
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   }
 `;

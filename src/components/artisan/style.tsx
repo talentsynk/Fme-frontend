@@ -117,6 +117,7 @@ export const JobCompStyles = styled.div`
         font-style: normal;
         font-weight: 500;
         line-height: 145%; /* 0.90625rem */
+        text-transform: capitalize;
       }
     }
     button {
@@ -134,7 +135,7 @@ export const JobCompStyles = styled.div`
   }
 `;
 
-export const TinyBriefcaseBg = styled.div`
+export const TinySVGBg = styled.div`
   display: flex;
   width: 2.5rem;
   height: 2.5rem;
@@ -145,7 +146,20 @@ export const TinyBriefcaseBg = styled.div`
   border-radius: 0.3125rem;
   background: #e7f6ec;
 `;
-
+export const LargeSVGBg = styled.div`
+  display: flex;
+  width: 5.3125rem;
+  height: 5.3125rem;
+  padding: 0.625rem;
+  justify-content: center;
+  align-items: center;
+  svg {
+    scale: 1.5;
+  }
+  gap: 0.5rem;
+  border-radius: 0.3125rem;
+  background: #e7f6ec;
+`;
 export const LocationModalStyle = styled.div`
   background: #fff;
   border-radius: 0.5rem;
@@ -198,5 +212,25 @@ export const LocationModalStyle = styled.div`
     .apply {
       color: var(--Primary-Color, #00932e);
     }
+  }
+`;
+
+export const TagStyle = styled.div`
+  display: flex;
+  border-radius: 0.25rem;
+  background: #f5f5f5;
+  align-items: center;
+  width: fit-content;
+  height: 2rem;
+  gap: 0.375rem;
+  padding: 0.625rem;
+  p {
+    color: var(--Color-Text, #111);
+    font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 145%; /* 0.90625rem */
+    text-transform: capitalize;
   }
 `;

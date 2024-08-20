@@ -2,46 +2,74 @@ import { useEffect, useState } from "react";
 import { StateCompStyles, StatesDropdownStyles } from "../fme/mda/styles";
 import { SmallBriefCaseIcon, TinyLocationIcon } from "../icons/artisan/icons";
 import { AngleDown, AngleDownStyles } from "../icons/header";
-import { JobCompStyles, LocationModalStyle, TinyBriefcaseBg } from "./style";
+import { JobCompStyles, LocationModalStyle, TinySVGBg } from "./style";
 import { States } from "../fme/mda/data";
 import { XIcon } from "../icons/sidebar";
+import { truncateString } from "@/utils/truncateString";
+import { useRouter } from "next/navigation";
 
-export const JobComp = () => {
+export interface IJob {
+  id: string;
+  name: string;
+  date: string; // would be parsed properly
+  location: string;
+  desc: string;
+  type: string;
+  pay: string;
+  isClosed: boolean;
+}
+
+export const JobComp: React.FC<IJob> = ({
+  id,
+  name,
+  date,
+  desc,
+  location,
+  type,
+  pay,
+}) => {
+  const router = useRouter();
   return (
     <JobCompStyles>
       <div className="fir">
-        <TinyBriefcaseBg>
+        <TinySVGBg>
           <SmallBriefCaseIcon />
-        </TinyBriefcaseBg>
+        </TinySVGBg>
       </div>
       <div className="sec">
         <div className="v">
-          <h4>Oragon Confectionaries</h4>
-          <p>posted 2 days ago</p>
+          <h4>{name}</h4>
+          <p>posted {date} days ago</p>
         </div>
         <div className="r">
-          <p>
-            I need a caterer for 20 peoples meal in a birthday party that is
-            coming up soon. Call +234 817 896.......
-          </p>
-          <h4>300k • Contract Job</h4>
+          <p>{truncateString(desc, 100)}</p>
+          <h4>
+            {pay} • {type} Job
+          </h4>
         </div>
         <div className="btn">
           <div className="bg">
             <TinyLocationIcon />
-            <p>Oyo State</p>
+            <p>{location} State</p>
           </div>
-          <button type="button">Apply Now</button>
+          <button
+            type="button"
+            onClick={() => router.push(`jobs/${id}`)}
+          >
+            Apply Now
+          </button>
         </div>
       </div>
     </JobCompStyles>
   );
 };
 
-interface ILocationModal{
-  closeModal : () => void;
+interface ILocationModal {
+  closeModal: () => void;
 }
-export const SelectLocationModal:React.FC<ILocationModal> = ({closeModal}) => {
+export const SelectLocationModal: React.FC<ILocationModal> = ({
+  closeModal,
+}) => {
   // for states
   const [state, setState] = useState("");
   const [states, setStates] = useState(States);
@@ -145,8 +173,12 @@ export const SelectLocationModal:React.FC<ILocationModal> = ({closeModal}) => {
         </StatesDropdownStyles>
       </div>
       <div className="btns">
-        <button type="button" className="apply">Apply Filter</button>
-        <button type="button" className="clear">Clear Filter</button>
+        <button type="button" className="apply">
+          Apply Filter
+        </button>
+        <button type="button" className="clear">
+          Clear Filter
+        </button>
       </div>
     </LocationModalStyle>
   );

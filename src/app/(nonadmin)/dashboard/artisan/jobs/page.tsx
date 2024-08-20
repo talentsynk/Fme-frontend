@@ -1,6 +1,6 @@
 "use client";
 import { Banner } from "@/components/artisan/comps";
-import { ArtisanJobPageStyle } from "../style";
+import { ArtisanJobPageStyle, JobGridList } from "../style";
 import {
   ColoredBriefCase,
   JobPageIcon,
@@ -8,7 +8,7 @@ import {
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { FormEvent, useState } from "react";
-import { ArtisanTabSwitches } from "@/components/artisan/data";
+import { ArtisanTabSwitches, Jobs } from "@/components/artisan/data";
 import {
   JobSearchStyle,
   SearchAndResultStyle,
@@ -201,17 +201,11 @@ const ArtisanJobs = () => {
               <ColoredBriefCase />
               <h2>Latest Jobs</h2>
             </div>
-            <div className="job-list">
-              <JobComp />
-              <JobComp />
-              <JobComp />
-              <JobComp />
-              <JobComp />
-              <JobComp />
-              <JobComp />
-              <JobComp />
-              <JobComp />
-            </div>
+            <JobGridList>
+              {Jobs.map((ele, index) => (
+                <JobComp key={index} {...ele} />
+              ))}
+            </JobGridList>
           </div>
           <Paginator
             value={pageNo}
