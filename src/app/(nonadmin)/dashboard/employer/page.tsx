@@ -1,10 +1,11 @@
 'use client'
 import { useState,useEffect } from "react";
 import axios from "axios";
-import { EmployersOragonCard } from "@/components/landing/OragonCard";
-import Image from "next/image";
-import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
+import Link from "next/link";
 import Cookies from "js-cookie";
+import Image from "next/image";
+import { EmployersOragonCard } from "@/components/landing/OragonCard";
+import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
 import { BACKEND_URL } from "@/lib/config";
 
 
@@ -121,16 +122,16 @@ To post a job “click on this button”</p>
           </section>
       <section className="p-4 md:w-[42%] bg-[#E7F6EC] rounded-[10px] flex flex-col gap-4  ">
         <h3 className=" text-[24px] leading-[32px] text-black font-bold">Quick Links</h3>
-        <div className=" relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
+        <Link href="/dashboard/employer/post-a-job" className=" cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
         <WhiteBag />
           <h6 className=" font-bold text-[16px] leading-[24px] text-white">Post a job</h6>
           <Image className=" absolute bottom-0 right-0" src="/images/landing/Suitcase.png" width={64} height={64} alt=""  />
-        </div>
-        <div className="relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
+        </Link>
+        <Link href="/dashboard/employer/hire" className="cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
         <Hands />
           <Image className=" absolute bottom-0 right-0" src="/images/landing/Hand Money.png" width={64} height={64} alt="" />
           <h6 className="font-bold text-[16px] leading-[24px] text-white">Hire Artisan</h6>
-        </div>
+        </Link>
       </section>
     </section>
  </section>

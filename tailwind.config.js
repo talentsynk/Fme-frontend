@@ -33,6 +33,7 @@ module.exports = {
       },
       textColor: {
         'black-70': 'rgba(0, 0, 0, 0.7)',
+        'black-25': 'rgba(0, 0, 0, 0.25)',
         'light-green':''
       },
     },
