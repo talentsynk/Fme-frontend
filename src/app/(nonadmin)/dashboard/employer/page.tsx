@@ -51,15 +51,17 @@ const EmployerHome = () => {
   ]
   const [data,setData]= useState(null)
 
+  console.log(1)
 	useEffect(() => {
 		let token = Cookies.get("token");
+    console.log(token)
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/jobs/get-jobs`, config)
+			.get(`${BACKEND_URL}/jobs/get-latest-job`, config)
 			.then((res) => {
         console.log(res)
         console.log(10)
