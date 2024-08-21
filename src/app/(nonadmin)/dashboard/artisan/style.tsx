@@ -55,3 +55,9 @@ export const JobGridList = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   }
 `;
+export const JobGridListAlt = styled.div`
+  display: flex;
+  flex-direction: column;
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+`;

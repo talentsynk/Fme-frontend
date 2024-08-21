@@ -43,19 +43,17 @@ export const JobComp: React.FC<IJob> = ({
         </div>
         <div className="r">
           <p>{truncateString(desc, 100)}</p>
-          <h4>
-            {pay} • {type} Job
-          </h4>
+          <div className="r-w">
+            <h4>{pay}</h4>
+            <h4>• {type} Job</h4>
+          </div>
         </div>
         <div className="btn">
           <div className="bg">
             <TinyLocationIcon />
             <p>{location} State</p>
           </div>
-          <button
-            type="button"
-            onClick={() => router.push(`jobs/${id}`)}
-          >
+          <button type="button" onClick={() => router.push(`jobs/${id}`)}>
             Apply Now
           </button>
         </div>
