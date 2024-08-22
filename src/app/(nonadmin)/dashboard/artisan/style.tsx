@@ -55,6 +55,20 @@ export const JobGridList = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   }
 `;
+export const SimilarCompGridList = styled.div`
+  display: flex;
+  flex-direction: column;
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+  @media (min-width: 500px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+    gap: 0.75rem;
+  }
+  @media (min-width: 998px) {
+    grid-template-columns: repeat(auto-fill, minmax(min(288px, 100%), 1fr));
+  }
+`;
 export const JobGridListAlt = styled.div`
   display: flex;
   flex-direction: column;

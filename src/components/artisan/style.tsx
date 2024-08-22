@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const BannerStyle = styled.div`
   height: 40vh;
@@ -92,6 +92,7 @@ export const EmployerBannerStyle = styled.div`
     }
   }
 `;
+
 export const VerifiedBadge = styled.div`
   border-radius: 0.3125rem;
   background: #e4f5ea;
@@ -111,6 +112,27 @@ export const VerifiedBadge = styled.div`
     letter-spacing: -0.00375rem;
   }
 `;
+export const ReviewBtnStyle = styled.button`
+  border-radius: 0.3125rem;
+  background: #e4f5ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  height: 1.625rem;
+  width: fit-content;
+  p {
+    color: var(--Primary-Color, #00932e);
+    font-feature-settings: "cv03" on, "cv04" on;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 145%; /* 1.0875rem */
+    letter-spacing: -0.00375rem;
+    color: var(--Primary-Color, #00932E);
+  }
+`;
 export const JobCompStyles = styled.div`
   border-radius: 1rem;
   border: 1px solid #f0f0f0;
@@ -127,7 +149,9 @@ export const JobCompStyles = styled.div`
     gap: 0.5rem;
     .v {
       display: flex;
-      gap: 1rem;
+      // gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
       h4 {
         color: #1a1a1a;
         font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
