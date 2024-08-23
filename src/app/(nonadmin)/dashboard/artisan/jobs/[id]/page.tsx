@@ -4,18 +4,17 @@ import { JobComp } from "@/components/artisan/Job";
 import { JobDetailPageStyle } from "@/components/artisan/Jobdetails/style";
 import { LargeSVGBg, TagStyle } from "@/components/artisan/style";
 import {
-  ColoredBriefCase,
   GreyArrowRight,
   SmallBriefCaseIcon,
-  StarIcon,
   TinyLocationIcon,
 } from "@/components/icons/artisan/icons";
 import { JobGridList } from "../../style";
 import { PaddedSectionStyles } from "@/components/layout/style";
 import Link from "next/link";
-import { Star } from "@/components/landing/faqs/Svgs";
+import { useRouter } from "next/navigation";
 
 const JobDetailPage = () => {
+  const router = useRouter();
   return (
     <JobDetailPageStyle>
       <PaddedSectionStyles>
@@ -25,7 +24,7 @@ const JobDetailPage = () => {
               <p className="lit">Job Portal</p>
             </Link>
             <GreyArrowRight />
-            <p className="active">View Job Details</p>
+            <p className="activ">View Job Details</p>
           </div>
           <div className="body">
             <div className="head">
@@ -37,7 +36,12 @@ const JobDetailPage = () => {
               </h3>
               <div className="btm">
                 <p>Posted by Oragon Confectionaries</p>
-                <button type="button">View Profile</button>
+                <button
+                  type="button"
+                  onClick={() => router.push("/dashboard/artisan/jobs/employer/0")}
+                >
+                  View Profile
+                </button>
               </div>
             </div>
             <div className="text-cont">

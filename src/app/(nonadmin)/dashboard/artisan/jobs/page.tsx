@@ -8,7 +8,7 @@ import {
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { FormEvent, useState } from "react";
-import { ArtisanTabSwitches, Jobs } from "@/components/artisan/data";
+import { ArtisanTabSwitches, Jobs, JobSortItemDropdownList } from "@/components/artisan/data";
 import {
   JobSearchStyle,
   SearchAndResultStyle,
@@ -24,7 +24,6 @@ import {
 } from "@/components/icons/fme/mda";
 import { Ierror } from "@/app/recovery/page";
 import { MdaItemComp } from "@/components/fme/mda/mda";
-import { JobSortItemDropdownList } from "./data";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import { JobComp, SelectLocationModal } from "@/components/artisan/Job";
 

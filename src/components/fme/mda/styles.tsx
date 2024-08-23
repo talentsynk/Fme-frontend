@@ -301,7 +301,6 @@ export const JobSearchStyle = styled(SearchAndResultStyle)`
   }
   @media (max-width: 500px) {
     .searchbar {
-      border: 2px solid #000;
       flex-direction: row;
       flex-wrap: wrap;
     }
@@ -539,6 +538,7 @@ export const MDADetailStyle = styled(AbsoluteContStyle)`
 
 interface ITabSwitchStyle extends ISelectedcompStyle {
   $tabIndex: number;
+  $isRowOnMobile?: boolean;
 }
 export const TabSwitchStyle = styled.div<ITabSwitchStyle>`
   position: relative;
@@ -670,6 +670,13 @@ export const UserTabSwitchStyle = styled.div<ITabSwitchStyle>`
     .no {
       flex-direction: column;
     }
+    ${(props) =>
+      props.$isRowOnMobile &&
+      css`
+        .no {
+          flex-direction: row;
+        }
+      `}
     p {
       font-size: 0.75rem;
     }

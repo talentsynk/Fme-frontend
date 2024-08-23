@@ -1,4 +1,4 @@
-import { ITabSwitch } from "../fme/mda/data";
+import { IMdaItemDropdown, ITabSwitch } from "../fme/mda/data";
 import { IJob } from "./Job";
 
 export const ArtisanTabSwitches: ITabSwitch[] = [
@@ -58,4 +58,10 @@ export const Jobs: IJob[] = [
     type: "Contract",
     pay: "700k",
   },
+];
+
+export const JobSortItemDropdownList: IMdaItemDropdown[] = [
+  { text: "Last 24 hours", isSelected: false, id: "0" },
+  { text: "Last 7 days", isSelected: false, id: "1" },
+  { text: "Last 30 days", isSelected: false, id: "2" },
 ];
