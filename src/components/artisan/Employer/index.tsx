@@ -1,12 +1,20 @@
 import Image from "next/image";
-import { ReviewCompStyles, SimilarEmployerCompStyle } from "./style";
 import {
+  ReviewCompStyles,
+  ReviewModalStyles,
+  SimilarEmployerCompStyle,
+} from "./style";
+import {
+  FilledStar,
   GreenTick,
   RatingIcon,
   SmallBriefCaseIcon,
+  UnFilledStar,
 } from "@/components/icons/artisan/icons";
 import { VerifiedBadge } from "../style";
 import { useRouter } from "next/navigation";
+import { XIcon } from "@/components/icons/sidebar";
+import { ChangeEvent, useState } from "react";
 
 export const SimilarComp = () => {
   const router = useRouter();
@@ -72,5 +80,98 @@ export const ReviewComp = () => {
         </p>
       </div>
     </ReviewCompStyles>
+  );
+};
+
+interface IReviewModal {
+  role: "employer" | "artisan";
+  closeModal: () => void;
+}
+interface IBody {
+  rateNo: number;
+  comments?: string;
+}
+export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal }) => {
+  const [comments, setComments] = useState("");
+
+  const [selectedRating, setSelectedRating] = useState(0);
+  const handleRating = (index: number) => {
+    setSelectedRating(index);
+  };
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setComments(event.target.value); // Update state with the new value
+  };
+
+  const handleSubmit = () => {
+    let body: IBody = {
+      rateNo: selectedRating,
+    };
+    if (comments !== "") {
+      body["comments"] = comments;
+    }
+    console.log(body); // submit to API
+  };
+
+  return (
+    <ReviewModalStyles>
+      <div className="pop">
+        <div className="up">
+          <div className="x" onClick={closeModal}>
+            {" "}
+            <XIcon />
+          </div>
+          <h4>{role == "employer" ? "Write a Review" : "Recommend Artisan"}</h4>
+        </div>
+        <div className="rate">
+          {role == "employer" ? (
+            <p>Rate this {role}</p>
+          ) : (
+            <p>Rate this artisan’s job delivery</p>
+          )}
+          <div className="starlight">
+            {[1, 2, 3, 4, 5].map((ele, index) => (
+              <StarComp
+                isSelected={ele <= selectedRating}
+                handleClick={() => handleRating(ele)}
+                key={index}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="comments">
+          <p>Any additional reviews about the {role}?</p>
+          <div className="text">
+            <textarea
+              name="comments"
+              value={comments}
+              onChange={handleChange}
+              cols={30}
+              rows={10}
+            ></textarea>
+          </div>
+        </div>
+        <div className="down">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={selectedRating == 0}
+          >
+            {role == "employer" ? "Send Review" : "Send Recommendation"}
+          </button>
+        </div>
+      </div>
+    </ReviewModalStyles>
+  );
+};
+
+interface IStarComp {
+  isSelected: boolean;
+  handleClick: () => void;
+}
+export const StarComp: React.FC<IStarComp> = ({ isSelected, handleClick }) => {
+  return (
+    <div onClick={handleClick}>
+      {isSelected ? <FilledStar /> : <UnFilledStar />}
+    </div>
   );
 };

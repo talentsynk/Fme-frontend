@@ -130,7 +130,11 @@ export const ReviewBtnStyle = styled.button`
     font-weight: 500;
     line-height: 145%; /* 1.0875rem */
     letter-spacing: -0.00375rem;
-    color: var(--Primary-Color, #00932E);
+    color: var(--Primary-Color, #00932e);
+  }
+  @media (min-width: 728px) {
+    position: absolute;
+    top: 1rem;
   }
 `;
 export const JobCompStyles = styled.div`

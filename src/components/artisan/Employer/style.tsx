@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { JobDetailPageStyle } from "../Jobdetails/style";
+import { OneButtonModalStyles } from "@/components/fme/mda/styles";
 
 export const EmployerDetailPageStyle = styled(JobDetailPageStyle)`
   .cont-one {
@@ -71,9 +72,10 @@ export const EmployerDetailPageStyle = styled(JobDetailPageStyle)`
   .mobile {
     display: none;
   }
-  .desktop {
+  .options {
+    position: relative;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 728px) {
     .cont-two {
       padding: 1rem;
     }
@@ -95,6 +97,7 @@ export const SWitchTabStyles = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 2px solid #ebedef;
+  width: 100%;
 `;
 export const SimilarEmployerCompStyle = styled.div`
   padding: 0.75rem 0.6875rem;
@@ -211,6 +214,71 @@ export const ReviewCompStyles = styled.div`
   @media (max-width: 500px) {
     .one .deet h4 {
       // font-size: 0.875rem;
+    }
+  }
+`;
+
+export const ReviewModalStyles = styled(OneButtonModalStyles)`
+  text-align: left;
+  position: relative;
+  .pop {
+    .up .x {
+      position: absolute;
+      cursor: pointer;
+      right: 1.5rem;
+    }
+    h4,
+    p {
+      text-align: left;
+    }
+    h4 {
+      color: var(--Shade-900, #00001a);
+      font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
+      font-size: 1.5rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 2rem; /* 133.333% */
+      letter-spacing: -0.03rem;
+    }
+    .rate,
+    .comments {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .rate {
+      .starlight {
+        display: flex;
+        gap: 0.625rem;
+        justify-content: center;
+        align-items: center;
+        height: 5rem;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        background: #e4f5ea;
+        div {
+          cursor: pointer;
+        }
+      }
+    }
+    .rate p,
+    .comments p {
+      color: var(--Grey-900, var(--text-style, #101928));
+    }
+    .comments {
+      textarea {
+        border: 2px solid #000;
+        border-radius: 0.375rem;
+        border: 1px solid var(--Grey-300, #d0d5dd);
+        background: var(--Shade-White, #fff);
+        width: 100%;
+        height: 11rem;
+        padding: 1rem;
+        outline: 0;
+      }
+    }
+    .down {
+      margin-top: 0rem;
     }
   }
 `;

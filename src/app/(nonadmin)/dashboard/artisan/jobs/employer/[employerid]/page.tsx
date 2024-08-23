@@ -3,7 +3,10 @@ import {
   EmployerDetailPageStyle,
   SWitchTabStyles,
 } from "@/components/artisan/Employer/style";
-import { UserTabSwitchStyle } from "@/components/fme/mda/styles";
+import {
+  FlexAbsoluteModalStyles,
+  UserTabSwitchStyle,
+} from "@/components/fme/mda/styles";
 import {
   GreenTick,
   GreyArrowRight,
@@ -29,7 +32,11 @@ import {
   VerifiedBadge,
 } from "@/components/artisan/style";
 import Image from "next/image";
-import { ReviewComp, SimilarComp } from "@/components/artisan/Employer";
+import {
+  ReviewComp,
+  ReviewModal,
+  SimilarComp,
+} from "@/components/artisan/Employer";
 
 const EmployerDetailPage = () => {
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
@@ -48,8 +55,7 @@ const EmployerDetailPage = () => {
     }
     setArtisanTabSwitches(newTabSwitches);
   };
-  // design the reviews compononents
-  // do the functionality behind the switch btw jobs posted and reviews
+  const [showReviewModal, setShowReviewModal] = useState(false);
   return (
     <EmployerDetailPageStyle>
       <PaddedSectionStyles>
@@ -108,7 +114,7 @@ const EmployerDetailPage = () => {
                   </SWitchTabStyles>
                   <div className="desktop">
                     <div className="review">
-                      <ReviewBtnStyle>
+                      <ReviewBtnStyle onClick={() => setShowReviewModal(true)}>
                         <ReviewIcon />
                         <p>Review Employer</p>
                       </ReviewBtnStyle>
@@ -117,7 +123,7 @@ const EmployerDetailPage = () => {
                 </div>
                 <div className="mobile">
                   <div className="review">
-                    <ReviewBtnStyle>
+                    <ReviewBtnStyle >
                       <ReviewIcon />
                       <p>Review Employer</p>
                     </ReviewBtnStyle>
@@ -175,6 +181,14 @@ const EmployerDetailPage = () => {
           </div>
         </div>
       </PaddedSectionStyles>
+      {showReviewModal && (
+        <FlexAbsoluteModalStyles>
+          <ReviewModal
+            role="employer"
+            closeModal={() => setShowReviewModal(false)}
+          />
+        </FlexAbsoluteModalStyles>
+      )}
     </EmployerDetailPageStyle>
   );
 };
