@@ -1,3 +1,5 @@
+import { ITabSwitch } from "../fme/mda/data";
+
 export interface IUserLink {
   href: string;
   name: string;
@@ -19,3 +21,7 @@ export const EmployerPageLinks: IUserLink[] = [
   },
   { name: "Support", href: "/dashboard/support", isSelected: false },
 ];
+
+export const ArtisanProfileTabSwitches: ITabSwitch[] = [
+  { text: "Reviews", tabIndex: 0, isSelected: true },
+]
