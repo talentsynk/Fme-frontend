@@ -13,6 +13,9 @@ export const ArtisanJobPageStyle = styled.div`
       border-bottom: 2px solid #ebedef;
     }
   }
+  .m-down {
+    margin-top: 1.54rem;
+  }
   .jobs {
     display: flex;
     flex-direction: column;

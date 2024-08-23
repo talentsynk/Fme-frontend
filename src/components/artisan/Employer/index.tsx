@@ -2,6 +2,7 @@ import Image from "next/image";
 import {
   ReviewCompStyles,
   ReviewModalStyles,
+  SimilarArtisanCompStyle,
   SimilarEmployerCompStyle,
 } from "./style";
 import {
@@ -11,10 +12,11 @@ import {
   SmallBriefCaseIcon,
   UnFilledStar,
 } from "@/components/icons/artisan/icons";
-import { VerifiedBadge } from "../style";
+import { TagStyle, VerifiedBadge } from "../style";
 import { useRouter } from "next/navigation";
 import { XIcon } from "@/components/icons/sidebar";
 import { ChangeEvent, useState } from "react";
+import { truncateString } from "@/utils/truncateString";
 
 export const SimilarComp = () => {
   const router = useRouter();
@@ -50,7 +52,63 @@ export const SimilarComp = () => {
   );
 };
 
-export const ReviewComp = () => {
+export const SimilarArtisanComp = () => {
+  const router = useRouter();
+  return (
+    <SimilarArtisanCompStyle
+      onClick={() => router.push("/dashboard/employer/hire/0")}
+    >
+      <div className="img">
+        <Image
+          src="/images/frame_3.png"
+          width={0}
+          height={214}
+          sizes="100%"
+          alt="avatar"
+        />
+      </div>
+      <div className="hl">
+        <h4>Oragon Confectionaries</h4>
+        <VerifiedBadge>
+          <GreenTick />
+          <p>Verified</p>
+        </VerifiedBadge>
+      </div>
+      <div className="same rt">
+        <RatingIcon />
+        <RatingIcon />
+        <RatingIcon />
+        <p>4.5/5</p>
+      </div>
+      <div className="desc">
+        <p>
+          {truncateString(
+            "I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon, I need a caterer for 20 peoples meal in a birthday party that is coming up soonCall +234 817 896",
+            240
+          )}
+        </p>
+      </div>
+      <div className="tags">
+        <TagStyle>
+          <p>#fashiondesign</p>
+        </TagStyle>
+        <TagStyle>
+          <p>#creative</p>
+        </TagStyle>
+      </div>
+      <div className="btn">
+        <button type="button">
+          <p>View Profile</p>
+        </button>
+      </div>
+    </SimilarArtisanCompStyle>
+  );
+};
+
+interface IReviewer{
+  role ?: "artisan" | "employer";
+}
+export const ReviewComp:React.FC<IReviewer> = ({role}) => {
   return (
     <ReviewCompStyles>
       <div className="one">
@@ -60,7 +118,7 @@ export const ReviewComp = () => {
             <div className="posted">posted 2 days ago</div>
           </div>
           <div className="lr">
-            <p className="role">Roles : Artisan</p>
+            <p className="role">Roles : {role ? role : "Artisan"}</p>
             <div className="rate">
               <p>Rate : </p>
               <RatingIcon />
