@@ -1183,6 +1183,22 @@ export const StatesDropdownStyles = styled.div`
     border: 1px solid #e4e7ec;
     background: #fff;
     padding: 1rem 0.5rem 1rem 1rem;
+   
+  }
+  .profile-dropdown {
+    // position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 130px;
+    overflow-y: scroll;
+    border-radius: 0.3125rem;
+    border: 1px solid #e4e7ec;
+    background: #fff;
+    padding: 1rem 0.5rem 1rem 1rem;
+    z-index:999999999;
+    
   }
 `;
 
