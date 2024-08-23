@@ -2,6 +2,7 @@ interface OragonCard{
   title:string;
   text:string;
   status:boolean;
+  id:number;
 }
 interface ISavedOragonCard{
   title:string;
@@ -9,7 +10,9 @@ interface ISavedOragonCard{
   status:string;
   state:string;
   price:string;
+  id:number;
 }
+import Link from 'next/link';
 import { Clock, Location, Padlock, Star, Tick } from './faqs/Svgs'
 
 const EmployersOragonCard:React.FC<OragonCard> = ({title,text,status}) => {
@@ -31,7 +34,7 @@ const EmployersOragonCard:React.FC<OragonCard> = ({title,text,status}) => {
     </div>
   )
 }
-const OragonCard:React.FC<OragonCard> = ({title,text,status}) => {
+const OragonCard:React.FC<OragonCard> = ({title,text,status,id}) => {
   return (
     <div className=' bg-white rounded-2xl p-2 flex gap-2 items-center '>
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
@@ -43,14 +46,14 @@ const OragonCard:React.FC<OragonCard> = ({title,text,status}) => {
               <h6 className=" text-[12px] font-medium leading-[17px]">Application Status</h6>
             <button className={` ${status?"bg-[#00932E] text-white" :"bg-[#ffE5DD] text-[#FE764B]"} flex items-center gap-1 rounded-md py-1 px-2 text-[10px] font-bold`}>{status?<Tick />:<Clock />} <span className="">{status?"Job offered":"In Review"}</span></button>
               </div>
-              <button className=" bg-[#00932E] text-white rounded-md py-1 px-4 text-sm font-medium">View Job</button>
+              <Link href={`/dashboard/artisan/jobs/${id}`} className=" bg-[#00932E] text-white rounded-md flex items-center px-4 text-sm font-medium">View Job</Link>
             </div>
         </div>
       
     </div>
   )
 }
-const SavedOragonCard:React.FC<ISavedOragonCard> = ({title,text,status,state,price}) => {
+const SavedOragonCard:React.FC<ISavedOragonCard> = ({title,text,status,state,price,id}) => {
   return (
     <div className=' bg-white rounded-2xl border-[#f0f0f0] border border-solid p-2 flex gap-2 items-center '>
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
@@ -68,7 +71,7 @@ const SavedOragonCard:React.FC<ISavedOragonCard> = ({title,text,status,state,pri
             <p className=" text-[#919191] text-[10px] font-medium">{state}</p>
             </div>
               </div>
-              <button className=" bg-[#00932E] text-white rounded-md py-2 px-4 text-sm font-medium">Apply now</button>
+              <Link href={`/dashboard/artisan/jobs/${id}`} className=" bg-[#00932E] text-white rounded-md py-2 px-4 text-sm font-medium">Apply now</Link>
             </div>
         </div>
       

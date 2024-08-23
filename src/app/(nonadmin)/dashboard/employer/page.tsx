@@ -105,12 +105,12 @@ const EmployerHome = () => {
             <div className={`flex flex-col gap-2 ${dummy.length==0&&" justify-center items-center"}`}>
               
               {dummy.length>0?(
-                dummy.map(dum=>(<EmployersOragonCard key={dum.id} title={dum.title} text={dum.text} status={dum.status}/>))
+                dummy.map(dum=>(<EmployersOragonCard key={dum.id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
                       <Search />
-                      {/* <Image src="/images/landing/Suitcase.svg" width={48} height={48} alt="" /> */}
+                 
                     </div>
                       <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t created any job yet.
 To post a job “click on this button”</p>

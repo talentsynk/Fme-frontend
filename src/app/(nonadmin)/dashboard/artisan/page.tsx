@@ -168,7 +168,7 @@ const [data,setData]= useState(null)
             <div className={`flex flex-col gap-2 ${dummy.length==0&&" justify-center items-center"}`}>
               
               {dummy.length>0?(
-                dummy.map(dum=>(<OragonCard key={dum.id} title={dum.title} text={dum.text} status={dum.status}/>))
+                dummy.map(dum=>(<OragonCard key={dum.id} id={dum.id} title={dum.title} text={dum.text} status={dum.status}/>))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
