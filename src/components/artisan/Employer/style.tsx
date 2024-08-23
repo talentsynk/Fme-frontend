@@ -23,6 +23,28 @@ export const EmployerDetailPageStyle = styled(JobDetailPageStyle)`
     border: 2px solid #eff1f3;
     background: #fcfcfd;
     height: fit-content;
+    .btn {
+      button {
+        border-radius: 0.375rem;
+        background: var(--Primary-Color, #00932e);
+        height: 3rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        p {
+          color: var(--Shade-White, var(--Neutrals-Colors-100, #fff));
+          text-align: center;
+          font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
+          font-size: 1rem;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 1.5rem; /* 150% */
+        }
+      }
+    }
     .stat {
       display: flex;
       align-items: center;
@@ -34,6 +56,24 @@ export const EmployerDetailPageStyle = styled(JobDetailPageStyle)`
         font-style: normal;
         font-weight: 700;
         line-height: 145%; /* 1.35938rem */
+      }
+    }
+    .skill {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      h3 {
+        color: #000;
+        font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
+        font-size: 0.9375rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 145%; /* 1.35938rem */
+      }
+      .tg {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
       }
     }
 
@@ -146,6 +186,49 @@ export const SimilarEmployerCompStyle = styled.div`
   }
 `;
 
+export const SimilarArtisanCompStyle = styled(SimilarEmployerCompStyle)`
+  .btn {
+    button {
+      height: 3rem;
+      padding: 1rem 1.5rem;
+      width: 100%;
+      display: flex;
+      border-radius: 0.375rem;
+      background: var(--Primary-Color, #00932e);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      p {
+        color: var(--Shade-White, var(--Neutrals-Colors-100, #fff));
+        text-align: center;
+        font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.5rem; /* 150% */
+      }
+    }
+  }
+  .desc p {
+    color: rgba(0, 0, 0, 0.7);
+    font-feature-settings: "cv03" on, "cv04" on;
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 145%; /* 1.17813rem */
+    letter-spacing: -0.00406rem;
+  }
+  .tags {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+  @media (max-width: 500px) {
+    .desc p {
+      font-size: 0.75rem;
+    }
+  }
+`;
 export const ReviewCompStyles = styled.div`
   border-bottom: 1px solid #ebedef;
   display: flex;
@@ -167,6 +250,9 @@ export const ReviewCompStyles = styled.div`
       font-weight: 500;
       line-height: 145%; /* 1.0875rem */
       letter-spacing: -0.00375rem;
+    }
+    .role {
+      text-transform: capitalize;
     }
     .deet {
       display: flex;
