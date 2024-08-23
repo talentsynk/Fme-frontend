@@ -19,7 +19,7 @@ export const JobDetailPageStyle = styled.div`
       line-height: 1.5rem; /* 150% */
       cursor: pointer;
     }
-    .active {
+    .activ {
       color: var(--Primary-Color, #00932e);
       font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
       font-size: 1rem;

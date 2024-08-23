@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const BannerStyle = styled.div`
   height: 40vh;
@@ -40,7 +40,103 @@ export const BannerStyle = styled.div`
     }
   }
 `;
+export const EmployerBannerStyle = styled.div`
+  height: 40vh;
+  background: var(--Primary-Color, #00932e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5625rem;
+  .img {
+    img {
+      border-radius: 5rem;
+      background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.2) 0%,
+          rgba(0, 0, 0, 0.2) 100%
+        ),
+        url(<path-to-image>) lightgray 50% / cover no-repeat,
+        var(--Primary-Color, #00932e);
+    }
+  }
+  .one {
+    display: flex;
+    align-items: center;
+    h2 {
+      color: var(--Neutrals-Colors-100, #fff);
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 1.5rem; /* 109.091% */
+      letter-spacing: -0.055rem;
+    }
+  }
+  p {
+    color: var(--Neutrals-Colors-100, #fff);
+    text-align: center;
+    font-feature-settings: "cv04" on, "cv03" on, "cv01" on;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5rem; /* 150% */
+  }
+  @media (max-width: 500px) {
+    .one {
+      h2 {
+        font-size: 1.125rem;
+      }
+    }
+    p {
+      width: 75%;
+    }
+  }
+`;
 
+export const VerifiedBadge = styled.div`
+  border-radius: 0.3125rem;
+  background: #e4f5ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0rem 1rem 0rem 1rem;
+  height: 1.625rem;
+  p {
+    color: var(--Primary-Color, #00932e);
+    font-feature-settings: "cv03" on, "cv04" on;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 145%; /* 1.0875rem */
+    letter-spacing: -0.00375rem;
+  }
+`;
+export const ReviewBtnStyle = styled.button`
+  border-radius: 0.3125rem;
+  background: #e4f5ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  height: 1.625rem;
+  width: fit-content;
+  p {
+    color: var(--Primary-Color, #00932e);
+    font-feature-settings: "cv03" on, "cv04" on;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 145%; /* 1.0875rem */
+    letter-spacing: -0.00375rem;
+    color: var(--Primary-Color, #00932e);
+  }
+  @media (min-width: 728px) {
+    position: absolute;
+    top: 1rem;
+  }
+`;
 export const JobCompStyles = styled.div`
   border-radius: 1rem;
   border: 1px solid #f0f0f0;
@@ -57,7 +153,9 @@ export const JobCompStyles = styled.div`
     gap: 0.5rem;
     .v {
       display: flex;
-      gap: 1rem;
+      // gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
       h4 {
         color: #1a1a1a;
         font-feature-settings: "cv01" on, "cv03" on, "cv04" on;
@@ -77,6 +175,11 @@ export const JobCompStyles = styled.div`
     }
   }
   .r {
+    .r-w {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
     p {
       color: var(--Foundation-Black-black-7, #919191);
       font-feature-settings: "cv03" on, "cv04" on;
