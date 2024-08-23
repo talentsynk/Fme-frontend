@@ -1,9 +1,78 @@
-import { EmployersOragonCard } from "@/components/landing/OragonCard";
+'use client'
+import { useState,useEffect } from "react";
+import axios from "axios";
+import Link from "next/link";
+import Cookies from "js-cookie";
 import Image from "next/image";
-import { Bag, Hands, Like, WhiteBag } from "@/components/landing/faqs/Svgs";
+import { EmployersOragonCard } from "@/components/landing/OragonCard";
+import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
+import { BACKEND_URL } from "@/lib/config";
 
 
 const EmployerHome = () => {
+
+  console.log(1)
+  const dummy=[
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:1
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:false,
+      id:2
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:3
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:false,
+      id:4
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:5
+    },
+    {
+      title:"Oragon Confectionaries",
+      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
+      status:true,
+      id:6
+    }
+  ]
+  const [data,setData]= useState(null)
+
+  console.log(1)
+	useEffect(() => {
+		let token = Cookies.get("token");
+    console.log(token)
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/jobs/get-latest-job`, config)
+			.then((res) => {
+        console.log(res)
+        console.log(10)
+        //log res to the console before you know its constituents
+				const data = res.data.course;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+
   return (
     <section className=" p-4">
     <h2 className="text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hey, Kevin.</h2>
@@ -29,27 +98,40 @@ const EmployerHome = () => {
       </div>
     </section>
     <section className=" flex flex-col md:flex-row justify-between py-8">
-      <section className="p-4 md:w-[55%]  rounded-[10px] h-fit   ">
-        <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs applied for</h4>
-        <div className=" flex flex-col gap-2">
-        <EmployersOragonCard />
-        <EmployersOragonCard />
-        <EmployersOragonCard />
-        <EmployersOragonCard />
-        </div>
-      </section>
+      <section className={`p-4 md:w-[55%] rounded-[10px] ${dummy.length>0?"h-fit":""}  `}>
+            <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs Posted</h4>
+            <section className={`${dummy.length==0&&" flex justify-center items-center my-auto h-full"}`}>
+
+            <div className={`flex flex-col gap-2 ${dummy.length==0&&" justify-center items-center"}`}>
+              
+              {dummy.length>0?(
+                dummy.map(dum=>(<EmployersOragonCard key={dum.id} {...dum} />))
+              ):(
+                <section className=" flex justify-center items-center flex-col gap-8">
+                    <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
+                      <Search />
+                 
+                    </div>
+                      <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t created any job yet.
+To post a job “click on this button”</p>
+                      <button className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Post a Job</button>
+                </section>
+              )}
+            </div>
+            </section>
+          </section>
       <section className="p-4 md:w-[42%] bg-[#E7F6EC] rounded-[10px] flex flex-col gap-4  ">
         <h3 className=" text-[24px] leading-[32px] text-black font-bold">Quick Links</h3>
-        <div className=" relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
+        <Link href="/dashboard/employer/post-a-job" className=" cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
         <WhiteBag />
           <h6 className=" font-bold text-[16px] leading-[24px] text-white">Post a job</h6>
           <Image className=" absolute bottom-0 right-0" src="/images/landing/Suitcase.png" width={64} height={64} alt=""  />
-        </div>
-        <div className="relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
+        </Link>
+        <Link href="/dashboard/employer/hire" className="cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
         <Hands />
           <Image className=" absolute bottom-0 right-0" src="/images/landing/Hand Money.png" width={64} height={64} alt="" />
           <h6 className="font-bold text-[16px] leading-[24px] text-white">Hire Artisan</h6>
-        </div>
+        </Link>
       </section>
     </section>
  </section>
