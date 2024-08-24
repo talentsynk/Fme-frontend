@@ -15,7 +15,7 @@ interface ISavedOragonCard{
 import Link from 'next/link';
 import { Clock, Location, Padlock, Star, Tick } from './faqs/Svgs'
 
-const EmployersOragonCard:React.FC<OragonCard> = ({title,text,status}) => {
+const EmployersOragonCard:React.FC<OragonCard> = ({title,text,status,id}) => {
   return (
     <div className=' border-[#F0F0F0] border border-solid rounded-2xl p-2 flex gap-2 items-center '>
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
@@ -27,7 +27,7 @@ const EmployersOragonCard:React.FC<OragonCard> = ({title,text,status}) => {
               <h6 className=" text-[12px] font-medium leading-[17px]">Application Status</h6>
             <button className="bg-[#00932E] flex items-center gap-1 text-white rounded-md py-1 px-2 text-[10px] font-bold"><Tick /> <span className="">Job offered</span></button>
               </div>
-              <button className=" bg-[#00932E] text-white rounded-md py-1 px-4 text-sm font-medium">View Job</button>
+              <Link href={`/dashboard/employer/jobs/${id}`} className="flex items-center bg-[#00932E] text-white rounded-md py-1 px-4 text-sm font-medium">View Job</Link>
             </div>
         </div>
       

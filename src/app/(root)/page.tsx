@@ -19,10 +19,10 @@ export default function Home() {
 
     return (
       <section className={`content-wrapper ${pathname === '/' ? 'bg-[#E7F6EC]':''}`}>
-       <div className=" bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
+       <div className=" box-border bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
           <h1 className="animate-fadeIn  text-[32px] text-center md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Artisans</span>  effortlessly<br /> with a <span className=" text-[#00932E]">click</span> </h1>
           <p className="animate-slideInLeft font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
-          <button className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-300 ease-in-out hover:text-[#00932E] hover:bg-white  hover:border-[#00932E]">
+          <button className="w-fit box-border rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">
   Get started today!
 </button>
 
@@ -58,7 +58,7 @@ export default function Home() {
           <h2 className="animate-fadeIn  text-[36px] md:text-[44px] text-center md:text-left font-medium leading-[48px] text-[#101928]">We Are National Skills Information Center</h2>
           <p className="animate-bounce text-[18px] text-center md:text-left font-normal leading-[24px] text-[#101928]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati incidunt iusto ullam autem laborum harum, possimus nihil deleniti sint impedit debitis vero repellendus ab magnam ratione aperiam sequi. Minus sapiente fugiat, officia tempora accusantium numquam corporis dolorem maxime eaque recusandae!</p>
           <div className=" flex justify-center md:justify-start">
-          <button className=" w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-300 ease-in-out  mt-12">Get started today!</button>
+          <button className=" w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  mt-12 hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">Get started today!</button>
           </div>
         </div>
         <div className="animate-fadeIn flex-1 flex flex-wrap gap-4 justify-center xl:justify-center ">
@@ -153,7 +153,7 @@ export default function Home() {
         <div className=" flex flex-col gap-4 flex-1 md:pt-12 md:pb-28">
           <h2 className="animate-fadeIn  text-[36px] md:text-[44px] text-center md:text-left leading-[32px] md:leading-[48px] font-medium text-[#101928] ">We are National Skills Information Center</h2>
           <p className="animate-slideInLeft text-center md:text-left text-[#101928] font-normal text-[16px] md:text-[18px] leading-[24px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam esse optio error ducimus repudiandae! Quae placeat expedita rerum ducimus libero rem ipsam, enim perferendis ipsa aperiam, ipsum assumenda. Sequi saepe illo eveniet, minima veritatis minus iste repudiandae cumque perferendis eos nesciunt, facere, ratione dicta cum beatae. Eligendi a laborum magni.</p>
-          <button className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-300 ease-in-out  mx-auto md:mx-0  mt-24">View profile</button>
+          <button className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  mx-auto md:mx-0  mt-24 hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">View profile</button>
         </div>
         <div className=" flex-1 flex justify-end">
           <Image src="/images/landing/cobler.png" width={564} height={600} className=" rounded-[20px]" alt="" />
