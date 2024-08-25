@@ -18,9 +18,7 @@ import {
 import { PaddedSectionStyles } from "@/components/layout/style";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Jobs } from "@/components/artisan/data";
 import { useState } from "react";
-import { JobComp } from "@/components/artisan/Job";
 import {
   EmployerBannerStyle,
   ReviewBtnStyle,
@@ -60,10 +58,10 @@ const ArtisanDetailPage = () => {
         <div className="x">
           <div className="nav">
             <Link href="/dashboard/artisan/jobs">
-              <p className="lit">Hire Artisan</p>
+              <p className="lit">Hire Professionals</p>
             </Link>
             <GreyArrowRight />
-            <p className="activ">View Artisan Profile</p>
+            <p className="activ">View Professionals Profile</p>
           </div>
           <EmployerBannerStyle>
             <div className="img">
@@ -114,7 +112,7 @@ const ArtisanDetailPage = () => {
                     <div className="review">
                       <ReviewBtnStyle onClick={() => setShowReviewModal(true)}>
                         <ReviewIcon />
-                        <p>Review Artisan</p>
+                        <p>Review Professional</p>
                       </ReviewBtnStyle>
                     </div>
                   </div>
@@ -123,7 +121,7 @@ const ArtisanDetailPage = () => {
                   <div className="review">
                     <ReviewBtnStyle>
                       <ReviewIcon />
-                      <p>Review Artisan</p>
+                      <p>Review Professional</p>
                     </ReviewBtnStyle>
                   </div>
                 </div>
@@ -173,7 +171,7 @@ const ArtisanDetailPage = () => {
                 </div>
                 <div className="btn">
                     <button type="button">
-                        <p>Hire Artisan</p>
+                        <p>Hire Professional</p>
                         <SendIcon />
                     </button>
                 </div>
@@ -181,7 +179,7 @@ const ArtisanDetailPage = () => {
             </div>
           </div>
           <div className="similar">
-            <h3 className="head">Similar Artisans</h3>
+            <h3 className="head">Similar Professionals</h3>
             <SimilarCompGridList>
               {[1, 2, 3].map((ele, index) => (
                 <SimilarComp key={index} />

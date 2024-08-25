@@ -105,10 +105,10 @@ export const SimilarArtisanComp = () => {
   );
 };
 
-interface IReviewer{
-  role ?: "artisan" | "employer";
+interface IReviewer {
+  role?: "artisan" | "employer";
 }
-export const ReviewComp:React.FC<IReviewer> = ({role}) => {
+export const ReviewComp: React.FC<IReviewer> = ({ role }) => {
   return (
     <ReviewCompStyles>
       <div className="one">
@@ -118,7 +118,7 @@ export const ReviewComp:React.FC<IReviewer> = ({role}) => {
             <div className="posted">posted 2 days ago</div>
           </div>
           <div className="lr">
-            <p className="role">Roles : {role ? role : "Artisan"}</p>
+            <p className="role">Roles : {role ? role : "Professional"}</p>
             <div className="rate">
               <p>Rate : </p>
               <RatingIcon />
@@ -178,13 +178,15 @@ export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal }) => {
             {" "}
             <XIcon />
           </div>
-          <h4>{role == "employer" ? "Write a Review" : "Recommend Artisan"}</h4>
+          <h4>
+            {role == "employer" ? "Write a Review" : "Recommend Professional"}
+          </h4>
         </div>
         <div className="rate">
           {role == "employer" ? (
             <p>Rate this {role}</p>
           ) : (
-            <p>Rate this artisan’s job delivery</p>
+            <p>Rate this professional’s job delivery</p>
           )}
           <div className="starlight">
             {[1, 2, 3, 4, 5].map((ele, index) => (
@@ -197,7 +199,10 @@ export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal }) => {
           </div>
         </div>
         <div className="comments">
-          <p>Any additional reviews about the {role}?</p>
+          <p>
+            Any additional reviews about the{" "}
+            {role == "artisan" ? "Professional" : role}?
+          </p>
           <div className="text">
             <textarea
               name="comments"
