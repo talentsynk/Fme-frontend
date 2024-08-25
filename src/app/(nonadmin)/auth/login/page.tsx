@@ -118,7 +118,7 @@ export default function Login() {
             }, 1200);
           } else {
             // toastify message then redirect to the right login
-            toast.error(`This login is meant for Artisans and Employers`);
+            toast.error(`This login is meant for Professionals and Employers`);
             setTimeout(() => {
               router.push("/admin");
             }, 1300);
@@ -155,7 +155,7 @@ export default function Login() {
         <div className="head">
           <h3>Welcome, Login Here!</h3>
           <p>
-            Welcome back to your account,This is the portal for Artisans and
+            Welcome back to your account,This is the portal for Professionals and
             Employers
           </p>
         </div>

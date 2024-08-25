@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Words = [
-  "The home to skilled artisans",
-  "We connect You to skilled artisans",
+  "The home to skilled professionals",
+  "We connect You to skilled professionals",
 ];
 
 export const UserAuthLayout = ({ children }: { children: React.ReactNode }) => {

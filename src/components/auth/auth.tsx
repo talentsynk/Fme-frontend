@@ -1,3 +1,4 @@
+import { toNamespacedPath } from "node:path/posix";
 import { IAdmin, ISelectAdminFunc } from "./data";
 import { SelectAdminStyles, SelectUserCompStyle } from "./style";
 
@@ -40,7 +41,7 @@ export const SelectUserComp: React.FC<ISelectAdminFunc> = ({
   return (
     <SelectUserCompStyle $isSelected={isSelected} onClick={handleSelect}>
       <div className="ic">{icon}</div>
-      <p>I am an {name === "Artisan" ? "Artisan" : "Artisan Employer"}</p>
+      <p>I am {name == "Professional" ? "a Professional" : "an Employer"}</p>
     </SelectUserCompStyle>
   );
 };

@@ -18,6 +18,6 @@ export const Admins: IAdmin[] = [
 ];
 
 export const Users: IAdmin[] = [
-  { name: "Artisan", icon: <ArtisanIcon/>, isSelected: false },
+  { name: "Professional", icon: <ArtisanIcon/>, isSelected: false },
   { name: "Employer", icon: <EmployerIcon />, isSelected: false },
 ];

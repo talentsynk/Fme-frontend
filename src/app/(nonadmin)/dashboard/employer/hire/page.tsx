@@ -3,7 +3,6 @@ import { Banner } from "@/components/artisan/comps";
 import {
   ColoredBriefCase,
   HirePageIcon,
-  JobPageIcon,
 } from "@/components/icons/artisan/icons";
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { Paginator } from "@/components/fme/paginator/Paginator";
@@ -76,7 +75,7 @@ const HireArtisan = () => {
   return (
     <ArtisanJobPageStyle>
       <Banner
-        head="Hire Artisan"
+        head="Hire Skilled Professionals"
         desc="Find suitable and certified talents that match your needs"
         icon={<HirePageIcon />}
       />
@@ -169,7 +168,7 @@ const HireArtisan = () => {
           <div className="jobs">
             <div className="head">
               <ColoredBriefCase />
-              <h2>All Artisans</h2>
+              <h2>All Professionals</h2>
             </div>
             <JobGridList>
               {[1, 2, 3, 4, 5].map((ele, index) => (
