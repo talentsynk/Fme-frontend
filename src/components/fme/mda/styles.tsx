@@ -928,6 +928,15 @@ export const TwoButtonModalStyles = styled.div`
       align-items: flex-start;
       justify-content: space-between;
     }
+    .y {
+      svg {
+        cursor: pointer;
+      }
+      display: flex;
+      flex-direction:row;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     .l {
       display: flex;

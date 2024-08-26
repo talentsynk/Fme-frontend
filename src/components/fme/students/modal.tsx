@@ -1091,6 +1091,119 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 		</>
 	);
 };
+export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
+	const dispatch = useAppDispatch();
+	const suspend = async () => {
+		
+		const token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
+		if (userId) {
+			try {
+				setIsLoading(true);
+				const { data } = await axios.get(`${BACKEND_URL}/user/suspend/${userId}`, config);
+				if (data) {
+					if (unchangedStudentsList !== null) {
+						const newMdalist = unchangedStudentsList.map((ele) => {
+							return {
+								...ele,
+								is_active: ele.ID === selectedStudentId ? false : ele.IsActive,
+							};
+						});
+						setIsLoading(false);
+						// why does this state not update Immediately on the UI?
+						dispatch(setUnchangedStudentsList(newMdalist));
+						setIsSuccess(true);
+					}
+				}
+			} catch (error: any) {
+				setIsLoading(false);
+				if (error.response) {
+					// if the server responds with an error msg
+					setMsgError({
+						active: true,
+						text: error.response.data.message,
+					});
+					// error.response.data.message
+				} else {
+					setMsgError({
+						active: true,
+						text: error.message,
+					});
+				}
+			}
+		}
+	};
+	const router = useRouter();
+	return (
+		<>
+			<FlexAbsoluteModalStyles>
+				{!isSuccess && !msgError.active && (
+					<TwoButtonModalStyles>
+						<div className="pop">
+							<div className="up">
+								<div className="y" onClick={cancelModal}>
+									{" "}
+									<ErrorIconWrapper>
+										<ErrorAlertIcon />
+									</ErrorIconWrapper>
+									<XIcon />
+								</div>
+								<h4>Close Job Application?</h4>
+								<p>Are you certain about closing this job application? Once closed, it can't be reopened if you reconsider.</p>
+							</div>
+							<div className="down">
+								<button type="button" onClick={cancelModal} className="cancel">
+									Cancel
+								</button>
+								<button type="button" onClick={suspend}>
+									{isLoading ? <ButtonLoader /> : "Close Job"}
+								</button>
+							</div>
+						</div>
+					</TwoButtonModalStyles>
+				)}
+				{isSuccess && (
+					<SuccessModal
+						head="Student has been successfully suspended !"
+						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						cancelModal={cancelModal}
+						hasCancel={true}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				)}
+				{msgError.active && (
+					<FailureModal
+						cancelModal={() =>
+							setMsgError({
+								active: false,
+								text: "",
+							})
+						}
+						head="Failed to suspend Student !"
+						msg={msgError.text}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+					/>
+				)}
+			</FlexAbsoluteModalStyles>
+		</>
+	);
+};
 
 export const ReactivateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
 	const [isSuccess, setIsSuccess] = useState(false);

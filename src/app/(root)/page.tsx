@@ -1,10 +1,10 @@
 'use client'
-import { useState } from 'react';
-import Image from 'next/image'
-import { Diploma, GradCap, Organise, TailoredSearch } from "@/components/landing/faqs/Svgs";
-import "../globals.css";
 import { Verified } from "@/components/fme/course_list/Svg";
-import { usePathname } from 'next/navigation'
+import { Diploma, GradCap, Organise, TailoredSearch } from "@/components/landing/faqs/Svgs";
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import "../globals.css";
 
 // client
 export default function Home() {
@@ -17,10 +17,11 @@ export default function Home() {
     setShowEmployee(false)
   }
 
+
     return (
       <section className={`content-wrapper ${pathname === '/' ? 'bg-[#E7F6EC]':''}`}>
        <div className=" box-border bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
-          <h1 className="animate-fadeIn  text-[32px] text-center md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Artisans</span>  effortlessly<br /> with a <span className=" text-[#00932E]">click</span> </h1>
+          <h1 className="animate-fadeIn  text-[32px] text-center md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Professionals</span>  effortlessly<br /> with a <span className=" text-[#00932E]">click</span> </h1>
           <p className="animate-slideInLeft font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
           <button className="w-fit box-border rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">
   Get started today!
@@ -160,6 +161,7 @@ export default function Home() {
         </div>
        </div>
       </section>
+
     );
   }
 

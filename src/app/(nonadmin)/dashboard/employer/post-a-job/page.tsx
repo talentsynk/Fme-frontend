@@ -34,7 +34,7 @@ const PostAJob = () => {
   const [state, setState] = useState("");
   const [category, setCategory] = useState("");
 	const [stateOfOrigin, setStateOfOrigin] = useState("");
-const [categories,setCategories]=useState(["On-hire job","Contact job"])
+const [categories,setCategories]=useState(["full time","part time"])
 	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
 	const [states, setStates] = useState(States);
 	const NaijaStates = require('naija-state-local-government');

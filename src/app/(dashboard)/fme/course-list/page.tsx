@@ -65,9 +65,6 @@ export default function Home() {
 				dispatch(setUnchangedCoursesList(data));
 				dispatch(setSelectedCourseId(null));
 
-				// store data in redux so it can reused across components for easy lookup
-				// dispatch(setUnchangedMdaList(data));
-				// dispatch(setSelectedMdaId(null));
 				const maxMdaId = data.reduce((max: number, obj: ICourseCompData) => Math.max(max, obj.Id), 0);
 				dispatch(setFakeNewCourseId(maxMdaId));
 			})
