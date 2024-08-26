@@ -1162,7 +1162,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 									<XIcon />
 								</div>
 								<h4>Close Job Application?</h4>
-								<p>Are you certain about closing this job application? Once closed, it can't be reopened if you reconsider.</p>
+								<p>Are you certain about closing this job application? Once closed, it can&apos;t be reopened if you reconsider.</p>
 							</div>
 							<div className="down">
 								<button type="button" onClick={cancelModal} className="cancel">
