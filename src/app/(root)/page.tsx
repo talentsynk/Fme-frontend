@@ -16,6 +16,7 @@ export default function Home() {
   const handleArtisans=()=>{
     setShowEmployee(false)
   }
+ 
 
 
     return (
@@ -161,6 +162,8 @@ export default function Home() {
         </div>
        </div>
       </section>
+       
+
 
     );
   }

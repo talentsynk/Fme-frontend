@@ -937,7 +937,25 @@ export const TwoButtonModalStyles = styled.div`
       align-items: center;
       justify-content: space-between;
     }
-
+    .z{
+      border-radius:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background-color:#E7F6EC;
+      margin-block:8px;
+      padding:1rem;
+      h5{
+        color:black;
+        font-weight:700;
+        line-height:24px
+      }
+      p{
+        font-weight:500;
+        color:black;
+        font-size:12px;
+      }
+    }
     .l {
       display: flex;
       justify-content: center;

@@ -48,6 +48,7 @@ import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
+import { ArtisansContactCard } from "@/components/landing/faqs/Svgs";
 
 interface IOneButtonModal {
 	cancelModal: () => void;
@@ -1172,6 +1173,79 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 									{isLoading ? <ButtonLoader /> : "Close Job"}
 								</button>
 							</div>
+						</div>
+					</TwoButtonModalStyles>
+				)}
+				{isSuccess && (
+					<SuccessModal
+						head="Student has been successfully suspended !"
+						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						cancelModal={cancelModal}
+						hasCancel={true}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				)}
+				{msgError.active && (
+					<FailureModal
+						cancelModal={() =>
+							setMsgError({
+								active: false,
+								text: "",
+							})
+						}
+						head="Failed to suspend Student !"
+						msg={msgError.text}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+					/>
+				)}
+			</FlexAbsoluteModalStyles>
+		</>
+	);
+};
+export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	
+	const router = useRouter();
+	return (
+		<>
+			<FlexAbsoluteModalStyles>
+				{!isSuccess && !msgError.active && (
+					<TwoButtonModalStyles>
+						<div className="pop">
+							<div className="up">
+								<div className="y" onClick={cancelModal}>
+									{" "}
+									
+									<div className=" flex gap-4 items-center"><ArtisansContactCard />
+									<p>Artisans contact card</p></div>
+									<XIcon />
+								</div>
+								<div className="z">
+									<div className="">
+										<h5 className="">Give artisan a call</h5>
+										<p className="">09034526789</p>
+									</div>
+									<CopyIcon text="09034526789" />
+								</div>
+								<div className="z">
+									<div className="">
+										<h5 className="">Send artisan a mail</h5>
+										<p className="">alarapetimi@gmail.com</p>
+									</div>
+									<CopyIcon text="alarapetimi@gmail.com" />
+								</div>
+								
+							</div>
+							
 						</div>
 					</TwoButtonModalStyles>
 				)}

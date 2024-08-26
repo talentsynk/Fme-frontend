@@ -1,11 +1,13 @@
-import React from 'react'
+'use client'
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
 import { AirplaneIcon, SmallRedIcon, SmallVerified, VerifiedTick } from '@/components/landing/faqs/Svgs'
 import Recommendations from '@/components/employer/Recommendations'
-import Image from 'next/image'
-import Link from 'next/link'
 import { GreyArrowRight } from '@/components/icons/artisan/icons'
+import { HireArtisanComp } from '@/components/fme/students/modal'
 
-const page = () => {
+const ReviewPage = () => {
   const reviews=[
     {
       name:"Oluwatimilehin Alarapee",
@@ -23,8 +25,13 @@ const page = () => {
       id:3
     },
   ]
+  
+  const [showHireArtisanModal, setShowHireArtisanModal] = useState(false);
+  const cancelModal=()=>{
+    console.log(1)
+  }
   return (
-    <section className="">
+<section className="">
 <div className=" flex gap-2 items-center p-2 ">
             <Link href="/dashboard/employer">
               <p className="text-[#BFBFBF] text-[12px] md:text-[16px] font-medium leading-6">Job Portal</p>
@@ -69,10 +76,10 @@ const page = () => {
   </div>
   <div className=" flex gap-2 pt-8">
     <button className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button>
-    <button className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"> <p className="">Hire Artisan</p><AirplaneIcon /></button>
+    <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"> <p className="">Hire Artisan</p><AirplaneIcon /></button>
   </div>
   </div>
-  
+  {showHireArtisanModal && <HireArtisanComp handleModalAction={cancelModal} cancelModal={() => setShowHireArtisanModal(false)} />}
 </div>
 
   <div className="md:w-[70%]">
@@ -89,5 +96,5 @@ const page = () => {
   )
 }
 
-export default page
+export default ReviewPage
  
