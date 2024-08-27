@@ -920,6 +920,12 @@ export const TwoButtonModalStyles = styled.div`
       gap: 1rem;
       padding: 1.5rem 1.5rem 1.5rem 1.5rem;
     }
+    .up {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    }
     .x {
       svg {
         cursor: pointer;
@@ -993,6 +999,12 @@ export const TwoButtonModalStyles = styled.div`
       font-style: normal;
       font-weight: 700;
       line-height: 1.25rem; /* 142.857% */
+    }
+    .downn{
+      padding-block:0;
+    }
+    .btnn{
+      background-color:#00923E;
     }
     .cancel {
       color: #111;

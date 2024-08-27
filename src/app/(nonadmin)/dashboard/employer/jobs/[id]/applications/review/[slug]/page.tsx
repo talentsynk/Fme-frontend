@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { AirplaneIcon, SmallRedIcon, SmallVerified, VerifiedTick } from '@/components/landing/faqs/Svgs'
+import { AirplaneIcon, RecommendArtisans, SmallRedIcon, SmallVerified, VerifiedTick } from '@/components/landing/faqs/Svgs'
 import Recommendations from '@/components/employer/Recommendations'
 import { GreyArrowRight } from '@/components/icons/artisan/icons'
 import { HireArtisanComp } from '@/components/fme/students/modal'
@@ -41,7 +41,7 @@ const ReviewPage = () => {
               <p className="text-[#BFBFBF] text-[12px] md:text-[16px] font-medium leading-6">View job details</p>
             </Link>
             <GreyArrowRight />
-            <Link href="/" className="text-[#BFBFBF] font-medium leading-6 text-[12px] md:text-[16px]">View Job Applications</Link>
+            <Link href="/dashboard/employer/jobs/1/applications" className="text-[#BFBFBF] font-medium leading-6 text-[12px] md:text-[16px]">View Job Applications</Link>
             <GreyArrowRight />
             <p  className="text-[#00932E] text-[12px] md:text-[16px] font-bold leading-6">Review Profile</p>
           </div>
@@ -58,7 +58,7 @@ const ReviewPage = () => {
   <p className=" text-black-70 font-medium text-[12px]">I work with interior designers to build awesome custom furnitures and wood panels. I write code, design UI elements, implement design systems, optimize performance, enhance accessibility, assist with SEO, ensure conversion, and integrate headless CMS tools. My experience spotting the details and hitting deadlines spans well over a decade and has benefited brands like Figma, Pentagram, ASICS, Contra, and many more.</p>
   <h5 className=" text-black font-bold text-[12px] ">SKILLS</h5>
   <div className=" flex gap-2">
-    <div className=" bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">fashiond esigner</div>
+    <div className=" bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">fashion designer</div>
     <div className="bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">creative</div>
   </div>
   <h5 className=" text-black font-bold text-[12px] ">STATS</h5>
@@ -83,8 +83,12 @@ const ReviewPage = () => {
 </div>
 
   <div className="md:w-[70%]">
-    <div className=" border-b-[#EBEDEF] border-b-[1px] border-solid">
+    <div className=" border-b-[#EBEDEF] border-b-[1px] border-solid flex justify-between ">
     <h3 className=" w-fit border-b-2 border-b-[#00932E] border-solid">RECOMMENDATIONS(20)</h3>
+    {/* <button className="mb-2 bg-[#E7F6EC] rounded-md py-2 px-3 flex gap-1">
+      <RecommendArtisans />
+      <h5 className=" text-sm font-bold leading-5 text-[#00932E]">Recommend Artisans</h5>
+    </button> */}
     </div>
     <div className=" space-y-2">
 

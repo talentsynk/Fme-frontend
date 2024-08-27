@@ -1,13 +1,15 @@
 'use client'
 import { Verified } from "@/components/fme/course_list/Svg";
-import { Diploma, GradCap, Organise, TailoredSearch } from "@/components/landing/faqs/Svgs";
+import { Diploma, GradCap, Organise, Stats, TailoredSearch } from "@/components/landing/faqs/Svgs";
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import "../globals.css";
 
+
 // client
 export default function Home() {
+ 
   const pathname = usePathname()
   const [showEmployee,setShowEmployee]= useState(true)
   const handleEmployee=()=>{
@@ -16,6 +18,7 @@ export default function Home() {
   const handleArtisans=()=>{
     setShowEmployee(false)
   }
+
  
 
 
@@ -83,7 +86,7 @@ export default function Home() {
         </div>
        </div>
        <div className=" space-y-8 py-16">
-        <h3 className="animate-slideInLeft text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">artisans</span></h3>
+        <h3 className="animate-slideInLeft text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">skilled professionals</span></h3>
         <p className="animate-bounce text-center md:w-1/2 mx-2 md:mx-auto  text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum exercitationem ullam expedita aut dolore impedit deleniti cumque nemo sit tempora.</p>
         <div className="carousel-item flex-none   carousel-item  flex flex-col space-y-4 px-2 carousel  md:flex-row gap-4 items-center md:items-start md:overflow-x-auto scrollbar-hide w-full">
           <div className=" my-2  relative h-[350px]">

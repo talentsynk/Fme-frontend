@@ -17,8 +17,17 @@ import { StateCompStyles,StatesDropdownStyles } from "@/components/fme/mda/style
 import { Bag,WhiteBag } from "@/components/landing/faqs/Svgs";
 import Link from "next/link";
 import { GreyArrowRight } from "@/components/icons/artisan/icons";
+import { PostJobComp } from "@/components/fme/students/modal";
 
 const PostAJob = () => {
+	const [showJobModal, setShowJobModal] = useState(false);
+	const cancelModal=()=>{
+		console.log(1)
+	  }
+	  const handleSubmit=(e: React.MouseEvent<HTMLButtonElement>)=>{
+		e.preventDefault()
+		setShowJobModal(true)
+	  }
   const [formData, setFormData] = useState({
 		title:"",
 		category:"",
@@ -304,7 +313,7 @@ onInput={(e) => {
       />
 						</div>		
             </section>
-            <button
+            <button onClick={handleSubmit}
 							className={`w-full mt-4 h-9 text-white font-semibold border-[1px] rounded-md ${
 								isEmpty() 
 									? "bg-[#D0D5DD] cursor-not-allowed"
@@ -315,6 +324,7 @@ onInput={(e) => {
 							Post a Job{" "}
 						</button>
           </form>
+		  {showJobModal && <PostJobComp handleModalAction={cancelModal} cancelModal={() => setShowJobModal(false)} />}
         </section>
     </section>
   )

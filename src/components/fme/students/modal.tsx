@@ -49,6 +49,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
 import { ArtisansContactCard } from "@/components/landing/faqs/Svgs";
+import Image from "next/image";
 
 interface IOneButtonModal {
 	cancelModal: () => void;
@@ -1171,6 +1172,77 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 								</button>
 								<button type="button" onClick={suspend}>
 									{isLoading ? <ButtonLoader /> : "Close Job"}
+								</button>
+							</div>
+						</div>
+					</TwoButtonModalStyles>
+				)}
+				{isSuccess && (
+					<SuccessModal
+						head="Student has been successfully suspended !"
+						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						cancelModal={cancelModal}
+						hasCancel={true}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				)}
+				{msgError.active && (
+					<FailureModal
+						cancelModal={() =>
+							setMsgError({
+								active: false,
+								text: "",
+							})
+						}
+						head="Failed to suspend Student !"
+						msg={msgError.text}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+					/>
+				)}
+			</FlexAbsoluteModalStyles>
+		</>
+	);
+};
+export const PostJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const router = useRouter();
+	return (
+		<>
+			<FlexAbsoluteModalStyles>
+				{!isSuccess && !msgError.active && (
+					<TwoButtonModalStyles>
+						<div className="pop">
+							
+							<div className="up">
+								<div className="y" onClick={cancelModal}>
+									{" "}
+									<div>
+										
+									</div>
+									<XIcon />
+								</div>
+								<div className=" flex justify-center">
+								
+								<Image src="/images/landing/job-cv-KTzVOIalGi.png" alt="job" width={100} height={100} />
+							</div>
+								<div className=" flex flex-col items-center">
+								<h4>Your Job has been succesfully posted</h4>
+								<p>Are you certain about closing this job application? </p>
+								</div>
+							</div>
+							
+							<div className="down downn">
+								<button type="button" onClick={()=>router.push("/dashboard/employer")} className="btnn">
+									Go back to dashboard
 								</button>
 							</div>
 						</div>
