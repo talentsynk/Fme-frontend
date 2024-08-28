@@ -1,4 +1,13 @@
+interface IEmployerData{
+  JobTitle:string;
+  Description:string;
+  Status:string;
+  Id:number|null|undefined;
+  Amount:number;
+  JobType:string;
+}
 'use client'
+import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
@@ -10,7 +19,7 @@ import { BACKEND_URL } from "@/lib/config";
 
 
 const EmployerHome = () => {
-
+  const router=useRouter()
   console.log(1)
   const dummy=[
     {
@@ -50,7 +59,7 @@ const EmployerHome = () => {
       id:6
     }
   ]
-  const [data,setData]= useState(null)
+  const [data,setData]= useState<IEmployerData[]|null>(null)
 
   console.log(1)
 	useEffect(() => {
@@ -62,16 +71,15 @@ const EmployerHome = () => {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/jobs/get-latest-job`, config)
+			.get(`${BACKEND_URL}/job/my-jobs`, config)
 			.then((res) => {
-        console.log(res)
-        console.log(10)
-        //log res to the console before you know its constituents
-				const data = res.data.course;
+        // console.log(res.data.jobs)
+				const data = res.data.jobs;
 				setData(data);
 			})
 			.catch((error) => console.log(error));
 	}, []);
+  console.log(data)
 
   return (
     <section className=" p-4">
@@ -100,12 +108,12 @@ const EmployerHome = () => {
     <section className=" flex flex-col md:flex-row justify-between py-8">
       <section className={`p-4 md:w-[55%] rounded-[10px] ${dummy.length>0?"h-fit":""}  `}>
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs Posted</h4>
-            <section className={`${dummy.length==0&&" flex justify-center items-center my-auto h-full"}`}>
+            <section className={`${data && data.length==0&&" flex justify-center items-center my-auto h-full"}`}>
 
-            <div className={`flex flex-col gap-2 ${dummy.length==0&&" justify-center items-center"}`}>
+            <div className={`flex flex-col gap-4 ${dummy.length==0&&" justify-center items-center"}`}>
               
-              {dummy.length>0?(
-                dummy.map(dum=>(<EmployersOragonCard key={dum.id} {...dum} />))
+              {data && data.length>0?(
+                data?.map(dum=>(<EmployersOragonCard key={dum.Id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
@@ -114,7 +122,7 @@ const EmployerHome = () => {
                     </div>
                       <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t created any job yet.
 To post a job “click on this button”</p>
-                      <button className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Post a Job</button>
+                      <button onClick={()=>{router.push('/dashboard/employer/post-a-job')}} className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Post a Job</button>
                 </section>
               )}
             </div>

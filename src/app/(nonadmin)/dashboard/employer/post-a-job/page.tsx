@@ -93,7 +93,7 @@ const [categories,setCategories]=useState(["full time","part time"])
 
 
   return (
-    <section className=" p-8">
+    <section className="p-4 md:p-8">
         <div className="flex gap-1 items-center">
             <Link href="/dashboard/employer">
               <p className=" text-[16px] leading-[24px] font-medium text-black-25">Dashboard</p>
@@ -101,21 +101,21 @@ const [categories,setCategories]=useState(["full time","part time"])
             <GreyArrowRight />
             <p className="text-[16px] leading-[24px] font-bold text-[#00932E]">Post a job</p>
           </div>
-        <div className="flex justify-center gap-2 pb-4">
+        <div className="flex justify-center gap-2 py-4">
             <DarkGreenBag />
             <h2 className=" text-[36px] leading-[44px] font-medium">Post a job</h2>
         </div>
-        <section className=" flex flex-col md:flex-row gap-4">
-          <div className="bg-[#00932E] h-[490px] rounded-[10px] p-4 relative">
+        <section className=" flex flex-col-reverse md:flex-row gap-4">
+          <div className="bg-[#00932E] h-[490px] rounded-[10px] px-4 pt-6 relative">
             <h3 className="text-center md:text-[24px] text-[18px] font-bold leading-[32px] text-white">Post your job on M.S.K.I.C seamlessly</h3>
             <p className="text-center  md:text-[14px] text-[12px] font-medium leading-[20px] text-white">Check “   ” all the boxes to stand out in the market with your profile</p>
             <div className="h-[50px] absolute right-6 top-[25%] flex justify-center items-center w-[50px] rounded-[50%] bg-white"><HandMoney /></div>
             <div className="h-[50px] absolute left-8 top-[35%] flex justify-center items-center w-[50px] rounded-[50%] bg-white"><Bag /></div>
-            <Image src="/images/landing/post-a-job.png" alt=" Post a job" width={400} height={400} />
+            <Image src="/images/landing/post-a-job.png"  alt=" Post a job" width={400} height={490} />
           </div>
           <form action="" className=" flex-1">
-            <h5 className="text-center md:text-left text-[18px] md:text-[24px] leading-[32px] text-[#101928] font-bold">Fill in the necessary details</h5>
-            <p className="text-center md:text-left  md:text-[18px] text-[14px] font-medium leading-[24px] text-[#667185]">Take a look at your policy and the new policy to see what is covered</p>
+            <h5 className="text-left text-[18px] md:text-[24px] leading-[32px] text-[#101928] font-bold">Fill in the necessary details</h5>
+            <p className="text-left  md:text-[18px] text-[14px] font-medium leading-[24px] text-[#667185]">Take a look at your policy and the new policy to see what is covered</p>
             <section className=" space-y-2">
             <div className="">
 							<label htmlFor="address" className="text-[#101928] font-semibold text-sm">

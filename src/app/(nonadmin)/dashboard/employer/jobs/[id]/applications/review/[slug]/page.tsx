@@ -1,13 +1,22 @@
 'use client'
-import { useState } from 'react'
+import { useState,useEffect } from "react";
+import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
 import Link from 'next/link'
 import Image from 'next/image'
-import { AirplaneIcon, RecommendArtisans, SmallRedIcon, SmallVerified, VerifiedTick } from '@/components/landing/faqs/Svgs'
+import { AirplaneIcon, RecommendArtisans, SmallRedIcon, SmallVerified, Stats, VerifiedTick } from '@/components/landing/faqs/Svgs'
 import Recommendations from '@/components/employer/Recommendations'
 import { GreyArrowRight } from '@/components/icons/artisan/icons'
-import { HireArtisanComp } from '@/components/fme/students/modal'
+import { CloseHireArtisanComp, HireArtisanComp } from '@/components/fme/students/modal'
 
-const ReviewPage = () => {
+const ReviewPage = ({ params }: { params: { slug: string } }) => {
+  console.log(params.slug)
+  const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [data,setData]= useState(null)
+  const cancelModal=()=>{
+    console.log(1)
+  }
   const reviews=[
     {
       name:"Oluwatimilehin Alarapee",
@@ -27,9 +36,25 @@ const ReviewPage = () => {
   ]
   
   const [showHireArtisanModal, setShowHireArtisanModal] = useState(false);
-  const cancelModal=()=>{
-    console.log(1)
-  }
+  useEffect(() => {
+		let token = Cookies.get("token");
+    console.log(token)
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/artisan/1`, config)
+			.then((res) => {
+				const data = res.data;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+  console.log(data)
+
+
   return (
 <section className="">
 <div className=" flex gap-2 items-center p-2 ">
@@ -61,7 +86,10 @@ const ReviewPage = () => {
     <div className=" bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">fashion designer</div>
     <div className="bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">creative</div>
   </div>
+  <div className=" flex gap-1 items-center">
+  <Stats />
   <h5 className=" text-black font-bold text-[12px] ">STATS</h5>
+  </div>
   <div className=" flex justify-between text-black text-[12px] font-medium">
     <p className="">Project Completed</p>
     <p className="">1</p>
@@ -75,10 +103,11 @@ const ReviewPage = () => {
     <p className="">10</p>
   </div>
   <div className=" flex gap-2 pt-8">
-    <button className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button>
+    <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button>
     <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"> <p className="">Hire Artisan</p><AirplaneIcon /></button>
   </div>
   </div>
+  {showSuspendModal && <CloseHireArtisanComp handleModalAction={cancelModal} cancelModal={() => setShowSuspendModal(false)} />}
   {showHireArtisanModal && <HireArtisanComp handleModalAction={cancelModal} cancelModal={() => setShowHireArtisanModal(false)} />}
 </div>
 
