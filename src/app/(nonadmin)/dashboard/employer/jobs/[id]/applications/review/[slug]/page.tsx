@@ -1,3 +1,10 @@
+interface IArtisan{
+  AverageRating:number;
+  BusinessDescription:string;
+  BusinessName:string;
+  ID:number;
+  Skill:string;
+}
 'use client'
 import { useState,useEffect } from "react";
 import Cookies from "js-cookie";
@@ -13,7 +20,7 @@ import { CloseHireArtisanComp, HireArtisanComp } from '@/components/fme/students
 const ReviewPage = ({ params }: { params: { slug: string } }) => {
   console.log(params.slug)
   const [showSuspendModal, setShowSuspendModal] = useState(false);
-  const [data,setData]= useState(null)
+  const [data,setData]= useState<IArtisan|null>(null)
   const cancelModal=()=>{
     console.log(1)
   }
@@ -47,7 +54,7 @@ const ReviewPage = ({ params }: { params: { slug: string } }) => {
 		axios
 			.get(`${BACKEND_URL}/artisan/1`, config)
 			.then((res) => {
-				const data = res.data;
+				const data = res.data.artisan;
 				setData(data);
 			})
 			.catch((error) => console.log(error));
@@ -75,15 +82,15 @@ const ReviewPage = ({ params }: { params: { slug: string } }) => {
 <div className="md:w-[30%] border-[#EBEDEF] border-solid border-[1px]">
   <div className=" bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
     <Image src="/images/landing/detective.png" width={120} height={120} alt="review " />
-    <h4 className=" text-white font-bold text-lg">Oluwatimilehin Alarape</h4>
+    <h4 className=" text-white font-bold text-lg">{data?.BusinessName}</h4>
     <div className=" rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center"><SmallVerified /><p className=" text-[12px] text-[#00932E]  font-medium">Verified</p></div>
   </div>
   <div className="p-4 space-y-2">
   <h5 className=" text-black font-bold text-[12px] ">ABOUT</h5>
-  <p className=" text-black-70 font-medium text-[12px]">I work with interior designers to build awesome custom furnitures and wood panels. I write code, design UI elements, implement design systems, optimize performance, enhance accessibility, assist with SEO, ensure conversion, and integrate headless CMS tools. My experience spotting the details and hitting deadlines spans well over a decade and has benefited brands like Figma, Pentagram, ASICS, Contra, and many more.</p>
+  <p className=" text-black-70 font-medium text-[12px]">{data?.BusinessDescription}</p>
   <h5 className=" text-black font-bold text-[12px] ">SKILLS</h5>
   <div className=" flex gap-2">
-    <div className=" bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">fashion designer</div>
+    <div className=" bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">{data?.Skill}</div>
     <div className="bg-[#f5f5f5] p-2.5 rounded text-black font-medium text-[12px]">creative</div>
   </div>
   <div className=" flex gap-1 items-center">

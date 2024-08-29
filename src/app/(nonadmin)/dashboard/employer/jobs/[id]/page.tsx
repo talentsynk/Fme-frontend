@@ -35,6 +35,7 @@ import { useRouter } from "next/navigation";
 const JobDetailPage = ({ params }: { params: { id: string } }) => {
   const lol=params.id
   console.log(lol)
+  const [isJobClosed, setIsJobClosed] = useState(false);
   const router = useRouter();
   const [data, setData] = useState<IEmployerData|null>(null);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
@@ -63,6 +64,11 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 
   const responsibilities=["Gather and evaluate user requirements in collaboration with product managers and engineers","Illustrate design ideas using storyboards, process flows and sitemaps","Design graphic user interface elements, like menus, tabs and widgets","Build page navigation buttons and search fields","Develop UI mockups and prototypes that clearly illustrate how sites function and look like"]
   const requirements=["Proven work experience as a UI/UX Designer or similar role","Portfolio of design projects","Knowledge of wireframe tools (e.g. Wireframe.cc and InVision)","Up-to-date knowledge of design software like Adobe Illustrator and Photoshop","Team spirit; strong communication skills to collaborate with various stakeholders"]
+  const handleModalAction = () => {
+    // Here you should update the job status based on the modal's action
+    setIsJobClosed(prevState => !prevState); // Toggle the job status
+    setShowSuspendModal(false);
+  };
   return (
     <JobDetailPageStyle>
       <PaddedSectionStyles>
@@ -147,11 +153,12 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div className="btns">
               <button type="button" className="apply"  onClick={() => setShowSuspendModal(true)}>
-                Close Job Application
+              {isJobClosed ? "Open Job Application" : "Close Job Application"}
               </button>
             </div>
           </div>
-          {showSuspendModal && <CloseJobComp handleModalAction={cancelModal} cancelModal={() => setShowSuspendModal(false)} />}
+          {showSuspendModal && <CloseJobComp    handleModalAction={handleModalAction}
+          isJobClosed={isJobClosed} cancelModal={() => setShowSuspendModal(false)} />}
         </div>
       </PaddedSectionStyles>
     </JobDetailPageStyle>

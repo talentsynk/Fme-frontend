@@ -1,3 +1,15 @@
+interface IApplication{
+  ApplicationId:number;
+  ArtisanId:number;
+  AverageRating:number;
+  ApplicationStatus:string;
+  BusinessDescription:string;
+  BusinessName:string;
+  FirstName:string;
+  LastName:string;
+  JobApplicationDate:string;
+
+}
 'use client'
 import React from 'react'
 import Link from 'next/link'
@@ -10,7 +22,7 @@ import JobApplication from '@/components/employer/JobApplication'
 
 const JobApplications = ({ params }: { params: { id: string } }) => {
   console.log(params.id)
-  const [data,setData]=useState(null)
+  const [data,setData]=useState<IApplication[]|null>(null)
     const applications=[
         {
             name:"Oragon confectioneries",
@@ -61,7 +73,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
       axios
         .get(`${BACKEND_URL}/job/applicants/1`, config)
         .then((res) => {
-          const data = res.data;
+          const data = res.data.applicants;
           setData(data);
         })
         .catch((error) => console.log(error));
@@ -112,10 +124,10 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
     <section className=" md:w-[80%]">
 
 <section className="">
-<div className={` ${applications.length>0?'grid-container grid gap-8':'flex justify-center items-center'} px-4`}>
-{applications.length > 0 ? (
-        applications.map(app => (
-          <JobApplication key={app.id} {...app} />
+<div className={` ${data && data?.length>0?'grid-container grid gap-8':'flex justify-center items-center'} px-4`}>
+{data && data?.length > 0 ? (
+        data?.map(app => (
+          <JobApplication key={app.ArtisanId} {...app} />
         ))
       ) : (
         <div className="flex justify-center items-center h-full">

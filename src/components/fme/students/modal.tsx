@@ -975,6 +975,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 interface ITwoActions {
 	cancelModal: () => void;
 	handleModalAction?: () => void;
+	isJobClosed?:boolean;
 }
 
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
@@ -1093,116 +1094,112 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 		</>
 	);
 };
-export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,isJobClosed }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [msgError, setMsgError] = useState<Ierror>({
-		active: false,
-		text: "",
-	});
-
-	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
-	const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+//   const [isJobClosed, setIsJobClosed] = useState(false); 
+  const [msgError, setMsgError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
 	const suspend = async () => {
-		
-		const token = Cookies.get("token");
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
-		if (userId) {
-			try {
-				setIsLoading(true);
-				const { data } = await axios.get(`${BACKEND_URL}/user/suspend/${userId}`, config);
-				if (data) {
-					if (unchangedStudentsList !== null) {
-						const newMdalist = unchangedStudentsList.map((ele) => {
-							return {
-								...ele,
-								is_active: ele.ID === selectedStudentId ? false : ele.IsActive,
-							};
-						});
-						setIsLoading(false);
-						// why does this state not update Immediately on the UI?
-						dispatch(setUnchangedStudentsList(newMdalist));
-						setIsSuccess(true);
-					}
-				}
-			} catch (error: any) {
-				setIsLoading(false);
-				if (error.response) {
-					// if the server responds with an error msg
-					setMsgError({
-						active: true,
-						text: error.response.data.message,
-					});
-					// error.response.data.message
-				} else {
-					setMsgError({
-						active: true,
-						text: error.message,
-					});
-				}
-			}
+		setIsLoading(true);
+		try {
+		  // Replace '1' with the dynamic job ID if needed
+		  await axios.get(`${BACKEND_URL}/job/close/1`);
+		  setIsSuccess(true);
+		} catch (error) {
+		  setMsgError({
+			active: true,
+			text: "Failed to close the job application.",
+		  });
+		} finally {
+		  setIsLoading(false);
 		}
-	};
+	  };
+	  const handleJobAction = async () => {
+		setIsLoading(true);
+		try {
+		  if (isJobClosed) {
+			// Reopen job application
+			await axios.get(`${BACKEND_URL}/job/open/1`);
+			setIsSuccess(true);
+			
+		  } else {
+			// Close job application
+			await axios.get(`${BACKEND_URL}/job/close/1`);
+			setIsSuccess(true);
+			
+		  }
+		} catch (error) {
+		  setMsgError({
+			active: true,
+			text: `Failed to ${isJobClosed ? "reopen" : "close"} the job application.`,
+		  });
+		} finally {
+		  setIsLoading(false);
+		}
+	  };
+	
 	const router = useRouter();
 	return (
 		<>
 			<FlexAbsoluteModalStyles>
-				{!isSuccess && !msgError.active && (
-					<TwoButtonModalStyles>
-						<div className="pop">
-							<div className="up">
-								<div className="y" onClick={cancelModal}>
-									{" "}
-									<ErrorIconWrapper>
-										<ErrorAlertIcon />
-									</ErrorIconWrapper>
-									<XIcon />
-								</div>
-								<h4>Close Job Application?</h4>
-								<p>Are you certain about closing this job application? Once closed, it can&apos;t be reopened if you reconsider.</p>
-							</div>
-							<div className="down">
-								<button type="button" onClick={cancelModal} className="cancel">
-									Cancel
-								</button>
-								<button type="button" onClick={suspend}>
-									{isLoading ? <ButtonLoader /> : "Close Job"}
-								</button>
-							</div>
-						</div>
-					</TwoButtonModalStyles>
-				)}
-				{isSuccess && (
-					<SuccessModal
-						head="Student has been successfully suspended !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
-						cancelModal={cancelModal}
-						hasCancel={true}
-						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
-						navigationText="Go back to Dashboard"
-					/>
-				)}
-				{msgError.active && (
-					<FailureModal
-						cancelModal={() =>
-							setMsgError({
-								active: false,
-								text: "",
-							})
-						}
-						head="Failed to suspend Student !"
-						msg={msgError.text}
-						navigationFunction={cancelModal}
-						navigationText="Go back to Dashboard"
-						hasCancel={true}
-					/>
-				)}
-			</FlexAbsoluteModalStyles>
+      {!isSuccess && !msgError.active && (
+        <TwoButtonModalStyles>
+          <div className="pop">
+            <div className="up">
+              <div className="y" onClick={cancelModal}>
+                <ErrorIconWrapper>
+                  <ErrorAlertIcon />
+                </ErrorIconWrapper>
+                <XIcon />
+              </div>
+              <h4>{isJobClosed ? "Open Job Application?" : "Close Job Application?"}</h4>
+              <p>
+                {isJobClosed 
+                  ? "Are you certain about reopening this job application? Once reopened, it will be open for new applications."
+                  : "Are you certain about closing this job application? Once closed, it can’t be reopened if you reconsider."
+                }
+              </p>
+            </div>
+            <div className="down">
+              <button type="button" onClick={cancelModal} className="cancel">
+                Cancel
+              </button>
+              <button type="button" onClick={handleJobAction}>
+                {isLoading ? <ButtonLoader /> : isJobClosed ? "Open Job" : "Close Job"}
+              </button>
+            </div>
+          </div>
+        </TwoButtonModalStyles>
+      )}
+      {isSuccess && (
+        <SuccessModal
+          head={`Job has been successfully ${isJobClosed ? "reopened" : "closed"}!`}
+          msg={`The job application is now ${isJobClosed ? "open" : "closed"}.`}
+          cancelModal={cancelModal}
+          hasCancel={true}
+          navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+          navigationText="Go back to Dashboard"
+        />
+      )}
+      {msgError.active && (
+        <FailureModal
+          cancelModal={() =>
+            setMsgError({
+              active: false,
+              text: "",
+            })
+          }
+          head={`Failed to ${isJobClosed ? "reopen" : "close"} Job Application!`}
+          msg={msgError.text}
+          navigationFunction={cancelModal}
+          navigationText="Go back to Dashboard"
+          hasCancel={true}
+        />
+      )}
+    </FlexAbsoluteModalStyles>
 		</>
 	);
 };
