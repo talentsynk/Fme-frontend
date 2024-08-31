@@ -11,54 +11,17 @@ import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { EmployersOragonCard } from "@/components/landing/OragonCard";
 import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
-import { BACKEND_URL } from "@/lib/config";
 
 
 const EmployerHome = () => {
   const router=useRouter()
   console.log(1)
-  const dummy=[
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:1
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:false,
-      id:2
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:3
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:false,
-      id:4
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:5
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:6
-    }
-  ]
+
   const [data,setData]= useState<IEmployerData[]|null>(null)
 
   console.log(1)
@@ -106,11 +69,11 @@ const EmployerHome = () => {
       </div>
     </section>
     <section className=" flex flex-col md:flex-row justify-between py-8">
-      <section className={`p-4 md:w-[55%] rounded-[10px] ${dummy.length>0?"h-fit":""}  `}>
+      <section className={`p-4 md:w-[55%] rounded-[10px] ${data?.length>0?"h-fit":""}  `}>
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs Posted</h4>
             <section className={`${data && data.length==0&&" flex justify-center items-center my-auto h-full"}`}>
 
-            <div className={`flex flex-col gap-4 ${dummy.length==0&&" justify-center items-center"}`}>
+            <div className={`flex flex-col gap-4 ${data?.length==0&&" justify-center items-center"}`}>
               
               {data && data.length>0?(
                 data?.map(dum=>(<EmployersOragonCard key={dum.Id} {...dum} />))

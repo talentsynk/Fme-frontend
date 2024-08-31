@@ -7,21 +7,28 @@ interface OragonCard{
   JobType:string;
 }
 interface Oragon{
-  title:string;
-  text:string;
-  status:boolean;
-  id:number
+  Name:string;
+  Description:string;
+  ApplicationStatus:string;
+  Id:number|null|undefined
 }
 interface ISavedOragonCard{
-  title:string;
-  text:string;
-  status:string;
-  state:string;
-  price:string;
-  id:number;
+  Name:string;
+  Description:string;
+  Id:number|null|undefined;
+  Amount:number;
+  JobType:string;
+  Location:string
 }
+'use client'
+import {useState,useEffect} from 'react'
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import Link from 'next/link';
-import { Clock, Location, Padlock, Star, Tick } from './faqs/Svgs'
+import { BACKEND_URL } from '@/lib/config';
+import { Clock, LLocation, Padlock, Star, Tick } from './faqs/Svgs'
+import { ButtonLoader, GreenButtonLoader } from '../recovery/style';
 
 const EmployersOragonCard:React.FC<OragonCard> = ({JobTitle,Description,Status,Id,Amount,JobType}) => {
   return (
@@ -43,44 +50,47 @@ const EmployersOragonCard:React.FC<OragonCard> = ({JobTitle,Description,Status,I
     </div>
   )
 }
-const OragonCard:React.FC<Oragon> = ({title,text,status,id}) => {
+const OragonCard:React.FC<Oragon> = ({Name,Description,ApplicationStatus,Id}) => {
   return (
     <div className=' bg-white rounded-2xl p-2 flex gap-2 items-center '>
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
         <div className=" space-y-2 w-full">
-            <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{title}</h5>
-            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{text}</p>
+            <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{Name}</h5>
+            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{Description}</p>
             <div className=" flex justify-between w-full">
               <div className=" space-y-1">
               <h6 className=" text-[12px] font-medium leading-[17px]">Application Status</h6>
-            <button className={` ${status?"bg-[#00932E] text-white" :"bg-[#ffE5DD] text-[#FE764B]"} flex items-center gap-1 rounded-md py-1 px-2 text-[10px] font-bold`}>{status?<Tick />:<Clock />} <span className="">{status?"Job offered":"In Review"}</span></button>
+            <button className={` ${ApplicationStatus?"bg-[#00932E] text-white" :"bg-[#ffE5DD] text-[#FE764B]"} flex items-center gap-1 rounded-md py-1 px-2 text-[10px] font-bold`}>{ApplicationStatus?<Tick />:<Clock />} <span className="">{ApplicationStatus?"Job offered":"In Review"}</span></button>
               </div>
-              <Link href={`/dashboard/artisan/jobs/${id}`} className=" bg-[#00932E] text-white rounded-md flex items-center px-4 text-sm font-medium">View Job</Link>
+              <Link href={`/dashboard/artisan/jobs/${Id}`} className=" bg-[#00932E] text-white rounded-md flex items-center px-4 text-sm font-medium">View Job</Link>
             </div>
         </div>
       
     </div>
   )
 }
-const SavedOragonCard:React.FC<ISavedOragonCard> = ({title,text,status,state,price,id}) => {
+const SavedOragonCard:React.FC<ISavedOragonCard> = ({Description,Amount,JobType,Location,Id,Name}) => {
+
+  
+  const router=useRouter()
   return (
     <div className=' bg-white rounded-2xl border-[#f0f0f0] border border-solid p-2 flex gap-2 items-center '>
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
         <div className=" space-y-2 w-full">
             <div className=' flex justify-between'>
-            <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{title}</h5>
+            <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{Name}</h5>
             <Star />
             </div>
-            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{text}</p>
+            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{Description}</p>
             <div className=" flex justify-between">
               <div className="">
-              <h6 className=" text-[12px] font-medium leading-[17px]">{price} .  {status}</h6>
+              <h6 className=" text-[12px] font-medium leading-[17px]">{Amount} . {JobType}</h6>
             <div className=" flex gap-1 bg-[#F5F5F5] rounded p-1 justify-center items-center">
-              <Location />
-            <p className=" text-[#919191] text-[10px] font-medium">{state}</p>
+              <LLocation />
+            <p className=" text-[#919191] text-[10px] font-medium">{Location}</p>
             </div>
               </div>
-              <Link href={`/dashboard/artisan/jobs/${id}`} className=" bg-[#00932E] text-white rounded-md py-2 px-4 text-sm font-medium">Apply now</Link>
+              <button onClick={()=>{router.push(`/dashboard/artisan/jobs/Id`)}} className=" bg-[#00932E] text-white w-[100px] h-[36px] flex justify-center items-center rounded-md text-sm font-medium"> Apply now</button>
             </div>
         </div>
       

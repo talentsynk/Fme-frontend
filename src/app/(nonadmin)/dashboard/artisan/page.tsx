@@ -1,8 +1,24 @@
+interface IEmployerData{
+  Name:string;
+  Description:string;
+  ApplicationStatus:string;
+  Id:number|null|undefined;
+}
+interface ISavedData{
+  Name:string;
+  Description:string;
+  Id:number|null|undefined;
+  Amount:number;
+  JobType:string;
+  Location:string
+}
 'use client';
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "@/lib/config";
 import ProgressBar from "@/components/artisan/ProgressBar";
 import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
@@ -10,115 +26,49 @@ import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/fa
 
 
 
+
 export default function ArtisansHome(){
-
-  useEffect(()=>{
-    let token = Cookies.get("role");
-    console.log(token)
-
-  },[])
+  const router = useRouter();
+  const [data,setData]= useState<IEmployerData[]|null>(null)
+  const [savedData,setSavedData]= useState<ISavedData[]|null>(null)
   console.log(1)
-  
-
-  const dummy=[
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:1
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:false,
-      id:2
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:3
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:false,
-      id:4
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:5
-    },
-    {
-      title:"Oragon Confectionaries",
-      text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-      status:true,
-      id:6
-    }
-  ]
-
-  const savedOragon=[
-    {
-    title:"Oragon Confectionaries",
-    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-    status:"Part time",
-    id:1,
-    state:"Oyo state",
-    price:"200k"
-  },
-    {
-    title:"Oragon Confectionaries",
-    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-    status:"Part time",
-    id:2,
-    state:"Edo state",
-    price:"150k"
-  },
-    {
-    title:"Oragon Confectionaries",
-    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-    status:"Part time",
-    id:3,
-    state:"Osun state",
-    price:"400k"
-  },
-    {
-    title:"Oragon Confectionaries",
-    text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. Call +234 817 896.......",
-    status:"Part time",
-    id:4,
-    state:"Abia state",
-    price:"200k"
-  },
-]
-const  [showProfile,setShowProfile]=useState(true)
-
-const cancelProfile=()=>{
-  setShowProfile(false)
-}
-
-const [data,setData]= useState(null)
-
 	useEffect(() => {
 		let token = Cookies.get("token");
+    console.log(token)
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/jobs/get-jobs`, config)
+			.get(`${BACKEND_URL}/job/applied-jobs`, config)
 			.then((res) => {
         console.log(res)
-        //log res to the console before you know its constituents
-				const data = res.data.course;
+				const data = res.data.jobs;
 				setData(data);
 			})
 			.catch((error) => console.log(error));
+		axios
+			.get(`${BACKEND_URL}/job/saved-jobs`, config)
+			.then((res) => {
+        console.log(res)
+				const data = res.data.jobs;
+				setSavedData(data);
+			})
+			.catch((error) => console.log(error));
 	}, []);
- 
+  console.log(data)
+  console.log(savedData)
+  
+  
+const  [showProfile,setShowProfile]=useState(true)
+
+const cancelProfile=()=>{
+  setShowProfile(false)
+}
+
+
+
 
     return (
         <section className="bg-white p-4">
@@ -161,14 +111,14 @@ const [data,setData]= useState(null)
           </div>
         </section>
         <section className=" flex flex-col md:flex-row justify-between py-8">
-          <section className={`p-4 md:w-[55%] bg-[#E7F6EC] rounded-[10px] ${dummy.length>0?"h-fit":""}  `}>
+          <section className={`p-4 md:w-[55%] bg-[#E7F6EC] rounded-[10px] ${data && data?.length>0?"h-fit":""}  `}>
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs applied for</h4>
-            <section className={`${dummy.length==0&&" flex justify-center items-center my-auto h-full"}`}>
+            <section className={`${data?.length==0&&" flex justify-center items-center my-auto h-full"}`}>
 
-            <div className={`flex flex-col gap-2 ${dummy.length==0&&" justify-center items-center"}`}>
+            <div className={`flex flex-col gap-2 ${data?.length==0&&" justify-center items-center"}`}>
               
-              {dummy.length>0?(
-                dummy.map(dum=>(<OragonCard key={dum.id} id={dum.id} title={dum.title} text={dum.text} status={dum.status}/>))
+            {data && data.length>0?(
+                data?.map(dum=>(<OragonCard key={dum.Id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
@@ -177,20 +127,21 @@ const [data,setData]= useState(null)
                     </div>
                       <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t applied for any job yet.
 To apply for a job click on this button </p>
-                      <button className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
+                      <button onClick={()=>router.push('/dashboard/artisan/jobs')} className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
                 </section>
               )}
+              
             </div>
             </section>
           </section>
           <section className="p-4 md:w-[42%]  rounded-[10px]  ">
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold flex text-black"><BigStar />Jobs saved for later</h4>
-            <section className={`${savedOragon.length==0&&" flex justify-center items-center my-auto h-full"}`}>
+            <section className={`${savedData?.length==0&&" flex justify-center items-center my-auto h-full"}`}>
 
-            <div className={`flex flex-col gap-2 ${savedOragon.length==0&&" justify-center items-center"}`}>
+            <div className={`flex flex-col gap-2 ${savedData?.length==0&&" justify-center items-center"}`}>
               
-              {savedOragon.length>0?(
-                savedOragon.map(dum=>(<SavedOragonCard key={dum.id} {...dum} />))
+              {savedData && savedData.length>0?(
+                savedData.map(dum=>(<SavedOragonCard key={dum.Id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
@@ -198,7 +149,7 @@ To apply for a job click on this button </p>
                     </div>
                       <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t saved any job for later yet.
 To get started click on this button</p>
-                      <button className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
+                      <button onClick={()=>router.push('/dashboard/artisan/jobs')} className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
                 </section>
               )}
             </div>

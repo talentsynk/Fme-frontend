@@ -44,7 +44,7 @@ const JobApplication:React.FC<IJob> = ({BusinessName,BusinessDescription,Applica
             <div className=" flex justify-end">
                 <p className=" font-medium text-sm leading-5 text-black-25">Applied {hoursAgo} hours ago</p>
             </div>
-            <Link href={`/dashboard/employer/jobs/1/applications/review/${ArtisanId}`}><button className="w-full text-[16px] leading-6 font-bold text-white bg-[#00932E] rounded-md px-4 py-2">Review Profile</button></Link>
+            <Link href={`/dashboard/employer/hire/${ArtisanId}`}><button className="w-full text-[16px] leading-6 font-bold text-white bg-[#00932E] rounded-md px-4 py-2">Review Profile</button></Link>
         </div>
     </section>
   )

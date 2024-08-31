@@ -1,8 +1,13 @@
 'use client'
 interface IForm{
-  title:string;
-  state:string;
-  LocalGovernment:string
+  JobTitle:string;
+  Location:string;
+  JobType:string;
+  Budget:any;
+  Category:string;
+  Requirement:string;
+  Description:string;
+  Responsibilities:string;
 } 
 import { useState,useEffect } from "react";
 import Image from "next/image";
@@ -18,32 +23,38 @@ import { Bag,WhiteBag } from "@/components/landing/faqs/Svgs";
 import Link from "next/link";
 import { GreyArrowRight } from "@/components/icons/artisan/icons";
 import { PostJobComp } from "@/components/fme/students/modal";
+import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
+
 
 const PostAJob = () => {
 	const [showJobModal, setShowJobModal] = useState(false);
 	const cancelModal=()=>{
 		console.log(1)
 	  }
-	  const handleSubmit=(e: React.MouseEvent<HTMLButtonElement>)=>{
-		e.preventDefault()
-		setShowJobModal(true)
-	  }
-  const [formData, setFormData] = useState({
-		title:"",
-		category:"",
-		state:"",
-		LocalGovernment:"",
-        Budget:"",
-        job_desc:"",
-        job_req:"",
+	//   const handleSubmit=(e: React.MouseEvent<HTMLButtonElement>)=>{
+	// 	e.preventDefault()
+	// 	setShowJobModal(true)
+	//   }
+  const [formData, setFormData] = useState<IForm>({
+		JobTitle:"",
+		Location:"",
+		JobType:"",
+		Category:"",
+		Description:"",
+        Budget:null,
+        Requirement:"",
+        Responsibilities:"",
 	})
   const isEmpty = () => {
 		return Object.values(formData).every((value) => value === "");
 	};
   const [state, setState] = useState("");
+  const [jobType, setJobType] = useState("");
   const [category, setCategory] = useState("");
 	const [stateOfOrigin, setStateOfOrigin] = useState("");
-const [categories,setCategories]=useState(["full time","part time"])
+const [categories,setCategories]=useState(["engineering","plumbing"]);
+	const [jobTypes,setJobTypes]=useState(["on-hire","full time"])
 	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
 	const [states, setStates] = useState(States);
 	const NaijaStates = require('naija-state-local-government');
@@ -51,6 +62,7 @@ const [categories,setCategories]=useState(["full time","part time"])
 	const [lga, setLga] = useState("");
 	const [showDropdown, setShowDropdown] = useState(false);
 	const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+	const [showJobTypeDropdown, setShowJobTypeDropdown] = useState(false);
 	const [showLGADropdown, setShowLGADropdown] = useState(false);
 
 
@@ -63,8 +75,12 @@ const [categories,setCategories]=useState(["full time","part time"])
 		setCategory(name);
 		setShowCategoryDropdown(false);
 	};
+	const handleJobTypesSelection = (name: string) => {
+		setJobType(name);
+		setShowJobTypeDropdown(false);
+	};
 
-	const handleChangee = (name:string, value:string) => {
+	const handleChangee = (name:string, value:string|number) => {
 		setFormData({
 		  ...formData,
 		  [name]: value
@@ -90,6 +106,43 @@ const [categories,setCategories]=useState(["full time","part time"])
 		}
 	  }, [stateOfOrigin]);
 
+	  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		console.log(1);
+		e.preventDefault();
+		try {
+		  const token = Cookies.get("token"); // Adjust token retrieval as needed
+	  
+		  // Log the data you're about to send
+		  const jobData = {
+			JobTitle: formData.JobTitle,
+			Location: `${stateOfOrigin},${lga}`,
+			JobType: jobType,
+			Budget: formData.Budget,
+			Category: category,
+			Description: formData.Description,
+			Requirement: formData.Requirement,
+			Responsibilities: formData.Responsibilities,
+		  };
+		  
+		  console.log("Data being sent to backend:", jobData);
+	  
+		  const response = await axios.post(
+			`${BACKEND_URL}/job/create-job`,
+			jobData,
+			{
+			  headers: {
+				Authorization: `Bearer ${token}`,
+			  },
+			}
+		  );
+		  console.log("Job posted successfully", response.data);
+		  setShowJobModal(true);
+		} catch (error) {
+		  console.error("Error posting job", error);
+		}
+	  };
+	  
+
 
 
   return (
@@ -105,7 +158,7 @@ const [categories,setCategories]=useState(["full time","part time"])
             <DarkGreenBag />
             <h2 className=" text-[36px] leading-[44px] font-medium">Post a job</h2>
         </div>
-        <section className=" flex flex-col-reverse md:flex-row gap-4">
+        <section className=" flex flex-col-reverse md:flex-row gap-4 md:gap-8">
           <div className="bg-[#00932E] h-[490px] rounded-[10px] px-4 pt-6 relative">
             <h3 className="text-center md:text-[24px] text-[18px] font-bold leading-[32px] text-white">Post your job on M.S.K.I.C seamlessly</h3>
             <p className="text-center  md:text-[14px] text-[12px] font-medium leading-[20px] text-white">Check “   ” all the boxes to stand out in the market with your profile</p>
@@ -126,10 +179,10 @@ const [categories,setCategories]=useState(["full time","part time"])
 								placeholder="Sales representative needed"
 									type="text"
 									id="title"
-									name="title"
-									onChange={(e) => handleChangee('title', e.target.value)}
-								value={formData.title}
-								onInput={(e) => {
+									name="JobTitle"
+									onChange={(e) => handleChangee('JobTitle', e.target.value)}
+									value={formData.JobTitle}
+									onInput={(e) => {
 									const target = e.target as HTMLInputElement; // Type assertion
 									if (target.value.length > 0) {
 									  // Change border to green if not empty
@@ -147,12 +200,35 @@ const [categories,setCategories]=useState(["full time","part time"])
 									target.classList.remove("border-green", "border-red");
 									target.classList.add("border-gray");
 								  }}
-								  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.title ? "border-green" : formData.title === "" ? "border-red" : ""}`}
+								  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.JobTitle ? "border-green" : formData.JobTitle === "" ? "border-red" : ""}`}
 								/>
 								<div className=" absolute right-2 top-[40%]"><Bag /></div>
 							</div>
 							
 						</div>
+            <div className="form-ele">
+											<label htmlFor="state" className=" font-semibold text-sm text-[#101928]">Job Type</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowJobTypeDropdown(!showJobTypeDropdown)}>
+													<>
+														{jobType === "" ? <p className="placeholder">Please select Job Category</p> : <p className="state-name">{jobType}</p>}
+													</>
+													<AngleDownStyles $isSelected={showJobTypeDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showJobTypeDropdown && (
+													<div className="profile-dropdown z-50 bg-red-800">
+														{jobTypes.map((ele, index) => (
+															<StateCompStyles $isSelected={jobType === ele} key={index} onClick={() => handleJobTypesSelection(ele)}>
+																<p>{ele}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											
+										</div>
             <div className="form-ele">
 											<label htmlFor="state" className=" font-semibold text-sm text-[#101928]">Job category</label>
 											<StatesDropdownStyles>
@@ -230,7 +306,7 @@ const [categories,setCategories]=useState(["full time","part time"])
 									type="text"
 									id="Budget"
 									name="Budget"
-									onChange={(e) => handleChangee('Budget', e.target.value)}
+									onChange={(e) => handleChangee('Budget', Number(e.target.value))}
 								value={formData.Budget}
 								onInput={(e) => {
 									const target = e.target as HTMLInputElement; // Type assertion
@@ -250,7 +326,7 @@ const [categories,setCategories]=useState(["full time","part time"])
 									target.classList.remove("border-green", "border-red");
 									target.classList.add("border-gray");
 								  }}
-								  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Budget ? "border-green" : formData.Budget === "" ? "border-red" : ""}`}
+								  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Budget ? "border-green" : formData.Budget === 0 ? "border-red" : ""}`}
 								/>
 
 							</div>
@@ -263,9 +339,9 @@ const [categories,setCategories]=useState(["full time","part time"])
 							<textarea
         rows={5}
         placeholder="Describe the details of the job"
-        value={formData.job_desc}
+        value={formData.Description}
 		name="job_desc"
-onChange={(e) => handleChangee('job_desc', e.target.value)}
+onChange={(e) => handleChangee('Description', e.target.value)}
 onInput={(e) => {
     const target = e.target as HTMLTextAreaElement;
     if (target.value.length > 0) {
@@ -281,7 +357,7 @@ onInput={(e) => {
     target.classList.remove("border-green", "border-red");
     target.classList.add("border-gray");
   }}
-  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.job_desc ? "border-green" : formData.title === "" ? "border-red" : ""}`}
+  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Description ? "border-green" : formData.JobTitle === "" ? "border-red" : ""}`}
       />
 						</div>
             <div className="">
@@ -291,9 +367,9 @@ onInput={(e) => {
 							<textarea
         rows={5}
         placeholder="if you have other job requirements, list them here"
-        value={formData.job_req}
-		name="job_req"
-onChange={(e) => handleChangee('job_req', e.target.value)}
+        value={formData.Requirement}
+		name="Requirement"
+onChange={(e) => handleChangee('Requirement', e.target.value)}
 onInput={(e) => {
     const target = e.target as HTMLTextAreaElement;
     if (target.value.length > 0) {
@@ -309,7 +385,35 @@ onInput={(e) => {
     target.classList.remove("border-green", "border-red");
     target.classList.add("border-gray");
   }}
-  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.job_req ? "border-green" : formData.title === "" ? "border-red" : ""}`}
+  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Requirement ? "border-green" : formData.JobTitle === "" ? "border-red" : ""}`}
+      />
+						</div>		
+            <div className="">
+							<label htmlFor="about" className="text-[#101928] font-semibold text-sm">
+								List the job responsibilities
+							</label>
+							<textarea
+        rows={5}
+        placeholder="if you have other job responsibilities, list them here"
+        value={formData.Responsibilities}
+		name="Responsibilities"
+onChange={(e) => handleChangee('Responsibilities', e.target.value)}
+onInput={(e) => {
+    const target = e.target as HTMLTextAreaElement;
+    if (target.value.length > 0) {
+      target.classList.add("border-green");
+      target.classList.remove("border-red", "border-gray");
+    } else if (target.value.length === 0) {
+      target.classList.add("border-red");
+      target.classList.remove("border-green", "border-gray");
+    }
+  }}
+  onFocus={(e) => {
+    const target = e.target as HTMLTextAreaElement;
+    target.classList.remove("border-green", "border-red");
+    target.classList.add("border-gray");
+  }}
+  className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Requirement ? "border-green" : formData.JobTitle === "" ? "border-red" : ""}`}
       />
 						</div>		
             </section>

@@ -5,7 +5,7 @@ interface IEmployerData{
   Description:string;
   EmployerFirstName:string;
   EmployerId:string;
-  HiringStatus:string;
+  HiringStatus:boolean;
   Id:string;
   JobTitle:string;
   JobType:string;
@@ -35,7 +35,7 @@ import { useRouter } from "next/navigation";
 const JobDetailPage = ({ params }: { params: { id: string } }) => {
   const lol=params.id
   console.log(lol)
-  const [isJobClosed, setIsJobClosed] = useState(false);
+  const [HiringStatus, setHiringStatus] = useState<boolean|null>(null);
   const router = useRouter();
   const [data, setData] = useState<IEmployerData|null>(null);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
@@ -54,6 +54,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 			.get(`${BACKEND_URL}/job/${lol}`, config)
 			.then((res) => {
 				const data = res.data;
+        setHiringStatus(res.data.HiringStatus)
 				setData(data);
 			})
 			.catch((error) => console.log(error));
@@ -66,7 +67,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
   const requirements=["Proven work experience as a UI/UX Designer or similar role","Portfolio of design projects","Knowledge of wireframe tools (e.g. Wireframe.cc and InVision)","Up-to-date knowledge of design software like Adobe Illustrator and Photoshop","Team spirit; strong communication skills to collaborate with various stakeholders"]
   const handleModalAction = () => {
     // Here you should update the job status based on the modal's action
-    setIsJobClosed(prevState => !prevState); // Toggle the job status
+    setHiringStatus(prevState => !prevState); // Toggle the job status
     setShowSuspendModal(false);
   };
   return (
@@ -126,10 +127,10 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                   </TagStyle>
                 </div>
                 <div className="gas">
-                  <h4>{data?.Location}</h4>
+                  <h4>LOCATION</h4>
                   <TagStyle>
                     <TinyLocationIcon />
-                    <p>Oyo State</p>
+                    <p>{data?.Location}</p>
                   </TagStyle>
                 </div>
                 <div className="gas">
@@ -142,10 +143,10 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                   <h4>SKILL REQUIRED</h4>
                   <div className="sk">
                     <TagStyle>
-                      <p>#FashionDesign</p>
+                      <p>{data?.Skills}</p>
                     </TagStyle>
                     <TagStyle>
-                      <p>#Tailoring</p>
+                      <p>{data?.Skills}</p>
                     </TagStyle>
                   </div>
                 </div>
@@ -153,12 +154,12 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div className="btns">
               <button type="button" className="apply"  onClick={() => setShowSuspendModal(true)}>
-              {isJobClosed ? "Open Job Application" : "Close Job Application"}
+              {HiringStatus ? "Close Job Application" : "Open Job Application"}
               </button>
             </div>
           </div>
           {showSuspendModal && <CloseJobComp    handleModalAction={handleModalAction}
-          isJobClosed={isJobClosed} cancelModal={() => setShowSuspendModal(false)} />}
+          HiringStatus={HiringStatus} cancelModal={() => setShowSuspendModal(false)} />}
         </div>
       </PaddedSectionStyles>
     </JobDetailPageStyle>

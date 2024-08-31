@@ -9,24 +9,23 @@ import { truncateString } from "@/utils/truncateString";
 import { useRouter } from "next/navigation";
 
 export interface IJob {
-  id: string;
-  name: string;
-  date: string; // would be parsed properly
-  location: string;
-  desc: string;
-  type: string;
-  pay: string;
-  isClosed: boolean;
+  Id: string;
+  JobTitle: string;
+  // date: string; // would be parsed properly
+  // Location: string;
+  Description: string;
+  JobType: string;
+  Amount: string;
+  // isClosed: boolean;
 }
 
 export const JobComp: React.FC<IJob> = ({
-  id,
-  name,
-  date,
-  desc,
-  location,
-  type,
-  pay,
+  Id,
+  JobTitle,
+
+  Description,
+  JobType,
+  Amount,
 }) => {
   const router = useRouter();
   return (
@@ -38,22 +37,22 @@ export const JobComp: React.FC<IJob> = ({
       </div>
       <div className="sec">
         <div className="v">
-          <h4>{name}</h4>
-          <p>posted {date} days ago</p>
+          <h4>{JobTitle}</h4>
+          <p>posted 2 days ago</p>
         </div>
         <div className="r">
-          <p>{truncateString(desc, 100)}</p>
+          <p>{truncateString(Description, 100)}</p>
           <div className="r-w">
-            <h4>{pay}</h4>
-            <h4>• {type} Job</h4>
+            <h4>{Amount}</h4>
+            <h4>• {JobType} Job</h4>
           </div>
         </div>
         <div className="btn">
           <div className="bg">
             <TinyLocationIcon />
-            <p>{location} State</p>
+            <p>Oyo State</p>
           </div>
-          <button type="button" onClick={() => router.push(`jobs/${id}`)}>
+          <button type="button" onClick={() => router.push(`jobs/${Id}`)}>
             Apply Now
           </button>
         </div>

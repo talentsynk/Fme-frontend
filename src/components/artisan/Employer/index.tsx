@@ -1,3 +1,11 @@
+interface IArtisan{
+  AverageRating:number;
+  BusinessDescription:string;
+  BusinessName:string;
+  FirstName?:string;
+  LastName?:string;
+  ID:number;
+}
 import Image from "next/image";
 import {
   ReviewCompStyles,
@@ -52,11 +60,12 @@ export const SimilarComp = () => {
   );
 };
 
-export const SimilarArtisanComp = () => {
+
+export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessName,BusinessDescription,FirstName,LastName,ID}) => {
   const router = useRouter();
   return (
     <SimilarArtisanCompStyle
-      onClick={() => router.push("/dashboard/employer/hire/0")}
+      onClick={() => router.push(`/dashboard/employer/hire/${ID}`)}
     >
       <div className="img">
         <Image
@@ -68,7 +77,7 @@ export const SimilarArtisanComp = () => {
         />
       </div>
       <div className="hl">
-        <h4>Oragon Confectionaries</h4>
+        <h4>{BusinessName}</h4>
         <VerifiedBadge>
           <GreenTick />
           <p>Verified</p>
@@ -78,14 +87,15 @@ export const SimilarArtisanComp = () => {
         <RatingIcon />
         <RatingIcon />
         <RatingIcon />
-        <p>4.5/5</p>
+        <p>{AverageRating}/5</p>
       </div>
       <div className="desc">
         <p>
-          {truncateString(
-            "I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon, I need a caterer for 20 peoples meal in a birthday party that is coming up soonCall +234 817 896",
+          {/* {truncateString(
+            {BusinessDescription},
             240
-          )}
+          )} */}
+          {BusinessDescription}
         </p>
       </div>
       <div className="tags">

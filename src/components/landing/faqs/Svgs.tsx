@@ -246,7 +246,7 @@ const Instagram = () => {
       
     )
   }
-  const Location = () => {
+  const LLocation = () => {
     return (
       <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fillRule="evenodd" clipRule="evenodd" d="M0.625 5.07165C0.625 2.62214 2.57751 0.625 5 0.625C7.42249 0.625 9.375 2.62214 9.375 5.07165C9.375 6.2542 9.03799 7.52395 8.44222 8.62093C7.84719 9.71656 6.97781 10.6686 5.89026 11.1769C5.32528 11.441 4.67472 11.441 4.10974 11.1769C3.02219 10.6686 2.15281 9.71656 1.55778 8.62093C0.962014 7.52395 0.625 6.2542 0.625 5.07165ZM5 1.375C3.00422 1.375 1.375 3.02374 1.375 5.07165C1.375 6.12018 1.67632 7.26771 2.21685 8.26299C2.75812 9.25962 3.52301 10.0748 4.42732 10.4975C4.79103 10.6675 5.20897 10.6675 5.57268 10.4975C6.47699 10.0748 7.24188 9.25962 7.78315 8.26299C8.32368 7.26771 8.625 6.12018 8.625 5.07165C8.625 3.02374 6.99578 1.375 5 1.375ZM5 3.875C4.37868 3.875 3.875 4.37868 3.875 5C3.875 5.62132 4.37868 6.125 5 6.125C5.62132 6.125 6.125 5.62132 6.125 5C6.125 4.37868 5.62132 3.875 5 3.875ZM3.125 5C3.125 3.96447 3.96447 3.125 5 3.125C6.03553 3.125 6.875 3.96447 6.875 5C6.875 6.03553 6.03553 6.875 5 6.875C3.96447 6.875 3.125 6.03553 3.125 5Z" fill="#1C274C"/>
@@ -369,8 +369,8 @@ const Instagram = () => {
   const X = () => {
     return (
       <svg className=' cursor-pointer' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M18 6L6 18" stroke="white" stroke-width="2" strokeLinecap="round" strokeLinejoin="round"/>
-<path d="M6 6L18 18" stroke="white" stroke-width="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M18 6L6 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg> 
     )
   }
@@ -515,4 +515,4 @@ const Instagram = () => {
     )
   }
 
-export  {Call,WhiteCall,Message,RecommendArtisans,BlackSmallBag,Stats,Messaging,WhiteMessaging,Search,Diploma,Organise,TailoredSearch,GradCap,Up,Down,Mail,WhiteMail,LinkedIn,Twitter,Facebook,Instagram,Hamburger,Cancel,WhiteMessage,Profile,Bag,Like,Padlock,Star,BigStar,X,Tick,Location,WhiteBag,Hands,Clock,CircularProfile,GreenBag,Bigtar,BigSearch,RightCall,RightMail,RightContent,DarkGreenBag,HandMoney,VerifiedTick,SmallVerified,AirplaneIcon,SmallRedIcon,ArtisansContactCard}
+export  {Call,WhiteCall,Message,RecommendArtisans,BlackSmallBag,Stats,Messaging,WhiteMessaging,Search,Diploma,Organise,TailoredSearch,GradCap,Up,Down,Mail,WhiteMail,LinkedIn,Twitter,Facebook,Instagram,Hamburger,Cancel,WhiteMessage,Profile,Bag,Like,Padlock,Star,BigStar,X,Tick,LLocation,WhiteBag,Hands,Clock,CircularProfile,GreenBag,Bigtar,BigSearch,RightCall,RightMail,RightContent,DarkGreenBag,HandMoney,VerifiedTick,SmallVerified,AirplaneIcon,SmallRedIcon,ArtisansContactCard}

@@ -1,3 +1,11 @@
+interface IArtisan{
+  AverageRating:number;
+  BusinessDescription:string;
+  BusinessName:string;
+  FirstName:string;
+  LastName:string;
+  ID:number;
+}
 "use client";
 import { Banner } from "@/components/artisan/comps";
 import {
@@ -6,7 +14,7 @@ import {
 } from "@/components/icons/artisan/icons";
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { Paginator } from "@/components/fme/paginator/Paginator";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { ArtisanTabSwitches, Jobs } from "@/components/artisan/data";
 import { JobSearchStyle, SortOptionsStyle } from "@/components/fme/mda/styles";
 import {
@@ -14,6 +22,11 @@ import {
   LocationIcon,
   MagnifyingGlassIcon,
 } from "@/components/icons/fme/mda";
+import { useState,useEffect } from "react";
+import axios from "axios";
+import Link from "next/link";
+import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
 import { Ierror } from "@/app/recovery/page";
 import { MdaItemComp } from "@/components/fme/mda/mda";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
@@ -72,6 +85,26 @@ const HireArtisan = () => {
   );
   // location
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [data,setData]=useState<IArtisan[]|null>(null)
+
+  useEffect(() => {
+		let token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/artisan/all`, config)
+			.then((res) => {
+        console.log(res)
+				const data = res.data.artisans;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+  console.log(data)
+
   return (
     <ArtisanJobPageStyle>
       <Banner
@@ -171,8 +204,8 @@ const HireArtisan = () => {
               <h2>All Professionals</h2>
             </div>
             <JobGridList>
-              {[1, 2, 3, 4, 5].map((ele, index) => (
-                <SimilarArtisanComp key={index} />
+              {data && data?.map((ele, index) => (
+                <SimilarArtisanComp key={index} {...ele} />
               ))}
             </JobGridList>
           </div>

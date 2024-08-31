@@ -1,4 +1,15 @@
+interface IArtisan{
+  AverageRating:number;
+  BusinessDescription:string;
+  BusinessName:string;
+  ID:number;
+  Skill:string;
+}
 "use client";
+import { useState,useEffect } from "react";
+import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
+import axios from "axios";
 import {
   EmployerDetailPageStyle,
   SWitchTabStyles,
@@ -18,7 +29,7 @@ import {
 import { PaddedSectionStyles } from "@/components/layout/style";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState } from "react";
+
 import {
   EmployerBannerStyle,
   ReviewBtnStyle,
@@ -34,7 +45,7 @@ import {
 import { JobGridListAlt, SimilarCompGridList } from "../../../artisan/style";
 import { ArtisanProfileTabSwitches } from "@/components/employer/data";
 
-const ArtisanDetailPage = () => {
+const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
   );
@@ -52,6 +63,24 @@ const ArtisanDetailPage = () => {
     setArtisanTabSwitches(newTabSwitches);
   };
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [data,setData]= useState<IArtisan|null>(null)
+  useEffect(() => {
+		let token = Cookies.get("token");
+    console.log(token)
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/artisan/1`, config)
+			.then((res) => {
+				const data = res.data.artisan;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+  console.log(data)
   return (
     <EmployerDetailPageStyle>
       <PaddedSectionStyles>
@@ -73,7 +102,7 @@ const ArtisanDetailPage = () => {
               />
             </div>
             <div className="one">
-              <h2>Oluwatimilehin Alarape</h2>
+              <h2> {data?.BusinessName}</h2>
             </div>
             <VerifiedBadge>
               <GreenTick />

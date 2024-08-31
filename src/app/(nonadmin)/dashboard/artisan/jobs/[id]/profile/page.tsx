@@ -1,16 +1,30 @@
+interface IEmployerProfile{
+  Id: number;
+    FirstName: string;
+    LastName: string;
+    Email: string;
+    PhoneNumber: string;
+    NIN: string;
+    LGA: string;
+    UserId: number;
+}
 'use client'
 import { SmallVerified } from "@/components/landing/faqs/Svgs";
 import Recommendations from "@/components/employer/Recommendations";
 import Link from "next/link";
+import { useState,useEffect } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
 import { GreyArrowRight } from "@/components/icons/artisan/icons";
 import { SmallRedIcon } from "@/components/landing/faqs/Svgs";
 import { RecommendArtisans } from "@/components/landing/faqs/Svgs";
 import SimilarEmployer from "@/components/employer/SimilarEmployer";
-import { useState } from "react";
 import Image from "next/image";
 import { Stats } from "@/components/landing/faqs/Svgs";
 
-const EmployersProfile = () => {
+const EmployersProfile = ({ params }: { params: { id: string } }) => {
+  const lol= params.id
     const [activeTab, setActiveTab] = useState('reviews');
     const reviews=[
         {
@@ -29,14 +43,33 @@ const EmployersProfile = () => {
           id:3
         },
       ]
+      const [data,setData]= useState<IEmployerProfile|null>(null)
+      useEffect(() => {
+        let token = Cookies.get("token");
+        console.log(token)
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        axios
+          .get(`${BACKEND_URL}/employer/${lol}`, config)
+          .then((res) => {
+            console.log(res)
+            const data = res.data.employer;
+            setData(data);
+          })
+          .catch((error) => console.log(error));
+      }, []);
+      console.log(data)
   return (
     <section className="">
         <div className=" flex gap-2 items-center p-2 ">
-            <Link href="/dashboard/artisans">
+            <Link href="/dashboard/artisan">
               <p className="text-[#BFBFBF] text-[12px] md:text-[16px] font-medium leading-6">Job Portal</p>
             </Link>
             <GreyArrowRight />
-            <Link href="/dashboard/artisans/jobs/1">
+            <Link href="/dashboard/artisan/jobs/1">
               <p className="text-[#BFBFBF] text-[12px] md:text-[16px] font-medium leading-6">View job details</p>
             </Link>
             <GreyArrowRight />
@@ -44,7 +77,7 @@ const EmployersProfile = () => {
           </div>
         <div className=" mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
     <Image src="/images/landing/detective.png" width={120} height={120} alt="review " />
-    <h4 className=" text-white font-bold text-lg">Oluwatimilehin Alarape</h4>
+    <h4 className=" text-white font-bold text-lg">{data?.FirstName} {data?.LastName}</h4>
     <div className=" rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center"><SmallVerified /><p className=" text-[12px] text-[#00932E]  font-medium">Verified</p></div>
   </div>
   <section className="">

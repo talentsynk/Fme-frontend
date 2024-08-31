@@ -1,4 +1,16 @@
 "use client";
+interface IJob{
+  Id:string;
+  JobTitle:string;
+  JobType:string;
+  Description:string;
+  Amount:string;
+}
+import Cookies from "js-cookie";
+import {useState,useEffect} from 'react'
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "@/lib/config";
 import { Banner } from "@/components/artisan/comps";
 import { ArtisanJobPageStyle, JobGridList } from "../style";
 import {
@@ -7,7 +19,7 @@ import {
 } from "@/components/icons/artisan/icons";
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { Paginator } from "@/components/fme/paginator/Paginator";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { ArtisanTabSwitches, Jobs, JobSortItemDropdownList } from "@/components/artisan/data";
 import {
   JobSearchStyle,
@@ -28,6 +40,7 @@ import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import { JobComp, SelectLocationModal } from "@/components/artisan/Job";
 
 const ArtisanJobs = () => {
+  const router=useRouter()
   const [pageNo, setPageNo] = useState(1);
   const [showCancel, setShowCancel] = useState(false);
 
@@ -77,6 +90,26 @@ const ArtisanJobs = () => {
   );
   // location
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [data,setData]= useState<IJob[]|null>(null)
+  useEffect(() => {
+		let token = Cookies.get("token");
+    console.log(token)
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/job/all`, config)
+			.then((res) => {
+        console.log(res)
+				const data = res.data.jobs;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+  console.log(data)
+
   return (
     <ArtisanJobPageStyle>
       <Banner
@@ -201,9 +234,15 @@ const ArtisanJobs = () => {
               <h2>Latest Jobs</h2>
             </div>
             <JobGridList>
-              {Jobs.map((ele, index) => (
+              { data && data.length>0?(data?.map((ele, index) => (
                 <JobComp key={index} {...ele} />
-              ))}
+              ))):(
+                <section className=" w-full flex justify-center items-center flex-col gap-8">
+                    
+                      <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">There are no available jobs </p>
+                      <button onClick={()=>router.push('/dashboard/artisan/jobs')} className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
+                </section>
+              )}
             </JobGridList>
           </div>
           <Paginator

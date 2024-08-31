@@ -975,7 +975,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 interface ITwoActions {
 	cancelModal: () => void;
 	handleModalAction?: () => void;
-	isJobClosed?:boolean;
+	HiringStatus?:boolean;
 }
 
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
@@ -1094,10 +1094,10 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 		</>
 	);
 };
-export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,isJobClosed }) => {
+export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,HiringStatus }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-//   const [isJobClosed, setIsJobClosed] = useState(false); 
+//   const [HiringStatus, setHiringStatus] = useState(false); 
   const [msgError, setMsgError] = useState<Ierror>({
     active: false,
     text: "",
@@ -1106,7 +1106,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 		setIsLoading(true);
 		try {
 		  // Replace '1' with the dynamic job ID if needed
-		  await axios.get(`${BACKEND_URL}/job/close/1`);
+		  await axios.get(`${BACKEND_URL}/job/close/6`);
 		  setIsSuccess(true);
 		} catch (error) {
 		  setMsgError({
@@ -1120,26 +1120,39 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 	  const handleJobAction = async () => {
 		setIsLoading(true);
 		try {
-		  if (isJobClosed) {
+		  const token = Cookies.get("token"); // Retrieve the token from cookies
+	  
+		  if (HiringStatus) {
 			// Reopen job application
-			await axios.get(`${BACKEND_URL}/job/open/1`);
+			const response = await axios.get(`${BACKEND_URL}/job/close/6`, {
+			  headers: {
+				Authorization: `Bearer ${token}`,
+			  },
+			});
+			console.log("Close job response:", response);
 			setIsSuccess(true);
-			
 		  } else {
 			// Close job application
-			await axios.get(`${BACKEND_URL}/job/close/1`);
+			const response = await axios.get(`${BACKEND_URL}/job/open/6`, {
+			  headers: {
+				Authorization: `Bearer ${token}`,
+			  },
+			});
+			console.log("Open job response:", response);
 			setIsSuccess(true);
-			
 		  }
 		} catch (error) {
+		  console.error("Error:", error);
 		  setMsgError({
 			active: true,
-			text: `Failed to ${isJobClosed ? "reopen" : "close"} the job application.`,
+			text: `Failed to ${HiringStatus ? "close" : "reopen"} the job application.`,
 		  });
 		} finally {
 		  setIsLoading(false);
 		}
 	  };
+	  
+	  
 	
 	const router = useRouter();
 	return (
@@ -1155,11 +1168,11 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
                 </ErrorIconWrapper>
                 <XIcon />
               </div>
-              <h4>{isJobClosed ? "Open Job Application?" : "Close Job Application?"}</h4>
+              <h4>{HiringStatus ? "Close Job Application?" : "Open Job Application?"}</h4>
               <p>
-                {isJobClosed 
-                  ? "Are you certain about reopening this job application? Once reopened, it will be open for new applications."
-                  : "Are you certain about closing this job application? Once closed, it can’t be reopened if you reconsider."
+                {HiringStatus 
+                  ? "Are you certain about closing this job application? Once closed, it will be open for new applications."
+                  : "Are you certain about reopening this job application? Once reopened, it can’t be reopened if you reconsider."
                 }
               </p>
             </div>
@@ -1168,7 +1181,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
                 Cancel
               </button>
               <button type="button" onClick={handleJobAction}>
-                {isLoading ? <ButtonLoader /> : isJobClosed ? "Open Job" : "Close Job"}
+                {isLoading ? <ButtonLoader /> : !HiringStatus ? "Open Job" : "Close Job"}
               </button>
             </div>
           </div>
@@ -1176,8 +1189,8 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
       )}
       {isSuccess && (
         <SuccessModal
-          head={`Job has been successfully ${isJobClosed ? "reopened" : "closed"}!`}
-          msg={`The job application is now ${isJobClosed ? "open" : "closed"}.`}
+          head={`Job has been successfully ${HiringStatus ? "closed" : "reopened"}!`}
+          msg={`The job application is now ${HiringStatus ? "closed" : "open"}.`}
           cancelModal={cancelModal}
           hasCancel={true}
           navigationFunction={handleModalAction ? handleModalAction : cancelModal}
@@ -1192,7 +1205,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
               text: "",
             })
           }
-          head={`Failed to ${isJobClosed ? "reopen" : "close"} Job Application!`}
+          head={`Failed to ${HiringStatus ? "close" : "reopen"} Job Application!`}
           msg={msgError.text}
           navigationFunction={cancelModal}
           navigationText="Go back to Dashboard"
