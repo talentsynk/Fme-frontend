@@ -60,11 +60,16 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 			.catch((error) => console.log(error));
 	}, []);
   console.log(data)
-  // const searchParams = useSearchParams()
-  // console.log(searhParams)
+  
+  const responsibilitiesArray = data?.Responsibilities
+    .split("\n")
+    .filter(line => line.trim() !== "") // Remove empty lines
+    .map(line => line.replace(/^[-\s]+/, "")); // Remove leading dashes and spaces
+  const requirementsArray = data?.Requirements
+    .split("\n")
+    .filter(line => line.trim() !== "") // Remove empty lines
+    .map(line => line.replace(/^[-\s]+/, "")); // Remove leading dashes and spaces
 
-  const responsibilities=["Gather and evaluate user requirements in collaboration with product managers and engineers","Illustrate design ideas using storyboards, process flows and sitemaps","Design graphic user interface elements, like menus, tabs and widgets","Build page navigation buttons and search fields","Develop UI mockups and prototypes that clearly illustrate how sites function and look like"]
-  const requirements=["Proven work experience as a UI/UX Designer or similar role","Portfolio of design projects","Knowledge of wireframe tools (e.g. Wireframe.cc and InVision)","Up-to-date knowledge of design software like Adobe Illustrator and Photoshop","Team spirit; strong communication skills to collaborate with various stakeholders"]
   const handleModalAction = () => {
     // Here you should update the job status based on the modal's action
     setHiringStatus(prevState => !prevState); // Toggle the job status
@@ -107,15 +112,20 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                 </p>
                 <div className="my-4">
                 <h5 className=" text-black font-medium">Responsibilities</h5>
-                <ul className="list-disc list-inside pl-4">
-                  {responsibilities.map(res=>(<li key={res}>{res}</li>))}
-              </ul>
+               
+              <ul className="list-disc list-inside pl-4">
+      {responsibilitiesArray && responsibilitiesArray.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
                 </div>
               <div className="">
               <h5 className=" text-black font-medium">Requirements and skills</h5>
-                <ul className="list-disc list-inside pl-4">
-                  {requirements.map(req=>(<li key={req}>{req}</li>))}
-              </ul>
+              <ul className="list-disc list-inside pl-4">
+      {requirementsArray && requirementsArray.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
               </div>
 
               </div>

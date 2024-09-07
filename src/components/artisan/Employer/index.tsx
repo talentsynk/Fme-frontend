@@ -115,36 +115,51 @@ export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessNam
   );
 };
 
-interface IReviewer {
-  role?: "artisan" | "employer";
+
+
+interface IReviews{
+  CreatedAt:string;
+  Rating:number;
+  EmployerID:number;
+  Description:string;
+  FirstName:string;
+  LastName:string;
 }
-export const ReviewComp: React.FC<IReviewer> = ({ role }) => {
+export const ReviewComp: React.FC<IReviews> = ({ FirstName,LastName,Description,CreatedAt,Rating }) => {
+  const getDaysAgo = (date: string): number => {
+    const currentDate = new Date();
+    const createdDate = new Date(date);
+
+    // Calculate the difference in time between the two dates in milliseconds
+    const timeDifference = currentDate.getTime() - createdDate.getTime();
+
+    // Convert time difference from milliseconds to days
+    const daysAgo = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+    return daysAgo;
+};
+const lol= getDaysAgo(CreatedAt)
   return (
     <ReviewCompStyles>
       <div className="one">
         <div className="deet">
           <div className="fl">
-            <h4>Oluwatimilehin Alarape</h4>
-            <div className="posted">posted 2 days ago</div>
+            <h4>{FirstName } {LastName}</h4>
+            <div className="posted">posted {lol} days ago</div>
           </div>
           <div className="lr">
-            <p className="role">Roles : {role ? role : "Professional"}</p>
+            <p className="role">Roles : {"Professional"}</p>
             <div className="rate">
               <p>Rate : </p>
               <RatingIcon />
-              <p>4.5/5</p>
+              <p>{Rating}</p>
             </div>
           </div>
         </div>
       </div>
       <div className="text">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna
-          pellentesque torto, Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor
-          sit amet, consectetur adipiscing elit. Urna pellentesque tortorr
+          {Description}
         </p>
       </div>
     </ReviewCompStyles>

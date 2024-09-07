@@ -128,7 +128,7 @@ const ReviewPage = ({ params }: { params: { slug: string } }) => {
     </div>
     <div className=" space-y-2">
 
-    {reviews.map(review=>(<Recommendations key={review.id} {...review} />))}
+    {/* {reviews.map(review=>(<Recommendations key={review.id} {...review} />))} */}
     </div>
   </div>
 </section>

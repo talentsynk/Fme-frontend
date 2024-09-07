@@ -6,6 +6,11 @@ interface IEmployerData{
   Amount:number;
   JobType:string;
 }
+interface IEmployerStats{
+  total_jobs_completed: number,
+  total_job_posted: number;
+  total_artisan_employed: number;
+}
 'use client'
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
@@ -16,12 +21,15 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import { EmployersOragonCard } from "@/components/landing/OragonCard";
 import { Bag, Hands, Like, Search, WhiteBag } from "@/components/landing/faqs/Svgs";
+import { Paginator } from "@/components/fme/paginator/Paginator";
 
 
 const EmployerHome = () => {
+  
   const router=useRouter()
   console.log(1)
 
+  const [employerStats,setEmployerStats]=useState<IEmployerStats|null>(null)
   const [data,setData]= useState<IEmployerData[]|null>(null)
 
   console.log(1)
@@ -34,15 +42,29 @@ const EmployerHome = () => {
 			},
 		};
 		axios
+			.get(`${BACKEND_URL}/employer/dash-stats`, config)
+			.then((res) => {
+       
+				
+				setEmployerStats(res.data);
+			})
+			.catch((error) => console.log(error));
+
+		axios
 			.get(`${BACKEND_URL}/job/my-jobs`, config)
 			.then((res) => {
-        // console.log(res.data.jobs)
 				const data = res.data.jobs;
 				setData(data);
 			})
 			.catch((error) => console.log(error));
 	}, []);
   console.log(data)
+
+  const [pageNo, setPageNo] = useState(1);
+  const itemsPerPage = 5;
+  const startIndex = (pageNo - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = data&&data.slice(startIndex, endIndex);
 
   return (
     <section className=" p-4">
@@ -53,30 +75,30 @@ const EmployerHome = () => {
       <div className=" flex  flex-col md:flex-row md:justify-between gap-4 md:gap-0 items-center md:items-start">
         <div className="md:w-[33%] border border-[#E4F5EA] border-solid w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
           <Bag />
-          <h6 className=" text-sm text-black font-medium">Total Jobs applied</h6>
-          <h5 className=" text-[20px] font-medium leading-[30px]">10</h5>
+          <h6 className=" text-sm text-black font-medium">Total Artisans employed</h6>
+          <h5 className=" text-[20px] font-medium leading-[30px]">{employerStats?.total_artisan_employed}</h5>
           </div>
         <div className="md:w-[33%] border border-[#E4F5EA] border-solid w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
           <Like />
-          <h6 className=" text-sm text-black font-medium">Total Recommendations</h6>
-          <h5 className="">2</h5>
+          <h6 className=" text-sm text-black font-medium">Total Jobs Posted</h6>
+          <h5 className="">{employerStats?.total_job_posted}</h5>
           </div>
         <div className="md:w-[33%] border border-[#E4F5EA] border-solid w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
           <Bag />
-          <h6 className=" text-sm text-black font-medium">Total Jobs applied</h6>
-          <h5 className="text-[20px] font-medium leading-[30px]">10</h5>
+          <h6 className=" text-sm text-black font-medium">Total Jobs Completed</h6>
+          <h5 className="text-[20px] font-medium leading-[30px]">{employerStats?.total_jobs_completed}</h5>
           </div>
       </div>
     </section>
     <section className=" flex flex-col md:flex-row justify-between py-8">
-      <section className={`p-4 md:w-[55%] rounded-[10px] ${data?.length>0?"h-fit":""}  `}>
+      <section className={`p-4 md:w-[55%] rounded-[10px] ${data&&data?.length>0?"h-fit":""}  `}>
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs Posted</h4>
             <section className={`${data && data.length==0&&" flex justify-center items-center my-auto h-full"}`}>
 
             <div className={`flex flex-col gap-4 ${data?.length==0&&" justify-center items-center"}`}>
               
-              {data && data.length>0?(
-                data?.map(dum=>(<EmployersOragonCard key={dum.Id} {...dum} />))
+              {paginatedData && paginatedData.length>0?(
+                paginatedData?.map(dum=>(<EmployersOragonCard key={dum.Id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
@@ -90,6 +112,19 @@ To post a job “click on this button”</p>
               )}
             </div>
             </section>
+            <Paginator
+            value={pageNo}
+           incrementFunc={() => {
+    if (data && endIndex < data.length) {
+      setPageNo(pageNo + 1);
+    }
+  }}
+            decrementFunc={() => {
+          if (pageNo > 1) {
+            setPageNo(pageNo - 1);
+          }
+        }}
+          />
           </section>
       <section className="p-4 md:w-[42%] bg-[#E7F6EC] rounded-[10px] flex flex-col gap-4  ">
         <h3 className=" text-[24px] leading-[32px] text-black font-bold">Quick Links</h3>

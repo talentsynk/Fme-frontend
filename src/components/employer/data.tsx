@@ -15,7 +15,7 @@ export const ArtisanPageLinks: IUserLink[] = [
 export const EmployerPageLinks: IUserLink[] = [
   { name: "Dashboard", href: "/dashboard/employer", isSelected: true },
   {
-    name: "Hire A Profeesional",
+    name: "Hire A Professional",
     href: "/dashboard/employer/hire",
     isSelected: false,
   },

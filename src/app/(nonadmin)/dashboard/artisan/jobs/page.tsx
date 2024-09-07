@@ -1,13 +1,16 @@
 "use client";
-interface IJob{
-  Id:string;
-  JobTitle:string;
-  JobType:string;
-  Description:string;
-  Amount:string;
+
+interface IJob {
+  Id: number;
+  JobTitle: string;
+  JobType: string;
+  Description: string;
+  Amount: string;
+  Status?:string;
 }
+
 import Cookies from "js-cookie";
-import {useState,useEffect} from 'react'
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "@/lib/config";
@@ -20,7 +23,11 @@ import {
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { FormEvent } from "react";
-import { ArtisanTabSwitches, Jobs, JobSortItemDropdownList } from "@/components/artisan/data";
+import {
+  ArtisanTabSwitches,
+  Jobs,
+  JobSortItemDropdownList,
+} from "@/components/artisan/data";
 import {
   JobSearchStyle,
   SearchAndResultStyle,
@@ -40,75 +47,212 @@ import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import { JobComp, SelectLocationModal } from "@/components/artisan/Job";
 
 const ArtisanJobs = () => {
-  const router=useRouter()
+  const router = useRouter();
   const [pageNo, setPageNo] = useState(1);
   const [showCancel, setShowCancel] = useState(false);
 
-  const [artisanTabSwitches, setArtisanTabSwitches] =
-    useState(ArtisanTabSwitches);
+ 
+
   const handleTabSwitch = (tabIndex: number) => {
     const newMdaTabSwitches = artisanTabSwitches.map((ele) => {
       return { ...ele, isSelected: tabIndex == ele.tabIndex };
     });
     setArtisanTabSwitches(newMdaTabSwitches);
+
+    // Make an API call based on the selected tab
+    switch (tabIndex) {
+      case 0:
+        fetchAllJobs();
+        break;
+      case 1:
+        fetchOnHireJobs();
+        break;
+      case 2:
+        fetchContractJobs();
+        break;
+      default:
+        fetchAllJobs();
+    }
   };
-  // for search
+
+  // State for search query
   const [query, setQuery] = useState("");
   const [queryError, setQueryError] = useState<Ierror>({
     active: false,
     text: "",
   });
-  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.trim().length < 1) {
-      setQueryError({ active: true, text: "Query cannot be empty" });
-      setQuery(value);
-    } else {
-      setQuery(value);
-      setQueryError({ active: false, text: "Press enter to search" });
-    }
-  };
-  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission
 
-    if (query.trim().length >= 1) {
-      // filter from the unchanged mda list
-      console.log(query);
-    }
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
   };
+
+
+
   const CancelQuerySearch = () => {
     setQuery("");
     setQueryError({ active: false, text: "" });
-    // return mdaList and listDuplicate to default - might involve calling the api
-    // revert the sorting
     setShowCancel(false);
   };
-  // sort
+interface ILol{
+  text:string;
+  isSelected:boolean;
+  id:string;
+  hasBorder?:boolean
+}
   const [showSortDropdown, setShowSortDropdown] = useState(false);
-  const [sortItemDropdownList, setSortItemDropdownList] = useState(
-    JobSortItemDropdownList
+  const [sortItemDropdownList, setSortItemDropdownList] = useState<ILol[]>(
+    [
+      { text: "Last 24 hours", isSelected: false, id: "0" },
+      { text: "Last 7 days", isSelected: false, id: "1" },
+      { text: "Last 30 days", isSelected: false, id: "2" },
+    ]
   );
-  // location
+
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [data,setData]= useState<IJob[]|null>(null)
+  const [data, setData] = useState<IJob[] | null>(null);
+
   useEffect(() => {
-		let token = Cookies.get("token");
-    console.log(token)
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		axios
-			.get(`${BACKEND_URL}/job/all`, config)
-			.then((res) => {
-        console.log(res)
-				const data = res.data.jobs;
-				setData(data);
-			})
-			.catch((error) => console.log(error));
-	}, []);
-  console.log(data)
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(`${BACKEND_URL}/job/all`, config)
+      .then((res) => {
+        const data = res.data.jobs;
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  // Filtered jobs based on the search query
+  // const [pageNo, setPageNo] = useState(1);
+  const itemsPerPage = 5;
+  const startIndex = (pageNo - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  
+
+  const fetchAllJobs = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    try {
+      const res = await axios.get(`${BACKEND_URL}/job/all`, config);
+      const data = res.data.jobs;
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching All Jobs data:", error);
+    }
+  };
+
+  const fetchOnHireJobs = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/job/all?job_type=full-time`,
+        config
+      );
+      const data = res.data.jobs;
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching Full-time Jobs data:", error);
+    }
+  };
+
+  const fetchContractJobs = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/job/all?job_type=part-time`,
+        config
+      );
+      const data = res.data.jobs;
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching Contract Jobs data:", error);
+    }
+  };
+  const filteredJobs = data?.filter((job) =>
+    job.JobTitle.toLowerCase().includes(query.toLowerCase())
+  );
+  console.log(filteredJobs)
+  const paginatedData = filteredJobs&&filteredJobs.slice(startIndex, endIndex);
+  
+  const [artisanTabSwitches, setArtisanTabSwitches] =
+  useState([
+    { text: "All jobs", tabIndex: 0, isSelected: true,len:filteredJobs&& filteredJobs.length },
+    { text: "Part-time jobs", tabIndex: 1, isSelected: false,len:filteredJobs&& filteredJobs.length },
+    { text: "Full-time jobs", tabIndex: 2, isSelected: false,len:filteredJobs&& filteredJobs.length },
+  ]);
+
+  const handleSelect = async (selectedId: string) => {
+    // Map the dropdown options to `days_ago` values
+    const daysAgoMap: { [key: string]: number } = {
+      "0": 1,  // Last 24 hours
+      "1": 7,  // Last 7 days
+      "2": 30, // Last 30 days
+    };
+  
+    const daysAgo = daysAgoMap[selectedId];
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+  
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/job/all?days_ago=${daysAgo}`,
+        config
+      );
+      const data = res.data.jobs;
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching filtered jobs by date:", error);
+    }
+  
+    // Update the sort dropdown state to reflect the selected option
+    const updatedDropdownList = sortItemDropdownList.map((item) => ({
+      ...item,
+      isSelected: item.id === selectedId,
+    }));
+    setSortItemDropdownList(updatedDropdownList);
+  };
+
+  const fetchJobsByLocation = async (state: string, lga: string) => {
+    try {
+      const response = await axios.get(`/api/jobs`, {
+        params: { state, lga },
+      });
+      setData(response.data.jobs);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  };
+
+  // Function to handle location filter application
+  const handleLocationFilter = (state: string, lga: string) => {
+    fetchJobsByLocation(state, lga);
+    setShowLocationModal(false); // Close the modal after applying the filter
+  };
+  
+  console.log(filteredJobs)
 
   return (
     <ArtisanJobPageStyle>
@@ -131,7 +275,7 @@ const ArtisanJobs = () => {
                   <div className="no">
                     <p>{ele.text}</p>
                     <div className="num">
-                      <span>{20}</span>
+                      <span>{ele.len}</span>
                     </div>
                   </div>
                   {ele.isSelected && (
@@ -152,16 +296,15 @@ const ArtisanJobs = () => {
                     <div className="glass">
                       <MagnifyingGlassIcon />
                     </div>
-                    <form onSubmit={handleSearch}>
+                    <form onSubmit={(e) => e.preventDefault()}>
                       <input
                         type="text"
                         name="query"
-                        id=""
                         placeholder="Search For Jobs"
                         value={query}
-                        className={queryError.active ? "error-bdr" : ""}
                         onChange={handleQueryChange}
                         onFocus={() => setShowCancel(true)}
+                        className={query ? "search-active" : ""}
                       />
                     </form>
                     {showCancel && (
@@ -190,7 +333,8 @@ const ArtisanJobs = () => {
                     </button>
                     {showLocationModal && (
                       <SelectLocationModal
-                        closeModal={() => setShowLocationModal(false)}
+                      closeModal={() => setShowLocationModal(false)}
+                      applyFilter={handleLocationFilter}
                       />
                     )}
                   </div>
@@ -217,7 +361,7 @@ const ArtisanJobs = () => {
                               isSelected={ele.isSelected}
                               text={ele.text}
                               hasBorder={ele.hasBorder}
-                              handleSelect={() => console.log(ele.id)}
+                              handleSelect={() => handleSelect(ele.id)}
                             />
                           ))}
                         </div>
@@ -228,31 +372,36 @@ const ArtisanJobs = () => {
               </JobSearchStyle>
             </div>
           </div>
-          <div className="jobs">
-            <div className="head">
-              <ColoredBriefCase />
-              <h2>Latest Jobs</h2>
-            </div>
-            <JobGridList>
-              { data && data.length>0?(data?.map((ele, index) => (
-                <JobComp key={index} {...ele} />
-              ))):(
-                <section className=" w-full flex justify-center items-center flex-col gap-8">
-                    
-                      <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">There are no available jobs </p>
-                      <button onClick={()=>router.push('/dashboard/artisan/jobs')} className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
-                </section>
-              )}
-            </JobGridList>
-          </div>
+
+          {/* Display Filtered Jobs */}
+          <JobGridList>
+            {paginatedData && paginatedData.length > 0 ? (
+              paginatedData.map((job, index) => (
+                <JobComp
+                  key={index}
+                  Id={job.Id}
+                  JobTitle={job.JobTitle}
+                  JobType={job.JobType}
+                  Description={job.Description}
+                  Amount={job.Amount}
+                />
+              ))
+            ) : (
+              <p>No jobs found for your search.</p>
+            )}
+          </JobGridList>
           <Paginator
             value={pageNo}
-            incrementFunc={() => setPageNo(pageNo + 1)}
+           incrementFunc={() => {
+    if (data && endIndex < data.length) {
+      setPageNo(pageNo + 1);
+    }
+  }}
             decrementFunc={() => {
-              if (pageNo - 1 > 0) {
-                setPageNo(pageNo - 1);
-              }
-            }}
+          if (pageNo > 1) {
+            setPageNo(pageNo - 1);
+          }
+        }}
           />
         </div>
       </PaddedSectionStyles>

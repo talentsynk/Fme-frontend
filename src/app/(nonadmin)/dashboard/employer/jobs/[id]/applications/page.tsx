@@ -100,7 +100,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
       </div>
       <section className="flex flex-col md:flex-row gap-2 mt-4">
 
-    <div className="w-[20%]  md:border-[#EBEDF4] md:border-[1px] md:border-solid p-4 rounded-lg ">
+    {/* <div className="w-[20%]  md:border-[#EBEDF4] md:border-[1px] md:border-solid p-4 rounded-lg ">
 <h2 className="text-lg font-semibold mb-4">Categories</h2>
 <div className="md:flex flex-col hidden space-y-2">
   <label className="flex items-center">
@@ -119,10 +119,9 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
     <span className="ml-auto text-[#222222] font-bold ">5</span>
   </label>
 </div>
-    </div>
+    </div> */}
 
-    <section className=" md:w-[80%]">
-
+    <section className=" ">
 <section className="">
 <div className={` ${data && data?.length>0?'grid-container grid gap-8':'flex justify-center items-center'} px-4`}>
 {data && data?.length > 0 ? (
@@ -139,6 +138,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
 
     </section>
       </section>
+
   </section>
   )
 }

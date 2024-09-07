@@ -54,14 +54,7 @@ const HireArtisan = () => {
     text: "",
   });
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.trim().length < 1) {
-      setQueryError({ active: true, text: "Query cannot be empty" });
-      setQuery(value);
-    } else {
-      setQuery(value);
-      setQueryError({ active: false, text: "Press enter to search" });
-    }
+    setQuery(e.target.value);
   };
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
@@ -104,6 +97,10 @@ const HireArtisan = () => {
 			.catch((error) => console.log(error));
 	}, []);
   console.log(data)
+  const filteredJobs = data?.filter((job) =>
+    job.BusinessName.toLowerCase().includes(query.toLowerCase())
+  );
+  console.log(filteredJobs)
 
   return (
     <ArtisanJobPageStyle>
@@ -122,16 +119,15 @@ const HireArtisan = () => {
                     <div className="glass">
                       <MagnifyingGlassIcon />
                     </div>
-                    <form onSubmit={handleSearch}>
+                    <form onSubmit={(e) => e.preventDefault()}>
                       <input
                         type="text"
                         name="query"
-                        id=""
                         placeholder="Search For Jobs"
                         value={query}
-                        className={queryError.active ? "error-bdr" : ""}
                         onChange={handleQueryChange}
                         onFocus={() => setShowCancel(true)}
+                        className={query ? "search-active" : ""}
                       />
                     </form>
                     {showCancel && (
@@ -204,7 +200,7 @@ const HireArtisan = () => {
               <h2>All Professionals</h2>
             </div>
             <JobGridList>
-              {data && data?.map((ele, index) => (
+              {filteredJobs && filteredJobs?.map((ele, index) => (
                 <SimilarArtisanComp key={index} {...ele} />
               ))}
             </JobGridList>

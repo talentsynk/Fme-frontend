@@ -25,6 +25,7 @@ import { GreyArrowRight } from "@/components/icons/artisan/icons";
 import { PostJobComp } from "@/components/fme/students/modal";
 import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
+import { ButtonLoader } from "@/components/recovery/style";
 
 
 const PostAJob = () => {
@@ -54,7 +55,7 @@ const PostAJob = () => {
   const [category, setCategory] = useState("");
 	const [stateOfOrigin, setStateOfOrigin] = useState("");
 const [categories,setCategories]=useState(["engineering","plumbing"]);
-	const [jobTypes,setJobTypes]=useState(["on-hire","full time"])
+	const [jobTypes,setJobTypes]=useState(["on-hire","full-time"])
 	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
 	const [states, setStates] = useState(States);
 	const NaijaStates = require('naija-state-local-government');
@@ -105,9 +106,10 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 		  setLgas(newLgas);
 		}
 	  }, [stateOfOrigin]);
+	  const [isLoading,setIsLoading]= useState(false)
 
 	  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-		console.log(1);
+		setIsLoading(true);
 		e.preventDefault();
 		try {
 		  const token = Cookies.get("token"); // Adjust token retrieval as needed
@@ -139,7 +141,9 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 		  setShowJobModal(true);
 		} catch (error) {
 		  console.error("Error posting job", error);
-		}
+		}finally {
+			setIsLoading(false);
+		  }
 	  };
 	  
 
@@ -364,13 +368,26 @@ onInput={(e) => {
 							<label htmlFor="about" className="text-[#101928] font-semibold text-sm">
 								List any job requirements if any (optional)
 							</label>
-							<textarea
-        rows={5}
-        placeholder="if you have other job requirements, list them here"
-        value={formData.Requirement}
-		name="Requirement"
-onChange={(e) => handleChangee('Requirement', e.target.value)}
-onInput={(e) => {
+	
+	   <textarea
+  rows={5}
+  placeholder="List job requirements, each on a new line"
+  value={formData.Requirement}
+  name="Requirement"
+  onChange={(e) => {
+    const input = e.target.value;
+    handleChangee('Requirement', input);
+  }}
+  onBlur={() => {
+    const bulletPointRequirements = formData.Requirement
+      .split("\n") // Split the input by new lines
+      .filter(line => line.trim() !== "") // Remove any empty lines
+      .map(line => `- ${line.trim()}`) // Prefix each line with a bullet point
+      .join("\n"); // Join them back into a single string with new lines
+
+    handleChangee('Responsibilities', bulletPointRequirements);
+  }}
+  onInput={(e) => {
     const target = e.target as HTMLTextAreaElement;
     if (target.value.length > 0) {
       target.classList.add("border-green");
@@ -386,19 +403,32 @@ onInput={(e) => {
     target.classList.add("border-gray");
   }}
   className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Requirement ? "border-green" : formData.JobTitle === "" ? "border-red" : ""}`}
-      />
+/>
 						</div>		
             <div className="">
 							<label htmlFor="about" className="text-[#101928] font-semibold text-sm">
 								List the job responsibilities
 							</label>
-							<textarea
-        rows={5}
-        placeholder="if you have other job responsibilities, list them here"
-        value={formData.Responsibilities}
-		name="Responsibilities"
-onChange={(e) => handleChangee('Responsibilities', e.target.value)}
-onInput={(e) => {
+			
+	  <textarea
+  rows={5}
+  placeholder="List job responsibilities, each on a new line"
+  value={formData.Responsibilities}
+  name="Responsibilities"
+  onChange={(e) => {
+    const input = e.target.value;
+    handleChangee('Responsibilities', input);
+  }}
+  onBlur={() => {
+    const bulletPointResponsibilities = formData.Responsibilities
+      .split("\n") // Split the input by new lines
+      .filter(line => line.trim() !== "") // Remove any empty lines
+      .map(line => `- ${line.trim()}`) // Prefix each line with a bullet point
+      .join("\n"); // Join them back into a single string with new lines
+
+    handleChangee('Responsibilities', bulletPointResponsibilities);
+  }}
+  onInput={(e) => {
     const target = e.target as HTMLTextAreaElement;
     if (target.value.length > 0) {
       target.classList.add("border-green");
@@ -414,7 +444,8 @@ onInput={(e) => {
     target.classList.add("border-gray");
   }}
   className={`w-full border-gray border-solid rounded-md p-4 border ${formData.Requirement ? "border-green" : formData.JobTitle === "" ? "border-red" : ""}`}
-      />
+/>
+
 						</div>		
             </section>
             <button onClick={handleSubmit}
@@ -425,7 +456,7 @@ onInput={(e) => {
 							}`}
 							disabled={isEmpty()}
 							type="submit">
-							Post a Job{" "}
+							{isLoading ? <ButtonLoader /> : "Post a Job"}
 						</button>
           </form>
 		  {showJobModal && <PostJobComp handleModalAction={cancelModal} cancelModal={() => setShowJobModal(false)} />}

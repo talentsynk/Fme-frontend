@@ -5,6 +5,20 @@ interface IArtisan{
   ID:number;
   Skill:string;
 }
+interface IStats{
+  rating:number;
+  total_job_recommendations:number;
+  total_jobs_completed:number;
+}
+interface IReviews{
+
+  CreatedAt:string;
+  Rating:number;
+  EmployerID:number;
+  Description:string;
+  FirstName:string;
+  LastName:string;
+}
 "use client";
 import { useState,useEffect } from "react";
 import Cookies from "js-cookie";
@@ -44,11 +58,17 @@ import {
 } from "@/components/artisan/Employer";
 import { JobGridListAlt, SimilarCompGridList } from "../../../artisan/style";
 import { ArtisanProfileTabSwitches } from "@/components/employer/data";
+import { HireArtisanComp } from "@/components/fme/students/modal";
 
 const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
+  const lol=params.artisan
+  const [showHireArtisanModal, setShowHireArtisanModal] = useState(false);
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
   );
+  const cancelModal=()=>{
+    console.log(1)
+  }
   const [currentTab, setCurrentTab] = useState(
     artisanTabSwitches.find((ele) => ele.isSelected)?.text
   );
@@ -64,6 +84,8 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
   };
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [data,setData]= useState<IArtisan|null>(null)
+  const [stats,setStats]= useState<IStats|null>(null)
+  const [reviews,setReviews]= useState<IReviews[]|null>(null)
   useEffect(() => {
 		let token = Cookies.get("token");
     console.log(token)
@@ -73,14 +95,32 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/artisan/1`, config)
+			.get(`${BACKEND_URL}/artisan/profile-stats/${lol}`, config)
 			.then((res) => {
+       console.log(res)
+				const data = res.data;
+				setStats(data);
+			})
+			.catch((error) => console.log(error));
+		axios
+			.get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
+			.then((res) => {
+       
+				const data = res.data.ratings;
+				setReviews(data);
+			})
+			.catch((error) => console.log(error));
+      
+		axios
+			.get(`${BACKEND_URL}/artisan/${lol}`, config)
+			.then((res) => {
+        console.log(res)
 				const data = res.data.artisan;
 				setData(data);
 			})
 			.catch((error) => console.log(error));
 	}, []);
-  console.log(data)
+  console.log(reviews)
   return (
     <EmployerDetailPageStyle>
       <PaddedSectionStyles>
@@ -125,7 +165,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                         <div className="no">
                           <p>{ele.text}</p>
                           <div className="num">
-                            <span>{20}</span>
+                            <span>{reviews&&reviews.length}</span>
                           </div>
                         </div>
                         {ele.isSelected && (
@@ -156,8 +196,8 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                 </div>
                 <JobGridListAlt>
                   {currentTab == "Reviews" &&
-                    [1, 2, 3].map((ele, index) => (
-                      <ReviewComp key={index} role="employer" />
+                    reviews && reviews?.map((ele, index) => (
+                      <ReviewComp key={index} {...ele} />
                     ))}
                 </JobGridListAlt>
               </div>
@@ -180,18 +220,18 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                 <div className="l2">
                   <div className="fr">
                     <h4>Project Completed</h4>
-                    <p>1</p>
+                    <p>{stats?.total_jobs_completed}</p>
                   </div>
                   <div className="fr">
                     <h4>Rating</h4>
                     <div className="rate">
                       <RatingIcon />
-                      <p>4.5/5</p>
+                      <p>{stats?.rating}</p>
                     </div>
                   </div>
                   <div className="fr">
                     <h4>Recommendations</h4>
-                    <p>5</p>
+                    <p>{stats?.total_job_recommendations}</p>
                   </div>
                   <div className="fr">
                     <h4>Location</h4>
@@ -199,11 +239,12 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                   </div>
                 </div>
                 <div className="btn">
-                    <button type="button">
+                    <button type="button" onClick={() => setShowHireArtisanModal(true)}>
                         <p>Hire Professional</p>
                         <SendIcon />
                     </button>
                 </div>
+                {showHireArtisanModal && <HireArtisanComp handleModalAction={cancelModal} cancelModal={() => setShowHireArtisanModal(false)} />}
               </div>
             </div>
           </div>

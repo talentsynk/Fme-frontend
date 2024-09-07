@@ -975,7 +975,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 interface ITwoActions {
 	cancelModal: () => void;
 	handleModalAction?: () => void;
-	HiringStatus?:boolean;
+	HiringStatus?:boolean|null;
 }
 
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
@@ -1097,26 +1097,12 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,HiringStatus }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-//   const [HiringStatus, setHiringStatus] = useState(false); 
+
   const [msgError, setMsgError] = useState<Ierror>({
     active: false,
     text: "",
   });
-	const suspend = async () => {
-		setIsLoading(true);
-		try {
-		  // Replace '1' with the dynamic job ID if needed
-		  await axios.get(`${BACKEND_URL}/job/close/6`);
-		  setIsSuccess(true);
-		} catch (error) {
-		  setMsgError({
-			active: true,
-			text: "Failed to close the job application.",
-		  });
-		} finally {
-		  setIsLoading(false);
-		}
-	  };
+	
 	  const handleJobAction = async () => {
 		setIsLoading(true);
 		try {

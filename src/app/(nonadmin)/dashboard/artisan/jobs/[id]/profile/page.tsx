@@ -1,5 +1,5 @@
 interface IEmployerProfile{
-  Id: number;
+    Id: number;
     FirstName: string;
     LastName: string;
     Email: string;
@@ -8,42 +8,68 @@ interface IEmployerProfile{
     LGA: string;
     UserId: number;
 }
+interface ISavedData{
+  JobTitle:string;
+  Description:string;
+  Id:number|null|undefined;
+  Amount:number;
+  JobType:string;
+  Location?:string
+  Status:string;
+}
+interface IStats{
+  rating: number;
+  total_jobs_completed: number;
+  total_jobs_posted: number;
+  total_recommendations: number;
+}
+interface ISimilarEmployer{
+  FirstName:string;
+  LGA:string;
+  LastName:string;
+  NIN:string;
+  PhoneNumber:string;
+  State:string;
+  UserId:number;
+  Id:number;
+}
+interface IReview{
+  CreatedAt:string;
+  Rating:number;
+  EmployerID:number;
+  Description:string;
+  FirstName:string;
+  LastName:string;
+}
+
 'use client'
-import { SmallVerified } from "@/components/landing/faqs/Svgs";
-import Recommendations from "@/components/employer/Recommendations";
-import Link from "next/link";
 import { useState,useEffect } from "react";
+import Link from "next/link";
 import Cookies from "js-cookie";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import { GreyArrowRight } from "@/components/icons/artisan/icons";
 import { SmallRedIcon } from "@/components/landing/faqs/Svgs";
 import { RecommendArtisans } from "@/components/landing/faqs/Svgs";
+import { GoldStar, SmallVerified } from "@/components/landing/faqs/Svgs";
 import SimilarEmployer from "@/components/employer/SimilarEmployer";
-import Image from "next/image";
-import { Stats } from "@/components/landing/faqs/Svgs";
+import { Stats,Bigtar } from "@/components/landing/faqs/Svgs";
+import { JobsPostedCard, SavedOragonCard } from "@/components/landing/OragonCard";
+import { Paginator } from "@/components/fme/paginator/Paginator";
+import Recommendations from "@/components/employer/Recommendations";
+
 
 const EmployersProfile = ({ params }: { params: { id: string } }) => {
+  const router=useRouter()
+  const [savedData,setSavedData]= useState<IEmployerProfile|null>(null)
+  const [similarEmployers,setSimilarEmployers]= useState<ISimilarEmployer[]|null>(null)
+  const [review,setReview]= useState<IReview[]|null>(null)
   const lol= params.id
     const [activeTab, setActiveTab] = useState('reviews');
-    const reviews=[
-        {
-          name:"Oluwatimilehin Alarapee",
-          text:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque torto, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorr",
-          id:1
-        },
-        {
-          name:"Oluwatimilehin Alarapee",
-          text:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque torto, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorr",
-          id:2
-        },
-        {
-          name:"Oluwatimilehin Alarapee",
-          text:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque torto, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorLorem ipsum dolor sit amet, consectetur adipiscing elit. Urna pellentesque tortorr",
-          id:3
-        },
-      ]
-      const [data,setData]= useState<IEmployerProfile|null>(null)
+      const [data,setData]= useState<ISavedData[]|null>(null)
+      const [stats,setStats]=useState<IStats|null>(null)
       useEffect(() => {
         let token = Cookies.get("token");
         console.log(token)
@@ -53,23 +79,67 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           },
         };
         axios
+          .get(`${BACKEND_URL}/employer/similar/${lol}`, config)
+          .then((res) => {
+           console.log(res)
+            const data = res.data.employers;
+            setSimilarEmployers(data);
+          })
+          .catch((error) => console.log(error));
+          
+        axios
+          .get(`${BACKEND_URL}/employer/profile-stats/${lol}`, config)
+          .then((res) => {
+           
+            const data = res.data;
+            setStats(data);
+          })
+          .catch((error) => console.log(error));
+
+          axios
           .get(`${BACKEND_URL}/employer/${lol}`, config)
           .then((res) => {
-            console.log(res)
+            
             const data = res.data.employer;
+            setSavedData(data);
+          })
+          .catch((error) => console.log(error));
+          
+        axios
+          .get(`${BACKEND_URL}/employer/jobs/${lol}`, config)
+          .then((res) => {
+            
+            const data = res.data.jobs;
             setData(data);
           })
           .catch((error) => console.log(error));
+
+        axios
+          .get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
+          .then((res) => {
+            
+            const data = res.data.ratings;
+            setReview(data);
+          })
+          .catch((error) => console.log(error));
       }, []);
-      console.log(data)
+      console.log(review)
+
+      const [pageNo, setPageNo] = useState(1);
+  const itemsPerPage = 5;
+  const startIndex = (pageNo - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = data&&data.slice(startIndex, endIndex);
+      
+   
   return (
     <section className="">
         <div className=" flex gap-2 items-center p-2 ">
-            <Link href="/dashboard/artisan">
+            <Link href="/dashboard/artisan/jobs">
               <p className="text-[#BFBFBF] text-[12px] md:text-[16px] font-medium leading-6">Job Portal</p>
             </Link>
             <GreyArrowRight />
-            <Link href="/dashboard/artisan/jobs/1">
+            <Link href={`/dashboard/artisan/jobs/${lol}`}>
               <p className="text-[#BFBFBF] text-[12px] md:text-[16px] font-medium leading-6">View job details</p>
             </Link>
             <GreyArrowRight />
@@ -77,7 +147,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           </div>
         <div className=" mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
     <Image src="/images/landing/detective.png" width={120} height={120} alt="review " />
-    <h4 className=" text-white font-bold text-lg">{data?.FirstName} {data?.LastName}</h4>
+    <h4 className=" text-white font-bold text-lg">{savedData?.FirstName} {savedData?.LastName}</h4>
     <div className=" rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center"><SmallVerified /><p className=" text-[12px] text-[#00932E]  font-medium">Verified</p></div>
   </div>
   <section className="">
@@ -92,7 +162,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
         }`}
         onClick={() => setActiveTab('jobs')}
       >
-        Jobs Posted (0)
+        Jobs Posted ({data&&data.length})
       </button>
       <button
         className={`text-lg font-semibold px-4 py-2 ${
@@ -100,7 +170,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
         }`}
         onClick={() => setActiveTab('reviews')} 
       >
-        Reviews (20)
+        Reviews ({review&&review.length})
       </button>
   
     </div>
@@ -109,7 +179,37 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
       <h5 className=" text-sm font-bold leading-5 text-[#00932E]"> Write a Review</h5>
     </button>
   </div>
-{reviews.map(review=>(<Recommendations key={review.id} {...review} />))}
+  {
+      activeTab=='jobs'?(<div className={`flex flex-col gap-2 ${data?.length==0&&" justify-center items-center"}`}>
+              
+      {paginatedData && paginatedData.length>0?(
+        paginatedData.map(dum=>(<JobsPostedCard key={dum.Id} {...dum} />))
+      ):(
+        <section className=" flex justify-center items-center flex-col gap-8">
+            <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
+              <Bigtar />
+            </div>
+              <p className=" md:w-1/2 text-center text-[16px] leading-[24px] text-black font-medium">Sorry but you haven’t saved any job for later yet.
+To get started click on this button</p>
+              <button onClick={()=>router.push('/dashboard/artisan/jobs')} className="w-[200px] h-[48px] rounded-[6px] bg-[#00932E] text-white font-bold">Apply for Jobs</button>
+        </section>
+      )}
+      <Paginator
+            value={pageNo}
+           incrementFunc={() => {
+    if (data && endIndex < data.length) {
+      setPageNo(pageNo + 1);
+    }
+  }}
+            decrementFunc={() => {
+          if (pageNo > 1) {
+            setPageNo(pageNo - 1);
+          }
+        }}
+          />
+    </div>):(<div>{review && review.map(rev=>(<Recommendations key={rev.EmployerID} {...rev} />))}</div>)
+    }
+
 </div>
 <div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] w-[30%]">
 
@@ -119,27 +219,32 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
   </div>
   <div className=" flex justify-between text-black text-[13px] font-medium">
     <p className="">Jobs Posted</p>
-    <p className="">5</p>
+    <p className="">{stats?.total_jobs_posted}</p>
   </div>
   <div className=" flex justify-between text-black text-[13px] font-medium">
     <p className="">Project Completed</p>
-    <p className="">1</p>
+    <p className="">{stats?.total_jobs_completed}</p>
+    
   </div>
   <div className=" flex justify-between text-black text-[13px] font-medium">
     <p className="">Ratings</p>
-    <p className="">4.5/5.0</p>
+    <div className="flex gap-1 items-center">
+      <GoldStar />
+    <p className="">{stats?.rating}</p>
+    </div>
   </div>
   <div className=" flex justify-between text-black text-[13px] font-medium">
     <p className="">Recommendations</p>
-    <p className="">10</p>
+    <p className="">{stats?.total_recommendations}</p>
   </div>
   </div>
   </section>
   </section>
   <div className="">
     <h3 className="leading-8 font-bold text-[#979797] text-[24px] my-2">Similar Employer Profile</h3>
+    
     <div className="grid-container grid gap-8 px-4">
-    {[1,2,3,4].map(ele=>(<SimilarEmployer key={ele} />))}
+    {similarEmployers && similarEmployers.map(ele=>(<SimilarEmployer key={ele.Id} {...ele} />))}
     </div>
   </div>
        </section>

@@ -4,6 +4,11 @@ interface IEmployerData{
   ApplicationStatus:string;
   Id:number|null|undefined;
 }
+interface IArtisanStats{
+  total_applied_jobs: number,
+  total_job_recommendations: number;
+  total_jobs_completed: number;
+}
 interface ISavedData{
   Name:string;
   Description:string;
@@ -23,6 +28,7 @@ import { BACKEND_URL } from "@/lib/config";
 import ProgressBar from "@/components/artisan/ProgressBar";
 import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/faqs/Svgs";
+import { Paginator } from "@/components/fme/paginator/Paginator";
 
 
 
@@ -31,6 +37,7 @@ export default function ArtisansHome(){
   const router = useRouter();
   const [data,setData]= useState<IEmployerData[]|null>(null)
   const [savedData,setSavedData]= useState<ISavedData[]|null>(null)
+  const [artisanStats,setArtisanStats]=useState<IArtisanStats|null>(null)
   console.log(1)
 	useEffect(() => {
 		let token = Cookies.get("token");
@@ -41,9 +48,17 @@ export default function ArtisansHome(){
 			},
 		};
 		axios
+			.get(`${BACKEND_URL}/artisan/job-stats`, config)
+			.then((res) => {
+        
+				const data = res.data;
+				setArtisanStats(data)
+			})
+			.catch((error) => console.log(error));
+		axios
 			.get(`${BACKEND_URL}/job/applied-jobs`, config)
 			.then((res) => {
-        console.log(res)
+        
 				const data = res.data.jobs;
 				setData(data);
 			})
@@ -51,14 +66,14 @@ export default function ArtisansHome(){
 		axios
 			.get(`${BACKEND_URL}/job/saved-jobs`, config)
 			.then((res) => {
-        console.log(res)
+        
 				const data = res.data.jobs;
 				setSavedData(data);
 			})
 			.catch((error) => console.log(error));
 	}, []);
-  console.log(data)
-  console.log(savedData)
+  console.log(artisanStats)
+ 
   
   
 const  [showProfile,setShowProfile]=useState(true)
@@ -67,7 +82,17 @@ const cancelProfile=()=>{
   setShowProfile(false)
 }
 
+const [pageNo, setPageNo] = useState(1);
+  const itemsPerPage = 5;
+  const startIndex = (pageNo - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = data&&data.slice(startIndex, endIndex);
 
+const [SpageNo, setSPageNo] = useState(1);
+  const SitemsPerPage = 5;
+  const SstartIndex = (SpageNo - 1) * SitemsPerPage;
+  const SendIndex = SstartIndex + SitemsPerPage;
+  const SpaginatedData = savedData&&savedData.slice(SstartIndex, SendIndex);
 
 
     return (
@@ -96,17 +121,17 @@ const cancelProfile=()=>{
             <div className="md:w-[32%] w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
               <Bag />
               <h6 className=" text-sm text-black font-medium">Total Jobs applied</h6>
-              <h5 className=" text-[20px] font-medium leading-[30px]">10</h5>
+              <h5 className=" text-[20px] font-medium leading-[30px]">{artisanStats?.total_applied_jobs}</h5>
               </div>
             <div className="md:w-[32%] w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
               <Like />
               <h6 className=" text-sm text-black font-medium">Total Recommendations</h6>
-              <h5 className="">2</h5>
+              <h5 className="">{artisanStats?.total_job_recommendations}</h5>
               </div>
             <div className="md:w-[32%] w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
               <Bag />
-              <h6 className=" text-sm text-black font-medium">Total Jobs applied</h6>
-              <h5 className="text-[20px] font-medium leading-[30px]">10</h5>
+              <h6 className=" text-sm text-black font-medium">Total Jobs completed</h6>
+              <h5 className="text-[20px] font-medium leading-[30px]">{artisanStats?.total_jobs_completed}</h5>
               </div>
           </div>
         </section>
@@ -117,8 +142,8 @@ const cancelProfile=()=>{
 
             <div className={`flex flex-col gap-2 ${data?.length==0&&" justify-center items-center"}`}>
               
-            {data && data.length>0?(
-                data?.map(dum=>(<OragonCard key={dum.Id} {...dum} />))
+            {paginatedData && paginatedData.length>0?(
+                paginatedData?.map(dum=>(<OragonCard key={dum.Id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
@@ -132,6 +157,19 @@ To apply for a job click on this button </p>
               )}
               
             </div>
+            <Paginator
+            value={pageNo}
+           incrementFunc={() => {
+    if (data && endIndex < data.length) {
+      setPageNo(pageNo + 1);
+    }
+  }}
+            decrementFunc={() => {
+          if (pageNo > 1) {
+            setPageNo(pageNo - 1);
+          }
+        }}
+          />
             </section>
           </section>
           <section className="p-4 md:w-[42%]  rounded-[10px]  ">
@@ -140,8 +178,8 @@ To apply for a job click on this button </p>
 
             <div className={`flex flex-col gap-2 ${savedData?.length==0&&" justify-center items-center"}`}>
               
-              {savedData && savedData.length>0?(
-                savedData.map(dum=>(<SavedOragonCard key={dum.Id} {...dum} />))
+              {SpaginatedData && SpaginatedData.length>0?(
+                SpaginatedData.map(dum=>(<SavedOragonCard key={dum.Id} {...dum} />))
               ):(
                 <section className=" flex justify-center items-center flex-col gap-8">
                     <div className=" h-[100px] w-[100px] flex justify-center items-center rounded-[32px] bg-customColorWithOpacity ">
@@ -153,6 +191,19 @@ To get started click on this button</p>
                 </section>
               )}
             </div>
+            <Paginator
+            value={SpageNo}
+           incrementFunc={() => {
+    if (savedData && SendIndex < savedData.length) {
+      setSPageNo(SpageNo + 1);
+    }
+  }}
+            decrementFunc={() => {
+          if (SpageNo > 1) {
+            setSPageNo(SpageNo - 1);
+          }
+        }}
+          />
             </section>
             
           </section>
