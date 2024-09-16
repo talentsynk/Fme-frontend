@@ -9,24 +9,30 @@ import { truncateString } from "@/utils/truncateString";
 import { useRouter } from "next/navigation";
 
 export interface IJob {
-  id: string;
-  name: string;
-  date: string; // would be parsed properly
-  location: string;
-  desc: string;
-  type: string;
-  pay: string;
-  isClosed: boolean;
+  Id: string;
+  JobTitle: string;
+  // date: string; // would be parsed properly
+  // Location: string;
+  Description: string;
+  JobType: string;
+  Amount: string;
+  // isClosed: boolean;
+}
+interface ISimilarJobs{
+  Id: number;
+  JobTitle: string;
+  Description: string;
+  Amount: string;
+  JobType: string;
+  Status?: string;
 }
 
-export const JobComp: React.FC<IJob> = ({
-  id,
-  name,
-  date,
-  desc,
-  location,
-  type,
-  pay,
+export const JobComp: React.FC<ISimilarJobs> = ({
+  Id,
+  JobTitle,
+  Description,
+  JobType,
+  Amount,
 }) => {
   const router = useRouter();
   return (
@@ -38,22 +44,22 @@ export const JobComp: React.FC<IJob> = ({
       </div>
       <div className="sec">
         <div className="v">
-          <h4>{name}</h4>
-          <p>posted {date} days ago</p>
+          <h4>{JobTitle}</h4>
+          <p>posted 2 days ago</p>
         </div>
         <div className="r">
-          <p>{truncateString(desc, 100)}</p>
+          <p>{truncateString(Description, 100)}</p>
           <div className="r-w">
-            <h4>{pay}</h4>
-            <h4>• {type} Job</h4>
+            <h4>{Amount}</h4>
+            <h4>• {JobType} Job</h4>
           </div>
         </div>
         <div className="btn">
           <div className="bg">
             <TinyLocationIcon />
-            <p>{location} State</p>
+            <p>Oyo State</p>
           </div>
-          <button type="button" onClick={() => router.push(`jobs/${id}`)}>
+          <button type="button" onClick={() => router.push(`/dashboard/artisan/jobs/${Id}`)}>
             Apply Now
           </button>
         </div>
@@ -64,37 +70,38 @@ export const JobComp: React.FC<IJob> = ({
 
 interface ILocationModal {
   closeModal: () => void;
+  applyFilter?: (state: string, lga: string) => void; // New prop for applying the filter
 }
+
 export const SelectLocationModal: React.FC<ILocationModal> = ({
   closeModal,
+  applyFilter, // Accept the applyFilter function
 }) => {
-  // for states
   const [state, setState] = useState("");
-  const [states, setStates] = useState(States);
-
+  const [lga, setLga] = useState("");
   const [showStateDropdown, setShowStateDropdown] = useState(false);
-  const handleStateSelection = (name: string) => {
-    setState(name);
-    setLga(""); // when a new state is selected, it sets the lga selected to empty
-    setShowStateDropdown(false);
-  };
-  // lga stuff
   const [showLGADropdown, setShowLGADropdown] = useState(false);
   const NaijaStates = require("naija-state-local-government");
+  const [states, setStates] = useState(States);
   const [lgas, setLgas] = useState([]);
-  const [lga, setLga] = useState("");
 
-  const handleLGASelection = (name: string) => {
-    setLga(name);
-    setShowLGADropdown(false);
-  };
-  // get lga based on state selected
   useEffect(() => {
     if (state) {
       const newLgas = NaijaStates.lgas(state).lgas;
       setLgas(newLgas);
     }
   }, [state]);
+
+  const handleStateSelection = (name: string) => {
+    setState(name);
+    setLga(""); // Reset LGA when state changes
+    setShowStateDropdown(false);
+  };
+
+  const handleLGASelection = (name: string) => {
+    setLga(name);
+    setShowLGADropdown(false);
+  };
 
   return (
     <LocationModalStyle>
@@ -111,13 +118,7 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
             className="head"
             onClick={() => setShowStateDropdown(!showStateDropdown)}
           >
-            <>
-              {state == "" ? (
-                <p className="placeholder">Please select your state</p>
-              ) : (
-                <p className="state-name">{state}</p>
-              )}
-            </>
+            {state === "" ? <p>Please select your state</p> : <p>{state}</p>}
             <AngleDownStyles $isSelected={showStateDropdown}>
               <AngleDown />
             </AngleDownStyles>
@@ -126,7 +127,7 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
             <div className="dropdown">
               {states.map((ele, index) => (
                 <StateCompStyles
-                  $isSelected={state == ele.name}
+                  $isSelected={state === ele.name}
                   key={index}
                   onClick={() => handleStateSelection(ele.name)}
                 >
@@ -137,20 +138,14 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
           )}
         </StatesDropdownStyles>
       </div>
-      <div className="form-ele">
+      {/* <div className="form-ele">
         <label htmlFor="lga">L.G.A</label>
         <StatesDropdownStyles>
           <div
             className="head"
             onClick={() => setShowLGADropdown(!showLGADropdown)}
           >
-            <>
-              {lga === "" ? (
-                <p className="placeholder">Please select L.G.A</p>
-              ) : (
-                <p className="state-name">{lga}</p>
-              )}
-            </>
+            {lga === "" ? <p>Please select L.G.A</p> : <p>{lga}</p>}
             <AngleDownStyles $isSelected={showLGADropdown}>
               <AngleDown />
             </AngleDownStyles>
@@ -169,15 +164,19 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
             </div>
           )}
         </StatesDropdownStyles>
-      </div>
+      </div> */}
       <div className="btns">
-        <button type="button" className="apply">
-          Apply Filter
-        </button>
-        <button type="button" className="clear">
+      {applyFilter && (
+  <button type="button" className=" text-white" onClick={() => applyFilter(state, lga)}>
+    Apply Filter
+  </button>
+)}
+
+        <button type="button" className="clear" onClick={() => { setState(''); setLga(''); }}>
           Clear Filter
         </button>
       </div>
     </LocationModalStyle>
   );
 };
+

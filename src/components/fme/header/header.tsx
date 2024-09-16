@@ -26,6 +26,7 @@ import {
 } from "@/components/icons/artisan/icons";
 import { IUserLink } from "@/components/employer/data";
 import { motion } from "framer-motion";
+import axios from 'axios';
 import { ArrowLeft } from "@/components/icons/recovery";
 import {
   AngleDown,
@@ -57,6 +58,14 @@ export const DashboardHeader = () => {
     console.log("I am logging out");
     router.push("/admin");
   };
+  
+
+
+ 
+
+
+
+
   return (
     <DashboardHeaderStyle>
       <div className="one">
@@ -263,6 +272,49 @@ export const UserDashboardHeader: React.FC<IHeader> = ({ uniquePageLinks }) => {
     setShowDropdown(false);
     setIsLoggingOut(true);
   };
+  interface IData{
+    FirstName:string;
+    LastName:string;
+    Email:string;
+    ID?:number;
+    PhoneNumber?:string;
+  }
+const [data,setData]=useState<IData|null>(null)
+  useEffect(() => {
+    const token = Cookies.get('token'); 
+    const role = Cookies.get('userRole'); 
+
+    const headers = {
+      Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+    };
+      console.log('breate')
+    const fetchData = async () => {
+      try {
+        if (role === 'EMPLOYER') {
+          // API call for EMPLOYER
+          const response = await axios.get(
+            'https://fme-backend-version-1.onrender.com/employer/get-employer',
+            { headers }
+          );
+          console.log('Employer data:', response.data);
+          setData(response.data.employer)
+        } else {
+          // API call for ARTISAN
+          const response = await axios.get(
+            'https://fme-backend-version-1.onrender.com/artisan/me',
+            { headers }
+          );
+          console.log('Artisan data:', response.data);
+          setData(response.data.artisan)
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
+  }, []);  
+
   return (
     <UserDashboardHeaderStyle>
       <div className="logo">
@@ -284,8 +336,8 @@ export const UserDashboardHeader: React.FC<IHeader> = ({ uniquePageLinks }) => {
             <p>OC</p>
           </div>
           <div className="text">
-            <h3>Oragon Confectionaries</h3>
-            <p>alarapetimi05@gmail.com</p>
+            <h3> {data?.FirstName} {data?.LastName}</h3>
+            <p>{data?.Email}</p>
           </div>
         </div>
         <AngleDownStyles $isSelected={showDropdown}>
@@ -339,8 +391,8 @@ export const UserDashboardHeader: React.FC<IHeader> = ({ uniquePageLinks }) => {
                   <div className="gre"></div>
                 </div>
                 <div className="text">
-                  <h3>Oragon Confectionaries</h3>
-                  <p>alarapetimi05@gmail.com</p>
+                  <h3>{data?.FirstName} {data?.LastName}</h3> 
+                  <p>{data?.Email}</p>
                 </div>
               </div>
               <div className="" onClick={handleMobileLogout}>

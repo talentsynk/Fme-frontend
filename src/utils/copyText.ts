@@ -7,5 +7,6 @@ export const CopyToClipboard = (text: string) => {
     })
     .catch((error) => {
       console.error("Error copying text: ", error);
+      //llo
     });
 };

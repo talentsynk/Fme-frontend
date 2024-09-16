@@ -545,7 +545,7 @@ export const GraphIcon = () => {
 };
 
 interface ICopy {
-  text: string;
+  text: any;
 }
 const CopyStyles = styled.div`
   cursor: pointer;

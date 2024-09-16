@@ -44,6 +44,10 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+.grid-container {
+  grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
+}
+
 
 button{
   border: 0;

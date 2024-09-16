@@ -1,4 +1,30 @@
+interface IArtisan{
+  AverageRating:number;
+  BusinessDescription:string;
+  BusinessName:string;
+  ID:number;
+  Skill:string;
+}
+interface IStats{
+  rating:number;
+  total_job_recommendations:number;
+  total_jobs_completed:number;
+}
+interface IReviews{
+
+  CreatedAt:string;
+  Rating:number;
+  EmployerID:number;
+  Description:string;
+  FirstName:string;
+  LastName:string;
+}
 "use client";
+import { useState,useEffect } from "react";
+import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
+import { SmallRedIcon } from "@/components/landing/faqs/Svgs";
+import axios from "axios";
 import {
   EmployerDetailPageStyle,
   SWitchTabStyles,
@@ -18,7 +44,7 @@ import {
 import { PaddedSectionStyles } from "@/components/layout/style";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState } from "react";
+
 import {
   EmployerBannerStyle,
   ReviewBtnStyle,
@@ -33,11 +59,20 @@ import {
 } from "@/components/artisan/Employer";
 import { JobGridListAlt, SimilarCompGridList } from "../../../artisan/style";
 import { ArtisanProfileTabSwitches } from "@/components/employer/data";
+import { HireArtisanComp } from "@/components/fme/students/modal";
+import { AirplaneIcon } from "@/components/landing/faqs/Svgs";
+import { CloseHireArtisanComp } from "@/components/fme/students/modal";
 
-const ArtisanDetailPage = () => {
+const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
+  const lol=params.artisan
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
   );
+  const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showHireArtisanModal, setShowHireArtisanModal] = useState(false);
+  const cancelModal=()=>{
+    console.log(1)
+  }
   const [currentTab, setCurrentTab] = useState(
     artisanTabSwitches.find((ele) => ele.isSelected)?.text
   );
@@ -52,6 +87,54 @@ const ArtisanDetailPage = () => {
     setArtisanTabSwitches(newTabSwitches);
   };
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [data,setData]= useState<IArtisan|null>(null)
+  const [stats,setStats]= useState<IStats|null>(null)
+  const [reviews,setReviews]= useState<IReviews[]|null>(null)
+  useEffect(() => {
+		let token = Cookies.get("token");
+    console.log(token)
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/artisan/profile-stats/${lol}`, config)
+			.then((res) => {
+       console.log(res)
+				const data = res.data;
+				setStats(data);
+			})
+			.catch((error) => console.log(error));
+		axios
+			.get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
+			.then((res) => {
+       
+				const data = res.data.ratings;
+				setReviews(data);
+			})
+			.catch((error) => console.log(error));
+      
+		axios
+			.get(`${BACKEND_URL}/artisan/${lol}`, config)
+			.then((res) => {
+        console.log(res)
+				const data = res.data.artisan;
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+  
+  const handleModalAction = () => {
+    // Here you should update the job status based on the modal's action
+    // setHiringStatus(prevState => !prevState); // Toggle the job status
+    setShowHireArtisanModal(false);
+  };
+  const handleModAction = () => {
+    // Here you should update the job status based on the modal's action
+    // setHiringStatus(prevState => !prevState); // Toggle the job status
+    setShowSuspendModal(false);
+  };
   return (
     <EmployerDetailPageStyle>
       <PaddedSectionStyles>
@@ -73,7 +156,7 @@ const ArtisanDetailPage = () => {
               />
             </div>
             <div className="one">
-              <h2>Oluwatimilehin Alarape</h2>
+              <h2> {data?.BusinessName}</h2>
             </div>
             <VerifiedBadge>
               <GreenTick />
@@ -96,7 +179,7 @@ const ArtisanDetailPage = () => {
                         <div className="no">
                           <p>{ele.text}</p>
                           <div className="num">
-                            <span>{20}</span>
+                            <span>{reviews&&reviews.length}</span>
                           </div>
                         </div>
                         {ele.isSelected && (
@@ -108,27 +191,27 @@ const ArtisanDetailPage = () => {
                       </UserTabSwitchStyle>
                     ))}
                   </SWitchTabStyles>
-                  <div className="desktop">
+                  {/* <div className="desktop">
                     <div className="review">
                       <ReviewBtnStyle onClick={() => setShowReviewModal(true)}>
                         <ReviewIcon />
                         <p>Review Professional</p>
                       </ReviewBtnStyle>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="mobile">
+                {/* <div className="mobile">
                   <div className="review">
                     <ReviewBtnStyle>
                       <ReviewIcon />
                       <p>Review Professional</p>
                     </ReviewBtnStyle>
                   </div>
-                </div>
+                </div> */}
                 <JobGridListAlt>
-                  {currentTab == "Reviews" &&
-                    [1, 2, 3].map((ele, index) => (
-                      <ReviewComp key={index} role="employer" />
+                  {currentTab == "Recommendations" &&
+                    reviews && reviews?.map((ele, index) => (
+                      <ReviewComp key={index} {...ele} />
                     ))}
                 </JobGridListAlt>
               </div>
@@ -151,30 +234,30 @@ const ArtisanDetailPage = () => {
                 <div className="l2">
                   <div className="fr">
                     <h4>Project Completed</h4>
-                    <p>1</p>
+                    <p>{stats?.total_jobs_completed}</p>
                   </div>
                   <div className="fr">
                     <h4>Rating</h4>
                     <div className="rate">
                       <RatingIcon />
-                      <p>4.5/5</p>
+                      <p>{stats?.rating}</p>
                     </div>
                   </div>
                   <div className="fr">
                     <h4>Recommendations</h4>
-                    <p>5</p>
+                    <p>{stats?.total_job_recommendations}</p>
                   </div>
                   <div className="fr">
                     <h4>Location</h4>
                     <p>Lagos</p>
                   </div>
                 </div>
-                <div className="btn">
-                    <button type="button">
-                        <p>Hire Professional</p>
-                        <SendIcon />
-                    </button>
+                <div className="flex gap-2 pt-8 justify-center">
+                    {/* <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button> */}
+    <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Hire Artisan</p><AirplaneIcon /></button>
                 </div>
+                {/* {showSuspendModal && <CloseHireArtisanComp handleModAction={handleModAction} cancelModal={() => setShowSuspendModal(false)} />} */}
+  {showHireArtisanModal && <HireArtisanComp artisanId={data?.ID} handleModalAction={handleModalAction} cancelModal={() => setShowHireArtisanModal(false)} />}
               </div>
             </div>
           </div>

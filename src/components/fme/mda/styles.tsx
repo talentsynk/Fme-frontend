@@ -920,6 +920,12 @@ export const TwoButtonModalStyles = styled.div`
       gap: 1rem;
       padding: 1.5rem 1.5rem 1.5rem 1.5rem;
     }
+    .up {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    }
     .x {
       svg {
         cursor: pointer;
@@ -928,7 +934,34 @@ export const TwoButtonModalStyles = styled.div`
       align-items: flex-start;
       justify-content: space-between;
     }
-
+    .y {
+      svg {
+        cursor: pointer;
+      }
+      display: flex;
+      flex-direction:row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .z{
+      border-radius:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background-color:#E7F6EC;
+      margin-block:8px;
+      padding:1rem;
+      h5{
+        color:black;
+        font-weight:700;
+        line-height:24px
+      }
+      p{
+        font-weight:500;
+        color:black;
+        font-size:12px;
+      }
+    }
     .l {
       display: flex;
       justify-content: center;
@@ -966,6 +999,15 @@ export const TwoButtonModalStyles = styled.div`
       font-style: normal;
       font-weight: 700;
       line-height: 1.25rem; /* 142.857% */
+    }
+    .btnn{
+      background:#00932E
+    }
+    .downn{
+      padding-block:0;
+    }
+    .btnn{
+      background-color:#00923E;
     }
     .cancel {
       color: #111;
