@@ -36,7 +36,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
 import { BACKEND_URL } from '@/lib/config';
-import { Clock, GreenClock, LLocation, Padlock, Star, Tick } from './faqs/Svgs'
+import { Clock, GreenClock, LLocation, Padlock, Star, Tick,SmallRedIcon, CircleTick } from './faqs/Svgs'
 import { ButtonLoader, GreenButtonLoader } from '../recovery/style';
 
 const EmployersOragonCard:React.FC<OragonCard> = ({JobTitle,Description,Status,Id,Amount,JobType}) => {
@@ -50,9 +50,10 @@ const EmployersOragonCard:React.FC<OragonCard> = ({JobTitle,Description,Status,I
               <div className=" space-y-1">
               <h6 className=" text-[12px] font-medium leading-[17px]">{Amount} . {JobType}</h6>
               <h6 className=" text-[12px] font-medium leading-[17px]">Job Status</h6>
-            <button className={`${Status=="open"?"bg-[#E7F6EC]":"bg-[#00932E]"} flex items-center gap-1 text-white rounded-md py-1 px-2 text-[10px] font-bold`}>{Status=="open"?<GreenClock />:<Tick />} <span className={`${Status=="open"?"text-[#00932E]":"text-[#E7f6EC]"}`}>{Status=="completed"?"Job Completed":"Ongoing"}</span></button>
+            <button className={`${Status=="open"?"bg-[#00932E]":Status=="completed"?"bg-[#00932E]":"bg-[#E7F6EC]"} flex items-center gap-1 text-white rounded-md py-1 px-2 text-[10px] font-bold`}>{Status=="open"?<Tick />:Status=="completed"?<CircleTick />:<GreenClock />} <span className={`${Status=="open"?"text-[#E7f6Ec]":Status=="completed"?"text-[#E7f6Ec]":"text-[#00932E]"}`}>{Status === "open" ? "Job Open" : Status === "completed" ? "Job Completed" : "Ongoing"
+}</span></button>
               </div>
-              <Link href={`/dashboard/employer/jobs/${Id}`} className="flex items-center bg-[#00932E] text-white rounded-md py-2 px-4 text-sm font-medium">View Job</Link>
+              <Link href={`/dashboard/employer/jobs/${Id}`} className="flex items-center bg-[#00932E] text-white rounded-md py-2 px-4 md:text-sm text-[12px]  font-medium">View Job</Link>
             </div>
         </div>
       
@@ -69,9 +70,33 @@ const OragonCard:React.FC<Oragon> = ({Name,Description,ApplicationStatus,Id}) =>
             <div className=" flex justify-between w-full">
               <div className=" space-y-1">
               <h6 className=" text-[12px] font-medium leading-[17px]">Application Status</h6>
-            <button className={` ${ApplicationStatus?"bg-[#00932E] text-white" :"bg-[#ffE5DD] text-[#FE764B]"} flex items-center gap-1 rounded-md py-1 px-2 text-[10px] font-bold`}>{ApplicationStatus?<Tick />:<Clock />} <span className="">{ApplicationStatus?"Job offered":"In Review"}</span></button>
+              <button
+  className={`${
+    ApplicationStatus === "hired"
+      ? "bg-[#00932E] text-white"
+      : ApplicationStatus === "declined"
+      ? "bg-[#ffE5DD] text-[#FE764B]"
+      : "bg-[#FFEEB0] text-[#F9C00B]"
+  } flex items-center gap-1 rounded-md py-1 px-2 text-[10px] font-bold`}
+>
+  {ApplicationStatus === "hired" ? (
+    <Tick />
+  ) : ApplicationStatus === "declined" ? (
+    <SmallRedIcon />
+  ) : (
+    <Clock />
+  )}
+  <span className="">
+    {ApplicationStatus === "hired"
+      ? "Job Offered"
+      : ApplicationStatus === "declined"
+      ? "Application Declined"
+      : "In Review"}
+  </span>
+</button>
+
               </div>
-              <Link href={`/dashboard/artisan/jobs/${Id}`} className=" bg-[#00932E] text-white rounded-md flex items-center px-4 text-sm font-medium">View Job</Link>
+              <Link href={`/dashboard/artisan/jobs/${Id}`} className=" bg-[#00932E] text-white rounded-md flex items-center px-2 py-1 md:py-2 text-[12px] md:px-4 md:text-sm font-medium">View Job</Link>
             </div>
         </div>
       

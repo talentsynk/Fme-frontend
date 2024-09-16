@@ -247,7 +247,7 @@ export const ReviewCompStyles = styled.div`
       font-feature-settings: "cv03" on, "cv04" on;
       font-size: 0.875rem;
       font-style: normal;
-      font-weight: 500;
+      // font-weight: 500;
       line-height: 145%; /* 1.0875rem */
       letter-spacing: -0.00375rem;
     }

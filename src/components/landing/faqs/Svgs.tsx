@@ -339,6 +339,17 @@ const Instagram = () => {
       
     )
   }
+  const CircleTick = () => {
+    return (
+      <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.51516 5.01516C7.66161 4.86872 7.66161 4.63128 7.51516 4.48483C7.36872 4.33839 7.13128 4.33839 6.98483 4.48483L4.75 6.71967L4.01517 5.98483C3.86872 5.83839 3.63128 5.83839 3.48483 5.98483C3.33839 6.13128 3.33839 6.36872 3.48483 6.51517L4.48483 7.51517C4.63128 7.66161 4.86872 7.66161 5.01517 7.51517L7.51516 5.01516Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M5.5 0.625C2.53147 0.625 0.125 3.03147 0.125 6C0.125 8.96853 2.53147 11.375 5.5 11.375C8.46853 11.375 10.875 8.96853 10.875 6C10.875 3.03147 8.46853 0.625 5.5 0.625ZM0.875 6C0.875 3.44568 2.94568 1.375 5.5 1.375C8.05432 1.375 10.125 3.44568 10.125 6C10.125 8.55432 8.05432 10.625 5.5 10.625C2.94568 10.625 0.875 8.55432 0.875 6Z" fill="white"/>
+      </svg>
+      
+
+      
+    )
+  }
   const DarkGreenBag = () => {
     return (
 <svg width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -542,4 +553,4 @@ const Instagram = () => {
     )
   }
 
-export  {Call,WhiteCall,DoubleTick,GoldStar,GreenClock,Message,RecommendArtisans,BlackSmallBag,Stats,Messaging,WhiteMessaging,Search,Diploma,Organise,TailoredSearch,GradCap,Up,Down,Mail,WhiteMail,LinkedIn,Twitter,Facebook,Instagram,Hamburger,Cancel,WhiteMessage,Profile,Bag,Like,Padlock,Star,BigStar,X,Tick,LLocation,WhiteBag,Hands,Clock,CircularProfile,GreenBag,Bigtar,BigSearch,RightCall,RightMail,RightContent,DarkGreenBag,HandMoney,VerifiedTick,SmallVerified,AirplaneIcon,SmallRedIcon,ArtisansContactCard}
+export  {Call,CircleTick,WhiteCall,DoubleTick,GoldStar,GreenClock,Message,RecommendArtisans,BlackSmallBag,Stats,Messaging,WhiteMessaging,Search,Diploma,Organise,TailoredSearch,GradCap,Up,Down,Mail,WhiteMail,LinkedIn,Twitter,Facebook,Instagram,Hamburger,Cancel,WhiteMessage,Profile,Bag,Like,Padlock,Star,BigStar,X,Tick,LLocation,WhiteBag,Hands,Clock,CircularProfile,GreenBag,Bigtar,BigSearch,RightCall,RightMail,RightContent,DarkGreenBag,HandMoney,VerifiedTick,SmallVerified,AirplaneIcon,SmallRedIcon,ArtisansContactCard}

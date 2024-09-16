@@ -22,62 +22,41 @@ import JobApplication from '@/components/employer/JobApplication'
 
 const JobApplications = ({ params }: { params: { id: string } }) => {
   console.log(params.id)
+  const lol=params.id
   const [data,setData]=useState<IApplication[]|null>(null)
-    const applications=[
-        {
-            name:"Oragon confectioneries",
-            text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon,...",
-            status:"verified",
-            id:1
-        },
-        {
-            name:"Oragon confectioneries",
-            text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon,...",
-            status:"verified",
-            id:2
-        },
-        {
-            name:"Oragon confectioneries",
-            text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon,...",
-            status:"verified",
-            id:3
-        },
-        {
-            name:"Oragon confectioneries",
-            text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon,...",
-            status:"verified",
-            id:4
-        },
-        {
-            name:"Oragon confectioneries",
-            text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon,...",
-            status:"verified",
-            id:5
-        },
-        {
-            name:"Oragon confectioneries",
-            text:"I need a caterer for 20 peoples meal in a birthday party that is coming up soon. I need a caterer for 20 peoples meal in a birthday party that is coming up soon,...",
-            status:"verified",
-            id:6
-        },
-    ]
+  const [filteredData, setFilteredData] = useState<IApplication[]|null>([]);
+  const [selectedFilter, setSelectedFilter] = useState("All");
     
+
     useEffect(() => {
-      let token = Cookies.get("token");
-      console.log(token)
+      const token = Cookies.get("token");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
+  
+      // Modify the API call based on the selected filter
+      let apiUrl = `${BACKEND_URL}/job/applicants/${lol}`;
+      if (selectedFilter === "Selected") {
+        apiUrl += "?status=selected";
+      } else if (selectedFilter === "Declined") {
+        apiUrl += "?status=declined";
+      }
+  
       axios
-        .get(`${BACKEND_URL}/job/applicants/1`, config)
+        .get(apiUrl, config)
         .then((res) => {
-          const data = res.data.applicants;
-          setData(data);
+          const applicants = res.data.applicants;
+          setData(applicants);
         })
         .catch((error) => console.log(error));
-    }, []);
+    }, [selectedFilter]); // Rerun the API call when the filter changes
+  
+    // Handle filter change
+    const handleFilterChange = (filter:string) => {
+      setSelectedFilter(filter);
+    };
     console.log(data)
     
   
@@ -100,28 +79,54 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
       </div>
       <section className="flex flex-col md:flex-row gap-2 mt-4">
 
-    {/* <div className="w-[20%]  md:border-[#EBEDF4] md:border-[1px] md:border-solid p-4 rounded-lg ">
-<h2 className="text-lg font-semibold mb-4">Categories</h2>
-<div className="md:flex flex-col hidden space-y-2">
-  <label className="flex items-center">
-    <input type="checkbox" className="form-checkbox h-4 w-4 text-[#00932E]" />
-    <span className="ml-2">All Artisans</span>
-    <span className="ml-auto text-[#222222] font-bold ">10</span>
-  </label>
-  <label className="flex items-center">
-    <input type="checkbox" className="form-checkbox h-4 w-4 text-[#00932E]" checked />
-    <span className="ml-2">Selected Artisans</span>
-    <span className="ml-auto text-[#222222] font-bold ">5</span>
-  </label>
-  <label className="flex items-center">
-    <input type="checkbox" className="form-checkbox h-4 w-4 text-[#00932E]" />
-    <span className="ml-2">Artisans Declined</span>
-    <span className="ml-auto text-[#222222] font-bold ">5</span>
-  </label>
-</div>
-    </div> */}
+      <div className="md:w-[20%] hidden md:block md:border-[#EBEDF4] md:border-[1px] md:border-solid p-4 rounded-lg">
+        <h2 className="text-lg font-semibold mb-4">Categories</h2>
+        <div className="md:flex flex-col space-y-2">
+          {/* All Artisans */}
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              className={`form-checkbox h-4 w-4 ${
+                selectedFilter === "All" ? "bg-[#00932E] border-[#00932E]" : ""
+              }`}
+              checked={selectedFilter === "All"}
+              onChange={() => handleFilterChange("All")}
+            />
+            <span className="ml-2">All Artisans</span>
+            <span className="ml-auto text-[#222222] font-bold">{selectedFilter=="All"&&data && data.length}</span>
+          </label>
 
-    <section className=" ">
+          {/* Selected Artisans */}
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              className={`form-checkbox h-4 w-4 ${
+                selectedFilter === "Selected" ? "bg-green-500 border-green-500" : ""
+              }`}
+              checked={selectedFilter === "Selected"}
+              onChange={() => handleFilterChange("Selected")}
+            />
+            <span className="ml-2">Selected Artisans</span>
+            <span className="ml-auto text-[#222222] font-bold">{selectedFilter=="Selected"&&data && data.length}</span>
+          </label>
+
+          {/* Declined Artisans */}
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              className={`form-checkbox h-4 w-4 ${
+                selectedFilter === "Declined" ? "bg-green-500 border-green-500" : ""
+              }`}
+              checked={selectedFilter === "Declined"}
+              onChange={() => handleFilterChange("Declined")}
+            />
+            <span className="ml-2">Artisans Declined</span>
+            <span className="ml-auto text-[#222222] font-bold">{selectedFilter=="Declined" && data && data.length}</span>
+          </label>
+        </div>
+      </div>
+        <h3 className="my-2 mx-4 md:hidden text-[24px] font-semibold mb-4">Categories</h3>
+    <section className="md:w-[80%] ">
 <section className="">
 <div className={` ${data && data?.length>0?'grid-container grid gap-8':'flex justify-center items-center'} px-4`}>
 {data && data?.length > 0 ? (

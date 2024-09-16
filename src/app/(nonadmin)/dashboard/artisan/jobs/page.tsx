@@ -237,9 +237,7 @@ interface ILol{
 
   const fetchJobsByLocation = async (state: string, lga: string) => {
     try {
-      const response = await axios.get(`/api/jobs`, {
-        params: { state, lga },
-      });
+      const response = await axios.get(`/api/jobs/${state}`);
       setData(response.data.jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);

@@ -6,14 +6,17 @@ interface IEmployerData{
   EmployerFirstName:string;
   EmployerId:string;
   HiringStatus:boolean;
-  Id:string;
+  Id:number;
   JobTitle:string;
   JobType:string;
   Location:string;
   Requirements:string;
   CreatedAt:string;
+  ApplicationStatus:string
 }
 "use client";
+import { FlexAbsoluteModalStyles } from "@/components/fme/mda/styles";
+import { ReviewModal } from "@/components/artisan/Employer";
 import { JobDetailPageStyle } from "@/components/artisan/Jobdetails/style";
 import { LargeSVGBg, TagStyle } from "@/components/artisan/style";
 import { useSearchParams } from 'next/navigation'
@@ -39,19 +42,18 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [data, setData] = useState<IEmployerData|null>(null);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
-  const cancelModal=()=>{
-    console.log(1)
-  }
+  const [showReviewModal, setShowReviewModal] = useState(false);
 	useEffect(() => {
 		let token = Cookies.get("token");
-    console.log(token)
+		let role = Cookies.get("userRole");
+    console.log(role)
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/job/${lol}`, config)
+			.get(`${BACKEND_URL}/job/general/${lol}`, config)
 			.then((res) => {
 				const data = res.data;
         setHiringStatus(res.data.HiringStatus)
@@ -101,7 +103,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                   <VerifiedTick />
 								</div>
                 <p className=" font-bold text-[16px] leading-[24px] text-[#1A1A1A]">Posted by me</p>
-                <Link href={`/dashboard/employer/jobs/${lol}/applications`} className=" px-4 py-2 rounded bg-[#00932E] text-white text-sm font-bold" >
+                <Link href={`/dashboard/employer/jobs/${data?.EmployerId}/applications`} className=" px-4 py-2 rounded bg-[#00932E] text-white text-sm font-bold" >
                   View Applications
                 </Link>
               </div>
@@ -160,15 +162,30 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                     </TagStyle>
                   </div>
                 </div>
+              {data?.Status=="ongoing"&&<div className=" bg-[#E7f6EC] rounded-[12px] p-4 space-y-4">
+                <h3 className=" text-[#101928] font-bold ">Recommend Artisan</h3>
+                <p className=" text-sm text-black leading-5 font-normal">Add reviews about the artisans services and job delivery to help boost their credential and competence.</p>
+                <button onClick={() => setShowReviewModal(true)}  className=" text-sm text-[#00932E] leading-5 font-bold">Write a Recommendation</button>
+              </div>}
+              {showReviewModal && (
+        <FlexAbsoluteModalStyles>
+          <ReviewModal
+            role="employer"
+            closeModal={() => setShowReviewModal(false)}
+            id={data?.Id}
+            
+          />
+        </FlexAbsoluteModalStyles>
+      )}
               </div>
             </div>
             <div className="btns">
-              <button type="button" className="apply"  onClick={() => setShowSuspendModal(true)}>
+              <button type="button" className="apply" disabled={data?.Status=="completed"||data?.Status=="ongoing"}  onClick={() => setShowSuspendModal(true)}>
               {HiringStatus ? "Close Job Application" : "Open Job Application"}
               </button>
             </div>
           </div>
-          {showSuspendModal && <CloseJobComp    handleModalAction={handleModalAction}
+          {showSuspendModal && <CloseJobComp id={data?.Id}    handleModalAction={handleModalAction}
           HiringStatus={HiringStatus} cancelModal={() => setShowSuspendModal(false)} />}
         </div>
       </PaddedSectionStyles>

@@ -23,5 +23,5 @@ export const EmployerPageLinks: IUserLink[] = [
 ];
 
 export const ArtisanProfileTabSwitches: ITabSwitch[] = [
-  { text: "Reviews", tabIndex: 0, isSelected: true },
+  { text: "Recommendations", tabIndex: 0, isSelected: true },
 ]

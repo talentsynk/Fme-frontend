@@ -33,10 +33,35 @@ const PostAJob = () => {
 	const cancelModal=()=>{
 		console.log(1)
 	  }
-	//   const handleSubmit=(e: React.MouseEvent<HTMLButtonElement>)=>{
-	// 	e.preventDefault()
-	// 	setShowJobModal(true)
-	//   }
+	  interface ICate{
+		Id:number;
+		Name:string;
+		Description:string;
+	  }
+	const [cate,setCate]=useState<ICate[]|null>(null)
+	
+	useEffect(() => {
+		let token = Cookies.get("token");
+    
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		axios
+			.get(`${BACKEND_URL}/category/all`, config)
+			.then((res) => {
+        
+				const data = res.data.Categories;
+				console.log(data)
+				setCate(data);
+			})
+			.catch((error) => console.log(error));
+
+		
+	}, []);
+
   const [formData, setFormData] = useState<IForm>({
 		JobTitle:"",
 		Location:"",
@@ -55,7 +80,7 @@ const PostAJob = () => {
   const [category, setCategory] = useState("");
 	const [stateOfOrigin, setStateOfOrigin] = useState("");
 const [categories,setCategories]=useState(["engineering","plumbing"]);
-	const [jobTypes,setJobTypes]=useState(["on-hire","full-time"])
+	const [jobTypes,setJobTypes]=useState(["part-time","full-time"])
 	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
 	const [states, setStates] = useState(States);
 	const NaijaStates = require('naija-state-local-government');
@@ -158,7 +183,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
             <GreyArrowRight />
             <p className="text-[16px] leading-[24px] font-bold text-[#00932E]">Post a job</p>
           </div>
-        <div className="flex justify-center gap-2 py-4">
+        <div className="flex justify-center gap-2 py-6 md:py-4">
             <DarkGreenBag />
             <h2 className=" text-[36px] leading-[44px] font-medium">Post a job</h2>
         </div>
@@ -215,7 +240,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 											<StatesDropdownStyles>
 												<div className="head" onClick={() => setShowJobTypeDropdown(!showJobTypeDropdown)}>
 													<>
-														{jobType === "" ? <p className="placeholder">Please select Job Category</p> : <p className="state-name">{jobType}</p>}
+														{jobType === "" ? <p className="placeholder">Please select Job Type</p> : <p className="state-name">{jobType}</p>}
 													</>
 													<AngleDownStyles $isSelected={showJobTypeDropdown}>
 														<AngleDown />
@@ -246,9 +271,9 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 												</div>
 												{showCategoryDropdown && (
 													<div className="profile-dropdown z-50 bg-red-800">
-														{categories.map((ele, index) => (
-															<StateCompStyles $isSelected={category === ele} key={index} onClick={() => handleCategorySelection(ele)}>
-																<p>{ele}</p>
+														{cate&&cate?.map((ele, index) => (
+															<StateCompStyles $isSelected={category === ele?.Name} key={index} onClick={() => handleCategorySelection(ele?.Name)}>
+																<p>{ele?.Name}</p>
 															</StateCompStyles>
 														))}
 													</div>
@@ -306,7 +331,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 							<label htmlFor="address" className="text-[#101928] font-semibold text-sm">	Budget for Job(Optional)</label>
 							<div className="w-full relative flex">
 								<input
-								placeholder="Sales representative needed"
+								placeholder="Please input the budget"
 									type="text"
 									id="Budget"
 									name="Budget"

@@ -13,6 +13,7 @@ interface IEmployerData{
   Location:string;
   Requirements:string;
   CreatedAt:string;
+  ApplicationStatus:string
 }
 interface ISimilarJobs{
       Id: number;
@@ -24,10 +25,13 @@ interface ISimilarJobs{
 }
 
 "use client";
+import { FlexAbsoluteModalStyles } from "@/components/fme/mda/styles";
+import { ReviewModal } from "@/components/artisan/Employer";
 import { JobComp } from "@/components/artisan/Job";
 import { JobDetailPageStyle } from "@/components/artisan/Jobdetails/style";
 import { LargeSVGBg, TagStyle } from "@/components/artisan/style";
 import {
+  GreenTick,
   GreyArrowRight,
   SmallBriefCaseIcon,
   TinyLocationIcon,
@@ -87,9 +91,11 @@ const requirementsArray = data?.Requirements
   .split("\n")
   .filter(line => line.trim() !== "") // Remove empty lines
   .map(line => line.replace(/^[-\s]+/, "")); // Remove leading dashes and spaces
-
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
   const [applyLoading, setApplyLoading] = useState(false); // Loading state
+  const [status,setStatus]= useState(0)
+  const [saveStatus,setSaveStatus]= useState(0)
   const handleSaveJob = async () => {
     let token = Cookies.get("token");
     setLoading(true); // Set loading 
@@ -106,6 +112,7 @@ const requirementsArray = data?.Requirements
           },
         }
       );
+      setSaveStatus(response.status)
 
       console.log('Job saved successfully:', response.data);
       // Handle success (e.g., show a message to the user)
@@ -133,9 +140,10 @@ const requirementsArray = data?.Requirements
           },
         }
       );
+      setStatus(response.status)
 
-      console.log('Job application submitted:', response.data);
-      setInReview(true); 
+      console.log('Job application submitted:', response);
+    
 
     } catch (error) {
       console.error('Error applying for job:', error);
@@ -145,30 +153,6 @@ const requirementsArray = data?.Requirements
     }
   };
 console.log(data)
-let buttonText: React.ReactNode='';
-  let isDisabled = false;
-  const [inReview, setInReview] = useState(false);
-
-  if (inReview) {
-    buttonText = 'In Review';
-    isDisabled = true;
-  } else {
-    switch (data?.Status) { // Assuming `data.status` holds the value you are checking ("open", "completed", "closed")
-      case 'open':
-        buttonText = applyLoading ? <GreenButtonLoader /> : 'Apply Job for now';
-        break;
-      case 'completed':
-        buttonText = 'Applied for Job';
-        isDisabled = true;
-        break;
-      case 'closed':
-        buttonText = 'Job Application Closed';
-        isDisabled = true;
-        break;
-      default:
-        buttonText = 'Apply Job for now'; // Fallback text
-    }
-  }
 
 
   return (
@@ -254,22 +238,58 @@ let buttonText: React.ReactNode='';
                     </TagStyle>
                   </div>
                 </div>
+              {data?.Status=="completed"&&<div className=" bg-[#E7f6EC] rounded-[12px] p-4 space-y-4">
+                <h3 className=" text-[#101928] font-bold ">Review Employer</h3>
+                <p className=" text-sm text-black leading-5 font-normal">Add reviews about the employer services and job delivery to help boost their credential and competence.</p>
+                <button onClick={() => setShowReviewModal(true)}  className=" text-sm text-[#00932E] leading-5 font-bold">Write a Review</button>
+              </div>}
+              {showReviewModal && (
+        <FlexAbsoluteModalStyles>
+          <ReviewModal
+            role="artisan"
+            closeModal={() => setShowReviewModal(false)}
+            id={data?.Id}
+            
+          />
+        </FlexAbsoluteModalStyles>
+      )}
               </div>
             </div>
             <div className=" flex gap-4">
             <button
-      onClick={handleApplyJob}
-      type="button"
-      className={`rounded-md w-[200px] h-[48px] font-bold flex justify-center items-center bg-[#E7F6EC] text-[#00932E] ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-      disabled={isDisabled || applyLoading}
-    >
-      {buttonText}
-    </button>
-              <button onClick={handleSaveJob} type="button" className="rounded-md font-bold w-[200px] h-[48px] flex justify-center items-center bg-[#EFF1F3] text-[#000000]">
+  onClick={handleApplyJob}
+  type="button"
+  className={`rounded-md w-[200px] h-[48px] font-bold flex justify-center items-center ${
+    data?.ApplicationStatus === "hired" || data?.ApplicationStatus === "listed"
+      ? "opacity-50 cursor-not-allowed bg-gray-200 text-gray-500"
+      : "bg-[#E7F6EC] text-[#00932E]"
+  }`}
+  disabled={data?.ApplicationStatus === "hired" || data?.ApplicationStatus === "listed"||data?.ApplicationStatus === "declined"||status==200}
+>
+  {applyLoading ? (
+    <GreenButtonLoader />
+  ) : data?.ApplicationStatus === "declined" ? (
+    "Apply for Job again"
+  ) : data?.ApplicationStatus === "" && status!=200 ? (
+    "Apply Job for now"
+  ) :status === 200 ? (
+    <>
+    Job Applied <GreenTick />
+  </>
+  ) :
+  
+  (
+    "Already Applied"
+  )}
+</button>
+              <button disabled={saveStatus==200||saveStatus==400} onClick={handleSaveJob} type="button" className="rounded-md font-bold w-[200px] h-[48px] flex justify-center items-center bg-[#EFF1F3] text-[#000000]">
                 {loading ? <GreenButtonLoader /> : 'Save job for later'}
               </button>
             </div>
+{status==200&&<p className="text-[#00932E] text-[18px] font-medium leading-6"> Congratulations you just applied for this job ! We are cheering for you and hoping for the best!</p>}
+{saveStatus==200?<p className="text-[#00932E] text-[18px] font-medium leading-6">Job successfully saved</p>:<p className="text-[#00932E] text-[18px] font-medium leading-6">Job already saved</p>}
           </div>
+      
           <div className="similar">
             <h3 className="head">Similar Job posts</h3>
             <JobGridList>

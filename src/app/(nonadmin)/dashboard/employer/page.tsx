@@ -68,7 +68,7 @@ const EmployerHome = () => {
 
   return (
     <section className=" p-4">
-    <h2 className="text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hey, Kevin.</h2>
+    <h2 className="text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hey, Jude.</h2>
     <p className="text-[#626C70] my-4 font-medium text-sm leading-[20px]">Here is all your Relik analytics overview</p>
     <section className="border border-[#E4F5EA] border-solid p-4 rounded-[10px]">
       <h2 className="text-[24px] font-bold leading-[32px] text-black">Dashboard</h2>
@@ -91,7 +91,7 @@ const EmployerHome = () => {
       </div>
     </section>
     <section className=" flex flex-col md:flex-row justify-between py-8">
-      <section className={`p-4 md:w-[55%] rounded-[10px] ${data&&data?.length>0?"h-fit":""}  `}>
+      <section className={`md:p-4  md:w-[55%] rounded-[10px] ${data&&data?.length>0?"h-fit":""}  `}>
             <h4 className=" text-[18px] leading-[24px] mb-4 font-bold text-black">Jobs Posted</h4>
             <section className={`${data && data.length==0&&" flex justify-center items-center my-auto h-full"}`}>
 

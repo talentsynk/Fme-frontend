@@ -138,7 +138,7 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
           )}
         </StatesDropdownStyles>
       </div>
-      <div className="form-ele">
+      {/* <div className="form-ele">
         <label htmlFor="lga">L.G.A</label>
         <StatesDropdownStyles>
           <div
@@ -164,10 +164,10 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
             </div>
           )}
         </StatesDropdownStyles>
-      </div>
+      </div> */}
       <div className="btns">
       {applyFilter && (
-  <button type="button" className="apply" onClick={() => applyFilter(state, lga)}>
+  <button type="button" className=" text-white" onClick={() => applyFilter(state, lga)}>
     Apply Filter
   </button>
 )}

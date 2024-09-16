@@ -152,10 +152,10 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
   </div>
   <section className="">
   
-  <section className=" flex gap-2">
-  <div className=" space-y-2 w-[70%]">
+  <section className=" flex gap-2 flex-col md:flex-row p-2">
+  <div className=" space-y-2 md:w-[70%]">
   <div className=" flex justify-between items-center py-2">
-  <div className="flex items-center p-2">
+  <div className="flex  items-center p-2">
       <button
         className={`text-lg font-semibold px-4 py-2 ${
           activeTab === 'jobs' ? 'text-[#00932E] border-b-[#00932E] border-solid border-b-[1px]'  : 'text-gray-400'
@@ -174,10 +174,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
       </button>
   
     </div>
-    <button className="mb-2 bg-[#E7F6EC] rounded-md py-2 px-3 flex gap-1">
-      <RecommendArtisans />
-      <h5 className=" text-sm font-bold leading-5 text-[#00932E]"> Write a Review</h5>
-    </button>
+    
   </div>
   {
       activeTab=='jobs'?(<div className={`flex flex-col gap-2 ${data?.length==0&&" justify-center items-center"}`}>
@@ -207,11 +204,11 @@ To get started click on this button</p>
           }
         }}
           />
-    </div>):(<div>{review && review.map(rev=>(<Recommendations key={rev.EmployerID} {...rev} />))}</div>)
+    </div>):(<div>{review && review.map(rev=>(<Recommendations key={rev.CreatedAt} {...rev} />))}</div>)
     }
 
 </div>
-<div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] w-[30%]">
+<div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] md:w-[30%]">
 
   <div className=" flex gap-1 items-center">
     <Stats />
@@ -241,7 +238,7 @@ To get started click on this button</p>
   </section>
   </section>
   <div className="">
-    <h3 className="leading-8 font-bold text-[#979797] text-[24px] my-2">Similar Employer Profile</h3>
+    <h3 className="leading-8 font-bold px-4 text-[#979797] text-[24px] my-2">Similar Employer Profile</h3>
     
     <div className="grid-container grid gap-8 px-4">
     {similarEmployers && similarEmployers.map(ele=>(<SimilarEmployer key={ele.Id} {...ele} />))}

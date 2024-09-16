@@ -1000,6 +1000,9 @@ export const TwoButtonModalStyles = styled.div`
       font-weight: 700;
       line-height: 1.25rem; /* 142.857% */
     }
+    .btnn{
+      background:#00932E
+    }
     .downn{
       padding-block:0;
     }

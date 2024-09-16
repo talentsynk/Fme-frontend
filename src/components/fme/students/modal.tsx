@@ -976,6 +976,9 @@ interface ITwoActions {
 	cancelModal: () => void;
 	handleModalAction?: () => void;
 	HiringStatus?:boolean|null;
+	artisanId?:number;
+	id?:number;
+	handleModAction?:()=>void;
 }
 
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
@@ -1094,7 +1097,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 		</>
 	);
 };
-export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,HiringStatus }) => {
+export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal,id, handleModalAction,HiringStatus }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -1110,7 +1113,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 	  
 		  if (HiringStatus) {
 			// Reopen job application
-			const response = await axios.get(`${BACKEND_URL}/job/close/6`, {
+			const response = await axios.get(`${BACKEND_URL}/job/close/${id}`, {
 			  headers: {
 				Authorization: `Bearer ${token}`,
 			  },
@@ -1119,7 +1122,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAc
 			setIsSuccess(true);
 		  } else {
 			// Close job application
-			const response = await axios.get(`${BACKEND_URL}/job/open/6`, {
+			const response = await axios.get(`${BACKEND_URL}/job/open/${id}`, {
 			  headers: {
 				Authorization: `Bearer ${token}`,
 			  },
@@ -1210,51 +1213,38 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handl
 		text: "",
 	});
 
-	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
-	const dispatch = useAppDispatch();
-	const suspend = async () => {
-		
-		const token = Cookies.get("token");
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
-		if (userId) {
-			try {
-				setIsLoading(true);
-				const { data } = await axios.get(`${BACKEND_URL}/user/suspend/${userId}`, config);
-				if (data) {
-					if (unchangedStudentsList !== null) {
-						const newMdalist = unchangedStudentsList.map((ele) => {
-							return {
-								...ele,
-								is_active: ele.ID === selectedStudentId ? false : ele.IsActive,
-							};
-						});
-						setIsLoading(false);
-						// why does this state not update Immediately on the UI?
-						dispatch(setUnchangedStudentsList(newMdalist));
-						setIsSuccess(true);
-					}
+	const declineArtisan = async () => {
+		setIsLoading(true);
+		try {
+			const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
+			const response = await axios.post(
+				"https://fme-backend-version-1.onrender.com/job/decline",
+				{
+					JobId: 1, // Replace with the actual JobId
+					ArtisanId: 1,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
 				}
-			} catch (error: any) {
-				setIsLoading(false);
-				if (error.response) {
-					// if the server responds with an error msg
-					setMsgError({
-						active: true,
-						text: error.response.data.message,
-					});
-					// error.response.data.message
-				} else {
-					setMsgError({
-						active: true,
-						text: error.message,
-					});
-				}
+			);
+			console.log(response)
+			if (response.status === 200) {
+				setIsSuccess(true);
+			} else {
+				setMsgError({
+					active: true,
+					text: "Failed to hire the artisan. Please try again.",
+				});
 			}
+		} catch (error) {
+			setMsgError({
+				active: true,
+				text:  "An error occurred. Please try again.",
+			});
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	const router = useRouter();
@@ -1279,7 +1269,7 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handl
 								<button type="button" onClick={cancelModal} className="cancel">
 									Cancel
 								</button>
-								<button type="button" onClick={suspend}>
+								<button type="button" onClick={declineArtisan}>
 									{isLoading ? <ButtonLoader /> : "Decline"}
 								</button>
 							</div>
@@ -1288,7 +1278,7 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handl
 				)}
 				{isSuccess && (
 					<SuccessModal
-						head="Student has been successfully suspended !"
+						head="Artisan has been successfully declined !"
 						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
 						cancelModal={cancelModal}
 						hasCancel={true}
@@ -1386,7 +1376,110 @@ export const PostJobComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAct
 		</>
 	);
 };
-export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+
+// export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction, artisanId }) => {
+// 	const [isSuccess, setIsSuccess] = useState(false);
+// 	const [isLoading, setIsLoading] = useState(false);
+// 	const [msgError, setMsgError] = useState<Ierror>({
+// 		active: false,
+// 		text: "",
+// 	});
+
+// 	const router = useRouter();
+
+// 	const hireArtisan = async () => {
+// 		setIsLoading(true);
+// 		try {
+// 			const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
+// 			const response = await axios.post(
+// 				"https://fme-backend-version-1.onrender.com/job/hire",
+// 				{
+// 					JobId: 1, // Replace with the actual JobId
+// 					ArtisanId: artisanId,
+// 				},
+// 				{
+// 					headers: {
+// 						Authorization: `Bearer ${token}`,
+// 					},
+// 				}
+// 			);
+// 			console.log(response)
+// 			if (response.status === 200) {
+// 				setIsSuccess(true);
+// 			} else {
+// 				setMsgError({
+// 					active: true,
+// 					text: "Failed to hire the artisan. Please try again.",
+// 				});
+// 			}
+// 		} catch (error) {
+// 			setMsgError({
+// 				active: true,
+// 				text: error?.response?.data?.message || "An error occurred. Please try again.",
+// 			});
+// 		} finally {
+// 			setIsLoading(false);
+// 		}
+// 	};
+
+// 	return (
+// 		<FlexAbsoluteModalStyles>
+// 			{!isSuccess && !msgError.active && (
+// 				<TwoButtonModalStyles>
+// 					<div className="pop">
+// 						<div className="up">
+// 							<div className="y" onClick={cancelModal}>
+// 								<ErrorIconWrapper>
+// 									<ErrorAlertIcon />
+// 								</ErrorIconWrapper>
+// 								<XIcon />
+// 							</div>
+// 							<h4>Are you sure you want to hire this artisan?</h4>
+// 							<p>
+// 								Are you certain about hiring this artisan? Once hired, the decision cannot be reversed and the job application would be closed automatically, meaning no new applicants.
+// 							</p>
+// 						</div>
+// 						<div className="down">
+// 							<button type="button" onClick={cancelModal} className="cancel">
+// 								Cancel
+// 							</button>
+// 							<button type="button" onClick={hireArtisan} className="btnn">
+// 								{isLoading ? <ButtonLoader /> : "Hire Artisan"}
+// 							</button>
+// 						</div>
+// 					</div>
+// 				</TwoButtonModalStyles>
+// 			)}
+// 			{isSuccess && (
+// 				<SuccessModal
+// 					head="Artisan has been successfully hired!"
+// 					msg="The artisan has been hired successfully. You can now proceed with further actions."
+// 					cancelModal={cancelModal}
+// 					hasCancel={true}
+// 					navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+// 					navigationText="Go back to Dashboard"
+// 				/>
+// 			)}
+// 			{msgError.active && (
+// 				<FailureModal
+// 					cancelModal={() =>
+// 						setMsgError({
+// 							active: false,
+// 							text: "",
+// 						})
+// 					}
+// 					head="Failed to hire Artisan!"
+// 					msg={msgError.text}
+// 					navigationFunction={cancelModal}
+// 					navigationText="Go back to Dashboard"
+// 					hasCancel={true}
+// 				/>
+// 			)}
+// 		</FlexAbsoluteModalStyles>
+// 	);
+// };
+
+export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,artisanId }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [msgError, setMsgError] = useState<Ierror>({
@@ -1395,7 +1488,32 @@ export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModa
 	});
 
 	
+	  
 	const router = useRouter();
+	interface IContact{
+		Email:string|undefined;
+		PhoneNumber:string|undefined;
+	}
+	const [data,setData]=useState<IContact|null>(null)
+	useEffect(() => {
+		let token = Cookies.get("token");
+		let role = Cookies.get("userRole");
+    
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		axios
+			.get(`${BACKEND_URL}/artisan/contact/${artisanId}`, config)
+			.then((res) => {
+				const data = res.data.contact;
+     
+				setData(data);
+			})
+			.catch((error) => console.log(error));
+	}, []);
+  console.log(data)
 	return (
 		<>
 			<FlexAbsoluteModalStyles>
@@ -1413,16 +1531,16 @@ export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModa
 								<div className="z">
 									<div className="">
 										<h5 className="">Give artisan a call</h5>
-										<p className="">09034526789</p>
+										<p className="">{data?.PhoneNumber}</p>
 									</div>
-									<CopyIcon text="09034526789" />
+									<CopyIcon text={data?.PhoneNumber} />
 								</div>
 								<div className="z">
 									<div className="">
 										<h5 className="">Send artisan a mail</h5>
-										<p className="">alarapetimi@gmail.com</p>
+										<p className="">{data?.Email}</p>
 									</div>
-									<CopyIcon text="alarapetimi@gmail.com" />
+									<CopyIcon text={data?.Email} />
 								</div>
 								
 							</div>

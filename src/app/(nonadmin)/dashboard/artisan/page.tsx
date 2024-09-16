@@ -30,10 +30,15 @@ import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/faqs/Svgs";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 
-
+//i need an endpoint for getting the user details, so ill dynamically render the stuff at the top right corner
+//application status
+//
 
 
 export default function ArtisansHome(){
+  
+  const [userData,setUserData]=useState()
+
   const router = useRouter();
   const [data,setData]= useState<IEmployerData[]|null>(null)
   const [savedData,setSavedData]= useState<ISavedData[]|null>(null)
@@ -72,7 +77,7 @@ export default function ArtisansHome(){
 			})
 			.catch((error) => console.log(error));
 	}, []);
-  console.log(artisanStats)
+  console.log(data)
  
   
   
@@ -97,9 +102,9 @@ const [SpageNo, setSPageNo] = useState(1);
 
     return (
         <section className="bg-white p-4">
-        <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Oluwatimilehin,</h2>
+        <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Samuel,</h2>
         <p className=" text-[#626C70] my-4 font-medium text-sm leading-[20px]">Welcome to your dashboard, this is where you get an overview and analytics of all your activities.</p>
-       {showProfile&& <section className=" bg-black humanity md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
+       {/* {showProfile&& <section className=" bg-black humanity md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
           <div className=" flex justify-between">
             <div className=" flex flex-col md:flex-row md:items-center gap-2">
             <ProgressBar progress={80} />
@@ -114,7 +119,7 @@ const [SpageNo, setSPageNo] = useState(1);
           </div>
           <Link href="/dashboard/profile"><button className="w-fit bg-[#00932E] rounded-md px-4 py-2 text-sm md:text-[16px] leading-[24px] text-white font-medium md:font-bold">Update Profile</button></Link>
           </div>
-        </section>}
+        </section>} */}
         <section className="bg-[#00932E] p-4 space-y-4 mt-4 rounded-[10px]">
           <h3 className=" text-[24px] font-bold leading-[32px] text-white">Dashboard</h3>
           <div className=" flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 items-center md:items-start">
@@ -157,7 +162,7 @@ To apply for a job click on this button </p>
               )}
               
             </div>
-            <Paginator
+           {data ? <Paginator
             value={pageNo}
            incrementFunc={() => {
     if (data && endIndex < data.length) {
@@ -169,7 +174,7 @@ To apply for a job click on this button </p>
             setPageNo(pageNo - 1);
           }
         }}
-          />
+          />:""}
             </section>
           </section>
           <section className="p-4 md:w-[42%]  rounded-[10px]  ">
@@ -191,7 +196,7 @@ To get started click on this button</p>
                 </section>
               )}
             </div>
-            <Paginator
+            {savedData?<Paginator
             value={SpageNo}
            incrementFunc={() => {
     if (savedData && SendIndex < savedData.length) {
@@ -203,7 +208,7 @@ To get started click on this button</p>
             setSPageNo(SpageNo - 1);
           }
         }}
-          />
+          />:""}
             </section>
             
           </section>
