@@ -4,6 +4,7 @@ interface IEmployerData{
   Responsibilities:string;
   Description:string;
   EmployerFirstName:string;
+  EmployerLastName:string;
   EmployerId:string;
   HiringStatus:boolean;
   Id:number;
@@ -78,7 +79,8 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
     setShowSuspendModal(false);
   };
   return (
-    <JobDetailPageStyle>
+    <div className="bg-[#EFF1F3] bg-opacity-20">
+      <JobDetailPageStyle>
       <PaddedSectionStyles>
         <div className="x">
           <div className="nav">
@@ -99,7 +101,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
               <div className=" flex gap-3 items-center">
               <div className="relative flex justify-center items-center w-10 h-10 rounded-[50%] bg-[rgba(52,202,165,0.1)] ">
 									{/* <p>{fullName.slice(0, 2).toUpperCase()}</p> */}
-									<p className="font-semibold text-[16px] leading-[24px] text-[#101928]">OM</p>
+									<p className="font-semibold text-[16px] leading-[24px] text-[#101928]">{data?.EmployerFirstName[0]}{data?.EmployerLastName[0]}</p>
                   <VerifiedTick />
 								</div>
                 <p className=" font-bold text-[16px] leading-[24px] text-[#1A1A1A]">Posted by me</p>
@@ -190,6 +192,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
       </PaddedSectionStyles>
     </JobDetailPageStyle>
+    </div>
   );
 };
 

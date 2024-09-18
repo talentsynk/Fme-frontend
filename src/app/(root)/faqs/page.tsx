@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 export default function Faqs() {
   const pathname = usePathname()
     return (
-      <section className={`content-wrapper ${pathname === '/faqs' ? '':''} flex p-8 gap-8 flex-col md:flex-row`}>
+      <section className={`content-wrapper ${pathname === '/faqs' ? '':''} flex p-8 md:px-16 gap-8 flex-col md:flex-row`}>
         <section className=" space-y-4">
           <h1 className="animate-fadeIn  text-[#00932E] text-center md:text-left  text-[32px] md:text-[48px] font-medium leading-[40px] md:leading-[48px]">Frequently Asked Questions</h1>
           <p className="animate-slideInLeft text-center md:text-left mb-4 font-medium leading-[24px] text-[#101928]">Need help? Check out the answers to your questions about National Skills Information Center, or send an email to support@nskic.com</p>

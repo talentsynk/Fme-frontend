@@ -48,6 +48,8 @@ const HireArtisan = () => {
     setArtisanTabSwitches(newMdaTabSwitches);
   };
   // for search
+
+  
   const [query, setQuery] = useState("");
   const [queryError, setQueryError] = useState<Ierror>({
     active: false,
@@ -72,11 +74,74 @@ const HireArtisan = () => {
     setShowCancel(false);
   };
   // sort
+  interface ISort{
+    text:string;
+    isSelected:boolean;
+    id:string;
+    hasBorder?:boolean|undefined;
+  }
   const [showSortDropdown, setShowSortDropdown] = useState(false);
-  const [sortItemDropdownList, setSortItemDropdownList] = useState(
-    ArtisanSortItemDropdownList
+  const [sortItemDropdownList, setSortItemDropdownList] = useState<ISort[]>(
+    [
+      { text: "Most Rated", isSelected: false, id: "0" },
+      { text: "Recommended", isSelected: false, id: "1" },
+    ]
   );
-  // location
+  const fetchJobsByLocation = async (state: string, lga: string) => {
+    try {
+      // Get the authorization token from cookies
+      const token = Cookies.get('token'); // Replace 'authToken' with the actual cookie name where the token is stored
+  
+      // Make the request with the authorization header
+      const response = await axios.get(`${BACKEND_URL}/artisan/all?state=${state}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Pass the token in the Authorization header
+        }
+      });
+      console.log(response.data)
+      setData(response.data.artisans);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  };
+  const handleLocationFilter = (state: string, lga: string) => {
+    fetchJobsByLocation(state, lga);
+    setShowLocationModal(false); // Close the modal after applying the filter
+  };
+  const handleSelect = async (selectedId: string) => {
+    // Map the dropdown options to `days_ago` values
+    const daysAgoMap: { [key: string]: number } = {
+      "0": 4.3,  // Last 24 hours
+      "1": 4.4,  // Last 7 days
+    };
+  
+    const daysAgo = daysAgoMap[selectedId];
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+  
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/artisan/all?min_rating=${daysAgo}`,
+        config
+      );
+      const data = res.data.artisans
+      console.log(data)
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching filtered jobs by ratings:", error);
+    }
+  
+    // Update the sort dropdown state to reflect the selected option
+    const updatedDropdownList = sortItemDropdownList.map((item) => ({
+      ...item,
+      isSelected: item.id === selectedId,
+    }));
+    setSortItemDropdownList(updatedDropdownList);
+  };
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [data,setData]=useState<IArtisan[]|null>(null)
 
@@ -96,11 +161,11 @@ const HireArtisan = () => {
 			})
 			.catch((error) => console.log(error));
 	}, []);
-  console.log(data)
+  // console.log(data)
   const filteredJobs = data?.filter((job) =>
     job.BusinessName.toLowerCase().includes(query.toLowerCase())
   );
-  console.log(filteredJobs)
+  // console.log(filteredJobs)
 
   return (
     <ArtisanJobPageStyle>
@@ -156,6 +221,7 @@ const HireArtisan = () => {
                     </button>
                     {showLocationModal && (
                       <SelectLocationModal
+                      applyFilter={handleLocationFilter}
                         closeModal={() => setShowLocationModal(false)}
                       />
                     )}
@@ -184,7 +250,7 @@ const HireArtisan = () => {
                               isSelected={ele.isSelected}
                               text={ele.text}
                               hasBorder={ele.hasBorder}
-                              handleSelect={() => console.log(ele.id)}
+                              handleSelect={() => handleSelect(ele.id)}
                             />
                           ))}
                         </div>

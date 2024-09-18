@@ -7,6 +7,7 @@ interface IJob {
   Description: string;
   Amount: string;
   Status?:string;
+  CreatedAt?:string|undefined;
 }
 
 import Cookies from "js-cookie";
@@ -234,16 +235,25 @@ interface ILol{
     }));
     setSortItemDropdownList(updatedDropdownList);
   };
-
+  
   const fetchJobsByLocation = async (state: string, lga: string) => {
     try {
-      const response = await axios.get(`/api/jobs/${state}`);
+      // Get the authorization token from cookies
+      const token = Cookies.get('token'); // Replace 'authToken' with the actual cookie name where the token is stored
+  
+      // Make the request with the authorization header
+      const response = await axios.get(`${BACKEND_URL}/job/all?state=${state}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Pass the token in the Authorization header
+        }
+      });
+  
       setData(response.data.jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
   };
-
+  
   // Function to handle location filter application
   const handleLocationFilter = (state: string, lga: string) => {
     fetchJobsByLocation(state, lga);
@@ -382,6 +392,7 @@ interface ILol{
                   JobType={job.JobType}
                   Description={job.Description}
                   Amount={job.Amount}
+                  CreatedAt={job.CreatedAt}
                 />
               ))
             ) : (

@@ -156,7 +156,8 @@ console.log(data)
 
 
   return (
-    <JobDetailPageStyle>
+   <div className="bg-[#EFF1F3] bg-opacity-20">
+     <JobDetailPageStyle>
       <PaddedSectionStyles>
         <div className="x">
           <div className="nav">
@@ -283,7 +284,14 @@ console.log(data)
   )}
 </button>
               <button disabled={saveStatus==200||saveStatus==400} onClick={handleSaveJob} type="button" className="rounded-md font-bold w-[200px] h-[48px] flex justify-center items-center bg-[#EFF1F3] text-[#000000]">
-                {loading ? <GreenButtonLoader /> : 'Save job for later'}
+              {loading ? (
+        <GreenButtonLoader />
+      ) : saveStatus==200 ? (
+        <>
+          Job already saved         </>
+      ) : (
+        'Save job for later'
+      )}
               </button>
             </div>
 {status==200&&<p className="text-[#00932E] text-[18px] font-medium leading-6"> Congratulations you just applied for this job ! We are cheering for you and hoping for the best!</p>}
@@ -301,6 +309,7 @@ console.log(data)
         </div>
       </PaddedSectionStyles>
     </JobDetailPageStyle>
+   </div>
   );
 };
 

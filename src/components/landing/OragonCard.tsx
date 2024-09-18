@@ -45,7 +45,7 @@ const EmployersOragonCard:React.FC<OragonCard> = ({JobTitle,Description,Status,I
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
         <div className=" space-y-2 w-full">
             <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{JobTitle}</h5>
-            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{Description}</p>
+            <p className=" text-[#919191] text-[12px] font-medium leading-[17px]">{Description}</p>
             <div className=" flex justify-between items-center w-full">
               <div className=" space-y-1">
               <h6 className=" text-[12px] font-medium leading-[17px]">{Amount} . {JobType}</h6>
@@ -62,12 +62,12 @@ const EmployersOragonCard:React.FC<OragonCard> = ({JobTitle,Description,Status,I
 }
 const OragonCard:React.FC<Oragon> = ({Name,Description,ApplicationStatus,Id}) => {
   return (
-    <div className=' bg-white rounded-2xl p-2 flex gap-2 items-center '>
+    <div className=' bg-white rounded-2xl p-2 flex gap-2 items-center w-full'>
         <div className=" rounded-[5px] p-2.5 bg-[#E7F6EC]"><Padlock /></div>
         <div className=" space-y-2 w-full">
             <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{Name}</h5>
-            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{Description}</p>
-            <div className=" flex justify-between w-full">
+            <p className=" text-[#919191] text-[12px] font-medium leading-[17px]  ">{Description}</p>
+            <div className=" flex justify-between items-center w-full">
               <div className=" space-y-1">
               <h6 className=" text-[12px] font-medium leading-[17px]">Application Status</h6>
               <button
@@ -96,7 +96,7 @@ const OragonCard:React.FC<Oragon> = ({Name,Description,ApplicationStatus,Id}) =>
 </button>
 
               </div>
-              <Link href={`/dashboard/artisan/jobs/${Id}`} className=" bg-[#00932E] text-white rounded-md flex items-center px-2 py-1 md:py-2 text-[12px] md:px-4 md:text-sm font-medium">View Job</Link>
+              <Link href={`/dashboard/artisan/jobs/${Id}`} className="flex items-center bg-[#00932E] text-white rounded-md py-2 px-4 md:text-sm text-[12px]  font-medium">View Job</Link>
             </div>
         </div>
       
@@ -115,7 +115,7 @@ const JobsPostedCard:React.FC<ISavedData> = ({Description,Amount,JobType,Locatio
             <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{JobTitle}</h5>
            
             </div>
-            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{Description}</p>
+            <p className=" text-[#919191] text-[12px] font-medium leading-[17px]">{Description}</p>
             <div className=" flex justify-between">
               <div className="">
               <h6 className=" text-[12px] font-medium leading-[17px]">{Amount} . {JobType}</h6>
@@ -143,7 +143,7 @@ const SavedOragonCard:React.FC<ISavedOragonCard> = ({Description,Amount,JobType,
             <h5 className="text-[#1A1A1A] text-[16px] font-medium leading-[24px]">{Name}</h5>
             <Star />
             </div>
-            <p className=" text-[#919191] text-[12px] font-medium leading-[17px] ">{Description}</p>
+            <p className=" text-[#919191] text-[12px] font-medium leading-[17px]">{Description}</p>
             <div className=" flex justify-between">
               <div className="">
               <h6 className=" text-[12px] font-medium leading-[17px]">{Amount} . {JobType}</h6>

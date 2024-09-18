@@ -18,15 +18,18 @@ interface IJob{
 
 const JobApplication:React.FC<IJob> = ({BusinessName,BusinessDescription,ApplicationStatus,JobApplicationDate,ArtisanId}) => {
 
-  const getTimeDifferenceInHours = (jobApplicationDate: string): number => {
+  const getTimeDifferenceInDays = (jobApplicationDate: string): number => {
     const jobDate = new Date(jobApplicationDate);
     const currentDate = new Date();
     const diffInMilliseconds = currentDate.getTime() - jobDate.getTime();
-    return diffInMilliseconds / (1000 * 60 * 60);
+    
+    // Convert milliseconds to days (1000 ms * 60 s * 60 min * 24 hours)
+    return diffInMilliseconds / (1000 * 60 * 60 * 24);
   };
+  
 
 
-  const hoursAgo = Math.floor(getTimeDifferenceInHours(JobApplicationDate));
+  const hoursAgo = Math.floor(getTimeDifferenceInDays(JobApplicationDate));
 
   return (
     <section className=" min-w-[288px] space-y-2">
@@ -42,7 +45,7 @@ const JobApplication:React.FC<IJob> = ({BusinessName,BusinessDescription,Applica
             {BusinessDescription}
             </p>
             <div className=" flex justify-end">
-                <p className=" font-medium text-sm leading-5 text-black-25">Applied {hoursAgo} hours ago</p>
+                <p className=" font-medium text-sm leading-5 text-black-25">Applied {hoursAgo} days ago</p>
             </div>
             <Link href={`/dashboard/employer/hire/${ArtisanId}`}><button className="w-full text-[16px] leading-6 font-bold text-white bg-[#00932E] rounded-md px-4 py-2">Review Profile</button></Link>
         </div>

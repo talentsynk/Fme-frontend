@@ -67,24 +67,24 @@ const EmployerHome = () => {
   const paginatedData = data&&data.slice(startIndex, endIndex);
 
   return (
-    <section className=" p-4">
+    <section className=" p-4 md:px-10">
     <h2 className="text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hey, Jude.</h2>
     <p className="text-[#626C70] my-4 font-medium text-sm leading-[20px]">Here is all your Relik analytics overview</p>
-    <section className="border border-[#E4F5EA] border-solid p-4 rounded-[10px]">
-      <h2 className="text-[24px] font-bold leading-[32px] text-black">Dashboard</h2>
+    <section className="border border-[#E4F5EA] border-solid p-4 py-6 rounded-[10px]">
+      <h2 className="text-[24px] mb-2 font-bold leading-[32px] text-black">Dashboard</h2>
       <div className=" flex  flex-col md:flex-row md:justify-between gap-4 md:gap-0 items-center md:items-start">
         <div className="md:w-[33%] border border-[#E4F5EA] border-solid w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
-          <Bag />
+        <div className=" w-[37px] h-[36px] bg-[#E7F6EC] rounded flex justify-center items-center"><Bag /></div>
           <h6 className=" text-sm text-black font-medium">Total Artisans employed</h6>
           <h5 className=" text-[20px] font-medium leading-[30px]">{employerStats?.total_artisan_employed}</h5>
           </div>
         <div className="md:w-[33%] border border-[#E4F5EA] border-solid w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
-          <Like />
+        <div className=" w-[37px] h-[36px] bg-[#E7F6EC] rounded flex justify-center items-center"><Like /></div>
           <h6 className=" text-sm text-black font-medium">Total Jobs Posted</h6>
           <h5 className="">{employerStats?.total_job_posted}</h5>
           </div>
         <div className="md:w-[33%] border border-[#E4F5EA] border-solid w-[95%] flex flex-col gap-4 p-4 bg-white rounded-[12px]">
-          <Bag />
+        <div className=" w-[37px] h-[36px] bg-[#E7F6EC] rounded flex justify-center items-center"><Bag /></div>
           <h6 className=" text-sm text-black font-medium">Total Jobs Completed</h6>
           <h5 className="text-[20px] font-medium leading-[30px]">{employerStats?.total_jobs_completed}</h5>
           </div>
@@ -128,15 +128,15 @@ To post a job “click on this button”</p>
           </section>
       <section className="p-4 md:w-[42%] bg-[#E7F6EC] rounded-[10px] flex flex-col gap-4  ">
         <h3 className=" text-[24px] leading-[32px] text-black font-bold">Quick Links</h3>
-        <Link href="/dashboard/employer/post-a-job" className=" cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
+        <Link href="/dashboard/employer/post-a-job" className=" cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-around">
         <WhiteBag />
-          <h6 className=" font-bold text-[16px] leading-[24px] text-white">Post a job</h6>
+          <h6 className=" font-bold  leading-[24px] text-[24px] text-white">Post a job</h6>
           <Image className=" absolute bottom-0 right-0" src="/images/landing/Suitcase.png" width={64} height={64} alt=""  />
         </Link>
-        <Link href="/dashboard/employer/hire" className="cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-between">
+        <Link href="/dashboard/employer/hire" className="cursor-pointer relative rounded-[10px] bg-[#00932E] h-[180px] p-8 flex flex-col justify-around">
         <Hands />
           <Image className=" absolute bottom-0 right-0" src="/images/landing/Hand Money.png" width={64} height={64} alt="" />
-          <h6 className="font-bold text-[16px] leading-[24px] text-white">Hire Artisan</h6>
+          <h6 className="font-bold  text-[24px] leading-[24px] text-white">Hire Artisan</h6>
         </Link>
       </section>
     </section>

@@ -39,7 +39,7 @@ const AccordionItem:React.FC<Accordion> = ({ number, title, children }) => {
     ];
   
     return (
-      <div className="w-full space-y-2 rounded-lg shadow-md overflow-hidden">
+      <div className="w-full space-y-2   overflow-hidden">
         {items.map((item, index) => (
           <AccordionItem
             key={index}

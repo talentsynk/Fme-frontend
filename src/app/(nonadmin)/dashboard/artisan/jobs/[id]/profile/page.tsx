@@ -18,7 +18,7 @@ interface ISavedData{
   Status:string;
 }
 interface IStats{
-  rating: number;
+  rating: any;
   total_jobs_completed: number;
   total_jobs_posted: number;
   total_recommendations: number;
@@ -153,7 +153,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
   <section className="">
   
   <section className=" flex gap-2 flex-col md:flex-row p-2">
-  <div className=" space-y-2 md:w-[70%]">
+  <div className=" space-y-2 md:w-[60%]">
   <div className=" flex justify-between items-center py-2">
   <div className="flex  items-center p-2">
       <button
@@ -208,7 +208,7 @@ To get started click on this button</p>
     }
 
 </div>
-<div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] md:w-[30%]">
+<div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] md:w-[40%]">
 
   <div className=" flex gap-1 items-center">
     <Stats />
@@ -227,7 +227,7 @@ To get started click on this button</p>
     <p className="">Ratings</p>
     <div className="flex gap-1 items-center">
       <GoldStar />
-    <p className="">{stats?.rating}</p>
+    <p className="">{Math.round(stats?.rating)}</p>
     </div>
   </div>
   <div className=" flex justify-between text-black text-[13px] font-medium">

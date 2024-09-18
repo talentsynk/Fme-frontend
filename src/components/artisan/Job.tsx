@@ -25,6 +25,7 @@ interface ISimilarJobs{
   Amount: string;
   JobType: string;
   Status?: string;
+  CreatedAt?:string
 }
 
 export const JobComp: React.FC<ISimilarJobs> = ({
@@ -33,8 +34,27 @@ export const JobComp: React.FC<ISimilarJobs> = ({
   Description,
   JobType,
   Amount,
+  CreatedAt
 }) => {
   const router = useRouter();
+  const getDaysAgo = (date: string|undefined|number): number => {
+    if (!date) {
+      // Handle undefined case, perhaps returning 0 or a default value
+      return 0;
+    }
+    
+    const currentDate = new Date();
+    const createdDate = new Date(date); // This is now safe because `date` is checked
+
+    // Calculate the difference in time between the two dates in milliseconds
+    const timeDifference = currentDate.getTime() - createdDate.getTime();
+
+    // Convert time difference from milliseconds to days
+    const daysAgo = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+    return daysAgo;
+};
+const lol= getDaysAgo(CreatedAt)
   return (
     <JobCompStyles>
       <div className="fir">
@@ -45,7 +65,7 @@ export const JobComp: React.FC<ISimilarJobs> = ({
       <div className="sec">
         <div className="v">
           <h4>{JobTitle}</h4>
-          <p>posted 2 days ago</p>
+          <p>posted {lol} days ago</p>
         </div>
         <div className="r">
           <p>{truncateString(Description, 100)}</p>

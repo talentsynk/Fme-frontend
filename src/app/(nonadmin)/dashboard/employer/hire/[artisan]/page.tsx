@@ -6,7 +6,7 @@ interface IArtisan{
   Skill:string;
 }
 interface IStats{
-  rating:number;
+  rating:any;
   total_job_recommendations:number;
   total_jobs_completed:number;
 }
@@ -220,7 +220,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                   <h3>SKILLS</h3>
                   <div className="tg">
                     <TagStyle>
-                      <p>#fashiondesigner</p>
+                      <p>{data?.Skill}</p>
                     </TagStyle>
                     <TagStyle>
                       <p>#creative</p>
@@ -240,7 +240,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                     <h4>Rating</h4>
                     <div className="rate">
                       <RatingIcon />
-                      <p>{stats?.rating}</p>
+                      <p>{Math.round(stats?.rating)}</p>
                     </div>
                   </div>
                   <div className="fr">

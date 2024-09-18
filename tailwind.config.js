@@ -34,8 +34,12 @@ module.exports = {
       textColor: {
         'black-70': 'rgba(0, 0, 0, 0.7)',
         'black-25': 'rgba(0, 0, 0, 0.25)',
+        'b-20': 'rgba(239, 241, 243, 0.2)',
         'light-green':'',
         'avatar-color':'rgb(5,20,17)',
+      },
+      backgroundColor: {
+        'custom-color-20': 'rgba(239, 241, 243, 0.2)',
       },
     },
   },
