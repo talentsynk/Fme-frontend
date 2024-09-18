@@ -33,7 +33,7 @@ export default function Home() {
 
 
        </div>
-       <div className=" bg-[#00932E] py-8 all-about">
+       <div className=" bg-[#00932E] py-8 all-about spiral">
         <h5 className="animate-fadeIn  text-[18px] leading-[24px] text-white font-normal text-center">ENDORSED BY THE </h5>
         <div className=" animate-fadeIn   flex justify-center my-2">
           <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />

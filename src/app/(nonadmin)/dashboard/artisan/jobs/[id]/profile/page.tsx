@@ -145,7 +145,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
             <GreyArrowRight />
             <p  className="text-[#00932E] text-[12px] md:text-[16px] font-bold leading-6">View Employer profile</p>
           </div>
-        <div className=" mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
+        <div className="spiral mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
     <Image src="/images/landing/detective.png" width={120} height={120} alt="review " />
     <h4 className=" text-white font-bold text-lg">{savedData?.FirstName} {savedData?.LastName}</h4>
     <div className=" rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center"><SmallVerified /><p className=" text-[12px] text-[#00932E]  font-medium">Verified</p></div>

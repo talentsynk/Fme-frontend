@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 export const BannerStyle = styled.div`
   height: 40vh;
   background: var(--Primary-Color, #00932e);
+  background-image: url(/images/landing/Asset\ 1\ 1.svg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,6 +44,7 @@ export const BannerStyle = styled.div`
 export const EmployerBannerStyle = styled.div`
   height: 40vh;
   background: var(--Primary-Color, #00932e);
+  background-image: url(/images/landing/Asset\ 1\ 1.svg);
   display: flex;
   justify-content: center;
   align-items: center;

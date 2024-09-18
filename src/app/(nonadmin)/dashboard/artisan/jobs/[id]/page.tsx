@@ -45,6 +45,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { JobGridList } from "../../style";
+import { MoneyBriefCase } from "@/components/landing/faqs/Svgs";
 
 const JobDetailPage = ({ params }: { params: { id: string } }) => {
   const lol=params.id
@@ -170,7 +171,8 @@ console.log(data)
           <div className="body">
             <div className="head">
               <LargeSVGBg>
-                <SmallBriefCaseIcon />
+                {/* <SmallBriefCaseIcon /> */}
+                <MoneyBriefCase />
               </LargeSVGBg>
               <h3>
                 {data?.JobTitle}

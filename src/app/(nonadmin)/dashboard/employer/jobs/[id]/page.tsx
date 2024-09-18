@@ -31,7 +31,7 @@ import {
   SmallBriefCaseIcon,
   TinyLocationIcon,
 } from "@/components/icons/artisan/icons";
-import { VerifiedTick } from "@/components/landing/faqs/Svgs";
+import { MoneyBriefCase, VerifiedTick } from "@/components/landing/faqs/Svgs";
 import { PaddedSectionStyles } from "@/components/layout/style";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -93,7 +93,8 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
           <div className="body">
             <div className="head">
               <LargeSVGBg>
-                <SmallBriefCaseIcon />
+                {/* <SmallBriefCaseIcon /> */}
+                <MoneyBriefCase />
               </LargeSVGBg>
               <h3>
                 {data?.JobTitle}

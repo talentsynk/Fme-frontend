@@ -277,9 +277,9 @@ export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal, id }) =>
   const redirectToDashboard = () => {
   
     if (role === "employer") { 
-      router.push(`/dashboard/employer/jobs/${id}`);
+      router.push(`/dashboard/employer`);
     } else {
-      router.push(`/dashboard/artisan/jobs/${id}`);
+      router.push(`/dashboard/artisan`);
       console.log(10)
     }
     setShowSuccessModal(false)
@@ -380,7 +380,7 @@ export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal, id }) =>
             onClick={handleSubmit}
             disabled={selectedRating === 0 || loading} // Disable button if no rating or during loading
           >
-            {loading ? "Sending..." : role === "employer" ? "Send Review" : "Send Recommendation"}
+            {loading ? "Sending..." : role !== "employer" ? "Send Review" : "Send Recommendation"}
           </button>
         </div>
       </div>

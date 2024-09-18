@@ -25,8 +25,8 @@ export default function About() {
           <Image src="/images/landing/abbout-img.jpg" width={0} height={400}sizes="100vw" style={{ width: '100%' }} alt="" /> 
         </div>
       </section>
-      <section className="px-8 py-24 bg-[#00932E]">
-        <h2 className="animate-fadeIn  text-center text-[36px] md:text-[52px] leading-[44px] md:leading-[56px] font-medium text-white md:w-1/2 mx-auto">Our Dream is Global National Transformation</h2>
+      <section className="px-8 py-24 bg-[#00932E] spiral">
+        <h2 className="animate-fadeIn  text-center text-[36px] md:text-[52px] leading-[44px] md:leading-[56px] font-medium text-white md:w-1/2 mx-auto">As a skilled nation we pave the road to the future.</h2>
       </section>
       <section className=" space-y-4 md:space-y-0 flex flex-col md:flex-row px-8 py-16 gap-2">
         <div className=" space-y-4 flex-1 pt-4 md:pt-0">

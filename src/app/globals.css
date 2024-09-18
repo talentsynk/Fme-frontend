@@ -111,6 +111,11 @@ img{
   border-color: #00932E; 
 }
 
+.spiral{
+  background-image: url(/images/landing/Asset\ 1\ 1.svg);
+
+}
+
 .border-red {
   border-color: red;
 }
