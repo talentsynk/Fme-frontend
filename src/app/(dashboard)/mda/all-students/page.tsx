@@ -342,6 +342,37 @@ export default function Home() {
 		  setUploading(false);
 		}
 	  };
+	  const [loading, setLoading] = useState(false);
+const handleDownload = async () => {
+    setLoading(true); // Set loading to true while downloading
+
+    // Get the token from cookies
+    const token = Cookies.get('token'); 
+
+    try {
+      const response = await axios({
+        url: 'https://fme-backend-version-1.onrender.com/mda/download-csv',
+        method: 'GET',
+        responseType: 'blob', // Important to download the file
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Create a blob URL for the downloaded file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'students.csv'); // Name the file
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Download failed:', error);
+    } finally {
+      setLoading(false); // Stop loading once the download is complete
+    }
+  };
 	return (
 		<>
 			<TopStyles>
@@ -382,7 +413,7 @@ export default function Home() {
       )}
 	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
       {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
-					<button type="button" className="import">
+					<button type="button" className="import" onClick={handleDownload} disabled={loading}>
 						<UploadIcon />
 						<span>Download</span>
 					</button>

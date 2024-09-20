@@ -140,7 +140,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
       <PaddedSectionStyles>
         <div className="x">
           <div className="nav">
-            <Link href="/dashboard/artisan/jobs">
+            <Link href="/dashboard/employer/hire">
               <p className="lit">Hire Professionals</p>
             </Link>
             <GreyArrowRight />
