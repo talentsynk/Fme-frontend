@@ -59,17 +59,17 @@ const ArtisanJobs = () => {
       return { ...ele, isSelected: tabIndex == ele.tabIndex };
     });
     setArtisanTabSwitches(newMdaTabSwitches);
-
+    fetchContractJobs
     // Make an API call based on the selected tab
     switch (tabIndex) {
       case 0:
         fetchAllJobs();
         break;
       case 1:
-        fetchOnHireJobs();
+        fetchContractJobs();
         break;
       case 2:
-        fetchContractJobs();
+        fetchOnHireJobs();
         break;
       default:
         fetchAllJobs();

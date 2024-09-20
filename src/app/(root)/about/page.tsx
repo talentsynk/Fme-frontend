@@ -16,11 +16,12 @@ export default function About() {
     return (
       <section className="">
       <section className="">
-      <div className=" space-y-4 text-center py-16 bg-[#E4F5EA]">
+      <div className=" space-y-4 text-center py-16 bg-[#F7F5FF]" id="white-spiral">
           <h3 className="animate-slideInLeft text-[18px] font-medium leading-[24px] text-black-70">ABOUT US</h3>
           <h1 className="animate-fadeIn text-[32px] md:text-[44px] leading-[48px] font-medium text-[#00932E]">We are National Skills Information Center</h1>
           <p className="animate-bounce px-4  md:px-2 md:w-3/4 mx-auto text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci voluptate voluptatem delectus optio, est pariatur ullam, explicabo ab impedit dolores nesciunt ex quae porro odit animi aut minus incidunt quisquam quibusdam, recusandae ducimus sequi ut! Delectus eligendi laboriosam rerum tempore!</p>
         </div>
+        
         <div className="">
           <Image src="/images/landing/abbout-img.jpg" width={0} height={400}sizes="100vw" style={{ width: '100%' }} alt="" /> 
         </div>

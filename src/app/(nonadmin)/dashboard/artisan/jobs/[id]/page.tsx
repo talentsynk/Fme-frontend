@@ -13,7 +13,8 @@ interface IEmployerData{
   Location:string;
   Requirements:string;
   CreatedAt:string;
-  ApplicationStatus:string
+  ApplicationStatus:string;
+  JobSaved:boolean;
 }
 interface ISimilarJobs{
       Id: number;
@@ -285,10 +286,10 @@ console.log(data)
     "Already Applied"
   )}
 </button>
-              <button disabled={saveStatus==200||saveStatus==400} onClick={handleSaveJob} type="button" className="rounded-md font-bold w-[200px] h-[48px] flex justify-center items-center bg-[#EFF1F3] text-[#000000]">
+              <button disabled={data?.JobSaved} onClick={handleSaveJob} type="button" className="rounded-md font-bold w-[200px] h-[48px] flex justify-center items-center bg-[#EFF1F3] text-[#000000]">
               {loading ? (
         <GreenButtonLoader />
-      ) : saveStatus==200 ? (
+      ) : data?.JobSaved ? (
         <>
           Job already saved         </>
       ) : (
@@ -297,7 +298,6 @@ console.log(data)
               </button>
             </div>
 {status==200&&<p className="text-[#00932E] text-[18px] font-medium leading-6"> Congratulations you just applied for this job ! We are cheering for you and hoping for the best!</p>}
-{saveStatus==200?<p className="text-[#00932E] text-[18px] font-medium leading-6">Job successfully saved</p>:<p className="text-[#00932E] text-[18px] font-medium leading-6">Job already saved</p>}
           </div>
       
           <div className="similar">

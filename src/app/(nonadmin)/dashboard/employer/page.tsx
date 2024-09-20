@@ -11,6 +11,12 @@ interface IEmployerStats{
   total_job_posted: number;
   total_artisan_employed: number;
 }
+interface IUser{
+  Email:string;
+  FirstName:string;
+  LastName:string;
+  PhoneNumber:string;
+}
 'use client'
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
@@ -31,6 +37,7 @@ const EmployerHome = () => {
 
   const [employerStats,setEmployerStats]=useState<IEmployerStats|null>(null)
   const [data,setData]= useState<IEmployerData[]|null>(null)
+  const [user,setUser]=useState<IUser|null>(null)
 
   console.log(1)
 	useEffect(() => {
@@ -57,6 +64,13 @@ const EmployerHome = () => {
 				setData(data);
 			})
 			.catch((error) => console.log(error));
+		axios
+			.get(`${BACKEND_URL}/employer/get-employer`, config)
+			.then((res) => {
+				const data = res.data.employer;
+				setUser(data);
+			})
+			.catch((error) => console.log(error));
 	}, []);
   console.log(data)
 
@@ -68,7 +82,7 @@ const EmployerHome = () => {
 
   return (
     <section className=" p-4 md:px-10">
-    <h2 className="text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hey, Jude.</h2>
+    <h2 className="text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hey, {user?.FirstName}.</h2>
     <p className="text-[#626C70] my-4 font-medium text-sm leading-[20px]">Here is all your Relik analytics overview</p>
     <section className="border border-[#E4F5EA] border-solid p-4 py-6 rounded-[10px]">
       <h2 className="text-[24px] mb-2 font-bold leading-[32px] text-black">Dashboard</h2>

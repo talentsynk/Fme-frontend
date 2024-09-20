@@ -84,7 +84,7 @@ const HireArtisan = () => {
   const [sortItemDropdownList, setSortItemDropdownList] = useState<ISort[]>(
     [
       { text: "Most Rated", isSelected: false, id: "0" },
-      { text: "Recommended", isSelected: false, id: "1" },
+      // { text: "Recommended", isSelected: false, id: "1" },
     ]
   );
   const fetchJobsByLocation = async (state: string, lga: string) => {
@@ -110,9 +110,9 @@ const HireArtisan = () => {
   };
   const handleSelect = async (selectedId: string) => {
     // Map the dropdown options to `days_ago` values
-    const daysAgoMap: { [key: string]: number } = {
-      "0": 4.3,  // Last 24 hours
-      "1": 4.4,  // Last 7 days
+    const daysAgoMap: { [key: string]: boolean } = {
+      "0": true,  // Last 24 hours
+      // "1": 4.4,  // Last 7 days
     };
   
     const daysAgo = daysAgoMap[selectedId];
@@ -125,7 +125,7 @@ const HireArtisan = () => {
   
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/artisan/all?min_rating=${daysAgo}`,
+        `${BACKEND_URL}/artisan/all?rating_sort=${daysAgo}`,
         config
       );
       const data = res.data.artisans

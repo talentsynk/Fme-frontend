@@ -17,6 +17,11 @@ interface ISavedData{
   JobType:string;
   Location:string
 }
+interface IUser{
+  Email:string;
+  FirstName:string;
+  LastName:string;
+}
 'use client';
 
 import { useEffect, useState } from "react";
@@ -30,14 +35,11 @@ import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import { Bag, BigStar, Bigtar, GreenBag, Like, X } from "@/components/landing/faqs/Svgs";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 
-//i need an endpoint for getting the user details, so ill dynamically render the stuff at the top right corner
-//application status
-//
 
 
 export default function ArtisansHome(){
   
-  const [userData,setUserData]=useState()
+  const [userData,setUserData]=useState<IUser|null>(null)
 
   const router = useRouter();
   const [data,setData]= useState<IEmployerData[]|null>(null)
@@ -76,8 +78,16 @@ export default function ArtisansHome(){
 				setSavedData(data);
 			})
 			.catch((error) => console.log(error));
+		axios
+			.get(`${BACKEND_URL}/artisan/me`, config)
+			.then((res) => {
+        
+				const data = res.data.artisan;
+				setUserData(data);
+			})
+			.catch((error) => console.log(error));
 	}, []);
-  console.log(data)
+  console.log(userData)
  
   
   
@@ -102,7 +112,7 @@ const [SpageNo, setSPageNo] = useState(1);
 
     return (
         <section className="bg-white md:px-10 p-4">
-        <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello Samuel,</h2>
+        <h2 className=" text-[#191b1c] text-[24px] leading-[32px] font-bold">👋 Hello {userData?.FirstName},</h2>
         <p className=" text-[#626C70] my-4 font-medium text-sm leading-[20px]">Welcome to your dashboard, this is where you get an overview and analytics of all your activities.</p>
        {/* {showProfile&& <section className=" bg-black humanity md:h-[270px] h-[330px] rounded-[10px] py-4 p-2 flex flex-col justify-between">
           <div className=" flex justify-between">
