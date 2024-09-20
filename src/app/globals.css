@@ -111,6 +111,14 @@ img{
   border-color: #00932E; 
 }
 
+.spiral{
+  background-image: url(/images/landing/Asset\ 1\ 1.svg);
+
+}
+#white-spiral{
+  background-image: url(/images/landing/Topographic\ 5.svg);
+  background-repeat: no-repeat;
+}
 .border-red {
   border-color: red;
 }

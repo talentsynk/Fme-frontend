@@ -6,6 +6,7 @@ interface IArtisan{
   FirstName?:string;
   LastName?:string;
   ID:number;
+  Skill?:string;
 }
 import Image from "next/image";
 import {
@@ -66,7 +67,7 @@ export const SimilarComp = () => {
 };
 
 
-export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessName,BusinessDescription,FirstName,LastName,ID}) => {
+export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessName,BusinessDescription,Skill,FirstName,LastName,ID}) => {
   const router = useRouter();
   return (
     <SimilarArtisanCompStyle
@@ -92,7 +93,7 @@ export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessNam
         <RatingIcon />
         <RatingIcon />
         <RatingIcon />
-        <p>{AverageRating}/5</p>
+        <p>{Math.round(AverageRating)}/5</p>
       </div>
       <div className="desc">
         <p>
@@ -105,10 +106,10 @@ export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessNam
       </div>
       <div className="tags">
         <TagStyle>
-          <p>#fashiondesign</p>
+          <p>#{Skill}</p>
         </TagStyle>
         <TagStyle>
-          <p>#creative</p>
+          {/* <p>#creative</p> */}
         </TagStyle>
       </div>
       <div className="btn">
@@ -276,9 +277,9 @@ export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal, id }) =>
   const redirectToDashboard = () => {
   
     if (role === "employer") { 
-      router.push(`/dashboard/employer/jobs/${id}`);
+      router.push(`/dashboard/employer`);
     } else {
-      router.push(`/dashboard/artisan/jobs/${id}`);
+      router.push(`/dashboard/artisan`);
       console.log(10)
     }
     setShowSuccessModal(false)
@@ -379,7 +380,7 @@ export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal, id }) =>
             onClick={handleSubmit}
             disabled={selectedRating === 0 || loading} // Disable button if no rating or during loading
           >
-            {loading ? "Sending..." : role === "employer" ? "Send Review" : "Send Recommendation"}
+            {loading ? "Sending..." : role !== "employer" ? "Send Review" : "Send Recommendation"}
           </button>
         </div>
       </div>

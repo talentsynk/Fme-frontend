@@ -72,9 +72,15 @@ const PostAJob = () => {
         Requirement:"",
         Responsibilities:"",
 	})
-  const isEmpty = () => {
+
+	const isEmpty = () => {
 		return Object.values(formData).every((value) => value === "");
 	};
+	// const isEmpty = () => {
+	// 	const requiredFields = ["JobTitle", "Location", "JobType", "Category", "Description"];
+	// 	return requiredFields.some(field => formData[field as keyof IForm] === "" || formData[field as keyof IForm] === null);
+	//   };
+	  
   const [state, setState] = useState("");
   const [jobType, setJobType] = useState("");
   const [category, setCategory] = useState("");
@@ -410,7 +416,7 @@ onInput={(e) => {
       .map(line => `- ${line.trim()}`) // Prefix each line with a bullet point
       .join("\n"); // Join them back into a single string with new lines
 
-    handleChangee('Responsibilities', bulletPointRequirements);
+    handleChangee('Requirement', bulletPointRequirements);
   }}
   onInput={(e) => {
     const target = e.target as HTMLTextAreaElement;
@@ -479,7 +485,7 @@ onInput={(e) => {
 									? "bg-[#D0D5DD] cursor-not-allowed"
 									: "bg-[#00932E] border-[#00932E] hover:bg-[#007427]"
 							}`}
-							disabled={isEmpty()}
+							disabled={isLoading || isEmpty()} 
 							type="submit">
 							{isLoading ? <ButtonLoader /> : "Post a Job"}
 						</button>

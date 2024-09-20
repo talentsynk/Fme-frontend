@@ -5,6 +5,7 @@ export const JobDetailPageStyle = styled.div`
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    
   }
   .nav {
     display: flex;
@@ -94,6 +95,7 @@ export const JobDetailPageStyle = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    
   }
   .cont-one p {
     color: #000;

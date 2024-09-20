@@ -1,6 +1,6 @@
 'use client'
 import { Verified } from "@/components/fme/course_list/Svg";
-import { Diploma, GradCap, Organise, Stats, TailoredSearch } from "@/components/landing/faqs/Svgs";
+import { Diploma, GGreenBag, GradCap, GreenBag, HandMoney, Organise, Stats, TailoredSearch, WhiteBag } from "@/components/landing/faqs/Svgs";
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -24,16 +24,25 @@ export default function Home() {
 
     return (
       <section className={`content-wrapper ${pathname === '/' ? 'bg-[#E7F6EC]':''}`}>
-       <div className=" box-border bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center">
+       <div className=" box-border bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center relative">
           <h1 className="animate-fadeIn  text-[32px] text-center md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Professionals</span>  effortlessly<br /> with a <span className=" text-[#00932E]">click</span> </h1>
           <p className="animate-slideInLeft font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
           <button className="w-fit box-border rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">
   Get started today!
 </button>
+<div className=" absolute right-[12%] top-[30%]">
+<HandMoney />
+</div>
+<div className=" absolute left-[2%] w-8 h-8 bottom-[40%]">
+<GGreenBag />
+</div>
+<div className=" absolute left-[15%]">
+  <Image src="/images/landing/Ellipse 15.png" alt="" width={32} height={32} />
+</div>
 
 
        </div>
-       <div className=" bg-[#00932E] py-8 all-about">
+       <div className=" bg-[#00932E] py-8 all-about spiral">
         <h5 className="animate-fadeIn  text-[18px] leading-[24px] text-white font-normal text-center">ENDORSED BY THE </h5>
         <div className=" animate-fadeIn   flex justify-center my-2">
           <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />

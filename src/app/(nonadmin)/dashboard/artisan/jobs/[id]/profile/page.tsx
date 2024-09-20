@@ -18,7 +18,7 @@ interface ISavedData{
   Status:string;
 }
 interface IStats{
-  rating: number;
+  rating: any;
   total_jobs_completed: number;
   total_jobs_posted: number;
   total_recommendations: number;
@@ -145,7 +145,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
             <GreyArrowRight />
             <p  className="text-[#00932E] text-[12px] md:text-[16px] font-bold leading-6">View Employer profile</p>
           </div>
-        <div className=" mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
+        <div className="spiral mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
     <Image src="/images/landing/detective.png" width={120} height={120} alt="review " />
     <h4 className=" text-white font-bold text-lg">{savedData?.FirstName} {savedData?.LastName}</h4>
     <div className=" rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center"><SmallVerified /><p className=" text-[12px] text-[#00932E]  font-medium">Verified</p></div>
@@ -153,7 +153,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
   <section className="">
   
   <section className=" flex gap-2 flex-col md:flex-row p-2">
-  <div className=" space-y-2 md:w-[70%]">
+  <div className=" space-y-2 md:w-[60%]">
   <div className=" flex justify-between items-center py-2">
   <div className="flex  items-center p-2">
       <button
@@ -208,7 +208,7 @@ To get started click on this button</p>
     }
 
 </div>
-<div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] md:w-[30%]">
+<div className="p-4 space-y-4 rounded-[10px] border-solid border-[1px] border-[#EFF1F3] md:w-[40%]">
 
   <div className=" flex gap-1 items-center">
     <Stats />
@@ -227,7 +227,7 @@ To get started click on this button</p>
     <p className="">Ratings</p>
     <div className="flex gap-1 items-center">
       <GoldStar />
-    <p className="">{stats?.rating}</p>
+    <p className="">{Math.round(stats?.rating)}</p>
     </div>
   </div>
   <div className=" flex justify-between text-black text-[13px] font-medium">
