@@ -105,12 +105,12 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
   const [states, setStates] = useState(States);
   const [lgas, setLgas] = useState([]);
 
-  useEffect(() => {
-    if (state) {
-      const newLgas = NaijaStates.lgas(state).lgas;
-      setLgas(newLgas);
-    }
-  }, [state]);
+  // useEffect(() => {
+  //   if (state) {
+  //     const newLgas = NaijaStates.lgas(state).lgas;
+  //     setLgas(newLgas);
+  //   }
+  // }, [state]);
 
   const handleStateSelection = (name: string) => {
     setState(name);

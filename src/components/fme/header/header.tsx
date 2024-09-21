@@ -333,7 +333,7 @@ const [data,setData]=useState<IData|null>(null)
       <div className="desktop-menu desktop" onClick={handleDropdown}>
         <div className="one">
           <div className="circle">
-            <p>OC</p>
+          <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{data?.FirstName[0]}{data?.LastName[0]}</p>
           </div>
           <div className="text">
             <h3> {data?.FirstName} {data?.LastName}</h3>

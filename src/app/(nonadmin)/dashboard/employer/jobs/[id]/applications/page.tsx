@@ -92,7 +92,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
               checked={selectedFilter === "All"}
               onChange={() => handleFilterChange("All")}
             />
-            <span className="ml-2">All Artisans</span>
+            <span className="ml-2">All Professionals</span>
             <span className="ml-auto text-[#222222] font-bold">{selectedFilter=="All"&&data && data.length}</span>
           </label>
 
@@ -106,7 +106,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
               checked={selectedFilter === "Selected"}
               onChange={() => handleFilterChange("Selected")}
             />
-            <span className="ml-2">Selected Artisans</span>
+            <span className="ml-2">Selected Professionals</span>
             <span className="ml-auto text-[#222222] font-bold">{selectedFilter=="Selected"&&data && data.length}</span>
           </label>
 
@@ -120,7 +120,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
               checked={selectedFilter === "Declined"}
               onChange={() => handleFilterChange("Declined")}
             />
-            <span className="ml-2">Artisans Declined</span>
+            <span className="ml-2">Declined Professionals </span>
             <span className="ml-auto text-[#222222] font-bold">{selectedFilter=="Declined" && data && data.length}</span>
           </label>
         </div>
