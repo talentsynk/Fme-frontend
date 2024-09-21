@@ -140,7 +140,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
       <PaddedSectionStyles>
         <div className="x">
           <div className="nav">
-            <Link href="/dashboard/artisan/jobs">
+            <Link href="/dashboard/employer/hire">
               <p className="lit">Hire Professionals</p>
             </Link>
             <GreyArrowRight />
@@ -254,7 +254,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                 </div>
                 <div className="flex gap-2 pt-8 justify-center">
                     {/* <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button> */}
-    <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Hire Artisan</p><AirplaneIcon /></button>
+    <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Hire Professional</p><AirplaneIcon /></button>
                 </div>
                 {/* {showSuspendModal && <CloseHireArtisanComp handleModAction={handleModAction} cancelModal={() => setShowSuspendModal(false)} />} */}
   {showHireArtisanModal && <HireArtisanComp artisanId={data?.ID} handleModalAction={handleModalAction} cancelModal={() => setShowHireArtisanModal(false)} />}

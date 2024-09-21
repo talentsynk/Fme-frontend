@@ -87,7 +87,7 @@ const HireArtisan = () => {
       // { text: "Recommended", isSelected: false, id: "1" },
     ]
   );
-  const fetchJobsByLocation = async (state: string, lga: string) => {
+  const fetchJobsByLocation = async (state: string) => {
     try {
       // Get the authorization token from cookies
       const token = Cookies.get('token'); // Replace 'authToken' with the actual cookie name where the token is stored
@@ -104,8 +104,8 @@ const HireArtisan = () => {
       console.error("Error fetching jobs:", error);
     }
   };
-  const handleLocationFilter = (state: string, lga: string) => {
-    fetchJobsByLocation(state, lga);
+  const handleLocationFilter = (state: string) => {
+    fetchJobsByLocation(state);
     setShowLocationModal(false); // Close the modal after applying the filter
   };
   const handleSelect = async (selectedId: string) => {
