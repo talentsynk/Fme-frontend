@@ -19,7 +19,7 @@ export default function About() {
       <div className=" space-y-4 text-center py-16 bg-[#F7F5FF]" id="white-spiral">
           <h3 className="animate-slideInLeft text-[18px] font-medium leading-[24px] text-black-70">ABOUT US</h3>
           <h1 className="animate-fadeIn text-[32px] md:text-[44px] leading-[48px] font-medium text-[#00932E]">We are National Skills Information Center</h1>
-          <p className="animate-bounce px-4  md:px-2 md:w-3/4 mx-auto text-[18px] leading-[24px] font-normal text-black">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci voluptate voluptatem delectus optio, est pariatur ullam, explicabo ab impedit dolores nesciunt ex quae porro odit animi aut minus incidunt quisquam quibusdam, recusandae ducimus sequi ut! Delectus eligendi laboriosam rerum tempore!</p>
+          <p className="animate-bounce px-4  md:px-2 md:w-3/4 mx-auto text-[18px] leading-[24px] font-normal text-black">The Nigerian Skills Qualifications Framework (NSQF) is a system for the development, classification and recognition of skills, knowledge, understanding and competencies acquired by individuals, irrespective of where and how the training or skill was acquired. The system gives a clear statement of what the Learner must know or be able to do; whether the learning took place in a classroom, on-the-job or less formally. The Framework indicates the comparability of different qualifications and how one can progress from one level to another. The NSQF is the structure within which the National Skills Qualifications (NSQs) operate.</p>
         </div>
         
         <div className="">
@@ -32,8 +32,8 @@ export default function About() {
       <section className=" space-y-4 md:space-y-0 flex flex-col md:flex-row px-8 py-16 gap-2">
         <div className=" space-y-4 flex-1 pt-4 md:pt-0">
           <h3 className=" animate-fadeIn  md:text-[18px] leading-[24px] text-black-70 font-medium text-center md:text-left">OUR VISION AND MISSION</h3>
-          <h2 className="animate-slideInLeft text-[32px] md:text-[44px] font-medium text-center md:text-left leading-[48px] text-[#101928]">Our Dream is Global National Transformation</h2>
-          <p className="animate-fadeIn px-4 md:px-2 md:text-[18px] leading-[24px] text-black font-normal text-center md:text-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde dolorem delectus voluptatum odio voluptates. Officiis doloremque, mollitia architecto ullam, sequi, adipisci quo sapiente ut optio iste porro necessitatibus nisi cupiditate unde tenetur. Sapiente laboriosam magni voluptates, ullam id voluptatibus numquam!</p>
+          <h2 className="animate-slideInLeft text-[32px] md:text-[44px] font-medium text-center md:text-left leading-[48px] text-[#101928]">To build a skilled Nigeria workforce</h2>
+          <p className="animate-fadeIn px-4 md:px-2 md:text-[18px] leading-[24px] text-black font-normal text-center md:text-left">Simplify the complexity of selecting skilled individuals in the industry. Create clear pathways from informal short courses offered by government agencies, ngos, and industry to formal tvet programs. Bridge the gap between tvet graduate&apos; skills and employers&apos; needs. Address the limited progression opportunities and high demand for tvet.</p>
           <div className=" flex flex-wrap gap-2 w-full">
             <div className=" bg-[#E4F5EA] p-4 rounded-[10px] w-[60%] md:w-[65%]">
               <h6 className=" font-medium text-[12px] text-[#111111] leading-[145%]">Total number of MDAs</h6>
