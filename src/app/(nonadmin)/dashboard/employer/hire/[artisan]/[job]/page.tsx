@@ -57,14 +57,16 @@ import {
   ReviewModal,
   SimilarComp,
 } from "@/components/artisan/Employer";
-import { JobGridListAlt, SimilarCompGridList } from "../../../artisan/style";
+import { JobGridListAlt, SimilarCompGridList } from "../../../../artisan/style";
 import { ArtisanProfileTabSwitches } from "@/components/employer/data";
 import { HireArtisanComp } from "@/components/fme/students/modal";
 import { AirplaneIcon } from "@/components/landing/faqs/Svgs";
 import { CloseHireArtisanComp,SelectArtisanComp,HireProfessionalComp } from "@/components/fme/students/modal";
 
-const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
+const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string } }) => {
   const lol=params.artisan
+  const lols=params.job
+  console.log(lol,lols)
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
   );
@@ -273,7 +275,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
     <button onClick={() => setShowHireProfessionalModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Hire Professional</p><AirplaneIcon /></button>
                     <div onClick={() => setShowHireArtisanModal(true)} className=" flex justify-center items-center w-12 h-12 rounded-[12px] bg-[#E7F6EC] "><ContactCard /></div>
                 </div>
-                {showHireSelectModal && <SelectArtisanComp handleModAction={handleSelectAction} cancelModal={() => setShowHireSelectModal(false)} />}
+                {showHireSelectModal && <SelectArtisanComp JobId={lols} handleModAction={handleSelectAction} cancelModal={() => setShowHireSelectModal(false)} />}
                 {showSuspendModal && <CloseHireArtisanComp handleModAction={handleModAction} cancelModal={() => setShowSuspendModal(false)} />}
                 {showHireProfessionalModal && <HireProfessionalComp artisanId={data?.ID} handleModAction={handleProfessionalAction} cancelModal={() => setShowHireProfessionalModal(false)} />}
   {showHireArtisanModal && <HireArtisanComp artisanId={data?.ID} handleModalAction={handleModalAction} cancelModal={() => setShowHireArtisanModal(false)} />}
