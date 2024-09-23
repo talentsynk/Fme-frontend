@@ -1,5 +1,6 @@
 interface IApplication{
   ApplicationId:number;
+  JobId:number;
   ArtisanId:number;
   AverageRating:number;
   ApplicationStatus:string;
