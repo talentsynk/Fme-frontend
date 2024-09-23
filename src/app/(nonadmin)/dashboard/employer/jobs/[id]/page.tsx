@@ -106,7 +106,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                   <VerifiedTick />
 								</div>
                 <p className=" font-bold text-[16px] leading-[24px] text-[#1A1A1A]">Posted by me</p>
-                <Link href={`/dashboard/employer/jobs/${data?.EmployerId}/applications`} className=" px-4 py-2 rounded bg-[#00932E] text-white text-sm font-bold" >
+                <Link href={`/dashboard/employer/jobs/${data?.Id}/applications`} className=" px-4 py-2 rounded bg-[#00932E] text-white text-sm font-bold" >
                   View Applications
                 </Link>
               </div>
