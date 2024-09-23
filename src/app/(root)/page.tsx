@@ -147,11 +147,11 @@ export default function Home() {
        <div className="artisan bg-[#00932E] animate-fadeIn  space-y-16  md:space-y-0 flex gap-8 flex-col md:flex-row justify-between py-32 p-16">
         <div className=" flex flex-col md:flex-row space-y-4 md:space-y-0 gap-8">
         <div className=" space-y-4 ">
-          <h2 className=" text-white text-[72px] leading-[56px] font-medium">17+</h2>
+          <h2 className=" text-white text-[72px] leading-[56px] font-medium">3132+</h2>
           <p className=" text-[18px] font-medium leading-[24px] text-white">TOTAL TRAINED ARTISANS</p>
         </div>
         <div className=" space-y-4 ">
-          <h2 className=" text-white text-[72px] leading-[56px] font-medium">1</h2>
+          <h2 className=" text-white text-[72px] leading-[56px] font-medium">10000</h2>
           <div className=" flex items-center gap-1">
             <GradCap />
           <p className="text-[18px] font-medium leading-[24px] text-white">CERTIFIED ARTISANS</p>
