@@ -8,6 +8,7 @@ interface IJob {
   Amount: string;
   Status?:string;
   CreatedAt?:string|undefined;
+  Location?:string;
 }
 
 import Cookies from "js-cookie";
@@ -393,6 +394,7 @@ interface ILol{
                   Description={job.Description}
                   Amount={job.Amount}
                   CreatedAt={job.CreatedAt}
+                  Location={job.Location}
                 />
               ))
             ) : (
