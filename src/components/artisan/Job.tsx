@@ -185,14 +185,14 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
           )}
         </StatesDropdownStyles>
       </div> */}
-      <div className="btns">
+      <div className=" flex justify-around py-2">
       {applyFilter && (
-  <button type="button" className=" text-white" onClick={() => applyFilter(state, lga)}>
+  <button type="button" className="  text-white" onClick={() => applyFilter(state, lga)}>
     Apply Filter
   </button>
 )}
 
-        <button type="button" className="clear" onClick={() => { setState(''); setLga(''); }}>
+        <button type="button" className="clear text-white" onClick={() => { setState(''); setLga(''); }}>
           Clear Filter
         </button>
       </div>
