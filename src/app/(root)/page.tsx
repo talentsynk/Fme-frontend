@@ -9,7 +9,7 @@ import "../globals.css";
 
 // client
 export default function Home() {
- 
+  const router = useRouter();
   const pathname = usePathname()
   const [showEmployee,setShowEmployee]= useState(true)
   const handleEmployee=()=>{
@@ -27,7 +27,7 @@ export default function Home() {
        <div className=" box-border bg-[#E7F6EC] flex flex-col md:py-24  p-8 space-y-4 items-center relative">
           <h1 className="animate-fadeIn  text-[32px] text-center md:text-[56px] leading-[48px] md:leading-[77px] font-medium">Hire  <span className=" text-[#00932E]">Skilled Professionals</span>  effortlessly<br /> with a <span className=" text-[#00932E]">click</span> </h1>
           <p className="animate-slideInLeft font-medium md:w-1/2 text-center text-[16px] leading-[24px] text-black">The National Skills Information Center has been created by the Ministry of Education of the Federal Republic of Nigeria to bridge the gap between employers sourcing the expertise of artisans on their projects</p>
-          <button className="w-fit box-border rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">
+          <button onClick={() => router.push("/auth/signup")} className="w-fit box-border rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">
   Get started today!
 </button>
 <div className=" absolute right-[12%] top-[30%]">
@@ -53,8 +53,8 @@ export default function Home() {
         </div>
         <div className=" flex flex-col md:flex-row space-y-2 p-8 justify-between py-16">
           <div className="text-white flex-1 space-y-6">
-            <h4 className=" text-[18px] leading-[24px] font-medium text-center md:text-left">OUR OBJECTIVES</h4>
-            <h3 className=" text-[44px] font-medium text-center md:text-left leading-[48px]">CRAFTED WITH PROFESSIONALS AND EMPLOYERS IN MIND</h3>
+            <h4 className=" text-[18px] leading-[24px] font-medium text-center md:text-left">OUR OBJECTIVE?</h4>
+            <h3 className=" text-[44px] font-medium text-center md:text-left leading-[48px]">Crafted with Professionals and employers in mind</h3>
             <p className=" text-[18px] text-center md:text-left py-2 md:py-0 leading-[24px] font-normal">To truly drive transformation in Nigeria, it is essential to incorporate skills throughout the entire education sector. The council&apos;s efforts will be pivotal in achieving this ambitious goal.</p>
           </div>
           <div className=" flex-1 flex justify-end">
@@ -69,10 +69,11 @@ export default function Home() {
             <div onClick={handleArtisans} className={`cursor-pointer ${!showEmployee?"bg-[#E7F6EC] text-[#00932E]":"text-[#98A2B3]"}  rounded-lg px-4 py-2.5 `}>For Artisans</div>
           </div>
           <h5 className="animate-slideInLeft text-[18px] text-center md:text-left font-medium leading-[24px] text-[#101928]">WHAT WE DO</h5>
-          <h2 className="animate-fadeIn  text-[36px] md:text-[44px] text-center md:text-left font-medium leading-[48px] text-[#101928]">We save time and effort in your next hiring journey</h2>
-          <p className="animate-bounce text-[18px] text-center md:text-left font-normal leading-[24px] text-[#101928]">When it comes to hiring the right artisans, it&apos;s essential to have a solution that streamlines the process. Our platform is equipped with a wide range of features designed to expedite candidate sourcing and screening.</p>
+          {showEmployee ?<div className=" space-y-4"><h2 className="animate-fadeIn  text-[36px] md:text-[44px] text-center md:text-left font-medium leading-[48px] text-[#101928]">We save time and effort in your next hiring journey</h2>
+          <p className="animate-bounce text-[18px] text-center md:text-left font-normal leading-[24px] text-[#101928]">When it comes to hiring the right artisans, it&apos;s essential to have a solution that streamlines the process. Our platform is equipped with a wide range of features designed to expedite candidate sourcing and screening.</p></div>:<div className=" space-y-4"><h2 className="animate-fadeIn  text-[36px] md:text-[44px] text-center md:text-left font-medium leading-[48px] text-[#101928]">We save time and effort in your next job search journey</h2>
+          <p className="animate-bounce text-[18px] text-center md:text-left font-normal leading-[24px] text-[#101928]">When it comes to finding the right job, it&apos;s essential to have a solution that simplifies the search. Our platform offers a wide range of features designed to help you discover and apply to jobs quickly.</p></div>}
           <div className=" flex justify-center md:justify-start">
-          <button className=" w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  mt-12 hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">Get started today!</button>
+          <button onClick={() => router.push("/auth/signup")} className=" w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  mt-12 hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">Get started today!</button>
           </div>
         </div>
         <div className="animate-fadeIn flex-1 flex flex-wrap gap-4 justify-center xl:justify-center ">
@@ -97,54 +98,53 @@ export default function Home() {
        <div className=" space-y-8 py-16">
         <h3 className="animate-slideInLeft text-center text-[#101928] text-[44px] leading-[48px] font-bold">The essential for <span className=" text-[#00932E]">skilled professionals</span></h3>
         <p className="animate-bounce text-center md:w-1/2 mx-2 md:mx-auto  text-[18px] leading-[24px] font-normal text-black">Whether you&apos;re a carpenter, plumber, electrician, tailor, or any other type of artisan, National Skills Information Center is your go-to marketplace to find work opportunities and grow your business.</p>
-        <div className="carousel-item flex-none   carousel-item  flex flex-col space-y-4 px-2 carousel  md:flex-row gap-4 items-center md:items-start md:overflow-x-auto scrollbar-hide w-full">
-          <div className=" my-2  relative h-[350px]">
-
-          <Image src="/images/landing/fashion.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px]  left-[30%]">Fashion Designer</h6>
-          </div>
-          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
-
-          <Image src="/images/landing/carpenmter.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Furniture making</h6>
-          </div>
-          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
-
-          <Image src="/images/landing/make-up.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
-          </div>
-          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
-
-          <Image src="/images/landing/interior.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Interior Design</h6>
-          </div>
-          <div className=" my-2 relative h-[350px]">
-
-          <Image src="/images/landing/make-up.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
-          </div>
-          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
-
-          <Image src="/images/landing/hair.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Hair stylist</h6>
-          </div>
-          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
-
-          <Image src="/images/landing/make-up.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-          <h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%] ">Make-up artist</h6>
-          </div>
-          <div className="carousel-item flex-none  justify-center carousel-item  my-2 relative h-[350px]">
-
-<Image src="/images/landing/carpenmter.png" alt="" width={400} height={0} style={{height:'100%'}} className=" rounded-[10px]" />
-<h6 className=" absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%] ">Furniture making</h6>
-</div>
-
-        </div>
+       
       
+      <div className="carousel flex flex-col space-y-4 px-2 md:flex-row md:space-y-0 md:space-x-4 items-center md:overflow-x-auto  w-full">
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/fashion.png" alt="Fashion Designer" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Fashion Designer</h6>
+  </div>
+  
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/carpenmter.png" alt="Furniture making" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Furniture making</h6>
+  </div>
+  
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/make-up.png" alt="Make-up artist" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
+  </div>
+
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/interior.png" alt="Interior Design" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Interior Design</h6>
+  </div>
+  
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/make-up.png" alt="Make-up artist" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
+  </div>
+  
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/hair.png" alt="Hair stylist" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Hair stylist</h6>
+  </div>
+
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/make-up.png" alt="Make-up artist" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Make-up artist</h6>
+  </div>
+
+  <div className="my-2 relative h-[350px] min-w-[400px] md:min-w-[350px]">
+    <Image src="/images/landing/carpenmter.png" alt="Furniture making" width={400} height={0} style={{ height: '100%' }} className="rounded-[10px]" />
+    <h6 className="absolute bottom-10 text-white font-bold text-lg leading-[24px] left-[30%]">Furniture making</h6>
+  </div>
+</div>
 
 
        </div>
-       <div className="artisan bg-[#00932E] animate-fadeIn  space-y-16  md:space-y-0 flex gap-8 flex-col md:flex-row justify-between py-32 p-16">
+       <div className="artisan spiral bg-[#00932E] animate-fadeIn  space-y-16  md:space-y-0 flex gap-8 flex-col md:flex-row justify-between py-32 p-16">
         <div className=" flex flex-col md:flex-row space-y-4 md:space-y-0 gap-8">
         <div className=" space-y-4 ">
           <h2 className=" text-white text-[72px] leading-[56px] font-medium">3132+</h2>
@@ -166,8 +166,8 @@ export default function Home() {
        <div className=" flex p-16 gap-4 flex-col md:flex-row bg-white">
         <div className=" flex flex-col gap-4 flex-1 md:pt-12 md:pb-28">
           <h2 className="animate-fadeIn  text-[36px] md:text-[44px] text-center md:text-left leading-[32px] md:leading-[48px] font-medium text-[#101928] ">Try out the future of the day!</h2>
-          <p className="animate-slideInLeft text-center md:text-left text-[#101928] font-normal text-[16px] md:text-[18px] leading-[24px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam esse optio error ducimus repudiandae! Quae placeat expedita rerum ducimus libero rem ipsam, enim perferendis ipsa aperiam, ipsum assumenda. Sequi saepe illo eveniet, minima veritatis minus iste repudiandae cumque perferendis eos nesciunt, facere, ratione dicta cum beatae. Eligendi a laborum magni.</p>
-          <button className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  mx-auto md:mx-0  mt-24 hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">View profile</button>
+          <p className="animate-slideInLeft text-center md:text-left text-[#101928] font-normal text-[16px] md:text-[18px] leading-[24px]">Discover Your Next Career Opportunity! Whether you&apos;re an experienced professional or a skilled expert, our platform links you with leading employers seeking talent like yours. Act now—sign up today and move closer to your dream job!</p>
+          <button onClick={()=>{router.push('/auth/signup')}} className="w-fit rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  mx-auto md:mx-0  mt-24 hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">Sign up today!</button>
         </div>
         <div className=" flex-1 flex justify-end">
           <Image src="/images/landing/cobler.png" width={564} height={600} className=" rounded-[20px]" alt="" />

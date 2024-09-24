@@ -73,14 +73,16 @@ export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessNam
     <SimilarArtisanCompStyle
       onClick={() => router.push(`/dashboard/employer/hire/${ID}`)}
     >
-      <div className="img">
-        <Image
+      <div className=" w-12 h-12 rounded-[50%] bg-[#E7F6EC] flex justify-center items-center">
+        {/* <Image
           src="/images/frame_3.png"
           width={0}
           height={214}
           sizes="100%"
           alt="avatar"
-        />
+        /> */}
+        <p className=" font-bold ">{BusinessName.slice(0, 2).toUpperCase()}</p>
+        {/* <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{FirstName[0]}{LastName[0]}</p> */}
       </div>
       <div className="hl">
         <h4>{BusinessName}</h4>

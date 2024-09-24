@@ -299,24 +299,7 @@ export const LocationModalStyle = styled.div`
     justify-content: right;
     cursor: pointer;
   }
-  .btns {
-    display: flex;
-    gap: 1.25rem;
-    button {
-      height: 2.5rem;
-      background: transparent;
-      color: rgba(0, 0, 0, 0.25);
-      font-size: 0.875rem;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 1.25rem; /* 142.857% */
-    }
-    .clear:hover {
-      color: #cb1a14;
-    }
-    .apply {
-      color: var(--Primary-Color, #00932e);
-    }
+  
   }
 `;
 

@@ -1,0 +1,18 @@
+// authentication root-layout
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Signup",
+  description: "Signup/Create an Account",
+};
+
+export default function ClientLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <>{children}</>
+  )
+}

@@ -269,8 +269,8 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
                   </div>
                 </div>
                 <div className="flex gap-2 pt-8 justify-center">
-                    <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button>
-    <button onClick={() => setShowHireSelectModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Select Professional</p><AirplaneIcon /></button>
+                    <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5]  md:h-[48px] w-[50%] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Professional</p></button>
+    <button onClick={() => setShowHireSelectModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:h-[48px] w-[50%] h-[40px] flex justify-center items-center"> <p className="">Select Professional</p><AirplaneIcon /></button>
                 </div>
                 {/* <div className=" flex gap-1">
     <button onClick={() => setShowHireProfessionalModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Hire Professional</p><AirplaneIcon /></button>

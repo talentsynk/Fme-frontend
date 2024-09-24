@@ -2,8 +2,10 @@ import { Facebook, Instagram, LinkedIn, Twitter } from "@/components/landing/faq
 import { FooterStyle } from "./style";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const RootFooter = () => {
+    const router= useRouter()
     return ( 
       
             <footer className=" bg-[#E7F6EC] p-8 space-y-4">
@@ -20,7 +22,7 @@ export const RootFooter = () => {
                     </div>
                     <div className=" space-y-2">
                         <h6>Get started today!</h6>
-                        <button className="w-[150px] hover:border-[1px] hover:border-solid hover:bg-white hover:text-[#00932E] p-2 h-[36px] rounded-md text-white bg-[#00932E] font-normal">Hire an artisan</button>
+                        <button onClick={()=>{router.push('/auth/signup')}} className="w-[150px] hover:border-[1px] hover:border-solid hover:bg-white hover:text-[#00932E] p-2 h-[36px] rounded-md text-white bg-[#00932E] font-normal">Hire an artisan</button>
                     </div>
                 </section>
                 <section className=" border-t-[2px] pt-4 border-solid border-t-[#E4E7EC] flex justify-between ">

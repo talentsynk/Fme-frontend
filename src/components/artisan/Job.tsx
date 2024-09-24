@@ -26,6 +26,7 @@ interface ISimilarJobs{
   JobType: string;
   Status?: string;
   CreatedAt?:string
+  Location?:string;
 }
 
 export const JobComp: React.FC<ISimilarJobs> = ({
@@ -34,7 +35,8 @@ export const JobComp: React.FC<ISimilarJobs> = ({
   Description,
   JobType,
   Amount,
-  CreatedAt
+  CreatedAt,
+  Location
 }) => {
   const router = useRouter();
   const getDaysAgo = (date: string|undefined|number): number => {
@@ -77,7 +79,7 @@ const lol= getDaysAgo(CreatedAt)
         <div className="btn">
           <div className="bg">
             <TinyLocationIcon />
-            <p>Oyo State</p>
+            <p>{Location}</p>
           </div>
           <button type="button" onClick={() => router.push(`/dashboard/artisan/jobs/${Id}`)}>
             Apply Now
@@ -185,14 +187,14 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
           )}
         </StatesDropdownStyles>
       </div> */}
-      <div className="btns">
+      <div className=" flex justify-around py-2">
       {applyFilter && (
-  <button type="button" className=" text-white" onClick={() => applyFilter(state, lga)}>
+  <button type="button" className="  text-white" onClick={() => applyFilter(state, lga)}>
     Apply Filter
   </button>
 )}
 
-        <button type="button" className="clear" onClick={() => { setState(''); setLga(''); }}>
+        <button type="button" className="clear text-white" onClick={() => { setState(''); setLga(''); }}>
           Clear Filter
         </button>
       </div>
