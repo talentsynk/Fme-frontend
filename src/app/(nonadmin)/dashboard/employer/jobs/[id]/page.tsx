@@ -25,6 +25,7 @@ import { useState,useEffect } from "react";
 import Cookies from "js-cookie";
 import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
+import { CompleteJob } from "@/components/landing/faqs/Svgs";
 import { CloseJobComp, SuspendStudentComp } from "@/components/fme/students/modal";
 import {
   GreyArrowRight,
@@ -134,6 +135,26 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
               </div>
 
               </div>
+              <div className=" space-y-2">
+                {data?.Status=="ongoing"&&<div onClick={() => setShowReviewModal(true)} className=" flex gap-2 rounded p-2 border-[#EBEDF4] border-[1px] border-solid">
+                  <CompleteJob />
+                  <p className="">Complete Project</p>
+                </div>}
+                {/* {data?.Status=="ongoing"&&<div className=" bg-[#E7f6EC] rounded-[12px] p-4 space-y-4">
+                <h3 className=" text-[#101928] font-bold ">Recommend Artisan</h3>
+                <p className=" text-sm text-black leading-5 font-normal">Add reviews about the artisans services and job delivery to help boost their credential and competence.</p>
+                <button onClick={() => setShowReviewModal(true)}  className=" text-sm text-[#00932E] leading-5 font-bold">Write a Recommendation</button>
+              </div>} */}
+              {showReviewModal && (
+        <FlexAbsoluteModalStyles>
+          <ReviewModal
+            role="employer"
+            closeModal={() => setShowReviewModal(false)}
+            id={data?.Id}
+            
+          />
+        </FlexAbsoluteModalStyles>
+      )}
               <div className="cont-two">
                 <div className="gas">
                   <h4>JOB TYPE</h4>
@@ -165,21 +186,8 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
                     </TagStyle>
                   </div>
                 </div>
-              {data?.Status=="ongoing"&&<div className=" bg-[#E7f6EC] rounded-[12px] p-4 space-y-4">
-                <h3 className=" text-[#101928] font-bold ">Recommend Artisan</h3>
-                <p className=" text-sm text-black leading-5 font-normal">Add reviews about the artisans services and job delivery to help boost their credential and competence.</p>
-                <button onClick={() => setShowReviewModal(true)}  className=" text-sm text-[#00932E] leading-5 font-bold">Write a Recommendation</button>
-              </div>}
-              {showReviewModal && (
-        <FlexAbsoluteModalStyles>
-          <ReviewModal
-            role="employer"
-            closeModal={() => setShowReviewModal(false)}
-            id={data?.Id}
-            
-          />
-        </FlexAbsoluteModalStyles>
-      )}
+             
+              </div>
               </div>
             </div>
             <div className="btns">

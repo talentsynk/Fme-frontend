@@ -933,13 +933,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 									</div>
 									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
 								</div>
-								{/* <div className="dx">
-									<div className="name">
-										<span>Student Certificate</span>
-										<p className="nm">{studentDetails.profile} PDF.pdf</p>
-									</div>
-									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
-								</div> */}
+								
 								<div className="dx">
 									<div className="name">
 										<span>Status</span>

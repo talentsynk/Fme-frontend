@@ -34,6 +34,7 @@ import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
+import { WhiteDown } from "@/components/landing/faqs/Svgs";
 
 export default function Home() {
 	
@@ -375,6 +376,42 @@ const handleDownload = async () => {
       setLoading(false); // Stop loading once the download is complete
     }
   };
+  const [jobLoading,setJobLoading]= useState(false)
+const handleJobDownload = async () => {
+    setJobLoading(true); // Set loading to true while downloading
+
+    // Get the token from cookies
+    const token = Cookies.get('token'); 
+
+    try {
+      const response = await axios({
+        url: 'https://fme-backend-version-1.onrender.com/student/download-csv',
+        method: 'GET',
+        responseType: 'blob', // Important to download the file
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Create a blob URL for the downloaded file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'students.csv'); // Name the file
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Download failed:', error);
+    } finally {
+		setJobLoading(false); // Stop loading once the download is complete
+    }
+  };
+
+  const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
+  const toggleDownloadDropdown = () => {
+    setShowDownloadDropdown(!showDownloadDropdown);
+  };
 
 	return (
 		<>
@@ -416,10 +453,29 @@ const handleDownload = async () => {
       )}
 	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
       {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
-					<button type="button" className="import" onClick={handleDownload} disabled={loading}>
+					<button type="button" className="import" onClick={toggleDownloadDropdown} disabled={loading}>
 						<UploadIcon />
 						<span>Download</span>
+						<AngleDownStyles $isSelected={showDownloadDropdown}>
+                  <WhiteDown />
+				  </AngleDownStyles>
 					</button>
+					{showDownloadDropdown && (
+        <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+          <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={handleDownload}
+          >
+            General Information
+          </div>
+		  <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={handleJobDownload}
+          >
+            Job Application Information
+          </div>
+        </div>
+      )}
 				</div>
 			</TopStyles>
 			<WhiteContainer>

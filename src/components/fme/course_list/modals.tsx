@@ -53,14 +53,187 @@ interface IOneButtonModal {
 }
 
 interface IForm {
-	CategoryID: Number;
+	CategoryID?: Number|null;
 	Name: string;
 	Description: string;
 }
 
+export const CategoryModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
+	const [form, setForm] = useState<IForm>({
+		Description: "",
+		Name: "",
+	});
+
+	const [Name, setName] = useState("");
+	const [NameError, setNameError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+	const [Description, setDescription] = useState("");
+	const [DescriptionError, setDescriptionError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const handleCategoryInput = (e: React.ChangeEvent<HTMLInputElement>, input: string) => {
+		const value = e.target.value;
+		if (input == "Name") {
+			setName(value);
+			if (value.trim().length < 1) {
+				setNameError({ active: true, text: "Course category is required" });
+			} else {
+				setNameError({ active: false, text: "Course category is valid" });
+				setForm({ ...form, Name: value });
+			}
+		}
+		if (input == "Description") {
+			setDescription(value);
+			if (value.trim().length < 1) {
+				setDescriptionError({ active: true, text: "Course category  is required" });
+			} else {
+				setDescriptionError({ active: false, text: "Course category  is valid" });
+				setForm({ ...form, Description: value });
+			}
+		}
+	};
+	
+	const [isLoading, setIsLoading] = useState(false);
+
+
+	const [isSuccess, setIsSuccess] = useState(false);
+	const handleCreateCourse = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		if (!DescriptionError.active && !NameError.active && DescriptionError.text !== "" && NameError.text !== "") {
+			// call createMDA API
+			const token = Cookies.get("token");
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			try {
+				const body = {
+					Name: form.Name,
+					Description: form.Description,
+				};
+				console.log("Request Body:", body);
+				setIsLoading(true);
+				const { data } = await axios.post(`${BACKEND_URL}/category/create`, body, config);
+				if (data) {
+					setIsLoading(false);
+					setIsSuccess(true);
+				}
+			} catch (error: any) {
+				if (error.response) {
+					setNameError({
+						active: true,
+						text: error.response.data.error,
+					});
+					setDescriptionError({
+						active: true,
+						text: error.response.data.error,
+					});
+				}
+				setIsLoading(false);
+			}
+		}
+	};
+
+	const router = useRouter();
+	return (
+		<>
+			{isSuccess == false && (
+				<NewMdaAbsoluteStyles>
+					<div className="form">
+						<NewMdaFormStyles className="bd">
+							<div className="fl">
+								<div className="form-head">
+									<h3>Add Course Category</h3>
+									<p>Fill in the necessary details to add a new course category</p>
+								</div>
+								<IconWrapper onClick={cancelModal}>
+									<XIcon />
+								</IconWrapper>
+							</div>
+							<form className="form" onSubmit={handleCreateCourse}>
+								<div className="form-input">
+									<div className="form-ele">
+										<label htmlFor="name">Course Category</label>
+										<div className="inp">
+											<input
+												type="text"
+												name="courseCategory"
+												value={Name}
+												className={NameError.active ? "error-bdr" : ""}
+												onChange={(e) => handleCategoryInput(e, "Name")}
+												placeholder="Please type in the course title"
+											/>
+											<div className="abs">
+												{NameError.active === false && NameError.text === "" && <NameIcon />}
+												{NameError.active === false && NameError.text !== "" && <CheckedIcon />}
+												{NameError.active === true && <FormErrorIcon />}
+											</div>
+											<p role="alert" aria-live="assertive" aria-atomic="true" className={NameError.active ? "error-msg" : "correct"}>
+												{NameError.text}
+											</p>
+										</div>
+									</div>
+									<div className="form-ele">
+										<label htmlFor="address">Category Description</label>
+										<div className="inp">
+											<textarea
+												name="courseDescription"
+												id=""
+								
+												value={Description}
+												onChange={(e: any) => handleCategoryInput(e, "Description")}
+												className={DescriptionError.active ? "error-bdr" : ""}
+												placeholder="Please type in the course  description"
+											/>
+
+											<p role="alert" aria-live="assertive" aria-atomic="true" className={DescriptionError.active ? "error-msg" : "correct"}>
+												{DescriptionError.text}
+											</p>
+										</div>
+									</div>
+								</div>
+
+								<div className="btn-m">
+									<button
+										type="submit"
+										disabled={
+											NameError.text == "" ||
+											DescriptionError.text == "" ||
+											NameError.active !== false ||
+											DescriptionError.active !== false 
+										}>
+										{isLoading ? <ButtonLoader /> : "Add Course Category"}
+									</button>
+								</div>
+							</form>
+						</NewMdaFormStyles>
+					</div>
+				</NewMdaAbsoluteStyles>
+			)}
+			{isSuccess && (
+				<FlexAbsoluteModalStyles>
+					<SuccessModal
+						head="New Course Category has been successfully created !"
+						msg="You have successfully created a new category. Have a lovely day!"
+						cancelModal={cancelModal}
+						icon={<CreationSuccessIcon />}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+						navigationFunction={() => router.push("/fme")}
+					/>
+				</FlexAbsoluteModalStyles>
+			)}
+		</>
+	);
+};
 export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	const [form, setForm] = useState<IForm>({
-		CategoryID: 1,
+		CategoryID: null,
 		Description: "",
 		Name: "",
 	});
@@ -282,7 +455,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 						icon={<CreationSuccessIcon />}
 						navigationText="Go back to Dashboard"
 						hasCancel={true}
-						navigationFunction={() => router.push("/fme/course-list")}
+						navigationFunction={() => router.push("/fme")}
 					/>
 				</FlexAbsoluteModalStyles>
 			)}

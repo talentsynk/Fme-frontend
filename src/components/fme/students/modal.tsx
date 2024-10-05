@@ -275,6 +275,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	const [state, setState] = useState("");
 	const [stateOfOrigin, setStateOfOrigin] = useState("");
 	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
+	// const [stateOfResidence, setStateOfResidence] = useState("");
+	// const [statesOfResidence, setStatesOfResidence] = useState(States);
 	const [states, setStates] = useState(States);
 	const NaijaStates = require('naija-state-local-government');
 	const [lgas, setLgas] = useState([]);
@@ -338,11 +340,11 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		
 	};
 	useEffect(() => {
-		if (stateOfOrigin) {
-		  const newLgas = NaijaStates.lgas(stateOfOrigin).lgas;
+		if (state) {
+		  const newLgas = NaijaStates.lgas(state).lgas;
 		  setLgas(newLgas);
 		}
-	  }, [stateOfOrigin]);
+	  }, [state]);
 
 	// login button loader state
 	const [isLoading, setIsLoading] = useState(false);
@@ -860,6 +862,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
 export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	const [showSuspendModal, setShowSuspendModal] = useState(false);
+	const [showGraduateModal, setShowGraduateModal] = useState(false);
 	const [showActiveModal, setShowActivateModal] = useState(false);
 	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
 
@@ -911,13 +914,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 									</div>
 									<CopyIcon text={studentDetails.PhoneNumber} />
 								</div>
-								{/* <div className="dx">
-									<div className="name">
-										<span>Student Address</span>
-										<p className="nm">1, Ajanaku street, Agege, Lagos State.</p>
-									</div>
-									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
-								</div> */}
+								
 								<div className="dx">
 									<div className="name">
 										<span>State of Residence</span>
@@ -932,13 +929,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 									</div>
 									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
 								</div>
-								{/* <div className="dx">
-									<div className="name">
-										<span>Student Certificate</span>
-										<p className="nm">{studentDetails.profile} PDF.pdf</p>
-									</div>
-									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
-								</div> */}
+								
 								<div className="dx">
 									<div className="name">
 										<span>Status</span>
@@ -963,10 +954,23 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 								)}
 							</div>
 						</div>
+						<div className="r-3">
+							<h4>Graduate Student</h4>
+							<div className="btnn">
+								
+									<button type="button" className="" onClick={() => setShowGraduateModal(true)}>
+										<SuspendIcon />
+										<p>Graduate Student</p>
+									</button>
+							
+								
+							</div>
+						</div>
 					</div>
 				</MDADetailStyle>
 			)}
 			{showSuspendModal && <SuspendStudentComp handleModalAction={cancelModal} cancelModal={() => setShowSuspendModal(false)} />}
+			{showGraduateModal && <GraduateStudentComp handleModalAction={cancelModal} cancelModal={() => setShowGraduateModal(false)} />}
 			{showActiveModal && <ReactivateStudentComp handleModalAction={cancelModal} cancelModal={() => setShowActivateModal(false)} />}
 		</>
 	);
@@ -981,6 +985,7 @@ interface ITwoActions {
 	handleModAction?:()=>void;
 	JobId?:any;
 	ApplicationId?:any;
+	role?:string;
 }
 
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
@@ -1089,6 +1094,120 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 							})
 						}
 						head="Failed to suspend Student !"
+						msg={msgError.text}
+						navigationFunction={cancelModal}
+						navigationText="Go back to Dashboard"
+						hasCancel={true}
+					/>
+				)}
+			</FlexAbsoluteModalStyles>
+		</>
+	);
+};
+export const GraduateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
+	const dispatch = useAppDispatch();
+	const suspend = async () => {
+		const token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
+		if (userId) {
+			try {
+				setIsLoading(true);
+				const { data } = await axios.get(`${BACKEND_URL}/student/graduate-student/${userId}`, config);
+				console.log(data)
+				setIsSuccess(true);
+				// if (data) {
+				// 	if (unchangedStudentsList !== null) {
+				// 		const newMdalist = unchangedStudentsList.map((ele) => {
+				// 			return {
+				// 				...ele,
+				// 				is_active: ele.ID === selectedStudentId ? false : ele.IsActive,
+				// 			};
+				// 		});
+				// 		setIsLoading(false);
+				// 		// why does this state not update Immediately on the UI?
+				// 		dispatch(setUnchangedStudentsList(newMdalist));
+				
+				// 	}
+				// }
+			} catch (error: any) {
+				setIsLoading(false);
+				if (error.response) {
+					// if the server responds with an error msg
+					setMsgError({
+						active: true,
+						text: error.response.data.message,
+					});
+					// error.response.data.message
+				} else {
+					setMsgError({
+						active: true,
+						text: error.message,
+					});
+				}
+			}
+		}
+	};
+	const router = useRouter();
+	return (
+		<>
+			<FlexAbsoluteModalStyles>
+				{!isSuccess && !msgError.active && (
+					<TwoButtonModalStyles>
+						<div className="pop">
+							<div className="up">
+								<div className="x" onClick={cancelModal}>
+									{" "}
+									<ErrorIconWrapper>
+										<ErrorAlertIcon />
+									</ErrorIconWrapper>
+									<XIcon />
+								</div>
+								<h4>Graduate Student?</h4>
+								<p>Are you sure you want to graduate this Student? He will now  be graduated and  able to proceed with job applications.</p>
+							</div>
+							<div className="down">
+								<button type="button" onClick={cancelModal} className="cancel">
+									Cancel
+								</button>
+								<button type="button" onClick={suspend}>
+									{isLoading ? <ButtonLoader /> : "Graduate Student"}
+								</button>
+							</div>
+						</div>
+					</TwoButtonModalStyles>
+				)}
+				{isSuccess && (
+					<SuccessModal
+						head="Student has been successfully graduated !"
+						msg="Student has been successfully graduated !. Have a lovely day!"
+						cancelModal={cancelModal}
+						hasCancel={true}
+						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
+						navigationText="Go back to Dashboard"
+					/>
+				)}
+				{msgError.active && (
+					<FailureModal
+						cancelModal={() =>
+							setMsgError({
+								active: false,
+								text: "",
+							})
+						}
+						head="Failed to graduate Student !"
 						msg={msgError.text}
 						navigationFunction={cancelModal}
 						navigationText="Go back to Dashboard"
@@ -1676,6 +1795,162 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({ cancelModal, handl
 		</FlexAbsoluteModalStyles>
 	);
 };
+export const DownloadDataComp: React.FC<ITwoActions> = ({ cancelModal, handleModAction, artisanId,JobId,role }) => {
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msgError, setMsgError] = useState<Ierror>({
+		active: false,
+		text: "",
+	});
+
+	const token = Cookies.get('token'); 
+
+	const router = useRouter();
+
+	// const hireArtisan = async () => {
+	// 	setIsLoading(true);
+	// 	try {
+	// 		const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
+	// 		const response = await axios.post(
+	// 			"https://fme-backend-version-1.onrender.com/job/hire",
+	// 			{
+	// 				JobId: 2, // Replace with the actual JobId
+	// 				ArtisanId: artisanId,
+	// 			},
+	// 			{
+	// 				headers: {
+	// 					Authorization: `Bearer ${token}`,
+	// 				},
+	// 			}
+	// 		);
+	// 		console.log(response)
+	// 		if (response.status === 200) {
+	// 			setIsSuccess(true);
+	// 		} else {
+	// 			setMsgError({
+	// 				active: true,
+	// 				text: "Failed to hire the artisan. Please try again.",
+	// 			});
+	// 		}
+	// 	} catch (error) {
+	// 		setMsgError({
+	// 			active: true,
+	// 			text: error?.response?.data?.message || "An error occurred. Please try again.",
+	// 		});
+	// 	} finally {
+	// 		setIsLoading(false);
+	// 	}
+	// };
+	const hireArtisan = async () => {
+		setIsLoading(true);
+		
+		const apiEndpoint =
+		 role === "FME"
+  ? `https://fme-backend-version-1.onrender.com/student/download-csv`  // API for FME
+  : role === "MDA"
+  ? `https://fme-backend-version-1.onrender.com/student/download-csv`  // API for MDA
+  : role === "STC"
+  ? `https://fme-backend-version-1.onrender.com/student/download-csv`  // API for STC
+  : `https://fme-backend-version-1.onrender.com/student/download-csv`;  // Default API for other roles
+ // Dummy API for artisan
+	
+		  try {
+			const response = await axios({
+			  url: apiEndpoint,
+			  method: 'GET',
+			  responseType: 'blob', // Important to download the file
+			  headers: {
+				Authorization: `Bearer ${token}`,
+			  },
+			});
+	  
+			// Create a blob URL for the downloaded file
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'students.csv'); // Name the file
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
+		  } catch (error) {
+			console.error('Download failed:', error);
+		  } finally {
+			setIsLoading(false); // Stop loading once the download is complete
+		  }
+	};
+	
+
+	return (
+		<FlexAbsoluteModalStyles>
+			{!isSuccess && !msgError.active && (
+				<TwoButtonModalStyles>
+					<div className="pop">
+						<div className="up">
+							<div className="y" onClick={cancelModal}>
+								<ErrorIconWrapper>
+									<ErrorAlertIcon />
+								</ErrorIconWrapper>
+								<XIcon />
+							</div>
+							<h4>
+  Are you sure you want to download this {role === "FME" 
+    ? "FME" 
+    : role === "MDA" 
+    ? "MDA" 
+    : "STC"} profile?
+</h4>
+
+							<p>
+								This would download all the {role === "FME" 
+    ? "FME" 
+    : role === "MDA" 
+    ? "MDA" 
+    : "STC"}  students data.Are you sure you want to take this action?
+							</p>
+						</div>
+						<div className="down">
+							<button type="button" onClick={cancelModal} className="cancel">
+								Cancel
+							</button>
+							<button type="button" onClick={hireArtisan} className="btnn">
+							{isLoading 
+  ? <ButtonLoader /> 
+  : `Download ${role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"}`
+}
+
+							</button>
+						</div>
+					</div>
+				</TwoButtonModalStyles>
+			)}
+			{isSuccess && (
+				<SuccessModal
+					head="Students Data has been successfully downloaded!"
+					msg="The students data have been successfully downloaded"
+					cancelModal={cancelModal}
+					hasCancel={true}
+					navigationFunction={handleModAction ? handleModAction : cancelModal}
+					navigationText="Go back to Dashboard"
+				/>
+			)}
+			{msgError.active && (
+				<FailureModal
+					cancelModal={() =>
+						setMsgError({
+							active: false,
+							text: "",
+						})
+					}
+					head="Failed to hire Artisan!"
+					msg={msgError.text}
+					navigationFunction={cancelModal}
+					navigationText="Go back to Dashboard"
+					hasCancel={true}
+				/>
+			)}
+		</FlexAbsoluteModalStyles>
+	);
+};
 
 export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction,artisanId }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
@@ -1775,6 +2050,7 @@ export const HireArtisanComp: React.FC<ITwoActions> = ({ cancelModal, handleModa
 		</>
 	);
 };
+
 
 export const ReactivateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
