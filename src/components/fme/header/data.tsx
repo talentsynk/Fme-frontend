@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 export interface IDesktopDropdown {
     id: string;
   link: string;
-  text: string;
-  icon: ReactNode;
+  text?: string;
+  icon?: ReactNode;
   activeBg: string;
   activeState: ReactNode;
   textColor: string;
@@ -16,12 +16,12 @@ export interface IDesktopDropdown {
 export interface IDesktopDropdownFunc extends IDesktopDropdown {
   handleClick: () => void;
 }
+// icon: <PfIcon />,
+// text: "View Profile",
 export const DesktopDropdownLinks: IDesktopDropdown[] = [
   {
     id : "1",
     link: "/settings",
-    icon: <PfIcon />,
-    text: "View Profile",
     activeBg: "#00932E",
     textColor: "#111",
     activeState: <ActivePfIcon />,
@@ -44,8 +44,6 @@ export const UserDesktopDropdownLinks: IDesktopDropdown[] = [
   {
     id : "1",
     link: "/dashboard/profile",
-    icon: <PfIcon />,
-    text: "View Profile",
     activeBg: "#00932E",
     textColor: "#111",
     activeState: <ActivePfIcon />,

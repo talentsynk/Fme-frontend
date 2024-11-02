@@ -38,7 +38,7 @@ export const SimilarComp = () => {
     <SimilarEmployerCompStyle
       onClick={() => router.push("/dashboard/artisan/jobs/employer/0")}
     >
-      <div className="img">
+      {/* <div className="img">
         <Image
           src="/images/frame_2.png"
           width={0}
@@ -46,7 +46,7 @@ export const SimilarComp = () => {
           sizes="100%"
           alt="avatar"
         />
-      </div>
+      </div> */}
       <div className="hl">
         <h4>Oragon Confectionaries</h4>
         <VerifiedBadge>
@@ -81,8 +81,8 @@ export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessNam
           sizes="100%"
           alt="avatar"
         /> */}
-        <p className=" font-bold ">{BusinessName.slice(0, 2).toUpperCase()}</p>
-        {/* <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{FirstName[0]}{LastName[0]}</p> */}
+        {/* <p className=" font-bold ">{FirstName[0].toUpperCase}{LastName[0].toUpperCase}</p> */}
+        <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{FirstName?.[0]} {LastName?.[0]}</p>
       </div>
       <div className="hl">
         <h4>{BusinessName}</h4>

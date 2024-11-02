@@ -1021,6 +1021,9 @@ export const TwoButtonModalStyles = styled.div`
     .btnn{
       background:#00932E
     }
+    #btnn{
+      background:#00932E
+    }
     .downn{
       padding-block:0;
     }

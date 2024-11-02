@@ -1122,10 +1122,10 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handle
 			},
 		};
 		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
-		if (userId) {
+		if (selectedStudentId) {
 			try {
 				setIsLoading(true);
-				const { data } = await axios.get(`${BACKEND_URL}/student/graduate-student/${userId}`, config);
+				const { data } = await axios.get(`${BACKEND_URL}/student/graduate-student/${selectedStudentId}`, config);
 				console.log(data)
 				setIsSuccess(true);
 				// if (data) {
@@ -1182,7 +1182,7 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handle
 								<button type="button" onClick={cancelModal} className="cancel">
 									Cancel
 								</button>
-								<button type="button" onClick={suspend}>
+								<button type="button" className="btnn" id="btnn" onClick={suspend}>
 									{isLoading ? <ButtonLoader /> : "Graduate Student"}
 								</button>
 							</div>

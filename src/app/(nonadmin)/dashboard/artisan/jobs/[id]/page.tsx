@@ -26,6 +26,7 @@ interface ISimilarJobs{
 }
 
 "use client";
+import { CompleteJob } from "@/components/landing/faqs/Svgs";
 import { FlexAbsoluteModalStyles } from "@/components/fme/mda/styles";
 import { ReviewModal } from "@/components/artisan/Employer";
 import { JobComp } from "@/components/artisan/Job";
@@ -211,6 +212,12 @@ console.log(data)
     </ul>
               </div>
               </div>
+              <div>
+              {data?.Status=="completed"&&<div onClick={() => setShowReviewModal(true)} className=" flex items-center gap-2">
+                  <CompleteJob />
+                  <p className=""> Rate Employer</p>
+                </div>}
+              
               <div className="cont-two">
                 <div className="gas">
                   <h4>JOB TYPE</h4>
@@ -242,11 +249,11 @@ console.log(data)
                     </TagStyle>
                   </div>
                 </div>
-              {data?.Status=="completed"&&<div className=" bg-[#E7f6EC] rounded-[12px] p-4 space-y-4">
+              {/* {data?.Status=="completed"&&<div className=" bg-[#E7f6EC] rounded-[12px] p-4 space-y-4">
                 <h3 className=" text-[#101928] font-bold ">Review Employer</h3>
                 <p className=" text-sm text-black leading-5 font-normal">Add reviews about the employer services and job delivery to help boost their credential and competence.</p>
                 <button onClick={() => setShowReviewModal(true)}  className=" text-sm text-[#00932E] leading-5 font-bold">Write a Review</button>
-              </div>}
+              </div>} */}
               {showReviewModal && (
         <FlexAbsoluteModalStyles>
           <ReviewModal
@@ -257,6 +264,7 @@ console.log(data)
           />
         </FlexAbsoluteModalStyles>
       )}
+              </div>
               </div>
             </div>
             <div className=" flex gap-4">

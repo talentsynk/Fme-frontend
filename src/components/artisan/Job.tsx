@@ -56,6 +56,7 @@ export const JobComp: React.FC<ISimilarJobs> = ({
 
     return daysAgo;
 };
+console.log(CreatedAt)
 const lol= getDaysAgo(CreatedAt)
   return (
     <JobCompStyles>

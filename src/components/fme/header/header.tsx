@@ -333,10 +333,10 @@ const [data,setData]=useState<IData|null>(null)
       <div className="desktop-menu desktop" onClick={handleDropdown}>
         <div className="one">
           <div className="circle">
-          <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{data?.FirstName[0]}{data?.LastName[0]}</p>
+          <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{data?.FirstName.toUpperCase()?.[0]}{data?.LastName.toUpperCase()?.[0]}</p>
           </div>
           <div className="text">
-            <h3> {data?.FirstName} {data?.LastName}</h3>
+            <h3> {data?.FirstName.toUpperCase()} {data?.LastName.toLocaleUpperCase()}</h3>
             <p>{data?.Email}</p>
           </div>
         </div>

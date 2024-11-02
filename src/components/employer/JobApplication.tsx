@@ -31,7 +31,7 @@ interface IJob{
   
 }
 
-const JobApplication:React.FC<IJob> = ({BusinessName,BusinessDescription,ApplicationStatus,JobApplicationDate,ArtisanId,JobId,ApplicationId}) => {
+const JobApplication:React.FC<IJob> = ({BusinessName,FirstName,LastName,BusinessDescription,ApplicationStatus,JobApplicationDate,ArtisanId,JobId,ApplicationId}) => {
   const [data,setData]= useState<IArtisan|null>(null)
 
   const getTimeDifferenceInDays = (jobApplicationDate: string): number => {
@@ -96,7 +96,7 @@ const JobApplication:React.FC<IJob> = ({BusinessName,BusinessDescription,Applica
     {/* Business Name and Application Status */}
     <div className="flex justify-between">
       <h5 className="text-lg font-bold leading-6 text-black">
-        {BusinessName}
+        {FirstName} {LastName}
       </h5>
       <div className="rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center">
         <SmallVerified />

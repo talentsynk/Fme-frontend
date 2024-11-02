@@ -10,6 +10,7 @@ import {
 	TableStyles,
 	SortOptionsStyle,
 } from "@/components/fme/mda/styles";
+import { NoDataStyles } from "@/components/fme/mda/styles";
 import Papa from 'papaparse';
 import { AngleDownStyles } from "@/components/icons/header";
 import { ColoredArrowDown } from "@/components/icons/fme/main";
@@ -160,7 +161,7 @@ export default function Home() {
 					.then((res) => {
 						const inactiveStudents = res.data;
 
-						const totalActive = activeStudents.students.length;
+						const totalActive = activeStudents?.students !== null ? activeStudents?.students.length : 0;
 						const totalInactive = inactiveStudents?.students !== null ? inactiveStudents?.students.length : 0;
 						const totalStudents = totalActive + totalInactive;
 
@@ -385,7 +386,7 @@ const handleJobDownload = async () => {
 
     try {
       const response = await axios({
-        url: 'https://fme-backend-version-1.onrender.com/student/download-csv',
+        url: 'https://fme-backend-version-1.onrender.com/artisan/download-data',
         method: 'GET',
         responseType: 'blob', // Important to download the file
         headers: {
@@ -460,44 +461,45 @@ const handleJobDownload = async () => {
                   <WhiteDown />
 				  </AngleDownStyles>
 					</button>
-					{showDownloadDropdown && (
-        <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+					
+				</div>
+				{showDownloadDropdown && (
+        <div className="absolute mt-32 right-0 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
           <div 
             className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
             onClick={handleDownload}
           >
-            General Information
+            Training Data
           </div>
 		  <div 
             className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
             onClick={handleJobDownload}
           >
-            Job Application Information
+            Marketplace Data
           </div>
         </div>
       )}
-				</div>
 			</TopStyles>
 			<WhiteContainer>
 				<StatListStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Total No of Students</span>
-							<p>{total.totalStudents || <Skeleton />}</p>
+							<p>{total.totalStudents === null ? <Skeleton /> : total.totalStudents}</p>
 						</div>
 						<TotalIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Active Students</span>
-							<p>{total.totalActive || <Skeleton />}</p>
+							<p>{total.totalActive === null ? <Skeleton /> : total.totalActive}</p>
 						</div>
 						<ActiveIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Inactive Students</span>
-							<p>{total.totalInactive || <Skeleton />}</p>
+							<p>{total.totalInactive === null ? <Skeleton /> : total.totalInactive}</p>
 						</div>
 						<InactiveIcon />
 					</StatListItemStyle>
@@ -594,6 +596,11 @@ const handleJobDownload = async () => {
 									{studentsListDuplicate === null && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => <TRSkeleton key={index} />)}
 								</tbody>
 							</TableStyles>
+							{studentsListDuplicate !== null && studentsListDuplicate?.length === 0 && (
+                <NoDataStyles>
+                  <h2>No Data Found</h2>
+                </NoDataStyles>
+              )}
 						</div>
 					</div>
 				</SearchAndResultStyle>

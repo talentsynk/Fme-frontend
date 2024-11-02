@@ -59,6 +59,7 @@ import { Stats,Bigtar } from "@/components/landing/faqs/Svgs";
 import { JobsPostedCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import Recommendations from "@/components/employer/Recommendations";
+import { VerifiedTick } from "@/components/landing/faqs/Svgs";
 
 
 const EmployersProfile = ({ params }: { params: { id: string } }) => {
@@ -146,7 +147,12 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
             <p  className="text-[#00932E] text-[12px] md:text-[16px] font-bold leading-6">View Employer profile</p>
           </div>
         <div className="spiral mb-4 bg-[#00932E] p-4 rounded-lg flex flex-col justify-center items-center gap-4">
-    <Image src="/images/landing/detective.png" width={120} height={120} alt="review " />
+    {/* <Image src="/images/landing/detective.png" width={120} height={120} alt="review " /> */}
+    <div className="relative flex justify-center items-center w-10 h-10 rounded-[50%] bg-[#E7F6EC] ">
+                                    {/* <p>{fullName.slice(0, 2).toUpperCase()}</p> */}
+                                    <p className="font-semibold text-[16px] leading-[24px] text-[#101928]">{savedData?.FirstName[0]}{savedData?.LastName[0]}</p>
+                <VerifiedTick />
+        </div>
     <h4 className=" text-white font-bold text-lg">{savedData?.FirstName} {savedData?.LastName}</h4>
     <div className=" rounded-[5px] bg-[#E4F5EA] w-[82px] h-[26px] flex gap-1 justify-center items-center"><SmallVerified /><p className=" text-[12px] text-[#00932E]  font-medium">Verified</p></div>
   </div>

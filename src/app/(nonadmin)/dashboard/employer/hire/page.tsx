@@ -165,7 +165,7 @@ const HireArtisan = () => {
   const filteredJobs = data?.filter((job) =>
     job.BusinessName.toLowerCase().includes(query.toLowerCase())
   );
-  // console.log(filteredJobs)
+  console.log(filteredJobs)
 
   return (
     <ArtisanJobPageStyle>

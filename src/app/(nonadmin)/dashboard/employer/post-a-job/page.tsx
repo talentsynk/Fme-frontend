@@ -194,12 +194,12 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
             <h2 className=" text-[36px] leading-[44px] font-medium">Post a job</h2>
         </div>
         <section className=" flex flex-col-reverse md:flex-row gap-4 md:gap-8">
-          <div className="bg-[#00932E] h-[490px] rounded-[10px] px-4 pt-6 relative">
+          <div className="bg-[#00932E] spiral h-[690px] rounded-[10px] px-4 pt-6 relative">
             <h3 className="text-center md:text-[24px] text-[18px] font-bold leading-[32px] text-white">Post your job on N.A.S.I.C seamlessly</h3>
             <p className="text-center  md:text-[14px] text-[12px] font-medium leading-[20px] text-white">Check “   ” all the boxes to stand out in the market with your profile</p>
             <div className="h-[50px] absolute right-6 top-[25%] flex justify-center items-center w-[50px] rounded-[50%] bg-white"><HandMoney /></div>
             <div className="h-[50px] absolute left-8 top-[35%] flex justify-center items-center w-[50px] rounded-[50%] bg-white"><Bag /></div>
-            <Image src="/images/landing/post-a-job.png"  alt=" Post a job" width={400} height={490} />
+            <Image src="/images/landing/post-a-job.png"  alt=" Post a job" width={400} height={690} />
           </div>
           <form action="" className=" flex-1">
             <h5 className="text-left text-[18px] md:text-[24px] leading-[32px] text-[#101928] font-bold">Fill in the necessary details</h5>

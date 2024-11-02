@@ -119,7 +119,7 @@ export default function Slug() {
 					<p className=" text-sm text-[#667185] leading-[20px]">Take a look at your policies and see what is covered</p>
 				</div>
 				<div className=" flex  gap-4">
-					<button className=" bg-[#00932E] px-3 py-2 rounded-md flex space-x-2.5">
+					{/* <button className=" bg-[#00932E] px-3 py-2 rounded-md flex space-x-2.5">
 						<svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path
 								fillRule="evenodd"
@@ -133,7 +133,7 @@ export default function Slug() {
 							/>
 						</svg>
 						<span className="font-bold text-white  text-sm">Export CSV</span>
-					</button>
+					</button> */}
 				</div>
 			</div>
 			<GridCard />
