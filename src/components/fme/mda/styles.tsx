@@ -523,6 +523,24 @@ export const MDADetailStyle = styled(AbsoluteContStyle)`
         line-height: 1.25rem; /* 142.857% */
       }
     }
+    .btnn button {
+      background: #00932e;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      gap: 0.625rem;
+      border-radius: 0.375rem;
+      border: 1px solid #00932e;
+      p {
+        color: var(--Neutrals-Colors-100, #fff);
+        text-align: center;
+        font-feature-settings: "cv04" on, "cv01" on, "cv03" on;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.25rem; /* 142.857% */
+      }
+    }
     .btn .reactivate {
       background: #fbeae9;
       border: 1px solid #fbeae9;
@@ -1001,6 +1019,9 @@ export const TwoButtonModalStyles = styled.div`
       line-height: 1.25rem; /* 142.857% */
     }
     .btnn{
+      background:#00932E
+    }
+    #btnn{
       background:#00932E
     }
     .downn{

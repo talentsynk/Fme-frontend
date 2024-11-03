@@ -10,6 +10,7 @@ import {
 	TableStyles,
 	SortOptionsStyle,
 } from "@/components/fme/mda/styles";
+import { NoDataStyles } from "@/components/fme/mda/styles";
 import Papa from 'papaparse';
 import { AngleDownStyles } from "@/components/icons/header";
 import { ColoredArrowDown } from "@/components/icons/fme/main";
@@ -34,6 +35,7 @@ import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
+import { WhiteDown } from "@/components/landing/faqs/Svgs";
 
 export default function Home() {
 	
@@ -159,7 +161,7 @@ export default function Home() {
 					.then((res) => {
 						const inactiveStudents = res.data;
 
-						const totalActive = activeStudents.students.length;
+						const totalActive = activeStudents?.students !== null ? activeStudents?.students.length : 0;
 						const totalInactive = inactiveStudents?.students !== null ? inactiveStudents?.students.length : 0;
 						const totalStudents = totalActive + totalInactive;
 
@@ -375,6 +377,42 @@ const handleDownload = async () => {
       setLoading(false); // Stop loading once the download is complete
     }
   };
+  const [jobLoading,setJobLoading]= useState(false)
+const handleJobDownload = async () => {
+    setJobLoading(true); // Set loading to true while downloading
+
+    // Get the token from cookies
+    const token = Cookies.get('token'); 
+
+    try {
+      const response = await axios({
+        url: 'https://fme-backend-version-1.onrender.com/artisan/download-data',
+        method: 'GET',
+        responseType: 'blob', // Important to download the file
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Create a blob URL for the downloaded file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'students.csv'); // Name the file
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Download failed:', error);
+    } finally {
+		setJobLoading(false); // Stop loading once the download is complete
+    }
+  };
+
+  const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
+  const toggleDownloadDropdown = () => {
+    setShowDownloadDropdown(!showDownloadDropdown);
+  };
 
 	return (
 		<>
@@ -416,32 +454,52 @@ const handleDownload = async () => {
       )}
 	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
       {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
-					<button type="button" className="import" onClick={handleDownload} disabled={loading}>
+					<button type="button" className="import" onClick={toggleDownloadDropdown} disabled={loading}>
 						<UploadIcon />
 						<span>Download</span>
+						<AngleDownStyles $isSelected={showDownloadDropdown}>
+                  <WhiteDown />
+				  </AngleDownStyles>
 					</button>
+					
 				</div>
+				{showDownloadDropdown && (
+        <div className="absolute mt-32 right-0 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+          <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={handleDownload}
+          >
+            Training Data
+          </div>
+		  <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={handleJobDownload}
+          >
+            Marketplace Data
+          </div>
+        </div>
+      )}
 			</TopStyles>
 			<WhiteContainer>
 				<StatListStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Total No of Students</span>
-							<p>{total.totalStudents || <Skeleton />}</p>
+							<p>{total.totalStudents === null ? <Skeleton /> : total.totalStudents}</p>
 						</div>
 						<TotalIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Active Students</span>
-							<p>{total.totalActive || <Skeleton />}</p>
+							<p>{total.totalActive === null ? <Skeleton /> : total.totalActive}</p>
 						</div>
 						<ActiveIcon />
 					</StatListItemStyle>
 					<StatListItemStyle>
 						<div className="stat">
 							<span>Inactive Students</span>
-							<p>{total.totalInactive || <Skeleton />}</p>
+							<p>{total.totalInactive === null ? <Skeleton /> : total.totalInactive}</p>
 						</div>
 						<InactiveIcon />
 					</StatListItemStyle>
@@ -538,6 +596,11 @@ const handleDownload = async () => {
 									{studentsListDuplicate === null && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => <TRSkeleton key={index} />)}
 								</tbody>
 							</TableStyles>
+							{studentsListDuplicate !== null && studentsListDuplicate?.length === 0 && (
+                <NoDataStyles>
+                  <h2>No Data Found</h2>
+                </NoDataStyles>
+              )}
 						</div>
 					</div>
 				</SearchAndResultStyle>

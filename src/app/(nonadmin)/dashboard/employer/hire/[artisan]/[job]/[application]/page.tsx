@@ -4,6 +4,8 @@ interface IArtisan{
   BusinessName:string;
   ID:number;
   Skill:string;
+  FirstName:string;
+  LastName:string;
 }
 interface IStats{
   rating:any;
@@ -67,6 +69,10 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
   const lol=params.artisan
   const lols=params.job
   const lolz=params.application
+  //empty business name for artisans
+  //student datta should be empty array not null
+  //to hiire a professional direct, the hire professional endpoint requires a job id
+  //the images of the similar artisans when goin through the hire artisan should not be that wite guy
   console.log(lol,lols,lolz)
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
@@ -163,16 +169,18 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
             <p className="activ">View Professionals Profile</p>
           </div>
           <EmployerBannerStyle>
-            <div className="img">
-              <Image
+            <div className="relative flex justify-center items-center w-10 h-10 rounded-[50%] bg-[rgba(52,202,165,0.1)]">
+              {/* <Image
                 src="/images/frame_2.png"
                 width={120}
                 height={120}
                 alt="avatar"
-              />
+              /> */}
+              <p>{data?.BusinessName.slice(0, 2).toUpperCase()}</p>
+              <p>{data?.FirstName[0]}{data?.LastName[0]}</p>
             </div>
             <div className="one">
-              <h2> {data?.BusinessName}</h2>
+              <h2> {data?.FirstName}{data?.LastName}</h2>
             </div>
             <VerifiedBadge>
               <GreenTick />
@@ -263,10 +271,10 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
                     <h4>Recommendations</h4>
                     <p>{stats?.total_job_recommendations}</p>
                   </div>
-                  <div className="fr">
+                  {/* <div className="fr">
                     <h4>Location</h4>
                     <p>Lagos</p>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex gap-2 pt-8 justify-center">
                     <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5]  md:h-[48px] w-[50%] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Professional</p></button>
@@ -283,14 +291,14 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
               </div>
             </div>
           </div>
-          <div className="similar">
+          {/* <div className="similar">
             <h3 className="head">Similar Professionals</h3>
             <SimilarCompGridList>
               {[1, 2, 3].map((ele, index) => (
                 <SimilarComp key={index} />
               ))}
             </SimilarCompGridList>
-          </div>
+          </div> */}
         </div>
       </PaddedSectionStyles>
       {showReviewModal && (

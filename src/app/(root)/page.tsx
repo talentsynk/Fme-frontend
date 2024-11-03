@@ -30,13 +30,13 @@ export default function Home() {
           <button onClick={() => router.push("/auth/signup")} className="w-fit box-border rounded-md py-4 px-6 border-2 border-[#00932E] bg-[#00932E] text-white font-bold transition duration-700 ease-in-out  hover:text-[#00932E] hover:bg-white  hover:border-[#00932E] hover:border-[1px] hover:border-solid">
   Get started today!
 </button>
-<div className=" absolute right-[12%] top-[30%]">
+<div className=" absolute right-[7%] top-[30%]">
 <HandMoney />
 </div>
 <div className=" absolute left-[2%] w-8 h-8 bottom-[40%]">
 <GGreenBag />
 </div>
-<div className=" absolute left-[15%]">
+<div className=" absolute left-[8%]">
   <Image src="/images/landing/Ellipse 15.png" alt="" width={32} height={32} />
 </div>
 

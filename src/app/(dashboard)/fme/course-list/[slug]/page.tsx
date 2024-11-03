@@ -12,15 +12,32 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { CourseGraphOptions } from "@/components/fme/index/data";
 
 interface ICourse {
-	Id: number;
-	TotalStudents: number;
-	TotalMda: number;
-	TotalStc: number;
-	Description: string;
-	Name: string;
+	course_id: number;
+	total_students: number;
+	unique_mda_count: number;
+	unique_stc_count: number;
+	graduated_count: number;
+	course_name: string;
 }
 
 export default function Slug() {
+	useEffect(() => {
+		const token = Cookies.get("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		// test api call
+		// setIsLoading(true);
+		axios
+			.get(`${BACKEND_URL}/course/1/top-5-mda`, config)
+			.then((res) => {
+				const data=res.data
+				console.log(data)
+			})
+			.catch((error) => console.log(error));
+	});
 	//the unique page for each courses
 	const searchParams = useSearchParams();
 
@@ -40,17 +57,18 @@ export default function Slug() {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/course/${courseID}`, config)
+			.get(`${BACKEND_URL}/course/details/${courseID}`, config)
 			.then((res) => {
-				const data = res.data.course;
+				const data = res.data;
 				setCourse(data);
 				console.log(data);
 				console.log(Course);
+			
 			})
 			.catch((error) => console.log(error));
 	}, []);
 
-	console.log(Course);
+	// console.log(Course);
 
 	const GridCard = () => {
 		
@@ -64,7 +82,7 @@ export default function Slug() {
 							<div className="">
 								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Students</p>
 								<p className=" text-lg font-semibold text-[#344054] leading-6">
-									{Course?.TotalStudents !== undefined ? Course?.TotalStudents : <Skeleton />}
+									{Course?.total_students !== undefined ? Course?.total_students : <Skeleton />}
 								</p>
 							</div>
 							<TotalStudent />
@@ -72,7 +90,7 @@ export default function Slug() {
 						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#7168C8] bg-[#F5F4FF]">
 							<div className="">
 								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of MDAs</p>
-								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalMda !== undefined ? Course?.TotalMda : <Skeleton />}</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.unique_mda_count !== undefined ? Course?.unique_mda_count : <Skeleton />}</p>
 							</div>
 							<CertifiedStudent />
 						</div>
@@ -81,14 +99,14 @@ export default function Slug() {
 						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[63%] rounded-[10px] border border-[#81A2F4] bg-[#F1F5FF]">
 							<div className="">
 								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of STCs</p>
-								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.TotalStc !== undefined ? Course?.TotalStc : <Skeleton />}</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.unique_stc_count !== undefined ? Course?.unique_stc_count : <Skeleton />}</p>
 							</div>
 							<MDA />
 						</div>
 						<div className="h-[106px]  flex items-center justify-between p-4 gap-4 w-[33%] rounded-[10px] border border-[#E3C54D] bg-[#FFFBEB]">
 							<div className="">
 								<p className=" text-[12px] font-semibold text-[#475467] leading-[145%]">Total Number of Certified Students</p>
-								<p className=" text-lg font-semibold text-[#344054] leading-6">3</p>
+								<p className=" text-lg font-semibold text-[#344054] leading-6">{Course?.graduated_count==null? <Skeleton />:Course?.graduated_count}</p>
 							</div>
 							<STC />
 						</div>
@@ -115,11 +133,11 @@ export default function Slug() {
 			</div>
 			<div className="flex justify-between items-center">
 				<div className="mt-4">
-					<h5 className=" text-2xl font-bold text-[#101928] leading-[32px]">{Course?.Name || <Skeleton />}</h5>
+					<h5 className=" text-2xl font-bold text-[#101928] leading-[32px]">{Course?.course_name==null? <Skeleton />:Course?.course_name}</h5>
 					<p className=" text-sm text-[#667185] leading-[20px]">Take a look at your policies and see what is covered</p>
 				</div>
 				<div className=" flex  gap-4">
-					<button className=" bg-[#00932E] px-3 py-2 rounded-md flex space-x-2.5">
+					{/* <button className=" bg-[#00932E] px-3 py-2 rounded-md flex space-x-2.5">
 						<svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path
 								fillRule="evenodd"
@@ -133,7 +151,7 @@ export default function Slug() {
 							/>
 						</svg>
 						<span className="font-bold text-white  text-sm">Export CSV</span>
-					</button>
+					</button> */}
 				</div>
 			</div>
 			<GridCard />

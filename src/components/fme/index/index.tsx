@@ -175,7 +175,7 @@ export const CourseBarChartComp: React.FC<IBarchartComp> = ({ option, api }) => 
 						<>
 							<div className="label">
 								<div className="box"></div>
-								<p>Top 6 {option}</p>
+								<p>Top {option}</p>
 							</div>
 							<ResponsiveContainer width="100%" height={350}>
 								<BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>

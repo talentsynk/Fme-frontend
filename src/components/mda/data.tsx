@@ -48,14 +48,6 @@ export const MDAPageLinks: ILinkFunc[] = [
     activeState: <ActiveCourseList />,
   },
   {
-    href: "/settings",
-    icon: <SettingsIcon />,
-    isSelected: false,
-    id: "6",
-    name: "Settings",
-    activeState: <ActiveSettingsIcon />,
-  },
-  {
     href: "/support",
     icon: <SupportIcon />,
     isSelected: false,

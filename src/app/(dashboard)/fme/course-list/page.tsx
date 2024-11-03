@@ -2,7 +2,7 @@
 interface MyComponentProps {
 	currentItems: number[];
 }
-import { NewMdaModal } from "@/components/fme/course_list/modals";
+import { CategoryModal, NewMdaModal } from "@/components/fme/course_list/modals";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { FormEvent, useEffect, useState } from "react";
@@ -14,6 +14,8 @@ import { Ierror } from "@/app/recovery/page";
 import { CoursesTabSwitches, ICourseData, sortCourseDataAlphabetically } from "@/components/fme/course_list/data";
 import { FilterBtns, SortItemDropdownList } from "@/components/fme/mda/data";
 import { MdaItemComp } from "@/components/fme/mda/mda";
+import { AngleDownStyles } from "@/components/icons/header";
+import { ColoredArrowDown } from "@/components/icons/fme/main";
 import {
 	SearchAndResultStyle,
 	SortOptionsStyle,
@@ -84,6 +86,7 @@ export default function Home() {
 		setItemOffset(newOffset);
 	};
 	const [showNewMdaFormModal, setShowNewMdaFormModal] = useState(false);
+	const [showCategory, setShowCategory] = useState(false);
 	const [query, setQuery] = useState("");
 	const [queryError, setQueryError] = useState<Ierror>({
 		active: false,
@@ -208,16 +211,22 @@ export default function Home() {
 					<p className=" text-sm ">Current Course List</p>
 					{activeDiv === 1 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">{courseListDuplicate?.length}</div>}
 				</div>
-				<div
+				{/* <div
 					className={`flex gap-1 p-4 cursor-pointer ${
 						activeDiv === 2 ? "text-[#00932E] border-b-2 border-b-[#00932E] font-bold" : "text-[#344054] border-inherit"
 					}`}
 					onClick={() => setActiveDiv(2)}>
 					<p className=" text-sm">Analytics of all Course</p>
 					{activeDiv === 2 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">4</div>}
-				</div>
+				</div> */}
 			</div>
 		);
+	};
+
+	const [showDropdown, setShowDropdown] = useState(false);
+
+	const toggleDropdown = () => {
+	setShowDropdown(!showDropdown);
 	};
 
 	return (
@@ -228,14 +237,30 @@ export default function Home() {
 					<p>This shows all the courses that are being offered by STCs </p>
 				</div>
 				<div className="buttons">
-					<button type="button" className="add" onClick={() => setShowNewMdaFormModal(true)}>
+					<button type="button" className="add" onClick={toggleDropdown}>
 						<PlusIcon />
 						<span>Add New Course</span>
+						<AngleDownStyles $isSelected={showDropdown}>
+                  <ColoredArrowDown />
+                </AngleDownStyles>
 					</button>
-					<button type="button" className="import">
-						<UploadIcon />
-						<span>Import CSV</span>
-					</button>
+					
+					{showDropdown && (
+        <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+          <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={() => setShowCategory(true)}
+          >
+            Add New Course Category
+          </div>
+		  <div 
+            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
+            onClick={() => setShowNewMdaFormModal(true)}
+          >
+            Add New Course
+          </div>
+        </div>
+      )}
 				</div>
 			</TopStyles>
 
@@ -306,6 +331,7 @@ export default function Home() {
 				</div>
 			</section>
 			{showNewMdaFormModal && <NewMdaModal cancelModal={() => setShowNewMdaFormModal(false)} />}
+			{showCategory && <CategoryModal cancelModal={() => setShowCategory(false)} />}
 		</section>
 	);
 }

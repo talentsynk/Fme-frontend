@@ -38,7 +38,7 @@ export const SimilarComp = () => {
     <SimilarEmployerCompStyle
       onClick={() => router.push("/dashboard/artisan/jobs/employer/0")}
     >
-      <div className="img">
+      {/* <div className="img">
         <Image
           src="/images/frame_2.png"
           width={0}
@@ -46,7 +46,7 @@ export const SimilarComp = () => {
           sizes="100%"
           alt="avatar"
         />
-      </div>
+      </div> */}
       <div className="hl">
         <h4>Oragon Confectionaries</h4>
         <VerifiedBadge>
@@ -81,8 +81,8 @@ export const SimilarArtisanComp:React.FC<IArtisan> = ({AverageRating,BusinessNam
           sizes="100%"
           alt="avatar"
         /> */}
-        <p className=" font-bold ">{BusinessName.slice(0, 2).toUpperCase()}</p>
-        {/* <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{FirstName[0]}{LastName[0]}</p> */}
+        {/* <p className=" font-bold ">{FirstName[0].toUpperCase}{LastName[0].toUpperCase}</p> */}
+        <p className="font-bold text-[16px] leading-[24px] text-[#101928]">{FirstName?.[0]} {LastName?.[0]}</p>
       </div>
       <div className="hl">
         <h4>{BusinessName}</h4>
@@ -190,83 +190,6 @@ interface IBody {
   rateNo: number;
   comments?: string;
 }
-// export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal,id }) => {
-//   const [comments, setComments] = useState("");
-
-//   const [selectedRating, setSelectedRating] = useState(0);
-//   const handleRating = (index: number) => {
-//     setSelectedRating(index);
-//   };
-//   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-//     setComments(event.target.value); // Update state with the new value
-//   };
-
-//   const handleSubmit = () => {
-//     let body: IBody = {
-//       rateNo: selectedRating,
-//     };
-//     if (comments !== "") {
-//       body["comments"] = comments;
-//     }
-//     console.log(body); // submit to API
-//   };
-
-//   return (
-//     <ReviewModalStyles>
-//       <div className="pop">
-//         <div className="up">
-//           <div className="x" onClick={closeModal}>
-//             {" "}
-//             <XIcon />
-//           </div>
-//           <h4>
-//             {role == "employer" ? "Write a Review" : "Recommend Professional"}
-//           </h4>
-//         </div>
-//         <div className="rate">
-//           {role == "employer" ? (
-//             <p>Rate this {role}</p>
-//           ) : (
-//             <p>Rate this professional’s job delivery</p>
-//           )}
-//           <div className="starlight">
-//             {[1, 2, 3, 4, 5].map((ele, index) => (
-//               <StarComp
-//                 isSelected={ele <= selectedRating}
-//                 handleClick={() => handleRating(ele)}
-//                 key={index}
-//               />
-//             ))}
-//           </div>
-//         </div>
-//         <div className="comments">
-//           <p>
-//             Any additional reviews about the{" "}
-//             {role == "artisan" ? "Professional" : role}?
-//           </p>
-//           <div className="text">
-//             <textarea
-//               name="comments"
-//               value={comments}
-//               onChange={handleChange}
-//               cols={30}
-//               rows={10}
-//             ></textarea>
-//           </div>
-//         </div>
-//         <div className="down">
-//           <button
-//             type="button"
-//             onClick={handleSubmit}
-//             disabled={selectedRating == 0}
-//           >
-//             {role == "employer" ? "Send Review" : "Send Recommendation"}
-//           </button>
-//         </div>
-//       </div>
-//     </ReviewModalStyles>
-//   );
-// };
 
 export const ReviewModal: React.FC<IReviewModal> = ({ role, closeModal, id }) => {
   const [comments, setComments] = useState("");

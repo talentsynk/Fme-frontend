@@ -160,13 +160,14 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
             <p className="activ">View Professionals Profile</p>
           </div>
           <EmployerBannerStyle>
-            <div className="img">
-              <Image
+            <div className="relative flex justify-center items-center w-10 h-10 rounded-[50%] bg-[rgba(52,202,165,0.1)]">
+              {/* <Image
                 src="/images/frame_2.png"
                 width={120}
                 height={120}
                 alt="avatar"
-              />
+              /> */}
+              <p>{data?.BusinessName.slice(0, 2).toUpperCase()}</p>
             </div>
             <div className="one">
               <h2> {data?.BusinessName}</h2>
@@ -260,18 +261,18 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                     <h4>Recommendations</h4>
                     <p>{stats?.total_job_recommendations}</p>
                   </div>
-                  <div className="fr">
+                  {/* <div className="fr">
                     <h4>Location</h4>
                     <p>Lagos</p>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="flex gap-2 pt-8 justify-center">
+                {/* <div className="flex gap-2 pt-8 justify-center">
                     <button onClick={() => setShowSuspendModal(true)} className="rounded-md text-sm gap-2 font-bold text-[#FA0000]  bg-[#FFE5E5] md:w-[200px] md:h-[48px] w-[160px] h-[40px] flex justify-center items-center"><SmallRedIcon /> <p className="">Decline Artisan</p></button>
     <button onClick={() => setShowHireSelectModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Select Professional</p><AirplaneIcon /></button>
-                </div>
+                </div> */}
                 <div className=" flex gap-1">
-    <button onClick={() => setShowHireProfessionalModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Hire Professional</p><AirplaneIcon /></button>
-                    <div onClick={() => setShowHireArtisanModal(true)} className=" flex justify-center items-center w-12 h-12 rounded-[12px] bg-[#E7F6EC] "><ContactCard /></div>
+    <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Contact Professional</p><AirplaneIcon /></button>
+                    {/* <div onClick={() => setShowHireArtisanModal(true)} className=" flex justify-center items-center w-12 h-12 rounded-[12px] bg-[#E7F6EC] "><ContactCard /></div> */}
                 </div>
                 {showHireSelectModal && <SelectArtisanComp handleModAction={handleSelectAction} cancelModal={() => setShowHireSelectModal(false)} />}
                 {showSuspendModal && <CloseHireArtisanComp handleModAction={handleModAction} cancelModal={() => setShowSuspendModal(false)} />}
@@ -280,14 +281,14 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
               </div>
             </div>
           </div>
-          <div className="similar">
+          {/* <div className="similar">
             <h3 className="head">Similar Professionals</h3>
             <SimilarCompGridList>
               {[1, 2, 3].map((ele, index) => (
                 <SimilarComp key={index} />
               ))}
             </SimilarCompGridList>
-          </div>
+          </div> */}
         </div>
       </PaddedSectionStyles>
       {showReviewModal && (

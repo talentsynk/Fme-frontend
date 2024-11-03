@@ -199,14 +199,14 @@ export default function Home() {
 					<p className=" text-sm ">Current Course List</p>
 					{activeDiv === 1 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">{courseListDuplicate?.length}</div>}
 				</div>
-				<div
+				{/* <div
 					className={`flex gap-1 p-4 cursor-pointer ${
 						activeDiv === 2 ? "text-[#00932E] border-b-2 border-b-[#00932E] font-bold" : "text-[#344054] border-inherit"
 					}`}
 					onClick={() => setActiveDiv(2)}>
 					<p className=" text-sm">Analytics of all Course</p>
 					{activeDiv === 2 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">4</div>}
-				</div>
+				</div> */}
 			</div>
 		);
 	};
@@ -223,10 +223,7 @@ export default function Home() {
 						<PlusIcon />
 						<span>Add New Course</span>
 					</button>
-					<button type="button" className="import">
-						<UploadIcon />
-						<span>Import CSV</span>
-					</button>
+					
 				</div>
 			</TopStyles>
 

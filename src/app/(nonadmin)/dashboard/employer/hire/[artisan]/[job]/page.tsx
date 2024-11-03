@@ -282,14 +282,14 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string 
               </div>
             </div>
           </div>
-          <div className="similar">
+          {/* <div className="similar">
             <h3 className="head">Similar Professionals</h3>
             <SimilarCompGridList>
               {[1, 2, 3].map((ele, index) => (
                 <SimilarComp key={index} />
               ))}
             </SimilarCompGridList>
-          </div>
+          </div> */}
         </div>
       </PaddedSectionStyles>
       {showReviewModal && (
