@@ -1,3 +1,4 @@
+"use client"
 export const CourseItems = [
   { name: "Carpentry", percent: 55 },
   { name: "Fashion Design", percent: 75 },
@@ -64,12 +65,7 @@ export const GraphOptions:IGraphOption[] = [
 ]
 
 export const CourseGraphPlots: IGraphplots[] = [
-	{ name: "MA", students: 135 },
-	{ name: "ME", students: 100 },
-	{ name: "EL", students: 90 },
-	{ name: "IN", students: 55 },
-	{ name: "SU", students: 35 },
-	{ name: "HU", students: 25 },
+	{ name: "Ministry of Art, Culture and Creative Economy", students: 1 }
 ];
 
 export const CourseGraphOptions: IGraphOption[] = [
