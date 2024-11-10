@@ -47,6 +47,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { Paginator } from "@/components/fme/paginator/Paginator";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 export default function Home() {
   const [showCancel, setShowCancel] = useState(false);
@@ -307,17 +308,17 @@ export default function Home() {
   }, []);
 
   const [loading, setLoading] = useState(false);
-const handleDownload = async () => {
+  const handleDownload = async () => {
     setLoading(true); // Set loading to true while downloading
 
     // Get the token from cookies
-    const token = Cookies.get('token'); 
+    const token = Cookies.get("token");
 
     try {
       const response = await axios({
-        url: 'https://fme-backend-version-1.onrender.com/mda/download-csv',
-        method: 'GET',
-        responseType: 'blob', // Important to download the file
+        url: "https://fme-backend-version-1.onrender.com/mda/download-csv",
+        method: "GET",
+        responseType: "blob", // Important to download the file
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -325,14 +326,14 @@ const handleDownload = async () => {
 
       // Create a blob URL for the downloaded file
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'students.csv'); // Name the file
+      link.setAttribute("download", "students.csv"); // Name the file
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (error) {
-      console.error('Download failed:', error);
+      console.error("Download failed:", error);
     } finally {
       setLoading(false); // Stop loading once the download is complete
     }
@@ -354,9 +355,14 @@ const handleDownload = async () => {
             <PlusIcon />
             <span>Add New Mda</span>
           </button>
-          <button type="button" className="import" onClick={handleDownload} disabled={loading}>
+          <button
+            type="button"
+            className="import"
+            onClick={handleDownload}
+            disabled={loading}
+          >
             <UploadIcon />
-						<span>Download</span>
+            <span>Download</span>
           </button>
         </div>
       </TopStyles>
@@ -419,38 +425,42 @@ const handleDownload = async () => {
                 {queryError.text}
               </p>
             </div>
-            <div className="filsort">
-              {/* filterBtns includes both Sort & Filter */}
-              {filterBtns.map((ele, index) => (
-                <FilterBtnComp
-                  key={index}
-                  icon={ele.icon}
-                  activeIcon={ele.activeIcon}
-                  text={ele.text}
-                  isSelected={ele.isSelected}
-                  handleFilterFunc={() => {}}
-                  handleClick={() => handleClickFilterBtns(ele.text)}
-                />
-              ))}
-              {showSortDropdown && (
-                <SortOptionsStyle>
-                  <div className="options">
-                    {sortItemDropdownList.map((ele, index) => (
-                      <MdaItemComp
-                        key={index}
-                        id={ele.id}
-                        isSelected={ele.isSelected}
-                        text={ele.text}
-                        hasBorder={ele.hasBorder}
-                        handleSelect={() =>
-                          handleSelectSortDropdownItem(ele.id)
-                        }
-                      />
-                    ))}
-                  </div>
-                </SortOptionsStyle>
-              )}
-            </div>
+            <ClickOutsideWrapper
+              onClickOutside={() => setShowSortDropdown(false)}
+            >
+              <div className="filsort">
+                {/* filterBtns includes both Sort & Filter */}
+                {filterBtns.map((ele, index) => (
+                  <FilterBtnComp
+                    key={index}
+                    icon={ele.icon}
+                    activeIcon={ele.activeIcon}
+                    text={ele.text}
+                    isSelected={ele.isSelected}
+                    handleFilterFunc={() => {}}
+                    handleClick={() => handleClickFilterBtns(ele.text)}
+                  />
+                ))}
+                {showSortDropdown && (
+                  <SortOptionsStyle>
+                    <div className="options">
+                      {sortItemDropdownList.map((ele, index) => (
+                        <MdaItemComp
+                          key={index}
+                          id={ele.id}
+                          isSelected={ele.isSelected}
+                          text={ele.text}
+                          hasBorder={ele.hasBorder}
+                          handleSelect={() =>
+                            handleSelectSortDropdownItem(ele.id)
+                          }
+                        />
+                      ))}
+                    </div>
+                  </SortOptionsStyle>
+                )}
+              </div>
+            </ClickOutsideWrapper>
           </div>
           <div className="pad">
             <div className="options">
@@ -519,7 +529,9 @@ const handleDownload = async () => {
         />
       </WhiteContainer>
       {showNewMdaFormModal && (
-        <NewMdaModal cancelModal={() => setShowNewMdaFormModal(false)} />
+        <NewMdaModal
+          cancelModal={() => setShowNewMdaFormModal(false)}
+        />
       )}
     </>
   );

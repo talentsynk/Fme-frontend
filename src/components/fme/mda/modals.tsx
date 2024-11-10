@@ -35,7 +35,7 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
-import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { StatusComp } from "./mda";
 import { Ierror } from "@/app/recovery/page";
@@ -54,6 +54,7 @@ import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -210,11 +211,13 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   };
 
   const router = useRouter();
+ 
   return (
     <>
       {isSuccess == false && (
         <NewMdaAbsoluteStyles>
           <div className="form">
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
             <NewMdaFormStyles className="bd">
               <div className="fl">
                 <div className="form-head">
@@ -379,6 +382,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 </div>
               </form>
             </NewMdaFormStyles>
+            </ClickOutsideWrapper>
           </div>
         </NewMdaAbsoluteStyles>
       )}
@@ -541,7 +545,7 @@ interface ITwoActions {
 
 export const SuspendMdaComp: React.FC<ITwoActions> = ({
   handleModalAction,
-  cancelModal,
+  cancelModal
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -600,11 +604,13 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
     }
   };
   const router = useRouter();
+ 
   return (
     <>
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
             <div className="pop">
               <div className="up">
                 <div className="x" onClick={cancelModal}>
@@ -629,9 +635,11 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
                 </button>
               </div>
             </div>
+        </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
+          
           <SuccessModal
             head="MDA has been successfully suspended !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
@@ -643,6 +651,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
             }
             // navigationFunction={() => router.push("/fme")}
           />
+          
         )}
         {msgError.active && (
           <FailureModal
@@ -729,6 +738,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
             <div className="pop">
               <div className="up">
                 <div className="x" onClick={cancelModal}>
@@ -753,6 +763,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
                 </button>
               </div>
             </div>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -809,6 +820,7 @@ export const SuccessModal: React.FC<IMessageModal> = ({
   const router = useRouter();
   return (
     <OneButtonModalStyles>
+      <ClickOutsideWrapper onClickOutside={cancelModal}>
       <div className="pop">
         <div className="up">
           {hasCancel && (
@@ -827,6 +839,7 @@ export const SuccessModal: React.FC<IMessageModal> = ({
           </button>
         </div>
       </div>
+      </ClickOutsideWrapper>
     </OneButtonModalStyles>
   );
 };
@@ -842,6 +855,7 @@ export const FailureModal: React.FC<IMessageModal> = ({
   const router = useRouter();
   return (
     <OneButtonModalStyles $isError={true}>
+      <ClickOutsideWrapper onClickOutside={cancelModal}>
       <div className="pop">
         <div className="up">
           {hasCancel && (
@@ -862,6 +876,7 @@ export const FailureModal: React.FC<IMessageModal> = ({
           </button>
         </div>
       </div>
+      </ClickOutsideWrapper>
     </OneButtonModalStyles>
   );
 };

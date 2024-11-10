@@ -16,6 +16,7 @@ import { truncateString } from "@/utils/truncateString";
 import { ISTCCompData } from "@/types/Stc";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 
 export const STCTableRow: React.FC<ISTCCompData> = ({
@@ -48,16 +49,14 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
     }else if(action === "Re-activate STC"){
       setShowActivateModal(true);
     }
+    setShowDropdown(false);
   };
   const { selectedStcId } = useAppSelector(fmeSelector);
   // set dispatch
   const dispatch = useAppDispatch();
   const handleSelectOptions = () => {
-    setShowDropdown(!showDropdown);
-    if (selectedStcId === id) {
-      dispatch(setSelectedStcId(null));
-    } else {
-      // set selected Mda id in redux here
+    setShowDropdown(true);
+    if (!(selectedStcId === id)) {
       dispatch(setSelectedStcId(id));
     }
     // reset the dropdown state
@@ -83,13 +82,14 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
       <td>
         <p>{state && state.toUpperCase()} STATE</p>
       </td>
-      <td className="drop">
+      <td className="drop"> 
         <StatusComp $isActive={isActive} />
+        <ClickOutsideWrapper onClickOutside={() => setShowDropdown(false)}>
         <TableDropdownStyles>
           <div className="head" onClick={handleSelectOptions}>
             <ThreedotsIcon />
           </div>
-          {selectedStcId === id  && (
+          {selectedStcId === id  && showDropdown && (
             <DropdownOptionsStyle>
               <div className="options">
                 {stcItemList.map((ele, index) => (
@@ -105,6 +105,7 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
             </DropdownOptionsStyle>
           )}
         </TableDropdownStyles>
+        </ClickOutsideWrapper>
         {showDetails && (
           <StcDetailModal cancelModal={() => setShowdetails(false)} />
         )}

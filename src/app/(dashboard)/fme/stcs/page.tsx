@@ -48,6 +48,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { Paginator } from "@/components/fme/paginator/Paginator";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 // the first page on the fme dashboard
 
@@ -408,6 +409,9 @@ export default function Home() {
                 {queryError.text}
               </p>
             </div>
+            <ClickOutsideWrapper
+              onClickOutside={() => setShowSortDropdown(false)}
+            >
             <div className="filsort">
               {/* filterBtns includes both Sort & Filter */}
               {filterBtns.map((ele, index) => (
@@ -440,6 +444,7 @@ export default function Home() {
                 </SortOptionsStyle>
               )}
             </div>
+            </ClickOutsideWrapper>
           </div>
           <div className="pad">
             <div className="options">

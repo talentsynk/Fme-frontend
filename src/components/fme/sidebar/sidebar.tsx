@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { FlexAbsoluteModalStyles } from "../mda/styles";
 import Cookies from "js-cookie";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface ISidebar {
   uniquePageLinks: ILinkFunc[];
@@ -176,6 +177,7 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
   return (
     <FlexAbsoluteModalStyles>
       <LogoutModalStyles>
+        <ClickOutsideWrapper onClickOutside={cancelLogout}>
         <div className="pop">
           <div className="up">
             <div className="x" onClick={cancelLogout}>
@@ -201,6 +203,7 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
             </button>
           </div>
         </div>
+        </ClickOutsideWrapper>
       </LogoutModalStyles>
     </FlexAbsoluteModalStyles>
   );
