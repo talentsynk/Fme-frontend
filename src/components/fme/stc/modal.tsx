@@ -54,6 +54,7 @@ import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -214,6 +215,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       {isSuccess == false && (
         <NewMdaAbsoluteStyles>
           <div className="form">
+          <ClickOutsideWrapper onClickOutside={cancelModal}>
             <NewMdaFormStyles className="bd">
               <div className="fl">
                 <div className="form-head">
@@ -378,6 +380,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 </div>
               </form>
             </NewMdaFormStyles>
+            </ClickOutsideWrapper>
           </div>
         </NewMdaAbsoluteStyles>
       )}
@@ -619,6 +622,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
             <div className="pop">
               <div className="up">
                 <div className="x" onClick={cancelModal}>
@@ -643,6 +647,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
                 </button>
               </div>
             </div>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -745,6 +750,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
             <div className="pop">
               <div className="up">
                 <div className="x" onClick={cancelModal}>
@@ -769,6 +775,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
                 </button>
               </div>
             </div>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
