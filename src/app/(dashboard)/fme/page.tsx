@@ -26,6 +26,7 @@ import { STCCourseCard } from "@/components/stc/index/coursecard";
 import { CourseCardSkeleton } from "@/components/fme/skeleton/CourseCardSkeleton";
 import { NoDataStyles } from "@/components/fme/mda/styles";
 import { WhiteArrowLeft, WhiteArrowRight } from "@/components/icons/main";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 // the first page on the fme dashboard
 
 export default function Home() {
@@ -211,10 +212,11 @@ export default function Home() {
         <div className="summary">
           <div className="head">
             <h4>Statistics</h4>
+              <ClickOutsideWrapper onClickOutside={() => setShowOptions(false)}>
             <div className="dropdown">
               <div
                 className="dd-head"
-                onClick={() => setShowOptions(!showOptions)}
+                onClick={() => setShowOptions(true)}
               >
                 <p>{selectedGraphOption?.name}</p>
                 <AngleDownStyles $isSelected={showOptions}>
@@ -236,6 +238,7 @@ export default function Home() {
                 </div>
               )}
             </div>
+            </ClickOutsideWrapper>
           </div>
           <div className="graph">
             <BarChartComp

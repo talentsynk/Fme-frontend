@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { fmeSelector, setSelectedMdaId } from "@/redux/fme/fmeSlice";
 import { truncateString } from "@/utils/truncateString";
 import { IMDACompData } from "@/types/Mda";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface ICheckbox {
   isChecked: boolean;
@@ -46,13 +47,13 @@ export const CheckboxComp: React.FC<ICheckbox> = ({
 //   isSelected: boolean;
 // }
 export const TableRow: React.FC<IMDACompData> = ({
-  Id : id,
-  is_active : isActive,
-  Name : name,
-  stc_count :  stcNo,
-  student_count : studentNo,
-  Address : address,
-  StateOfOperation : state,
+  Id: id,
+  is_active: isActive,
+  Name: name,
+  stc_count: stcNo,
+  student_count: studentNo,
+  Address: address,
+  StateOfOperation: state,
 }) => {
   const [mdaItemList, setMdaItemList] = useState(MdaItemDropdownList);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -61,6 +62,7 @@ export const TableRow: React.FC<IMDACompData> = ({
   const [showActiveModal, setShowActivateModal] = useState(false);
 
   const handleSelectItem = (action: string) => {
+  
     let newMdaList = mdaItemList.map((ele) => {
       return { ...ele, isSelected: ele.text === action };
     });
@@ -72,78 +74,85 @@ export const TableRow: React.FC<IMDACompData> = ({
       setShowdetails(true);
     } else if (action === "Suspend MDA") {
       setShowSuspendModal(true);
-    }else if(action === "Re-activate MDA"){
+    } else if (action === "Re-activate MDA") {
       setShowActivateModal(true);
     }
+    setShowDropdown(false);
   };
   const { selectedMdaId } = useAppSelector(fmeSelector);
   // set dispatch
   const dispatch = useAppDispatch();
   const handleSelectOptions = () => {
-    setShowDropdown(!showDropdown);
-    if (selectedMdaId === id) {
-      dispatch(setSelectedMdaId(null));
-    } else {
-      // set selected Mda id in redux here
+    setShowDropdown(true);
+    if(!(selectedMdaId === id)){
       dispatch(setSelectedMdaId(id));
     }
     // reset the dropdown state
     setMdaItemList(MdaItemDropdownList);
   };
-  
+
   return (
     <TrStyles>
-      <td >
-        <p className="name">{truncateString(name,37).toUpperCase()}</p>
+      <td>
+        <p className="name">{truncateString(name, 37).toUpperCase()}</p>
       </td>
       <td>
-        <p>{stcNo ? stcNo  : 0}</p>
+        <p>{stcNo ? stcNo : 0}</p>
       </td>
       <td>
         <p>{studentNo ? studentNo : 0}</p>
       </td>
       <td className="address">
-        <p>{truncateString(address,30)}</p>
+        <p>{truncateString(address, 30)}</p>
       </td>
       <td>
         <p>{state && state.toUpperCase()} STATE</p>
       </td>
+
       <td className="drop">
         <StatusComp $isActive={isActive} />
-        <TableDropdownStyles className="igris">
-          <div className="head" onClick={handleSelectOptions}>
-            <ThreedotsIcon />
-          </div>
-          {selectedMdaId === id && (
-            <DropdownOptionsStyle>
-              <div className="options">
-                {mdaItemList.map((ele, index) => (
-                  <MdaItemComp
-                    key={index}
-                    isSelected={ele.isSelected}
-                    text={!isActive && ele.text === "Suspend MDA" ? "Re-activate MDA" : ele.text}
-                    hasBorder={ele.hasBorder}
-                    handleSelect={() =>
-                      handleSelectItem(!isActive && ele.text === "Suspend MDA" ? "Re-activate MDA" : ele.text)
-                    }
-                  />
-                ))}
-              </div>
-            </DropdownOptionsStyle>
-          )}
-        </TableDropdownStyles>
+        <ClickOutsideWrapper onClickOutside={() => setShowDropdown(false)}>
+          <TableDropdownStyles
+            className="igris"
+          >
+            <div className="head" onClick={handleSelectOptions}>
+              <ThreedotsIcon />
+            </div>
+            {selectedMdaId === id && showDropdown && (
+              <DropdownOptionsStyle>
+                <div className="options">
+                  {mdaItemList.map((ele, index) => (
+                    <MdaItemComp
+                      key={index}
+                      isSelected={ele.isSelected}
+                      text={
+                        !isActive && ele.text === "Suspend MDA"
+                          ? "Re-activate MDA"
+                          : ele.text
+                      }
+                      hasBorder={ele.hasBorder}
+                      handleSelect={() => {
+                        handleSelectItem(
+                          !isActive && ele.text === "Suspend MDA"
+                            ? "Re-activate MDA"
+                            : ele.text
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+              </DropdownOptionsStyle>
+            )}
+          </TableDropdownStyles>
+        </ClickOutsideWrapper>
         {showDetails && (
           <MdaDetailModal cancelModal={() => setShowdetails(false)} />
         )}
         {showSuspendModal && (
-          <SuspendMdaComp
-            cancelModal={() => setShowSuspendModal(false)}
-          />
+          <SuspendMdaComp cancelModal={() => setShowSuspendModal(false)} />
         )}
         {showActiveModal && (
-          <ReactivateMdaComp
-            cancelModal={() => setShowActivateModal(false)}
-          />
+          <ReactivateMdaComp cancelModal={() => setShowActivateModal(false)} />
         )}
       </td>
     </TrStyles>

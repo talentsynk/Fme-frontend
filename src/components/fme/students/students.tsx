@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { truncateString } from "@/utils/truncateString";
 import { IFilterBtn } from "../mda/data";
 import { IStudentCompData } from "@/types/Student";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface ICheckbox {
 	isChecked: boolean;
@@ -50,19 +51,17 @@ export const StudentTableRow: React.FC<IStudentCompData> = ({ FirstName, LastNam
 		} else if (action === "Re-activate Student") {
 			setShowActivateModal(true);
 		}
+		setShowDropdown(false);
 	};
 
 	const { selectedStudentId } = useAppSelector(fmeSelector);
 	// set dispatch
 	const dispatch = useAppDispatch();
 	const handleSelectOptions = () => {
-		setShowDropdown(!showDropdown);
-		if (selectedStudentId === ID) {
-			dispatch(setSelectedStudentId(null));
-		} else {
-			// set selected Mda id in redux here
+		setShowDropdown(true);
+		if (!(selectedStudentId === ID)) {
 			dispatch(setSelectedStudentId(ID));
-		}
+		} 
 		// reset the dropdown state
 		setStudentItemList(StudentItemDropdownList);
 	};
@@ -85,11 +84,12 @@ export const StudentTableRow: React.FC<IStudentCompData> = ({ FirstName, LastNam
 			</td>
 			<td className="drop">
 				<StatusComp $isActive={IsActive} />
+				<ClickOutsideWrapper onClickOutside={() => setShowDropdown(false)}>
 				<TableDropdownStyles className="igris">
 					<div className="head" onClick={handleSelectOptions}>
 						<ThreedotsIcon />
 					</div>
-					{selectedStudentId === ID && (
+					{selectedStudentId === ID && showDropdown && (
 						<DropdownOptionsStyle>
 							<div className="options">
 								{studentItemList.map((ele, index) => (
@@ -105,6 +105,7 @@ export const StudentTableRow: React.FC<IStudentCompData> = ({ FirstName, LastNam
 						</DropdownOptionsStyle>
 					)}
 				</TableDropdownStyles>
+				</ClickOutsideWrapper>
 				{showDetails && <StudentsDetailModal cancelModal={() => setShowdetails(false)} />}
 				{showSuspendModal && <SuspendStudentComp cancelModal={() => setShowSuspendModal(false)} />}
 				{showActiveModal && <ReactivateStudentComp cancelModal={() => setShowActivateModal(false)} />}
