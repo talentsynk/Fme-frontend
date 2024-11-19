@@ -397,8 +397,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       !lastNameError.active &&
       emailError.text !== "" &&
       lastNameError.text !== "" &&
-      state !== "" &&
       firstNameError.text !== ""
+    );
+  };
+  const isFormValid2 = () => {
+    return (
+     NationalIdentityNumber !==""
     );
   };
 
@@ -476,15 +480,25 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	};
 	const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
 	const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+	const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
 	const handleContinue = () => {
 		// Assuming formData is already populated with the first modal's data
 		setIsFirstModalOpen(false);
 		setIsSecondModalOpen(true);
 	};
+	const handleContinue2 = () => {
+		// Assuming formData is already populated with the first modal's data
+		setIsSecondModalOpen(false);
+		setIsThirdModalOpen(true);
+	};
 
   const handlePrevious = () => {
     setIsFirstModalOpen(true);
     setIsSecondModalOpen(false);
+  };
+  const handlePrevious2 = () => {
+    setIsSecondModalOpen(true);
+    setIsThirdModalOpen(false);
   };
 
   const router = useRouter();
@@ -494,6 +508,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			{isSuccess === false && (
 				<NewMdaAbsoluteStyles>
 					<div className="form">
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
 						<NewMdaFormStyles className="bd">
 							<div className="fl">
 								<div className="form-head">
@@ -608,51 +623,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</div>
 											</div>
 										</div>
-										<div className="form-ele">
-											<label htmlFor="state">State of Operation</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
-													<>
-														{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
-													</>
-													<AngleDownStyles $isSelected={showDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showDropdown && (
-													<div className="dropdown">
-														{states.map((ele, index) => (
-															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
-																<p>{ele.name}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-										<div className="form-ele flex-1">
-											<label htmlFor="firstName">Address</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="Address"
-													value={Address}
-													className={AddressError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "Address")}
-													placeholder="Please type in your Address"
-												/>
-												<div className="abs">
-													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
-													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
-													{AddressError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
+										
 										<div className="form-ele">
 											<label htmlFor="state">State of Origin</label>
 											<StatesDropdownStyles>
@@ -684,99 +655,23 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 									</div>
 								)}
 								{isSecondModalOpen && (
-									
 									<div className="form-input">
-										
 										<div className="form-ele">
-											<label htmlFor="state">Local Government Area</label>
+											<label htmlFor="state">State of Operation</label>
 											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
+												<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
 													<>
-														{lga === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+														{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
 													</>
-													<AngleDownStyles $isSelected={showLGADropdown}>
+													<AngleDownStyles $isSelected={showDropdown}>
 														<AngleDown />
 													</AngleDownStyles>
 												</div>
-												{showLGADropdown && (
+												{showDropdown && (
 													<div className="dropdown">
-														{lgas.map((ele, index) => (
-															<StateCompStyles $isSelected={lga === ele} key={index} onClick={() => handleLGASelection(ele)}>
-																<p>{ele}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-										<div className="">
-											<label htmlFor="gender" className=" text-[#101928] font-semibold">
-												Gender
-											</label>
-											<div className="">
-												<div className=" flex gap-4">
-													<input
-														type="radio"
-														name="gender"
-														value="male"
-														id="gender"
-														checked={gender === "male"}
-														onChange={(e) => handleInput(e, "gender")}
-													/>{" "}
-													<span>Male</span>
-												</div>
-												<div className="flex gap-4">
-													<input
-														type="radio"
-														name="gender"
-														value="female"
-														id="gender"
-														checked={gender === "female"}
-														onChange={(e) => handleInput(e, "gender")}
-													/>{" "}
-													<span>Female</span>
-												</div>
-											</div>
-										</div>
-										<div className="form-ele flex-1">
-											<label htmlFor="firstName">Student ID</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="studentID"
-													value={SID}
-													className={SIDError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "SID")}
-													placeholder="Please type in your Student ID"
-												/>
-												<div className="abs">
-													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
-													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
-													{SIDError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										<div className="form-ele">
-											<label htmlFor="state">Training/Skill Program</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowCourseDropdown(!showCourseDropdown)}>
-													<>
-														{course === "" ? <p className="placeholder">Please select the course taken</p> : <p className="state-name">{course}</p>}
-													</>
-													<AngleDownStyles $isSelected={showCourseDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showCourseDropdown && (
-													<div className="dropdown">
-														{courses.map((ele, index) => (
-															<StateCompStyles $isSelected={course === ele.Name} key={index} onClick={() => handleCourseSelection(ele.Name, ele.Id)}>
-																<p>{ele.Name}</p>
+														{states.map((ele, index) => (
+															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
+																<p>{ele.name}</p>
 															</StateCompStyles>
 														))}
 													</div>
@@ -807,25 +702,135 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</div>
 											</div>
 										</div>
-										{/* <div className="form-ele flex-1">
-											<label htmlFor="lastName">NSQ Level</label>
+										<div className="form-ele">
+											<label htmlFor="state">Local Government Area</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
+													<>
+														{lga === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+													</>
+													<AngleDownStyles $isSelected={showLGADropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showLGADropdown && (
+													<div className="dropdown">
+														{lgas.map((ele, index) => (
+															<StateCompStyles $isSelected={lga === ele} key={index} onClick={() => handleLGASelection(ele)}>
+																<p>{ele}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+                    <div className="">
+											<label htmlFor="gender" className=" text-[#101928] font-semibold">
+												Gender
+											</label>
+											<div className="">
+												<div className=" flex gap-4">
+													<input
+														type="radio"
+														name="gender"
+														value="male"
+														id="gender"
+														checked={gender === "male"}
+														onChange={(e) => handleInput(e, "gender")}
+													/>{" "}
+													<span>Male</span>
+												</div>
+												<div className="flex gap-4">
+													<input
+														type="radio"
+														name="gender"
+														value="female"
+														id="gender"
+														checked={gender === "female"}
+														onChange={(e) => handleInput(e, "gender")}
+													/>{" "}
+													<span>Female</span>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+								)}
+								{isThirdModalOpen && (
+									
+									<div className="form-input">
+										
+    				
+										
+                    <div className="form-ele">
+											<label htmlFor="state">Training/Skill Program</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowCourseDropdown(!showCourseDropdown)}>
+													<>
+														{course === "" ? <p className="placeholder">Please select the course taken</p> : <p className="state-name">{course}</p>}
+													</>
+													<AngleDownStyles $isSelected={showCourseDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showCourseDropdown && (
+													<div className="dropdown">
+														{courses.map((ele, index) => (
+															<StateCompStyles $isSelected={course === ele.Name} key={index} onClick={() => handleCourseSelection(ele.Name, ele.Id)}>
+																<p>{ele.Name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+                    
+										<div className="form-ele flex-1">
+											<label htmlFor="firstName">Student ID</label>
 											<div className="inp">
 												<input
 													type="text"
-													name="lastName"
-													value={NsqLevel}
-													className={NsqLevelError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "NsqLevel")}
-													placeholder="Please select Training center"
+													name="studentID"
+													value={SID}
+													className={SIDError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "SID")}
+													placeholder="Please type in your Student ID"
 												/>
 												<div className="abs">
-													{NsqLevelError.active === false && NsqLevelError.text === "" && <NameIcon />}
-													{NsqLevelError.active === false && NsqLevelError.text !== "" && <CheckedIcon />}
-													{NsqLevelError.active === true && <FormErrorIcon />}
+													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
+													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
+													{SIDError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
-										</div> */}
-										
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="firstName">Address</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="Address"
+													value={Address}
+													className={AddressError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "Address")}
+													placeholder="Please type in your Address"
+												/>
+												<div className="abs">
+													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
+													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
+													{AddressError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
 										<div className="form-ele">
 											<label htmlFor="state">Disabilities</label>
 											<StatesDropdownStyles>
@@ -878,6 +883,23 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 										<button
 											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
 											onClick={handlePrevious}>
+											Previous
+										</button>
+										<button
+											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+											}`}
+											onClick={handleContinue2}
+											disabled={!isFormValid2()}>
+											Continue
+										</button>
+									</div>
+								)}
+								{isThirdModalOpen && (
+									<div className="flex gap-4">
+										<button
+											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+											onClick={handlePrevious2}>
 											Previous Page
 										</button>
 										<button
@@ -895,7 +917,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												emailError.active !== false ||
 												phoneError.active !== false ||
 												state == ""||
-												DOBString==""
+												DOBString==""||
+                        Address==""
 											}>
 											{isLoading ? <ButtonLoader /> : "Create Student"}
 										</button>
@@ -903,10 +926,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 								)}
 							</form>
 						</NewMdaFormStyles>
+            </ClickOutsideWrapper>
 					</div>
 				</NewMdaAbsoluteStyles>
 			)}
 			{isSuccess && (
+        <ClickOutsideWrapper onClickOutside={cancelModal}>
 				<FlexAbsoluteModalStyles>
 					<SuccessModal
 						head="New Student has been successfully created !"
@@ -918,6 +943,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 						navigationText="Go back to Dashboard"
 					/>
 				</FlexAbsoluteModalStyles>
+        </ClickOutsideWrapper>
 			)}
 		</>
 	);
@@ -959,7 +985,18 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
                 </div>
                 <div className="deet">
                   <h4>{truncateString(fullName, 40)}</h4>
-                  <p>Added on Jul 11, 2023</p>
+                  <p>
+  Added on{" "}
+  {studentDetails.CreatedAt
+    ? new Date(studentDetails.CreatedAt).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "Date not available"}
+</p>
+
+
                 </div>
               </div>
             </div>

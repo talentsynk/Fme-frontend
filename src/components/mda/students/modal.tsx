@@ -49,6 +49,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
 import { fmeSelector } from "@/redux/fme/fmeSlice";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface IOneButtonModal {
 	cancelModal: () => void;
@@ -391,6 +392,12 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			firstNameError.text !== ""
 		);
 	};
+	const isFormValid2 = () => {
+		return (
+		 NationalIdentityNumber !==""
+		);
+	  };
+	
 
 	const handleCreateStc = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -467,16 +474,27 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 	};
 	const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
 	const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+	const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
 	const handleContinue = () => {
 		// Assuming formData is already populated with the first modal's data
 		setIsFirstModalOpen(false);
 		setIsSecondModalOpen(true);
 	};
-
-	const handlePrevious = () => {
-		setIsFirstModalOpen(true);
+	const handleContinue2 = () => {
+		// Assuming formData is already populated with the first modal's data
 		setIsSecondModalOpen(false);
+		setIsThirdModalOpen(true);
 	};
+
+  const handlePrevious = () => {
+    setIsFirstModalOpen(true);
+    setIsSecondModalOpen(false);
+  };
+  const handlePrevious2 = () => {
+    setIsSecondModalOpen(true);
+    setIsThirdModalOpen(false);
+  };
+
 
 	const router = useRouter();
 
@@ -896,8 +914,428 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 						</NewMdaFormStyles>
 					</div>
 				</NewMdaAbsoluteStyles>
+	// 			<ClickOutsideWrapper onClickOutside={cancelModal}>
+	// 			<NewMdaFormStyles className="bd">
+	// 				<div className="fl">
+	// 					<div className="form-head">
+	// 						<h3>Add New Student</h3>
+	// 						<p>Fill in the necessary details to add a new Student</p>
+	// 					</div>
+	// 					<IconWrapper onClick={cancelModal}>
+	// 						<XIcon />
+	// 					</IconWrapper>
+	// 				</div>
+	// 				<form className="form" onSubmit={handleCreateStc}>
+	// 					{isFirstModalOpen && (
+	// 						<div className="form-input">
+	// 							<div className="flex justify-between gap-4">
+	// 								<div className="form-ele flex-1">
+	// 									<label htmlFor="firstName">First Name</label>
+	// 									<div className="inp">
+	// 										<input
+	// 											type="text"
+	// 											name="Firstname"
+	// 											value={Firstname}
+	// 											className={firstNameError.active ? "error-bdr" : ""}
+	// 											onChange={(e) => handleInput(e, "Firstname")}
+	// 											placeholder="Please type in your first name here"
+	// 										/>
+	// 										<div className="abs">
+	// 											{firstNameError.active === false && firstNameError.text === "" && <NameIcon />}
+	// 											{firstNameError.active === false && firstNameError.text !== "" && <CheckedIcon />}
+	// 											{firstNameError.active === true && <FormErrorIcon />}
+	// 										</div>
+	// 										<p role="alert" aria-live="assertive" aria-atomic="true" className={firstNameError.active ? "error-msg" : "correct"}>
+	// 											{firstNameError.text}
+	// 										</p>
+	// 									</div>
+	// 								</div>
+	// 								<div className="form-ele flex-1">
+	// 									<label htmlFor="lastName">Last Name</label>
+	// 									<div className="inp">
+	// 										<input
+	// 											type="text"
+	// 											name="Lastname"
+	// 											value={Lastname}
+	// 											className={lastNameError.active ? "error-bdr" : ""}
+	// 											onChange={(e) => handleInput(e, "Lastname")}
+	// 											placeholder="Please type in your last name here"
+	// 										/>
+	// 										<div className="abs">
+	// 											{lastNameError.active === false && lastNameError.text === "" && <NameIcon />}
+	// 											{lastNameError.active === false && lastNameError.text !== "" && <CheckedIcon />}
+	// 											{lastNameError.active === true && <FormErrorIcon />}
+	// 										</div>
+	// 										<p role="alert" aria-live="assertive" aria-atomic="true" className={lastNameError.active ? "error-msg" : "correct"}>
+	// 											{lastNameError.text}
+	// 										</p>
+	// 									</div>
+	// 								</div>
+	// 							</div>
+	// 							<div className="form-ele">
+	// 								<label htmlFor="otherNames">Phone Number</label>
+	// 								<div className="inp">
+	// 									<input
+	// 										type="text"
+	// 										name="Phone"
+	// 										value={Phone}
+	// 										onChange={(e) => handleInput(e, "Phone")}
+	// 										placeholder="Please type in your Phone Number here"
+	// 									/>
+	// 									<div className="abs">
+	// 										{phoneError.active === false && phoneError.text === "" && <NameIcon />}
+	// 										{phoneError.active === false && phoneError.text !== "" && <CheckedIcon />}
+	// 										{phoneError.active === true && <FormErrorIcon />}
+	// 									</div>
+	// 								</div>
+	// 							</div>
+	// 							<div className="form-ele">
+	// 								<label htmlFor="email">Email Address</label>
+	// 								<div className="inp">
+	// 									<input
+	// 										type="email"
+	// 										name="email"
+	// 										value={email}
+	// 										onChange={handleEmailChange}
+	// 										placeholder="Please type in your Email Address"
+	// 										className={emailError.active ? "error-bdr" : ""}
+	// 										autoComplete="email"
+	// 									/>
+	// 									<div className="abs">
+	// 										{emailError.active === false && emailError.text === "" && <EmailIcon />}
+	// 										{emailError.active === false && emailError.text !== "" && <CheckedIcon />}
+	// 										{emailError.active === true && <FormErrorIcon />}
+	// 									</div>
+	// 									<p role="alert" aria-live="assertive" aria-atomic="true" className={emailError.active ? "error-msg" : "correct"}>
+	// 										{emailError.text}
+	// 									</p>
+	// 								</div>
+	// 							</div>
+	// 							<div className="form-ele ">
+	// 								<label htmlFor="address">Date Of Birth</label>
+	// 								<div className="inp">
+	// 									<input
+	// 										type="date"
+	// 										name="DOB"
+	// 										value={DOBstring}
+	// 										onChange={(e) => handleInput(e, "DOBstring")}
+	// 										className={DOBstringError.active ? "error-bdr" : ""}
+	// 										placeholder="MM/DD/YYYY"
+	// 									/>
+	// 									<div className="abs">
+	// 										{DOBstringError.active === false && DOBstringError.text === "" && <LocationIcon />}
+	// 										{DOBstringError.active === false && DOBstringError.text !== "" && <CheckedIcon />}
+	// 										{DOBstringError.active === true && <FormErrorIcon />}
+	// 									</div>
+	// 								</div>
+	// 							</div>
+								
+	// 							<div className="form-ele">
+	// 								<label htmlFor="state">State of Origin</label>
+	// 								<StatesDropdownStyles>
+	// 									<div className="head" onClick={() => setShowStateDropdown(!showStateDropdown)}>
+	// 										<>
+	// 											{stateOfOrigin === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{stateOfOrigin}</p>}
+	// 										</>
+	// 										<AngleDownStyles $isSelected={showStateDropdown}>
+	// 											<AngleDown />
+	// 										</AngleDownStyles>
+	// 									</div>
+	// 									{showStateDropdown && (
+	// 										<div className="dropdown">
+	// 											{statesOfOrigin.map((ele, index) => (
+	// 												<StateCompStyles $isSelected={stateOfOrigin === ele.name} key={index} onClick={() => handleStateOfOriginSelection(ele.name)}>
+	// 													<p>{ele.name}</p>
+	// 												</StateCompStyles>
+	// 											))}
+	// 										</div>
+	// 									)}
+	// 								</StatesDropdownStyles>
+	// 								{otherError.active && (
+	// 									<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+	// 										{otherError.text}
+	// 									</p>
+	// 								)}
+	// 							</div>
+								
+	// 						</div>
+	// 					)}
+	// 					{isSecondModalOpen && (
+	// 						<div className="form-input">
+	// 							<div className="form-ele">
+	// 								<label htmlFor="state">State of Operation</label>
+	// 								<StatesDropdownStyles>
+	// 									<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
+	// 										<>
+	// 											{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
+	// 										</>
+	// 										<AngleDownStyles $isSelected={showDropdown}>
+	// 											<AngleDown />
+	// 										</AngleDownStyles>
+	// 									</div>
+	// 									{showDropdown && (
+	// 										<div className="dropdown">
+	// 											{states.map((ele, index) => (
+	// 												<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
+	// 													<p>{ele.name}</p>
+	// 												</StateCompStyles>
+	// 											))}
+	// 										</div>
+	// 									)}
+	// 								</StatesDropdownStyles>
+	// 								{otherError.active && (
+	// 									<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+	// 										{otherError.text}
+	// 									</p>
+	// 								)}
+	// 							</div>
+	// 							<div className="form-ele flex-1">
+	// 								<label htmlFor="Nin">NIN</label>
+	// 								<div className="inp">
+	// 									<input
+	// 										type="text"
+	// 										name="Nin"
+	// 										id="Nin"
+	// 										value={NationalIdentityNumber}
+	// 										className={NationalIdentityNumberError.active ? "error-bdr" : ""}
+	// 										onChange={(e) => handleInput(e, "NationalIdentityNumber")}
+	// 										placeholder="Please input NIN"
+	// 									/>
+	// 									<div className="abs">
+	// 										{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text === "" && <NameIcon />}
+	// 										{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text !== "" && <CheckedIcon />}
+	// 										{NationalIdentityNumberError.active === true && <FormErrorIcon />}
+	// 									</div>
+	// 								</div>
+	// 							</div>
+	// 							<div className="form-ele">
+	// 								<label htmlFor="state">Local Government Area</label>
+	// 								<StatesDropdownStyles>
+	// 									<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
+	// 										<>
+	// 											{lga === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
+	// 										</>
+	// 										<AngleDownStyles $isSelected={showLGADropdown}>
+	// 											<AngleDown />
+	// 										</AngleDownStyles>
+	// 									</div>
+	// 									{showLGADropdown && (
+	// 										<div className="dropdown">
+	// 											{lgas.map((ele, index) => (
+	// 												<StateCompStyles $isSelected={lga === ele} key={index} onClick={() => handleLGASelection(ele)}>
+	// 													<p>{ele}</p>
+	// 												</StateCompStyles>
+	// 											))}
+	// 										</div>
+	// 									)}
+	// 								</StatesDropdownStyles>
+	// 								{otherError.active && (
+	// 									<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+	// 										{otherError.text}
+	// 									</p>
+	// 								)}
+	// 							</div>
+	// 		<div className="">
+	// 								<label htmlFor="gender" className=" text-[#101928] font-semibold">
+	// 									Gender
+	// 								</label>
+	// 								<div className="">
+	// 									<div className=" flex gap-4">
+	// 										<input
+	// 											type="radio"
+	// 											name="gender"
+	// 											value="male"
+	// 											id="gender"
+	// 											checked={gender === "male"}
+	// 											onChange={(e) => handleInput(e, "gender")}
+	// 										/>{" "}
+	// 										<span>Male</span>
+	// 									</div>
+	// 									<div className="flex gap-4">
+	// 										<input
+	// 											type="radio"
+	// 											name="gender"
+	// 											value="female"
+	// 											id="gender"
+	// 											checked={gender === "female"}
+	// 											onChange={(e) => handleInput(e, "gender")}
+	// 										/>{" "}
+	// 										<span>Female</span>
+	// 									</div>
+	// 								</div>
+	// 							</div>
+								
+	// 						</div>
+	// 					)}
+	// 					{isThirdModalOpen && (
+							
+	// 						<div className="form-input">
+								
+			
+								
+	// 		<div className="form-ele">
+	// 								<label htmlFor="state">Training/Skill Program</label>
+	// 								<StatesDropdownStyles>
+	// 									<div className="head" onClick={() => setShowCourseDropdown(!showCourseDropdown)}>
+	// 										<>
+	// 											{course === "" ? <p className="placeholder">Please select the course taken</p> : <p className="state-name">{course}</p>}
+	// 										</>
+	// 										<AngleDownStyles $isSelected={showCourseDropdown}>
+	// 											<AngleDown />
+	// 										</AngleDownStyles>
+	// 									</div>
+	// 									{showCourseDropdown && (
+	// 										<div className="dropdown">
+	// 											{courses.map((ele, index) => (
+	// 												<StateCompStyles $isSelected={course === ele.Name} key={index} onClick={() => handleCourseSelection(ele.Name, ele.Id)}>
+	// 													<p>{ele.Name}</p>
+	// 												</StateCompStyles>
+	// 											))}
+	// 										</div>
+	// 									)}
+	// 								</StatesDropdownStyles>
+	// 								{otherError.active && (
+	// 									<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+	// 										{otherError.text}
+	// 									</p>
+	// 								)}
+	// 							</div>
+			
+	// 							<div className="form-ele flex-1">
+	// 								<label htmlFor="firstName">Student ID</label>
+	// 								<div className="inp">
+	// 									<input
+	// 										type="text"
+	// 										name="studentID"
+	// 										value={SID}
+	// 										className={SIDError.active ? "error-bdr" : ""}
+	// 										onChange={(e) => handleInput(e, "SID")}
+	// 										placeholder="Please type in your Student ID"
+	// 									/>
+	// 									<div className="abs">
+	// 										{SIDError.active === false && SIDError.text === "" && <NameIcon />}
+	// 										{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
+	// 										{SIDError.active === true && <FormErrorIcon />}
+	// 									</div>
+	// 								</div>
+	// 							</div>
+	// 							<div className="form-ele flex-1">
+	// 								<label htmlFor="firstName">Address</label>
+	// 								<div className="inp">
+	// 									<input
+	// 										type="text"
+	// 										name="Address"
+	// 										value={Address}
+	// 										className={AddressError.active ? "error-bdr" : ""}
+	// 										onChange={(e) => handleInput(e, "Address")}
+	// 										placeholder="Please type in your Address"
+	// 									/>
+	// 									<div className="abs">
+	// 										{AddressError.active === false && AddressError.text === "" && <NameIcon />}
+	// 										{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
+	// 										{AddressError.active === true && <FormErrorIcon />}
+	// 									</div>
+	// 								</div>
+	// 							</div>
+	// 							<div className="form-ele">
+	// 								<label htmlFor="state">Disabilities</label>
+	// 								<StatesDropdownStyles>
+	// 									<div className="head" onClick={() => setShowDisabilityDropdown(!showDisabilityDropdown)}>
+	// 										<>
+	// 											{disability === "" ? <p className="placeholder"> select the disability</p> : <p className="state-name">{disability}</p>}
+	// 										</>
+	// 										<AngleDownStyles $isSelected={showDisabilityDropdown}>
+	// 											<AngleDown />
+	// 										</AngleDownStyles>
+	// 									</div>
+	// 									{showDisabilityDropdown && (
+	// 										<div className="dropdown">
+	// 											{disabilities.map((ele, index) => (
+	// 												<StateCompStyles $isSelected={disability === ele.name} key={index} onClick={() => handleDisabilitySelection(ele.name)}>
+	// 													<p>{ele.name}</p>
+	// 												</StateCompStyles>
+	// 											))}
+	// 										</div>
+	// 									)}
+	// 								</StatesDropdownStyles>
+	// 								{otherError.active && (
+	// 									<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+	// 										{otherError.text}
+	// 									</p>
+	// 								)}
+	// 							</div>
+								
+	// 						</div>
+	// 					)}
+	// 					{isFirstModalOpen && (
+	// 						<div className="flex gap-4">
+	// 							<button
+	// 								className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+	// 								onClick={cancelModal}>
+	// 								Cancel
+	// 							</button>
+	// 							<button
+	// 								className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+	// 									isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+	// 								}`}
+	// 								onClick={handleContinue}
+	// 								disabled={!isFormValid()}>
+	// 								Continue
+	// 							</button>
+	// 						</div>
+	// 					)}
+	// 					{isSecondModalOpen && (
+	// 						<div className="flex gap-4">
+	// 							<button
+	// 								className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+	// 								onClick={handlePrevious}>
+	// 								Previous
+	// 							</button>
+	// 							<button
+	// 								className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+	// 									isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+	// 								}`}
+	// 								onClick={handleContinue2}
+	// 								disabled={!isFormValid2()}>
+	// 								Continue
+	// 							</button>
+	// 						</div>
+	// 					)}
+	// 					{isThirdModalOpen && (
+	// 						<div className="flex gap-4">
+	// 							<button
+	// 								className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+	// 								onClick={handlePrevious2}>
+	// 								Previous Page
+	// 							</button>
+	// 							<button
+	// 								className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+	// 									isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+	// 								}`}
+	// 								type="submit"
+	// 								disabled={
+	// 									firstNameError.text == "" ||
+	// 									lastNameError.text == "" ||
+	// 									emailError.text == "" ||
+	// 									phoneError.text == "" ||
+	// 									firstNameError.active !== false ||
+	// 									lastNameError.active !== false ||
+	// 									emailError.active !== false ||
+	// 									phoneError.active !== false ||
+	// 									state == ""||
+	// 									DOBstring==""||
+	// 			Address==""
+	// 								}>
+	// 								{isLoading ? <ButtonLoader /> : "Create Student"}
+	// 							</button>
+	// 						</div>
+	// 					)}
+	// 				</form>
+	// 			</NewMdaFormStyles>
+	// </ClickOutsideWrapper>
 			)}
 			{isSuccess && (
+				<ClickOutsideWrapper onClickOutside={cancelModal}>
 				<FlexAbsoluteModalStyles>
 					<SuccessModal
 						head="New Student has been successfully created !"
@@ -909,6 +1347,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 						navigationText="Go back to Dashboard"
 					/>
 				</FlexAbsoluteModalStyles>
+				</ClickOutsideWrapper>
 			)}
 		</>
 	);
@@ -941,7 +1380,16 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 								</div>
 								<div className="deet">
 									<h4>{truncateString(fullName, 40)}</h4>
-									<p>Added on Jul 11, 2023</p>
+									<p>
+  Added on{" "}
+  {studentDetails.CreatedAt
+    ? new Date(studentDetails.CreatedAt).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "Date not available"}
+</p>
 								</div>
 							</div>
 						</div>

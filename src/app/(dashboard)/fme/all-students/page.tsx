@@ -493,6 +493,7 @@ export default function Home() {
       setJobLoading(false); // Stop loading once the download is complete
     }
   };
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <>
@@ -514,6 +515,7 @@ export default function Home() {
           </button>
 		  
           {showDropdown && (
+
             <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
               <div
                 className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer"
@@ -535,6 +537,7 @@ export default function Home() {
                 />
               </label>
             </div>
+  
           )}
 		  
           {fileError && <div className="text-red-500 mt-2">{fileError}</div>}

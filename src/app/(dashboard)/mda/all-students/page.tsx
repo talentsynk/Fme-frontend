@@ -295,7 +295,8 @@ export default function Home() {
 	  };
 	  const handleAddStudentClick = () => {
 		setShowNewStudentFormModal(true);
-		setShowDropdown(false); // Close dropdown after action
+		setShowDropdown(false); 
+		console.log(1)
 	  };
 	  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
