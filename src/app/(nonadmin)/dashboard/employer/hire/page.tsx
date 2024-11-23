@@ -1,12 +1,13 @@
-interface IArtisan{
-  AverageRating:number;
-  BusinessDescription:string;
-  BusinessName:string;
-  FirstName:string;
-  LastName:string;
-  ID:number;
+"use client"
+interface IArtisan {
+  AverageRating: number;
+  BusinessDescription: string;
+  BusinessName: string;
+  FirstName: string;
+  LastName: string;
+  ID: number;
 }
-"use client";
+
 import { Banner } from "@/components/artisan/comps";
 import {
   ColoredBriefCase,
@@ -22,7 +23,7 @@ import {
   LocationIcon,
   MagnifyingGlassIcon,
 } from "@/components/icons/fme/mda";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
@@ -49,7 +50,6 @@ const HireArtisan = () => {
   };
   // for search
 
-  
   const [query, setQuery] = useState("");
   const [queryError, setQueryError] = useState<Ierror>({
     active: false,
@@ -63,7 +63,6 @@ const HireArtisan = () => {
 
     if (query.trim().length >= 1) {
       // filter from the unchanged mda list
-      console.log(query);
     }
   };
   const CancelQuerySearch = () => {
@@ -74,31 +73,32 @@ const HireArtisan = () => {
     setShowCancel(false);
   };
   // sort
-  interface ISort{
-    text:string;
-    isSelected:boolean;
-    id:string;
-    hasBorder?:boolean|undefined;
+  interface ISort {
+    text: string;
+    isSelected: boolean;
+    id: string;
+    hasBorder?: boolean | undefined;
   }
   const [showSortDropdown, setShowSortDropdown] = useState(false);
-  const [sortItemDropdownList, setSortItemDropdownList] = useState<ISort[]>(
-    [
-      { text: "Most Rated", isSelected: false, id: "0" },
-      // { text: "Recommended", isSelected: false, id: "1" },
-    ]
-  );
+  const [sortItemDropdownList, setSortItemDropdownList] = useState<ISort[]>([
+    { text: "Most Rated", isSelected: false, id: "0" },
+    // { text: "Recommended", isSelected: false, id: "1" },
+  ]);
   const fetchJobsByLocation = async (state: string) => {
     try {
       // Get the authorization token from cookies
-      const token = Cookies.get('token'); // Replace 'authToken' with the actual cookie name where the token is stored
-  
+      const token = Cookies.get("token"); // Replace 'authToken' with the actual cookie name where the token is stored
+
       // Make the request with the authorization header
-      const response = await axios.get(`${BACKEND_URL}/artisan/all?state=${state}`, {
-        headers: {
-          Authorization: `Bearer ${token}` // Pass the token in the Authorization header
+      const response = await axios.get(
+        `${BACKEND_URL}/artisan/all?state=${state}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          },
         }
-      });
-      console.log(response.data)
+      );
+
       setData(response.data.artisans);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -111,30 +111,30 @@ const HireArtisan = () => {
   const handleSelect = async (selectedId: string) => {
     // Map the dropdown options to `days_ago` values
     const daysAgoMap: { [key: string]: boolean } = {
-      "0": true,  // Last 24 hours
+      "0": true, // Last 24 hours
       // "1": 4.4,  // Last 7 days
     };
-  
+
     const daysAgo = daysAgoMap[selectedId];
-  
+
     const config = {
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
     };
-  
+
     try {
       const res = await axios.get(
         `${BACKEND_URL}/artisan/all?rating_sort=${daysAgo}`,
         config
       );
-      const data = res.data.artisans
-      console.log(data)
+      const data = res.data.artisans;
+
       setData(data);
     } catch (error) {
       console.error("Error fetching filtered jobs by ratings:", error);
     }
-  
+
     // Update the sort dropdown state to reflect the selected option
     const updatedDropdownList = sortItemDropdownList.map((item) => ({
       ...item,
@@ -143,29 +143,28 @@ const HireArtisan = () => {
     setSortItemDropdownList(updatedDropdownList);
   };
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [data,setData]=useState<IArtisan[]|null>(null)
+  const [data, setData] = useState<IArtisan[] | null>(null);
 
   useEffect(() => {
-		let token = Cookies.get("token");
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		axios
-			.get(`${BACKEND_URL}/artisan/all`, config)
-			.then((res) => {
-        console.log(res)
-				const data = res.data.artisans;
-				setData(data);
-			})
-			.catch((error) => console.log(error));
-	}, []);
-  // console.log(data)
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(`${BACKEND_URL}/artisan/all`, config)
+      .then((res) => {
+        const data = res.data.artisans;
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const filteredJobs = data?.filter((job) =>
     job.BusinessName.toLowerCase().includes(query.toLowerCase())
   );
-  console.log(filteredJobs)
+
 
   return (
     <ArtisanJobPageStyle>
@@ -221,7 +220,7 @@ const HireArtisan = () => {
                     </button>
                     {showLocationModal && (
                       <SelectLocationModal
-                      applyFilter={handleLocationFilter}
+                        applyFilter={handleLocationFilter}
                         closeModal={() => setShowLocationModal(false)}
                       />
                     )}
@@ -267,9 +266,10 @@ const HireArtisan = () => {
               <h2>All Professionals</h2>
             </div>
             <JobGridList>
-              {filteredJobs && filteredJobs?.map((ele, index) => (
-                <SimilarArtisanComp key={index} {...ele} />
-              ))}
+              {filteredJobs &&
+                filteredJobs?.map((ele, index) => (
+                  <SimilarArtisanComp key={index} {...ele} />
+                ))}
             </JobGridList>
           </div>
           <Paginator

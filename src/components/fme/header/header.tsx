@@ -55,7 +55,7 @@ export const DashboardHeader = () => {
   const role = Cookies.get("userRole");
   const handleLogout = () => {
     // logout logic
-    console.log("I am logging out");
+
     router.push("/admin");
   };
   
@@ -106,24 +106,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export const CalendarComponent = () => {
   const [date, setDate] = useState<Value>(new Date());
-  // const [endDate, setEndDate] = useState<Value>(new Date());
-
-  // const [showCalendar1, setShowCalendar1] = useState(false);
-  // const [showCalendar2, setShowCalendar2] = useState(false);
-
-  // const [showCalendarDropdown, setShowCalendarDropdown] = useState(false);
-
-  // const handleSearch = () => {
-  //   if (startDate !== null && endDate !== null) {
-  //     //@ts-ignore
-  //     const diff = endDate - startDate;
-  //     if ( diff > 0){
-  //       // do the search or whatever
-  //       console.log(diff);
-  //       setShowCalendarDropdown(false);
-  //     }
-  //   }
-  // };
+  
   return (
     <CalendarComponentStyle>
       <div className="head">
@@ -287,7 +270,7 @@ const [data,setData]=useState<IData|null>(null)
     const headers = {
       Authorization: `Bearer ${token}`, // Include the token in the Authorization header
     };
-      console.log('breate')
+ 
     const fetchData = async () => {
       try {
         if (role === 'EMPLOYER') {
@@ -296,7 +279,7 @@ const [data,setData]=useState<IData|null>(null)
             'https://fme-backend-version-1.onrender.com/employer/get-employer',
             { headers }
           );
-          console.log('Employer data:', response.data);
+       
           setData(response.data.employer)
         } else {
           // API call for ARTISAN
@@ -304,7 +287,7 @@ const [data,setData]=useState<IData|null>(null)
             'https://fme-backend-version-1.onrender.com/artisan/me',
             { headers }
           );
-          console.log('Artisan data:', response.data);
+         
           setData(response.data.artisan)
         }
       } catch (error) {

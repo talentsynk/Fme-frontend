@@ -299,8 +299,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				},
 			};
 			const response = await axios.get(`${BACKEND_URL}/course/all`, config);
-			// Assuming the API response is an array of state names
-			console.log(response.data);
+		
 			setCourses(response.data.course);
 		} catch (error) {
 			console.error("Error fetching courses:", error);
@@ -315,10 +314,9 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				},
 			};
 			const response = await axios.get(`${BACKEND_URL}/student/disabilities`, config);
-			// Assuming the API response is an array of state names
-			// console.log(response)
+			
 			setDisabilities(response.data);
-			console.log(response.data)
+			
 		} catch (error) {
 			console.error("Error fetching disabilities:", error);
 		}
@@ -359,7 +357,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		setForm({ ...form, LocalGovernment: name });
 		setLga(name);
 		setShowLGADropdown(false);
-		console.log(lgas)
+	
 		
 	};
 	const [showStateDropdown, setShowStateDropdown] = useState(false);
@@ -372,8 +370,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		if (stateOfOrigin) {
 		  const newLgas = NaijaStates.lgas(stateOfOrigin).lgas;
 		  setLgas(newLgas);
-		  console.log(newLgas)
-		  console.log(1)
+		
 		}
 	  }, [stateOfOrigin]);
 
@@ -384,7 +381,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			!lastNameError.active &&
 			emailError.text !== "" &&
 			lastNameError.text !== "" &&
-			state !== "" &&
 			firstNameError.text !== ""
 		);
 	};
@@ -408,7 +404,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		) {
 			// call createMDA API
 			const token = Cookies.get("token");
-			console.log(token);
+			
 			const config = {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -432,7 +428,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					NationalIdentityNumber: form.NationalIdentityNumber,
 					IsDisabled:disability?true:false
 				};
-				console.log("Request Body:", body);
+				
 				setIsLoading(true);
 				const { data } = await axios.post(`${BACKEND_URL}/student/create-stc`, body, config);
 				if (data) {
@@ -457,7 +453,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 						text: error.response.data.error,
 					});
 				} else {
-					console.log(error);
+				
 					setOtherError({
 						active: true,
 						text: error.message,
@@ -498,7 +494,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			{isSuccess === false && (
 				<NewMdaAbsoluteStyles>
 					<div className="form">
-						<NewMdaFormStyles className="bd">
+					<ClickOutsideWrapper onClickOutside={cancelModal}>
+            <NewMdaFormStyles className="bd">
 							<div className="fl">
 								<div className="form-head">
 									<h3>Add New Student</h3>
@@ -594,53 +591,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											</div>
 										</div>
-										<div className="form-ele">
-											<label htmlFor="state">State of Operation</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
-													<>
-														{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
-													</>
-													<AngleDownStyles $isSelected={showDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showDropdown && (
-													<div className="dropdown">
-														{states.map((ele, index) => (
-															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
-																<p>{ele.name}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-										<div className="form-ele flex-1">
-											<label htmlFor="firstName">Address</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="Address"
-													value={Address}
-													className={AddressError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "Address")}
-													placeholder="Please type in your Address"
-												/>
-												<div className="abs">
-													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
-													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
-													{AddressError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										
-										
 										<div className="form-ele ">
 											<label htmlFor="address">Date Of Birth</label>
 											<div className="inp">
@@ -659,6 +609,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</div>
 											</div>
 										</div>
+										
 										<div className="form-ele">
 											<label htmlFor="state">State of Origin</label>
 											<StatesDropdownStyles>
@@ -691,8 +642,53 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 								)}
 								{isSecondModalOpen && (
 									<div className="form-input">
-										
-											<div className="form-ele">
+										<div className="form-ele">
+											<label htmlFor="state">State of Operation</label>
+											<StatesDropdownStyles>
+												<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
+													<>
+														{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
+													</>
+													<AngleDownStyles $isSelected={showDropdown}>
+														<AngleDown />
+													</AngleDownStyles>
+												</div>
+												{showDropdown && (
+													<div className="dropdown">
+														{states.map((ele, index) => (
+															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
+																<p>{ele.name}</p>
+															</StateCompStyles>
+														))}
+													</div>
+												)}
+											</StatesDropdownStyles>
+											{otherError.active && (
+												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
+													{otherError.text}
+												</p>
+											)}
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="Nin">NIN</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="Nin"
+													id="Nin"
+													value={NationalIdentityNumber}
+													className={NationalIdentityNumberError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "NationalIdentityNumber")}
+													placeholder="Please input NIN"
+												/>
+												<div className="abs">
+													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text === "" && <NameIcon />}
+													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text !== "" && <CheckedIcon />}
+													{NationalIdentityNumberError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele">
 											<label htmlFor="state">Local Government Area</label>
 											<StatesDropdownStyles>
 												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
@@ -719,7 +715,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											)}
 										</div>
-										<div className="">
+                    <div className="">
 											<label htmlFor="gender" className=" text-[#101928] font-semibold">
 												Gender
 											</label>
@@ -748,44 +744,16 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</div>
 											</div>
 										</div>
-										<div className="form-ele flex-1">
-											<label htmlFor="firstName">Student ID</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="studentID"
-													value={SID}
-													className={SIDError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "SID")}
-													placeholder="Please type in your Student ID"
-												/>
-												<div className="abs">
-													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
-													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
-													{SIDError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
 										
-										{/* <div className="form-ele flex-1">
-											<label htmlFor="lastName">NSQ Level</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="lastName"
-													value={NsqLevel}
-													className={NsqLevelError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "NsqLevel")}
-													placeholder="Please select Training center"
-												/>
-												<div className="abs">
-													{NsqLevelError.active === false && NsqLevelError.text === "" && <NameIcon />}
-													{NsqLevelError.active === false && NsqLevelError.text !== "" && <CheckedIcon />}
-													{NsqLevelError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div> */}
-										<div className="form-ele">
+									</div>
+								)}
+								{isThirdModalOpen && (
+									
+									<div className="form-input">
+										
+    				
+										
+                    <div className="form-ele">
 											<label htmlFor="state">Training/Skill Program</label>
 											<StatesDropdownStyles>
 												<div className="head" onClick={() => setShowCourseDropdown(!showCourseDropdown)}>
@@ -812,22 +780,40 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												</p>
 											)}
 										</div>
+                    
 										<div className="form-ele flex-1">
-											<label htmlFor="Nin">NIN</label>
+											<label htmlFor="firstName">Student ID</label>
 											<div className="inp">
 												<input
 													type="text"
-													name="Nin"
-													id="Nin"
-													value={NationalIdentityNumber}
-													className={NationalIdentityNumberError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "NationalIdentityNumber")}
-													placeholder="Please input NIN"
+													name="studentID"
+													value={SID}
+													className={SIDError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "SID")}
+													placeholder="Please type in your Student ID"
 												/>
 												<div className="abs">
-													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text === "" && <NameIcon />}
-													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text !== "" && <CheckedIcon />}
-													{NationalIdentityNumberError.active === true && <FormErrorIcon />}
+													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
+													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
+													{SIDError.active === true && <FormErrorIcon />}
+												</div>
+											</div>
+										</div>
+										<div className="form-ele flex-1">
+											<label htmlFor="firstName">Address</label>
+											<div className="inp">
+												<input
+													type="text"
+													name="Address"
+													value={Address}
+													className={AddressError.active ? "error-bdr" : ""}
+													onChange={(e) => handleInput(e, "Address")}
+													placeholder="Please type in your Address"
+												/>
+												<div className="abs">
+													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
+													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
+													{AddressError.active === true && <FormErrorIcon />}
 												</div>
 											</div>
 										</div>
@@ -883,6 +869,23 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 										<button
 											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
 											onClick={handlePrevious}>
+											Previous
+										</button>
+										<button
+											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+											}`}
+											onClick={handleContinue2}
+											disabled={!isFormValid2()}>
+											Continue
+										</button>
+									</div>
+								)}
+								{isThirdModalOpen && (
+									<div className="flex gap-4">
+										<button
+											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+											onClick={handlePrevious2}>
 											Previous Page
 										</button>
 										<button
@@ -900,7 +903,8 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 												emailError.active !== false ||
 												phoneError.active !== false ||
 												state == ""||
-												DOBstring==""
+												DOBstring==""||
+                        Address==""
 											}>
 											{isLoading ? <ButtonLoader /> : "Create Student"}
 										</button>
@@ -908,6 +912,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 								)}
 							</form>
 						</NewMdaFormStyles>
+            </ClickOutsideWrapper>
 					</div>
 				</NewMdaAbsoluteStyles>
 				
@@ -1361,7 +1366,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) 
 		setStudentDetails(unchangedStudentsList?.find((ele) => ele.ID == selectedStudentId));
 	}, [unchangedStudentsList, selectedStudentId]);
 	const fullName = `${studentDetails?.FirstName || ""} ${studentDetails?.LastName || ""}`;
-	console.log(studentDetails);
+
 
 	return (
 		<>
@@ -1552,7 +1557,7 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handle
 			try {
 				setIsLoading(true);
 				const { data } = await axios.post(`${BACKEND_URL}/student/graduate-student/${selectedStudentId}`,form, config);
-				console.log(data)
+			
 				setIsSuccess(true);
 				// if (data) {
 				// 	if (unchangedStudentsList !== null) {

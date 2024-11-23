@@ -78,7 +78,6 @@ export default function Home() {
       .get(`${BACKEND_URL}/dashboard/summary`, config)
       .then((res) => {
         if (res.data) {
-          console.log(res.data);
           // change to res.data.response
           const { GraduatedCount, NonGraduatedCount, STCsCount } =
             res.data.response;

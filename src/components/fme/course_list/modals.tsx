@@ -134,7 +134,7 @@ export const CategoryModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           Name: form.Name,
           Description: form.Description,
         };
-        console.log("Request Body:", body);
+      
         setIsLoading(true);
         const { data } = await axios.post(
           `${BACKEND_URL}/category/create`,
@@ -348,8 +348,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         },
       };
       const response = await axios.get(`${BACKEND_URL}/category/all`, config);
-      // Assuming the API response is an array of state names
-      console.log(response.data);
+    
       setCourses(response.data.Categories);
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -379,7 +378,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           Description: form.Description,
           CategoryID: form.CategoryID,
         };
-        console.log("Request Body:", body);
+
         setIsLoading(true);
         const { data } = await axios.post(
           `${BACKEND_URL}/course/create`,

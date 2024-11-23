@@ -73,7 +73,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
       const [stats,setStats]=useState<IStats|null>(null)
       useEffect(() => {
         let token = Cookies.get("token");
-        console.log(token)
+  
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
         axios
           .get(`${BACKEND_URL}/employer/similar/${lol}`, config)
           .then((res) => {
-           console.log(res)
+      
             const data = res.data.employers;
             setSimilarEmployers(data);
           })
@@ -124,7 +124,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           })
           .catch((error) => console.log(error));
       }, []);
-      console.log(review)
+ 
 
       const [pageNo, setPageNo] = useState(1);
   const itemsPerPage = 5;

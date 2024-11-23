@@ -69,41 +69,41 @@ interface IOneButtonModal {
 
 //The interface for the form,, come back to it
 interface IForm {
-	Email: string;
-	Lastname: string;
-	Gender: string;
-	StateOfResidence: string;
-	StateOfOrigin: string;
-	Address:string,
-	LocalGovernment:string;
-	PhoneNumber: string;
-	DOBstring: string;
-	SID: string;
-	Firstname: string;
-	CourseID: number;
-	NationalIdentityNumber:string;
-	DisabilityName: string;
-	IsDisabled:boolean;
+  Email: string;
+  Lastname: string;
+  Gender: string;
+  StateOfResidence: string;
+  StateOfOrigin: string;
+  Address: string;
+  LocalGovernment: string;
+  PhoneNumber: string;
+  DOBstring: string;
+  SID: string;
+  Firstname: string;
+  CourseID: number;
+  NationalIdentityNumber: string;
+  DisabilityName: string;
+  IsDisabled: boolean;
 }
 
 export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
-	const [form, setForm] = useState<IForm>({
-		Email: "",
-		Lastname: "",
-		Gender: "",
-		StateOfResidence: "",
-		LocalGovernment:"",
-		NationalIdentityNumber:"",
-		PhoneNumber: "",
-		DOBstring: "",
-		SID: "",
-		Firstname: "",
-		CourseID: 1,
-		StateOfOrigin: "",
-		Address:"",
-		DisabilityName:"",
-		IsDisabled: false,
-	});
+  const [form, setForm] = useState<IForm>({
+    Email: "",
+    Lastname: "",
+    Gender: "",
+    StateOfResidence: "",
+    LocalGovernment: "",
+    NationalIdentityNumber: "",
+    PhoneNumber: "",
+    DOBstring: "",
+    SID: "",
+    Firstname: "",
+    CourseID: 1,
+    StateOfOrigin: "",
+    Address: "",
+    DisabilityName: "",
+    IsDisabled: false,
+  });
 
   const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<Ierror>({
@@ -168,11 +168,11 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
     text: "",
   });
 
-	const [DOBString, setDOBString] = useState("");
-	const [DOBStringError, setDOBStringError] = useState<Ierror>({
-		active: false,
-		text: "",
-	});
+  const [DOBString, setDOBString] = useState("");
+  const [DOBStringError, setDOBStringError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
 
   const [gender, setGender] = useState("");
   const [genderError, setGenderError] = useState({ active: false, text: "" });
@@ -224,157 +224,163 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       }
     }
 
-		if (input == "Address") {
-			setAddress(value);
-			if (value.trim().length < 1) {
-				setAddressError({ active: true, text: "Address is required" });
-			} else {
-				setAddressError({ active: false, text: "Address is valid" });
-				setForm({ ...form, Address: value });
-			}
-		}
-		if (input == "NationalIdentityNumber") {
-			setNationalIdentityNumber(value);
-			if (value.trim().length < 1) {
-				setNationalIdentityNumberError({ active: true, text: "NIN is required" });
-			} else {
-				setNationalIdentityNumberError({ active: false, text: "NIN is valid" });
-				setForm({ ...form, NationalIdentityNumber: value });
-			}
-		}
-		if (input == "gender") {
-			setGender(value);
-			if (value.trim().length < 1) {
-				setGenderError({ active: true, text: "Gender is required" });
-			} else {
-				setGenderError({ active: false, text: "Gender is valid" });
-				setForm({ ...form, Gender: value });
-			}
-		}
-		if (input == "CourseID") {
-			setCourseID(Number(value));
-			if (value.trim().length < 1) {
-				setCourseIDError({ active: true, text: "Course ID is required" });
-			} else {
-				setCourseIDError({ active: false, text: "Course ID is valid" });
-				setForm({ ...form, CourseID: Number(value) });
-			}
-		}
-		if (input === "DOBString") {
-			// Convert YYYY-MM-DD to MM/DD/YYYY
-			const parts = value.split("-");
-			const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
-			setDOBString(value);
-			if (!isValidDate(formattedDate)) {
-				setDOBStringError({ active: true, text: "Invalid date format. Please enter MM/DD/YYYY" });
-			} else {
-				setDOBStringError({ active: false, text: "Date of Birth is valid" });
-				setForm({ ...form, DOBstring: formattedDate });
-			}
-		}
-	};
+    if (input == "Address") {
+      setAddress(value);
+      if (value.trim().length < 1) {
+        setAddressError({ active: true, text: "Address is required" });
+      } else {
+        setAddressError({ active: false, text: "Address is valid" });
+        setForm({ ...form, Address: value });
+      }
+    }
+    if (input == "NationalIdentityNumber") {
+      setNationalIdentityNumber(value);
+      if (value.trim().length < 1) {
+        setNationalIdentityNumberError({
+          active: true,
+          text: "NIN is required",
+        });
+      } else {
+        setNationalIdentityNumberError({ active: false, text: "NIN is valid" });
+        setForm({ ...form, NationalIdentityNumber: value });
+      }
+    }
+    if (input == "gender") {
+      setGender(value);
+      if (value.trim().length < 1) {
+        setGenderError({ active: true, text: "Gender is required" });
+      } else {
+        setGenderError({ active: false, text: "Gender is valid" });
+        setForm({ ...form, Gender: value });
+      }
+    }
+    if (input == "CourseID") {
+      setCourseID(Number(value));
+      if (value.trim().length < 1) {
+        setCourseIDError({ active: true, text: "Course ID is required" });
+      } else {
+        setCourseIDError({ active: false, text: "Course ID is valid" });
+        setForm({ ...form, CourseID: Number(value) });
+      }
+    }
+    if (input === "DOBString") {
+      // Convert YYYY-MM-DD to MM/DD/YYYY
+      const parts = value.split("-");
+      const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+      setDOBString(value);
+      if (!isValidDate(formattedDate)) {
+        setDOBStringError({
+          active: true,
+          text: "Invalid date format. Please enter MM/DD/YYYY",
+        });
+      } else {
+        setDOBStringError({ active: false, text: "Date of Birth is valid" });
+        setForm({ ...form, DOBstring: formattedDate });
+      }
+    }
+  };
 
-	const isValidDate = (dateString: string) => {
-		const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-		return regex.test(dateString);
-	};
-	// for states
-	const [state, setState] = useState("");
-	const [stateOfOrigin, setStateOfOrigin] = useState("");
-	const [statesOfOrigin, setStatesOfOrigin] = useState(States);
-	// const [stateOfResidence, setStateOfResidence] = useState("");
-	// const [statesOfResidence, setStatesOfResidence] = useState(States);
-	const [states, setStates] = useState(States);
-	const NaijaStates = require('naija-state-local-government');
-	const [lgas, setLgas] = useState([]);
-	const [lga, setLga] = useState("");
-	interface ICourse {
-		Id: number;
-		Name: string;
-		Description: string;
-	}
-	interface IDis {
-		id: number;
-		name: string;
-	}
+  const isValidDate = (dateString: string) => {
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    return regex.test(dateString);
+  };
+  // for states
+  const [state, setState] = useState("");
+  const [stateOfOrigin, setStateOfOrigin] = useState("");
+  const [statesOfOrigin, setStatesOfOrigin] = useState(States);
+  // const [stateOfResidence, setStateOfResidence] = useState("");
+  // const [statesOfResidence, setStatesOfResidence] = useState(States);
+  const [states, setStates] = useState(States);
+  const NaijaStates = require("naija-state-local-government");
+  const [lgas, setLgas] = useState([]);
+  const [lga, setLga] = useState("");
+  interface ICourse {
+    Id: number;
+    Name: string;
+    Description: string;
+  }
+  interface IDis {
+    id: number;
+    name: string;
+  }
 
-	const [course, setCourse] = useState<string>("");
-	const [disability, setDisability] = useState<string>("");
-	const [courses, setCourses] = useState<ICourse[]>([]);
-	const [disabilities, setDisabilities] = useState<IDis[]>([]);
-	
+  const [course, setCourse] = useState<string>("");
+  const [disability, setDisability] = useState<string>("");
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [disabilities, setDisabilities] = useState<IDis[]>([]);
 
-	useEffect(() => {
-		// Fetch states from API when component mounts
-		fetchCourses();
-		fetchDisabilities()
-	}, []);
+  useEffect(() => {
+    // Fetch states from API when component mounts
+    fetchCourses();
+    fetchDisabilities();
+  }, []);
 
-	const fetchCourses = async () => {
-		try {
-			const token = Cookies.get("token");
-			const config = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			};
-			const response = await axios.get(`${BACKEND_URL}/course/all`, config);
-			// Assuming the API response is an array of state names
-			setCourses(response.data.course);
-		} catch (error) {
-			console.error("Error fetching courses:", error);
-		}
-	};
-	const fetchDisabilities = async () => {
-		try {
-			const token = Cookies.get("token");
-			const config = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			};
-			const response = await axios.get(`${BACKEND_URL}/student/disabilities`, config);
-			// Assuming the API response is an array of state names
-			// console.log(response)
-			setDisabilities(response.data);
-			console.log(response.data)
-		} catch (error) {
-			console.error("Error fetching disabilities:", error);
-		}
-	};
+  const fetchCourses = async () => {
+    try {
+      const token = Cookies.get("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${BACKEND_URL}/course/all`, config);
+      // Assuming the API response is an array of state names
+      setCourses(response.data.course);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+  const fetchDisabilities = async () => {
+    try {
+      const token = Cookies.get("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${BACKEND_URL}/student/disabilities`,
+        config
+      );
+      // Assuming the API response is an array of state names
 
-	const [showDropdown, setShowDropdown] = useState(false);
-	const [showLGADropdown, setShowLGADropdown] = useState(false);
-	const [showCourseDropdown, setShowCourseDropdown] = useState(false);
-	const [showDisabilityDropdown, setShowDisabilityDropdown] = useState(false);
+      setDisabilities(response.data);
+    } catch (error) {
+      console.error("Error fetching disabilities:", error);
+    }
+  };
 
-	const handleCourseSelection = (name: string, value: number) => {
-		setForm({ ...form, CourseID: value });
-		setCourse(name);
-		setShowCourseDropdown(false);
-	};
-	const handleDisabilitySelection = (name: string) => {
-		setForm({ ...form, DisabilityName: name });
-		setDisability(name);
-		setShowDisabilityDropdown(false);
-	};
-	const handleStateSelection = (name: string) => {
-		setForm({ ...form, StateOfResidence: name });
-		setState(name);
-		setShowDropdown(false);
-	};
-	const [showStateDropdown, setShowStateDropdown] = useState(false);
-	const handleStateOfOriginSelection = (name: string) => {
-		setForm({ ...form, StateOfOrigin: name });
-		setStateOfOrigin(name);
-		setShowStateDropdown(false);
-	};
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showLGADropdown, setShowLGADropdown] = useState(false);
+  const [showCourseDropdown, setShowCourseDropdown] = useState(false);
+  const [showDisabilityDropdown, setShowDisabilityDropdown] = useState(false);
+
+  const handleCourseSelection = (name: string, value: number) => {
+    setForm({ ...form, CourseID: value });
+    setCourse(name);
+    setShowCourseDropdown(false);
+  };
+  const handleDisabilitySelection = (name: string) => {
+    setForm({ ...form, DisabilityName: name });
+    setDisability(name);
+    setShowDisabilityDropdown(false);
+  };
+  const handleStateSelection = (name: string) => {
+    setForm({ ...form, StateOfResidence: name });
+    setState(name);
+    setShowDropdown(false);
+  };
+  const [showStateDropdown, setShowStateDropdown] = useState(false);
+  const handleStateOfOriginSelection = (name: string) => {
+    setForm({ ...form, StateOfOrigin: name });
+    setStateOfOrigin(name);
+    setShowStateDropdown(false);
+  };
 
   const handleLGASelection = (name: string) => {
     setForm({ ...form, LocalGovernment: name });
     setLga(name);
     setShowLGADropdown(false);
-    console.log(lgas);
   };
   useEffect(() => {
     if (state) {
@@ -401,96 +407,97 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
     );
   };
   const isFormValid2 = () => {
-    return (
-     NationalIdentityNumber !==""
-    );
+    return NationalIdentityNumber !== "";
   };
 
   const handleCreateStc = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-		if (
-			!emailError.active &&
-			!firstNameError.active &&
-			!lastNameError.active &&
-			emailError.text !== "" &&
-			lastNameError.text !== "" &&
-			state !== "" &&
-			firstNameError.text !== ""
-		) {
-			// call createMDA API
-			const token = Cookies.get("token");
-			const config = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			};
-			try {
-				const body = {
-					Email: form.Email,
-					Lastname: form.Lastname,
-					Gender: form.Gender,
-					StateOfResidence: form.StateOfResidence,
-					StateOfOrigin: form.StateOfOrigin,
-					Address:form.Address,
-					LocalGovernment:form.LocalGovernment,
-					PhoneNumber: form.PhoneNumber,
-					DOBstring: form.DOBstring,
-					SID: form.SID,
-					CourseID: form.CourseID,
-					DisabilityName: form.DisabilityName,
-					Firstname: form.Firstname,
-					NationalIdentityNumber: form.NationalIdentityNumber,
-					IsDisabled:disability?true:false
-				};
-				console.log("Request Body:", body);
-				setIsLoading(true);
-				const { data } = await axios.post(`${BACKEND_URL}/student/create-fme`, body, config);
-				if (data) {
-					setIsLoading(false);
-					// update fakeMdaId
-					let newFakeId = fakeNewStudentId ? fakeNewStudentId + 1 : 1;
-					dispatch(setFakeNewStudentId(newFakeId));
-					setIsSuccess(true);
-				}
-			} catch (error: any) {
-				if (error.response) {
-					setEmailError({
-						active: true,
-						text: error.response.data.error,
-					});
-					setFirstNameError({
-						active: true,
-						text: error.response.data.error,
-					});
-					setLastNameError({
-						active: true,
-						text: error.response.data.error,
-					});
-				} else {
-					console.log(error);
-					setOtherError({
-						active: true,
-						text: error.message,
-					});
-				}
-				setIsLoading(false);
-			}
-		}
-	};
-	const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
-	const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
-	const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
-	const handleContinue = () => {
-		// Assuming formData is already populated with the first modal's data
-		setIsFirstModalOpen(false);
-		setIsSecondModalOpen(true);
-	};
-	const handleContinue2 = () => {
-		// Assuming formData is already populated with the first modal's data
-		setIsSecondModalOpen(false);
-		setIsThirdModalOpen(true);
-	};
+    if (
+      !emailError.active &&
+      !firstNameError.active &&
+      !lastNameError.active &&
+      emailError.text !== "" &&
+      lastNameError.text !== "" &&
+      state !== "" &&
+      firstNameError.text !== ""
+    ) {
+      // call createMDA API
+      const token = Cookies.get("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const body = {
+          Email: form.Email,
+          Lastname: form.Lastname,
+          Gender: form.Gender,
+          StateOfResidence: form.StateOfResidence,
+          StateOfOrigin: form.StateOfOrigin,
+          Address: form.Address,
+          LocalGovernment: form.LocalGovernment,
+          PhoneNumber: form.PhoneNumber,
+          DOBstring: form.DOBstring,
+          SID: form.SID,
+          CourseID: form.CourseID,
+          DisabilityName: form.DisabilityName,
+          Firstname: form.Firstname,
+          NationalIdentityNumber: form.NationalIdentityNumber,
+          IsDisabled: disability ? true : false,
+        };
+
+        setIsLoading(true);
+        const { data } = await axios.post(
+          `${BACKEND_URL}/student/create-fme`,
+          body,
+          config
+        );
+        if (data) {
+          setIsLoading(false);
+          // update fakeMdaId
+          let newFakeId = fakeNewStudentId ? fakeNewStudentId + 1 : 1;
+          dispatch(setFakeNewStudentId(newFakeId));
+          setIsSuccess(true);
+        }
+      } catch (error: any) {
+        if (error.response) {
+          setEmailError({
+            active: true,
+            text: error.response.data.error,
+          });
+          setFirstNameError({
+            active: true,
+            text: error.response.data.error,
+          });
+          setLastNameError({
+            active: true,
+            text: error.response.data.error,
+          });
+        } else {
+          setOtherError({
+            active: true,
+            text: error.message,
+          });
+        }
+        setIsLoading(false);
+      }
+    }
+  };
+  const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
+  const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+  const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+  const handleContinue = () => {
+    // Assuming formData is already populated with the first modal's data
+    setIsFirstModalOpen(false);
+    setIsSecondModalOpen(true);
+  };
+  const handleContinue2 = () => {
+    // Assuming formData is already populated with the first modal's data
+    setIsSecondModalOpen(false);
+    setIsThirdModalOpen(true);
+  };
 
   const handlePrevious = () => {
     setIsFirstModalOpen(true);
@@ -503,450 +510,616 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
   const router = useRouter();
 
-	return (
-		<>
-			{isSuccess === false && (
-				<NewMdaAbsoluteStyles>
-					<div className="form">
+  return (
+    <>
+      {isSuccess === false && (
+        <NewMdaAbsoluteStyles>
+          <div className="form">
             <ClickOutsideWrapper onClickOutside={cancelModal}>
-						<NewMdaFormStyles className="bd">
-							<div className="fl">
-								<div className="form-head">
-									<h3>Add New Student</h3>
-									<p>Fill in the necessary details to add a new Student</p>
-								</div>
-								<IconWrapper onClick={cancelModal}>
-									<XIcon />
-								</IconWrapper>
-							</div>
-							<form className="form" onSubmit={handleCreateStc}>
-								{isFirstModalOpen && (
-									<div className="form-input">
-										<div className="flex justify-between gap-4">
-											<div className="form-ele flex-1">
-												<label htmlFor="firstName">First Name</label>
-												<div className="inp">
-													<input
-														type="text"
-														name="Firstname"
-														value={Firstname}
-														className={firstNameError.active ? "error-bdr" : ""}
-														onChange={(e) => handleInput(e, "Firstname")}
-														placeholder="Please type in your first name here"
-													/>
-													<div className="abs">
-														{firstNameError.active === false && firstNameError.text === "" && <NameIcon />}
-														{firstNameError.active === false && firstNameError.text !== "" && <CheckedIcon />}
-														{firstNameError.active === true && <FormErrorIcon />}
-													</div>
-													<p role="alert" aria-live="assertive" aria-atomic="true" className={firstNameError.active ? "error-msg" : "correct"}>
-														{firstNameError.text}
-													</p>
-												</div>
-											</div>
-											<div className="form-ele flex-1">
-												<label htmlFor="lastName">Last Name</label>
-												<div className="inp">
-													<input
-														type="text"
-														name="Lastname"
-														value={Lastname}
-														className={lastNameError.active ? "error-bdr" : ""}
-														onChange={(e) => handleInput(e, "Lastname")}
-														placeholder="Please type in your last name here"
-													/>
-													<div className="abs">
-														{lastNameError.active === false && lastNameError.text === "" && <NameIcon />}
-														{lastNameError.active === false && lastNameError.text !== "" && <CheckedIcon />}
-														{lastNameError.active === true && <FormErrorIcon />}
-													</div>
-													<p role="alert" aria-live="assertive" aria-atomic="true" className={lastNameError.active ? "error-msg" : "correct"}>
-														{lastNameError.text}
-													</p>
-												</div>
-											</div>
-										</div>
-										<div className="form-ele">
-											<label htmlFor="otherNames">Phone Number</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="Phone"
-													value={Phone}
-													onChange={(e) => handleInput(e, "Phone")}
-													placeholder="Please type in your Phone Number here"
-												/>
-												<div className="abs">
-													{phoneError.active === false && phoneError.text === "" && <NameIcon />}
-													{phoneError.active === false && phoneError.text !== "" && <CheckedIcon />}
-													{phoneError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										<div className="form-ele">
-											<label htmlFor="email">Email Address</label>
-											<div className="inp">
-												<input
-													type="email"
-													name="email"
-													value={email}
-													onChange={handleEmailChange}
-													placeholder="Please type in your Email Address"
-													className={emailError.active ? "error-bdr" : ""}
-													autoComplete="email"
-												/>
-												<div className="abs">
-													{emailError.active === false && emailError.text === "" && <EmailIcon />}
-													{emailError.active === false && emailError.text !== "" && <CheckedIcon />}
-													{emailError.active === true && <FormErrorIcon />}
-												</div>
-												<p role="alert" aria-live="assertive" aria-atomic="true" className={emailError.active ? "error-msg" : "correct"}>
-													{emailError.text}
-												</p>
-											</div>
-										</div>
-										<div className="form-ele ">
-											<label htmlFor="address">Date Of Birth</label>
-											<div className="inp">
-												<input
-													type="date"
-													name="DOB"
-													value={DOBString}
-													onChange={(e) => handleInput(e, "DOBString")}
-													className={DOBStringError.active ? "error-bdr" : ""}
-													placeholder="MM/DD/YYYY"
-												/>
-												<div className="abs">
-													{DOBStringError.active === false && DOBStringError.text === "" && <LocationIcon />}
-													{DOBStringError.active === false && DOBStringError.text !== "" && <CheckedIcon />}
-													{DOBStringError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										
-										<div className="form-ele">
-											<label htmlFor="state">State of Origin</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowStateDropdown(!showStateDropdown)}>
-													<>
-														{stateOfOrigin === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{stateOfOrigin}</p>}
-													</>
-													<AngleDownStyles $isSelected={showStateDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showStateDropdown && (
-													<div className="dropdown">
-														{statesOfOrigin.map((ele, index) => (
-															<StateCompStyles $isSelected={stateOfOrigin === ele.name} key={index} onClick={() => handleStateOfOriginSelection(ele.name)}>
-																<p>{ele.name}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-										
-									</div>
-								)}
-								{isSecondModalOpen && (
-									<div className="form-input">
-										<div className="form-ele">
-											<label htmlFor="state">State of Operation</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowDropdown(!showDropdown)}>
-													<>
-														{state === "" ? <p className="placeholder">Please select state of residence</p> : <p className="state-name">{state}</p>}
-													</>
-													<AngleDownStyles $isSelected={showDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showDropdown && (
-													<div className="dropdown">
-														{states.map((ele, index) => (
-															<StateCompStyles $isSelected={state === ele.name} key={index} onClick={() => handleStateSelection(ele.name)}>
-																<p>{ele.name}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-										<div className="form-ele flex-1">
-											<label htmlFor="Nin">NIN</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="Nin"
-													id="Nin"
-													value={NationalIdentityNumber}
-													className={NationalIdentityNumberError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "NationalIdentityNumber")}
-													placeholder="Please input NIN"
-												/>
-												<div className="abs">
-													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text === "" && <NameIcon />}
-													{NationalIdentityNumberError.active === false && NationalIdentityNumberError.text !== "" && <CheckedIcon />}
-													{NationalIdentityNumberError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										<div className="form-ele">
-											<label htmlFor="state">Local Government Area</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowLGADropdown(!showLGADropdown)}>
-													<>
-														{lga === "" ? <p className="placeholder">Please select local government area</p> : <p className="state-name">{lga}</p>}
-													</>
-													<AngleDownStyles $isSelected={showLGADropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showLGADropdown && (
-													<div className="dropdown">
-														{lgas.map((ele, index) => (
-															<StateCompStyles $isSelected={lga === ele} key={index} onClick={() => handleLGASelection(ele)}>
-																<p>{ele}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-                    <div className="">
-											<label htmlFor="gender" className=" text-[#101928] font-semibold">
-												Gender
-											</label>
-											<div className="">
-												<div className=" flex gap-4">
-													<input
-														type="radio"
-														name="gender"
-														value="male"
-														id="gender"
-														checked={gender === "male"}
-														onChange={(e) => handleInput(e, "gender")}
-													/>{" "}
-													<span>Male</span>
-												</div>
-												<div className="flex gap-4">
-													<input
-														type="radio"
-														name="gender"
-														value="female"
-														id="gender"
-														checked={gender === "female"}
-														onChange={(e) => handleInput(e, "gender")}
-													/>{" "}
-													<span>Female</span>
-												</div>
-											</div>
-										</div>
-										
-									</div>
-								)}
-								{isThirdModalOpen && (
-									
-									<div className="form-input">
-										
-    				
-										
-                    <div className="form-ele">
-											<label htmlFor="state">Training/Skill Program</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowCourseDropdown(!showCourseDropdown)}>
-													<>
-														{course === "" ? <p className="placeholder">Please select the course taken</p> : <p className="state-name">{course}</p>}
-													</>
-													<AngleDownStyles $isSelected={showCourseDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showCourseDropdown && (
-													<div className="dropdown">
-														{courses.map((ele, index) => (
-															<StateCompStyles $isSelected={course === ele.Name} key={index} onClick={() => handleCourseSelection(ele.Name, ele.Id)}>
-																<p>{ele.Name}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-                    
-										<div className="form-ele flex-1">
-											<label htmlFor="firstName">Student ID</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="studentID"
-													value={SID}
-													className={SIDError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "SID")}
-													placeholder="Please type in your Student ID"
-												/>
-												<div className="abs">
-													{SIDError.active === false && SIDError.text === "" && <NameIcon />}
-													{SIDError.active === false && SIDError.text !== "" && <CheckedIcon />}
-													{SIDError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										<div className="form-ele flex-1">
-											<label htmlFor="firstName">Address</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="Address"
-													value={Address}
-													className={AddressError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "Address")}
-													placeholder="Please type in your Address"
-												/>
-												<div className="abs">
-													{AddressError.active === false && AddressError.text === "" && <NameIcon />}
-													{AddressError.active === false && AddressError.text !== "" && <CheckedIcon />}
-													{AddressError.active === true && <FormErrorIcon />}
-												</div>
-											</div>
-										</div>
-										<div className="form-ele">
-											<label htmlFor="state">Disabilities</label>
-											<StatesDropdownStyles>
-												<div className="head" onClick={() => setShowDisabilityDropdown(!showDisabilityDropdown)}>
-													<>
-														{disability === "" ? <p className="placeholder"> select the disability</p> : <p className="state-name">{disability}</p>}
-													</>
-													<AngleDownStyles $isSelected={showDisabilityDropdown}>
-														<AngleDown />
-													</AngleDownStyles>
-												</div>
-												{showDisabilityDropdown && (
-													<div className="dropdown">
-														{disabilities.map((ele, index) => (
-															<StateCompStyles $isSelected={disability === ele.name} key={index} onClick={() => handleDisabilitySelection(ele.name)}>
-																<p>{ele.name}</p>
-															</StateCompStyles>
-														))}
-													</div>
-												)}
-											</StatesDropdownStyles>
-											{otherError.active && (
-												<p role="alert" aria-live="assertive" aria-atomic="true" className="error-msg">
-													{otherError.text}
-												</p>
-											)}
-										</div>
-										
-									</div>
-								)}
-								{isFirstModalOpen && (
-									<div className="flex gap-4">
-										<button
-											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
-											onClick={cancelModal}>
-											Cancel
-										</button>
-										<button
-											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
-												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
-											}`}
-											onClick={handleContinue}
-											disabled={!isFormValid()}>
-											Continue
-										</button>
-									</div>
-								)}
-								{isSecondModalOpen && (
-									<div className="flex gap-4">
-										<button
-											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
-											onClick={handlePrevious}>
-											Previous
-										</button>
-										<button
-											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
-												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
-											}`}
-											onClick={handleContinue2}
-											disabled={!isFormValid2()}>
-											Continue
-										</button>
-									</div>
-								)}
-								{isThirdModalOpen && (
-									<div className="flex gap-4">
-										<button
-											className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
-											onClick={handlePrevious2}>
-											Previous Page
-										</button>
-										<button
-											className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
-												isFormValid() ? "" : "opacity-50 cursor-not-allowed"
-											}`}
-											type="submit"
-											disabled={
-												firstNameError.text == "" ||
-												lastNameError.text == "" ||
-												emailError.text == "" ||
-												phoneError.text == "" ||
-												firstNameError.active !== false ||
-												lastNameError.active !== false ||
-												emailError.active !== false ||
-												phoneError.active !== false ||
-												state == ""||
-												DOBString==""||
-                        Address==""
-											}>
-											{isLoading ? <ButtonLoader /> : "Create Student"}
-										</button>
-									</div>
-								)}
-							</form>
-						</NewMdaFormStyles>
+              <NewMdaFormStyles className="bd">
+                <div className="fl">
+                  <div className="form-head">
+                    <h3>Add New Student</h3>
+                    <p>Fill in the necessary details to add a new Student</p>
+                  </div>
+                  <IconWrapper onClick={cancelModal}>
+                    <XIcon />
+                  </IconWrapper>
+                </div>
+                <form className="form" onSubmit={handleCreateStc}>
+                  {isFirstModalOpen && (
+                    <div className="form-input">
+                      <div className="flex justify-between gap-4">
+                        <div className="form-ele flex-1">
+                          <label htmlFor="firstName">First Name</label>
+                          <div className="inp">
+                            <input
+                              type="text"
+                              name="Firstname"
+                              value={Firstname}
+                              className={
+                                firstNameError.active ? "error-bdr" : ""
+                              }
+                              onChange={(e) => handleInput(e, "Firstname")}
+                              placeholder="Please type in your first name here"
+                            />
+                            <div className="abs">
+                              {firstNameError.active === false &&
+                                firstNameError.text === "" && <NameIcon />}
+                              {firstNameError.active === false &&
+                                firstNameError.text !== "" && <CheckedIcon />}
+                              {firstNameError.active === true && (
+                                <FormErrorIcon />
+                              )}
+                            </div>
+                            <p
+                              role="alert"
+                              aria-live="assertive"
+                              aria-atomic="true"
+                              className={
+                                firstNameError.active ? "error-msg" : "correct"
+                              }
+                            >
+                              {firstNameError.text}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="form-ele flex-1">
+                          <label htmlFor="lastName">Last Name</label>
+                          <div className="inp">
+                            <input
+                              type="text"
+                              name="Lastname"
+                              value={Lastname}
+                              className={
+                                lastNameError.active ? "error-bdr" : ""
+                              }
+                              onChange={(e) => handleInput(e, "Lastname")}
+                              placeholder="Please type in your last name here"
+                            />
+                            <div className="abs">
+                              {lastNameError.active === false &&
+                                lastNameError.text === "" && <NameIcon />}
+                              {lastNameError.active === false &&
+                                lastNameError.text !== "" && <CheckedIcon />}
+                              {lastNameError.active === true && (
+                                <FormErrorIcon />
+                              )}
+                            </div>
+                            <p
+                              role="alert"
+                              aria-live="assertive"
+                              aria-atomic="true"
+                              className={
+                                lastNameError.active ? "error-msg" : "correct"
+                              }
+                            >
+                              {lastNameError.text}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-ele">
+                        <label htmlFor="otherNames">Phone Number</label>
+                        <div className="inp">
+                          <input
+                            type="text"
+                            name="Phone"
+                            value={Phone}
+                            onChange={(e) => handleInput(e, "Phone")}
+                            placeholder="Please type in your Phone Number here"
+                          />
+                          <div className="abs">
+                            {phoneError.active === false &&
+                              phoneError.text === "" && <NameIcon />}
+                            {phoneError.active === false &&
+                              phoneError.text !== "" && <CheckedIcon />}
+                            {phoneError.active === true && <FormErrorIcon />}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-ele">
+                        <label htmlFor="email">Email Address</label>
+                        <div className="inp">
+                          <input
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={handleEmailChange}
+                            placeholder="Please type in your Email Address"
+                            className={emailError.active ? "error-bdr" : ""}
+                            autoComplete="email"
+                          />
+                          <div className="abs">
+                            {emailError.active === false &&
+                              emailError.text === "" && <EmailIcon />}
+                            {emailError.active === false &&
+                              emailError.text !== "" && <CheckedIcon />}
+                            {emailError.active === true && <FormErrorIcon />}
+                          </div>
+                          <p
+                            role="alert"
+                            aria-live="assertive"
+                            aria-atomic="true"
+                            className={
+                              emailError.active ? "error-msg" : "correct"
+                            }
+                          >
+                            {emailError.text}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="form-ele ">
+                        <label htmlFor="address">Date Of Birth</label>
+                        <div className="inp">
+                          <input
+                            type="date"
+                            name="DOB"
+                            value={DOBString}
+                            onChange={(e) => handleInput(e, "DOBString")}
+                            className={DOBStringError.active ? "error-bdr" : ""}
+                            placeholder="MM/DD/YYYY"
+                          />
+                          <div className="abs">
+                            {DOBStringError.active === false &&
+                              DOBStringError.text === "" && <LocationIcon />}
+                            {DOBStringError.active === false &&
+                              DOBStringError.text !== "" && <CheckedIcon />}
+                            {DOBStringError.active === true && (
+                              <FormErrorIcon />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="form-ele">
+                        <label htmlFor="state">State of Origin</label>
+                        <StatesDropdownStyles>
+                          <div
+                            className="head"
+                            onClick={() =>
+                              setShowStateDropdown(!showStateDropdown)
+                            }
+                          >
+                            <>
+                              {stateOfOrigin === "" ? (
+                                <p className="placeholder">
+                                  Please select state of residence
+                                </p>
+                              ) : (
+                                <p className="state-name">{stateOfOrigin}</p>
+                              )}
+                            </>
+                            <AngleDownStyles $isSelected={showStateDropdown}>
+                              <AngleDown />
+                            </AngleDownStyles>
+                          </div>
+                          {showStateDropdown && (
+                            <div className="dropdown">
+                              {statesOfOrigin.map((ele, index) => (
+                                <StateCompStyles
+                                  $isSelected={stateOfOrigin === ele.name}
+                                  key={index}
+                                  onClick={() =>
+                                    handleStateOfOriginSelection(ele.name)
+                                  }
+                                >
+                                  <p>{ele.name}</p>
+                                </StateCompStyles>
+                              ))}
+                            </div>
+                          )}
+                        </StatesDropdownStyles>
+                        {otherError.active && (
+                          <p
+                            role="alert"
+                            aria-live="assertive"
+                            aria-atomic="true"
+                            className="error-msg"
+                          >
+                            {otherError.text}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {isSecondModalOpen && (
+                    <div className="form-input">
+                      <div className="form-ele">
+                        <label htmlFor="state">State of Operation</label>
+                        <StatesDropdownStyles>
+                          <div
+                            className="head"
+                            onClick={() => setShowDropdown(!showDropdown)}
+                          >
+                            <>
+                              {state === "" ? (
+                                <p className="placeholder">
+                                  Please select state of residence
+                                </p>
+                              ) : (
+                                <p className="state-name">{state}</p>
+                              )}
+                            </>
+                            <AngleDownStyles $isSelected={showDropdown}>
+                              <AngleDown />
+                            </AngleDownStyles>
+                          </div>
+                          {showDropdown && (
+                            <div className="dropdown">
+                              {states.map((ele, index) => (
+                                <StateCompStyles
+                                  $isSelected={state === ele.name}
+                                  key={index}
+                                  onClick={() => handleStateSelection(ele.name)}
+                                >
+                                  <p>{ele.name}</p>
+                                </StateCompStyles>
+                              ))}
+                            </div>
+                          )}
+                        </StatesDropdownStyles>
+                        {otherError.active && (
+                          <p
+                            role="alert"
+                            aria-live="assertive"
+                            aria-atomic="true"
+                            className="error-msg"
+                          >
+                            {otherError.text}
+                          </p>
+                        )}
+                      </div>
+                      <div className="form-ele flex-1">
+                        <label htmlFor="Nin">NIN</label>
+                        <div className="inp">
+                          <input
+                            type="text"
+                            name="Nin"
+                            id="Nin"
+                            value={NationalIdentityNumber}
+                            className={
+                              NationalIdentityNumberError.active
+                                ? "error-bdr"
+                                : ""
+                            }
+                            onChange={(e) =>
+                              handleInput(e, "NationalIdentityNumber")
+                            }
+                            placeholder="Please input NIN"
+                          />
+                          <div className="abs">
+                            {NationalIdentityNumberError.active === false &&
+                              NationalIdentityNumberError.text === "" && (
+                                <NameIcon />
+                              )}
+                            {NationalIdentityNumberError.active === false &&
+                              NationalIdentityNumberError.text !== "" && (
+                                <CheckedIcon />
+                              )}
+                            {NationalIdentityNumberError.active === true && (
+                              <FormErrorIcon />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-ele">
+                        <label htmlFor="state">Local Government Area</label>
+                        <StatesDropdownStyles>
+                          <div
+                            className="head"
+                            onClick={() => setShowLGADropdown(!showLGADropdown)}
+                          >
+                            <>
+                              {lga === "" ? (
+                                <p className="placeholder">
+                                  Please select local government area
+                                </p>
+                              ) : (
+                                <p className="state-name">{lga}</p>
+                              )}
+                            </>
+                            <AngleDownStyles $isSelected={showLGADropdown}>
+                              <AngleDown />
+                            </AngleDownStyles>
+                          </div>
+                          {showLGADropdown && (
+                            <div className="dropdown">
+                              {lgas.map((ele, index) => (
+                                <StateCompStyles
+                                  $isSelected={lga === ele}
+                                  key={index}
+                                  onClick={() => handleLGASelection(ele)}
+                                >
+                                  <p>{ele}</p>
+                                </StateCompStyles>
+                              ))}
+                            </div>
+                          )}
+                        </StatesDropdownStyles>
+                        {otherError.active && (
+                          <p
+                            role="alert"
+                            aria-live="assertive"
+                            aria-atomic="true"
+                            className="error-msg"
+                          >
+                            {otherError.text}
+                          </p>
+                        )}
+                      </div>
+                      <div className="">
+                        <label
+                          htmlFor="gender"
+                          className=" text-[#101928] font-semibold"
+                        >
+                          Gender
+                        </label>
+                        <div className="">
+                          <div className=" flex gap-4">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="male"
+                              id="gender"
+                              checked={gender === "male"}
+                              onChange={(e) => handleInput(e, "gender")}
+                            />{" "}
+                            <span>Male</span>
+                          </div>
+                          <div className="flex gap-4">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="female"
+                              id="gender"
+                              checked={gender === "female"}
+                              onChange={(e) => handleInput(e, "gender")}
+                            />{" "}
+                            <span>Female</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {isThirdModalOpen && (
+                    <div className="form-input">
+                      <div className="form-ele">
+                        <label htmlFor="state">Training/Skill Program</label>
+                        <StatesDropdownStyles>
+                          <div
+                            className="head"
+                            onClick={() =>
+                              setShowCourseDropdown(!showCourseDropdown)
+                            }
+                          >
+                            <>
+                              {course === "" ? (
+                                <p className="placeholder">
+                                  Please select the course taken
+                                </p>
+                              ) : (
+                                <p className="state-name">{course}</p>
+                              )}
+                            </>
+                            <AngleDownStyles $isSelected={showCourseDropdown}>
+                              <AngleDown />
+                            </AngleDownStyles>
+                          </div>
+                          {showCourseDropdown && (
+                            <div className="dropdown">
+                              {courses.map((ele, index) => (
+                                <StateCompStyles
+                                  $isSelected={course === ele.Name}
+                                  key={index}
+                                  onClick={() =>
+                                    handleCourseSelection(ele.Name, ele.Id)
+                                  }
+                                >
+                                  <p>{ele.Name}</p>
+                                </StateCompStyles>
+                              ))}
+                            </div>
+                          )}
+                        </StatesDropdownStyles>
+                        {otherError.active && (
+                          <p
+                            role="alert"
+                            aria-live="assertive"
+                            aria-atomic="true"
+                            className="error-msg"
+                          >
+                            {otherError.text}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="form-ele flex-1">
+                        <label htmlFor="firstName">Student ID</label>
+                        <div className="inp">
+                          <input
+                            type="text"
+                            name="studentID"
+                            value={SID}
+                            className={SIDError.active ? "error-bdr" : ""}
+                            onChange={(e) => handleInput(e, "SID")}
+                            placeholder="Please type in your Student ID"
+                          />
+                          <div className="abs">
+                            {SIDError.active === false &&
+                              SIDError.text === "" && <NameIcon />}
+                            {SIDError.active === false &&
+                              SIDError.text !== "" && <CheckedIcon />}
+                            {SIDError.active === true && <FormErrorIcon />}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-ele flex-1">
+                        <label htmlFor="firstName">Address</label>
+                        <div className="inp">
+                          <input
+                            type="text"
+                            name="Address"
+                            value={Address}
+                            className={AddressError.active ? "error-bdr" : ""}
+                            onChange={(e) => handleInput(e, "Address")}
+                            placeholder="Please type in your Address"
+                          />
+                          <div className="abs">
+                            {AddressError.active === false &&
+                              AddressError.text === "" && <NameIcon />}
+                            {AddressError.active === false &&
+                              AddressError.text !== "" && <CheckedIcon />}
+                            {AddressError.active === true && <FormErrorIcon />}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-ele">
+                        <label htmlFor="state">Disabilities</label>
+                        <StatesDropdownStyles>
+                          <div
+                            className="head"
+                            onClick={() =>
+                              setShowDisabilityDropdown(!showDisabilityDropdown)
+                            }
+                          >
+                            <>
+                              {disability === "" ? (
+                                <p className="placeholder">
+                                  {" "}
+                                  select the disability
+                                </p>
+                              ) : (
+                                <p className="state-name">{disability}</p>
+                              )}
+                            </>
+                            <AngleDownStyles
+                              $isSelected={showDisabilityDropdown}
+                            >
+                              <AngleDown />
+                            </AngleDownStyles>
+                          </div>
+                          {showDisabilityDropdown && (
+                            <div className="dropdown">
+                              {disabilities.map((ele, index) => (
+                                <StateCompStyles
+                                  $isSelected={disability === ele.name}
+                                  key={index}
+                                  onClick={() =>
+                                    handleDisabilitySelection(ele.name)
+                                  }
+                                >
+                                  <p>{ele.name}</p>
+                                </StateCompStyles>
+                              ))}
+                            </div>
+                          )}
+                        </StatesDropdownStyles>
+                        {otherError.active && (
+                          <p
+                            role="alert"
+                            aria-live="assertive"
+                            aria-atomic="true"
+                            className="error-msg"
+                          >
+                            {otherError.text}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {isFirstModalOpen && (
+                    <div className="flex gap-4">
+                      <button
+                        className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+                        onClick={cancelModal}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+                          isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+                        }`}
+                        onClick={handleContinue}
+                        disabled={!isFormValid()}
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  )}
+                  {isSecondModalOpen && (
+                    <div className="flex gap-4">
+                      <button
+                        className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+                        onClick={handlePrevious}
+                      >
+                        Previous
+                      </button>
+                      <button
+                        className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+                          isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+                        }`}
+                        onClick={handleContinue2}
+                        disabled={!isFormValid2()}
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  )}
+                  {isThirdModalOpen && (
+                    <div className="flex gap-4">
+                      <button
+                        className="flex-1 h-12 rounded-[10px] text-[#00932E] border-2 border-solid font-bold bg-white border-[#00932E]"
+                        onClick={handlePrevious2}
+                      >
+                        Previous Page
+                      </button>
+                      <button
+                        className={`flex-1 h-12 rounded-[10px] bg-[#00932E] border-2 border-solid font-bold text-white border-[#00932E] ${
+                          isFormValid() ? "" : "opacity-50 cursor-not-allowed"
+                        }`}
+                        type="submit"
+                        disabled={
+                          firstNameError.text == "" ||
+                          lastNameError.text == "" ||
+                          emailError.text == "" ||
+                          phoneError.text == "" ||
+                          firstNameError.active !== false ||
+                          lastNameError.active !== false ||
+                          emailError.active !== false ||
+                          phoneError.active !== false ||
+                          state == "" ||
+                          DOBString == "" ||
+                          Address == ""
+                        }
+                      >
+                        {isLoading ? <ButtonLoader /> : "Create Student"}
+                      </button>
+                    </div>
+                  )}
+                </form>
+              </NewMdaFormStyles>
             </ClickOutsideWrapper>
-					</div>
-				</NewMdaAbsoluteStyles>
-			)}
-			{isSuccess && (
+          </div>
+        </NewMdaAbsoluteStyles>
+      )}
+      {isSuccess && (
         <ClickOutsideWrapper onClickOutside={cancelModal}>
-				<FlexAbsoluteModalStyles>
-					<SuccessModal
-						head="New Student has been successfully created !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
-						cancelModal={cancelModal}
-						icon={<CreationSuccessIcon />}
-						hasCancel={true}
-						navigationFunction={cancelModal}
-						navigationText="Go back to Dashboard"
-					/>
-				</FlexAbsoluteModalStyles>
+          <FlexAbsoluteModalStyles>
+            <SuccessModal
+              head="New Student has been successfully created !"
+              msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+              cancelModal={cancelModal}
+              icon={<CreationSuccessIcon />}
+              hasCancel={true}
+              navigationFunction={cancelModal}
+              navigationText="Go back to Dashboard"
+            />
+          </FlexAbsoluteModalStyles>
         </ClickOutsideWrapper>
-			)}
-		</>
-	);
+      )}
+    </>
+  );
 };
 
 export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
@@ -969,7 +1142,6 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
   const fullName = `${studentDetails?.FirstName || ""} ${
     studentDetails?.LastName || ""
   }`;
-  console.log(studentDetails);
 
   return (
     <>
@@ -986,17 +1158,18 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
                 <div className="deet">
                   <h4>{truncateString(fullName, 40)}</h4>
                   <p>
-  Added on{" "}
-  {studentDetails.CreatedAt
-    ? new Date(studentDetails.CreatedAt).toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    : "Date not available"}
-</p>
-
-
+                    Added on{" "}
+                    {studentDetails.CreatedAt
+                      ? new Date(studentDetails.CreatedAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )
+                      : "Date not available"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1258,181 +1431,203 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
     </>
   );
 };
-export const GraduateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
-	const [form, setForm] = useState({
-		DateOfGrad: "",
-		NsqLevel: "",
-	});
-	const [isSuccess, setIsSuccess] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [msgError, setMsgError] = useState<Ierror>({
-		active: false,
-		text: "",
-	});
+export const GraduateStudentComp: React.FC<ITwoActions> = ({
+  cancelModal,
+  handleModalAction,
+}) => {
+  const [form, setForm] = useState({
+    DateOfGrad: "",
+    NsqLevel: "",
+  });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [msgError, setMsgError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
 
-	const { selectedStudentId, unchangedStudentsList } = useAppSelector(fmeSelector);
-	const dispatch = useAppDispatch();
-	
-	const [DateOfGrad, setDateOfGrad] = useState("");
-	const [DateOfGradError, setDateOfGradError] = useState<Ierror>({
-		active: false,
-		text: "",
-	});
-	const [NsqLevel, setNsqLevel] = useState("");
-	const [NsqLevelError, setNsqLevelError] = useState<Ierror>({
-		active: false,
-		text: "",
-	});
-	const handleInput = (e: React.ChangeEvent<HTMLInputElement>, input: string) => {
-		const value = e.target.value;
+  const { selectedStudentId, unchangedStudentsList } =
+    useAppSelector(fmeSelector);
+  const dispatch = useAppDispatch();
 
-		if (input == "NsqLevel") {
-			setNsqLevel(value);
-			if (value.trim().length < 1) {
-				setNsqLevelError({ active: true, text: "NSQ Level is required" });
-			} else {
-				setNsqLevelError({ active: false, text: "NSQ Level is valid" });
-				setForm({ ...form, NsqLevel: value });
-			}
-		}
-		
-		if (input === "DateOfGrad") {
-			// Convert YYYY-MM-DD to MM/DD/YYYY
-			const parts = value.split("-");
-			const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
-			setDateOfGrad(value);
-			if (!isValidDate(formattedDate)) {
-				setDateOfGradError({ active: true, text: "Invalid date format. Please enter MM/DD/YYYY" });
-			} else {
-				setDateOfGradError({ active: false, text: "Date of Birth is valid" });
-				setForm({ ...form, DateOfGrad: formattedDate });
-			}
-		}
-	};
+  const [DateOfGrad, setDateOfGrad] = useState("");
+  const [DateOfGradError, setDateOfGradError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+  const [NsqLevel, setNsqLevel] = useState("");
+  const [NsqLevelError, setNsqLevelError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    input: string
+  ) => {
+    const value = e.target.value;
 
-	const isValidDate = (dateString: string) => {
-		const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-		return regex.test(dateString);
-	};
+    if (input == "NsqLevel") {
+      setNsqLevel(value);
+      if (value.trim().length < 1) {
+        setNsqLevelError({ active: true, text: "NSQ Level is required" });
+      } else {
+        setNsqLevelError({ active: false, text: "NSQ Level is valid" });
+        setForm({ ...form, NsqLevel: value });
+      }
+    }
 
-	const suspend = async () => {
-		const token = Cookies.get("token");
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
-		if (selectedStudentId) {
-			try {
-				setIsLoading(true);
-				console.log(form)
-				const { data } = await axios.post(`${BACKEND_URL}/student/graduate-student/${selectedStudentId}`,form, config);
-				console.log(data)
-				setIsSuccess(true);
-			} catch (error: any) {
-				setIsLoading(false);
-				if (error.response) {
-					// if the server responds with an error msg
-					setMsgError({
-						active: true,
-						text: error.response.data.message,
-					});
-					// error.response.data.message
-				} else {
-					setMsgError({
-						active: true,
-						text: error.message,
-					});
-				}
-			}
-		}
-	};
-	const router = useRouter();
-	return (
-		<>
-			<FlexAbsoluteModalStyles>
-				{!isSuccess && !msgError.active && (
-					<TwoButtonModalStyles>
-						<NewMdaFormStyles className="bd">
-						<div className="pop">
-							<div className="up">
-								<div className="x" onClick={cancelModal}>
-									{" "}
-									<ErrorIconWrapper>
-										<ErrorAlertIcon />
-									</ErrorIconWrapper>
-									<XIcon />
-								</div>
-								<h4>Graduate Student?</h4>
-								<p>Are you sure you want to graduate this Student? He will now  be graduated and  able to proceed with job applications.</p>
-								<div className="form-ele flex-1">
-											<label htmlFor="lastName">NSQ Level</label>
-											<div className="inp">
-												<input
-													type="text"
-													name="lastName"
-													value={NsqLevel}
-													className={NsqLevelError.active ? "error-bdr" : ""}
-													onChange={(e) => handleInput(e, "NsqLevel")}
-													placeholder="Please input NSQ Level"
-												/>
-						
-											</div>
-										</div>
-								<div className="form-ele ">
-											<label htmlFor="address">Date Of Graduation</label>
-											<div className="inp">
-												<input
-													type="date"
-													name="DOB"
-													value={DateOfGrad}
-													onChange={(e) => handleInput(e, "DateOfGrad")}
-													className={DateOfGradError.active ? "error-bdr" : ""}
-													placeholder="MM/DD/YYYY"
-												/>
-												
-											</div>
-										</div>
-							</div>
-							<div className="down">
-		
-								<button type="button" className="btnn" id="btnn" onClick={suspend}>
-									{isLoading ? <ButtonLoader /> : "Graduate Student"}
-								</button>
-							</div>
-						</div>
-						</NewMdaFormStyles>
-					</TwoButtonModalStyles>
-				)}
-				{isSuccess && (
-					<SuccessModal
-						head="Student has been successfully graduated !"
-						msg="Student has been successfully graduated !. Have a lovely day!"
-						cancelModal={cancelModal}
-						hasCancel={true}
-						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
-						navigationText="Go back to Dashboard"
-					/>
-				)}
-				{msgError.active && (
-					<FailureModal
-						cancelModal={() =>
-							setMsgError({
-								active: false,
-								text: "",
-							})
-						}
-						head="Failed to graduate Student !"
-						msg={msgError.text}
-						navigationFunction={cancelModal}
-						navigationText="Go back to Dashboard"
-						hasCancel={true}
-					/>
-				)}
-			</FlexAbsoluteModalStyles>
-		</>
-	);
+    if (input === "DateOfGrad") {
+      // Convert YYYY-MM-DD to MM/DD/YYYY
+      const parts = value.split("-");
+      const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+      setDateOfGrad(value);
+      if (!isValidDate(formattedDate)) {
+        setDateOfGradError({
+          active: true,
+          text: "Invalid date format. Please enter MM/DD/YYYY",
+        });
+      } else {
+        setDateOfGradError({ active: false, text: "Date of Birth is valid" });
+        setForm({ ...form, DateOfGrad: formattedDate });
+      }
+    }
+  };
+
+  const isValidDate = (dateString: string) => {
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    return regex.test(dateString);
+  };
+
+  const suspend = async () => {
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const userId = unchangedStudentsList?.find(
+      (ele) => ele.ID === selectedStudentId
+    )?.UserID;
+    if (selectedStudentId) {
+      try {
+        setIsLoading(true);
+    
+        const { data } = await axios.post(
+          `${BACKEND_URL}/student/graduate-student/${selectedStudentId}`,
+          form,
+          config
+        );
+        setIsSuccess(true);
+      } catch (error: any) {
+        setIsLoading(false);
+        if (error.response) {
+          // if the server responds with an error msg
+          setMsgError({
+            active: true,
+            text: error.response.data.message,
+          });
+          // error.response.data.message
+        } else {
+          setMsgError({
+            active: true,
+            text: error.message,
+          });
+        }
+      }
+    }
+  };
+  const router = useRouter();
+  return (
+    <>
+      <FlexAbsoluteModalStyles>
+        {!isSuccess && !msgError.active && (
+          <TwoButtonModalStyles>
+            <NewMdaFormStyles className="bd">
+              <div className="pop">
+                <div className="up">
+                  <div className="x" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Graduate Student?</h4>
+                  <p>
+                    Are you sure you want to graduate this Student? He will now
+                    be graduated and able to proceed with job applications.
+                  </p>
+                  <div className="form-ele flex-1">
+                    <label htmlFor="lastName">NSQ Level</label>
+                    <div className="inp">
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={NsqLevel}
+                        className={NsqLevelError.active ? "error-bdr" : ""}
+                        onChange={(e) => handleInput(e, "NsqLevel")}
+                        placeholder="Please input NSQ Level"
+                      />
+                    </div>
+                  </div>
+                  <div className="form-ele ">
+                    <label htmlFor="address">Date Of Graduation</label>
+                    <div className="inp">
+                      <input
+                        type="date"
+                        name="DOB"
+                        value={DateOfGrad}
+                        onChange={(e) => handleInput(e, "DateOfGrad")}
+                        className={DateOfGradError.active ? "error-bdr" : ""}
+                        placeholder="MM/DD/YYYY"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="down">
+                  <button
+                    type="button"
+                    className="btnn"
+                    id="btnn"
+                    onClick={suspend}
+                  >
+                    {isLoading ? <ButtonLoader /> : "Graduate Student"}
+                  </button>
+                </div>
+              </div>
+            </NewMdaFormStyles>
+          </TwoButtonModalStyles>
+        )}
+        {isSuccess && (
+          <SuccessModal
+            head="Student has been successfully graduated !"
+            msg="Student has been successfully graduated !. Have a lovely day!"
+            cancelModal={cancelModal}
+            hasCancel={true}
+            navigationFunction={
+              handleModalAction ? handleModalAction : cancelModal
+            }
+            navigationText="Go back to Dashboard"
+          />
+        )}
+        {msgError.active && (
+          <FailureModal
+            cancelModal={() =>
+              setMsgError({
+                active: false,
+                text: "",
+              })
+            }
+            head="Failed to graduate Student !"
+            msg={msgError.text}
+            navigationFunction={cancelModal}
+            navigationText="Go back to Dashboard"
+            hasCancel={true}
+          />
+        )}
+      </FlexAbsoluteModalStyles>
+    </>
+  );
 };
 export const CloseJobComp: React.FC<ITwoActions> = ({
   cancelModal,
@@ -1460,7 +1655,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Close job response:", response);
+
         setIsSuccess(true);
       } else {
         // Close job application
@@ -1469,7 +1664,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Open job response:", response);
+   
         setIsSuccess(true);
       }
     } catch (error) {
@@ -1596,7 +1791,7 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({
         }
       );
 
-      console.log(response); // Log the response for debugging
+    
       if (response.status === 200) {
         setIsSuccess(true);
       } else {
@@ -1642,30 +1837,36 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
-            <div className="pop">
-              <div className="up">
-                <div className="y" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
+              <div className="pop">
+                <div className="up">
+                  <div className="y" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Are you sure you want to decline artisan?</h4>
+                  <p>
+                    Are you certain about declining this artisan? Once declined,
+                    he can&apos;t be reassigned if you reconsider.
+                  </p>
                 </div>
-                <h4>Are you sure you want to decline artisan?</h4>
-                <p>
-                  Are you certain about declining this artisan? Once declined,
-                  he can&apos;t be reassigned if you reconsider.
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button type="button" onClick={declineArtisan}>
+                    {isLoading ? <ButtonLoader /> : "Decline"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" onClick={declineArtisan}>
-                  {isLoading ? <ButtonLoader /> : "Decline"}
-                </button>
-              </div>
-            </div>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -1727,7 +1928,6 @@ export const SelectArtisanComp: React.FC<ITwoActions> = ({
         }
       );
 
-      console.log(response); // Log the response for debugging
       if (response.status === 200) {
         setIsSuccess(true);
       } else {
@@ -1769,30 +1969,40 @@ export const SelectArtisanComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
-            <div className="pop">
-              <div className="up">
-                <div className="y" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
+              <div className="pop">
+                <div className="up">
+                  <div className="y" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Are you sure you want to shortlist artisan?</h4>
+                  <p>
+                    Are you certain about selecting this artisan? Once selected,
+                    he would be available to be hired.
+                  </p>
                 </div>
-                <h4>Are you sure you want to shortlist artisan?</h4>
-                <p>
-                  Are you certain about selecting this artisan? Once selected,
-                  he would be available to be hired.
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btnn"
+                    onClick={declineArtisan}
+                  >
+                    {isLoading ? <ButtonLoader /> : "Select"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" className="btnn" onClick={declineArtisan}>
-                  {isLoading ? <ButtonLoader /> : "Select"}
-                </button>
-              </div>
-            </div>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -1841,37 +2051,39 @@ export const PostJobComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
-            <div className="pop">
-              <div className="up">
-                <div className="y" onClick={cancelModal}>
-                  {" "}
-                  <div></div>
-                  <XIcon />
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
+              <div className="pop">
+                <div className="up">
+                  <div className="y" onClick={cancelModal}>
+                    {" "}
+                    <div></div>
+                    <XIcon />
+                  </div>
+                  <div className=" flex justify-center">
+                    <Image
+                      src="/images/landing/job-cv-KTzVOIalGi.png"
+                      alt="job"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                  <div className=" flex flex-col items-center">
+                    <h4>Your Job has been succesfully posted</h4>
+                    <p>Are you certain about closing this job application? </p>
+                  </div>
                 </div>
-                <div className=" flex justify-center">
-                  <Image
-                    src="/images/landing/job-cv-KTzVOIalGi.png"
-                    alt="job"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                <div className=" flex flex-col items-center">
-                  <h4>Your Job has been succesfully posted</h4>
-                  <p>Are you certain about closing this job application? </p>
-                </div>
-              </div>
 
-              <div className="down downn">
-                <button
-                  type="button"
-                  onClick={() => router.push("/dashboard/employer")}
-                  className="btnn"
-                >
-                  Go back to dashboard
-                </button>
+                <div className="down downn">
+                  <button
+                    type="button"
+                    onClick={() => router.push("/dashboard/employer")}
+                    className="btnn"
+                  >
+                    Go back to dashboard
+                  </button>
+                </div>
               </div>
-            </div>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -1921,40 +2133,7 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
 
   const router = useRouter();
 
-  // const hireArtisan = async () => {
-  // 	setIsLoading(true);
-  // 	try {
-  // 		const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
-  // 		const response = await axios.post(
-  // 			"https://fme-backend-version-1.onrender.com/job/hire",
-  // 			{
-  // 				JobId: 2, // Replace with the actual JobId
-  // 				ArtisanId: artisanId,
-  // 			},
-  // 			{
-  // 				headers: {
-  // 					Authorization: `Bearer ${token}`,
-  // 				},
-  // 			}
-  // 		);
-  // 		console.log(response)
-  // 		if (response.status === 200) {
-  // 			setIsSuccess(true);
-  // 		} else {
-  // 			setMsgError({
-  // 				active: true,
-  // 				text: "Failed to hire the artisan. Please try again.",
-  // 			});
-  // 		}
-  // 	} catch (error) {
-  // 		setMsgError({
-  // 			active: true,
-  // 			text: error?.response?.data?.message || "An error occurred. Please try again.",
-  // 		});
-  // 	} finally {
-  // 		setIsLoading(false);
-  // 	}
-  // };
+ 
   const hireArtisan = async () => {
     setIsLoading(true);
 
@@ -1963,7 +2142,7 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
       JobId: JobId, // Replace with the actual JobId
       ArtisanId: artisanId,
     };
-    console.log("Request Payload:", requestData); // Log what is being sent to the backend
+   
 
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
@@ -1978,7 +2157,6 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
       );
 
       // Log the full response object from the backend
-      console.log("Response from backend:", response);
 
       if (response.status === 200) {
         setIsSuccess(true);
@@ -2006,32 +2184,32 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
     <FlexAbsoluteModalStyles>
       {!isSuccess && !msgError.active && (
         <TwoButtonModalStyles>
-			<ClickOutsideWrapper onClickOutside={cancelModal}>
-          <div className="pop">
-            <div className="up">
-              <div className="y" onClick={cancelModal}>
-                <ErrorIconWrapper>
-                  <ErrorAlertIcon />
-                </ErrorIconWrapper>
-                <XIcon />
+          <ClickOutsideWrapper onClickOutside={cancelModal}>
+            <div className="pop">
+              <div className="up">
+                <div className="y" onClick={cancelModal}>
+                  <ErrorIconWrapper>
+                    <ErrorAlertIcon />
+                  </ErrorIconWrapper>
+                  <XIcon />
+                </div>
+                <h4>Are you sure you want to hire this artisan?</h4>
+                <p>
+                  Are you certain about hiring this artisan? Once hired, the
+                  decision cannot be reversed and the job application would be
+                  closed automatically, meaning no new applicants.
+                </p>
               </div>
-              <h4>Are you sure you want to hire this artisan?</h4>
-              <p>
-                Are you certain about hiring this artisan? Once hired, the
-                decision cannot be reversed and the job application would be
-                closed automatically, meaning no new applicants.
-              </p>
+              <div className="down">
+                <button type="button" onClick={cancelModal} className="cancel">
+                  Cancel
+                </button>
+                <button type="button" onClick={hireArtisan} className="btnn">
+                  {isLoading ? <ButtonLoader /> : "Hire Artisan"}
+                </button>
+              </div>
             </div>
-            <div className="down">
-              <button type="button" onClick={cancelModal} className="cancel">
-                Cancel
-              </button>
-              <button type="button" onClick={hireArtisan} className="btnn">
-                {isLoading ? <ButtonLoader /> : "Hire Artisan"}
-              </button>
-            </div>
-          </div>
-		  </ClickOutsideWrapper>
+          </ClickOutsideWrapper>
         </TwoButtonModalStyles>
       )}
       {isSuccess && (
@@ -2080,40 +2258,7 @@ export const DownloadDataComp: React.FC<ITwoActions> = ({
 
   const router = useRouter();
 
-  // const hireArtisan = async () => {
-  // 	setIsLoading(true);
-  // 	try {
-  // 		const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
-  // 		const response = await axios.post(
-  // 			"https://fme-backend-version-1.onrender.com/job/hire",
-  // 			{
-  // 				JobId: 2, // Replace with the actual JobId
-  // 				ArtisanId: artisanId,
-  // 			},
-  // 			{
-  // 				headers: {
-  // 					Authorization: `Bearer ${token}`,
-  // 				},
-  // 			}
-  // 		);
-  // 		console.log(response)
-  // 		if (response.status === 200) {
-  // 			setIsSuccess(true);
-  // 		} else {
-  // 			setMsgError({
-  // 				active: true,
-  // 				text: "Failed to hire the artisan. Please try again.",
-  // 			});
-  // 		}
-  // 	} catch (error) {
-  // 		setMsgError({
-  // 			active: true,
-  // 			text: error?.response?.data?.message || "An error occurred. Please try again.",
-  // 		});
-  // 	} finally {
-  // 		setIsLoading(false);
-  // 	}
-  // };
+ 
   const hireArtisan = async () => {
     setIsLoading(true);
 
@@ -2156,43 +2301,43 @@ export const DownloadDataComp: React.FC<ITwoActions> = ({
     <FlexAbsoluteModalStyles>
       {!isSuccess && !msgError.active && (
         <TwoButtonModalStyles>
-			<ClickOutsideWrapper onClickOutside={cancelModal}>
-          <div className="pop">
-            <div className="up">
-              <div className="y" onClick={cancelModal}>
-                <ErrorIconWrapper>
-                  <ErrorAlertIcon />
-                </ErrorIconWrapper>
-                <XIcon />
-              </div>
-              <h4>
-                Are you sure you want to download this{" "}
-                {role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"}{" "}
-                profile?
-              </h4>
+          <ClickOutsideWrapper onClickOutside={cancelModal}>
+            <div className="pop">
+              <div className="up">
+                <div className="y" onClick={cancelModal}>
+                  <ErrorIconWrapper>
+                    <ErrorAlertIcon />
+                  </ErrorIconWrapper>
+                  <XIcon />
+                </div>
+                <h4>
+                  Are you sure you want to download this{" "}
+                  {role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"}{" "}
+                  profile?
+                </h4>
 
-              <p>
-                This would download all the{" "}
-                {role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"}{" "}
-                students data.Are you sure you want to take this action?
-              </p>
+                <p>
+                  This would download all the{" "}
+                  {role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"}{" "}
+                  students data.Are you sure you want to take this action?
+                </p>
+              </div>
+              <div className="down">
+                <button type="button" onClick={cancelModal} className="cancel">
+                  Cancel
+                </button>
+                <button type="button" onClick={hireArtisan} className="btnn">
+                  {isLoading ? (
+                    <ButtonLoader />
+                  ) : (
+                    `Download ${
+                      role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"
+                    }`
+                  )}
+                </button>
+              </div>
             </div>
-            <div className="down">
-              <button type="button" onClick={cancelModal} className="cancel">
-                Cancel
-              </button>
-              <button type="button" onClick={hireArtisan} className="btnn">
-                {isLoading ? (
-                  <ButtonLoader />
-                ) : (
-                  `Download ${
-                    role === "FME" ? "FME" : role === "MDA" ? "MDA" : "STC"
-                  }`
-                )}
-              </button>
-            </div>
-          </div>
-		  </ClickOutsideWrapper>
+          </ClickOutsideWrapper>
         </TwoButtonModalStyles>
       )}
       {isSuccess && (
@@ -2260,40 +2405,40 @@ export const HireArtisanComp: React.FC<ITwoActions> = ({
       })
       .catch((error) => console.log(error));
   }, []);
-  console.log(data);
+
   return (
     <>
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
-			<ClickOutsideWrapper onClickOutside={cancelModal}>
-            <div className="pop">
-              <div className="up">
-                <div className="y" onClick={cancelModal}>
-                  {" "}
-                  <div className=" flex gap-4 items-center">
-                    <ArtisansContactCard />
-                    <p>Artisans contact card</p>
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
+              <div className="pop">
+                <div className="up">
+                  <div className="y" onClick={cancelModal}>
+                    {" "}
+                    <div className=" flex gap-4 items-center">
+                      <ArtisansContactCard />
+                      <p>Artisans contact card</p>
+                    </div>
+                    <XIcon />
                   </div>
-                  <XIcon />
-                </div>
-                <div className="z">
-                  <div className="">
-                    <h5 className="">Give artisan a call</h5>
-                    <p className="">{data?.PhoneNumber}</p>
+                  <div className="z">
+                    <div className="">
+                      <h5 className="">Give artisan a call</h5>
+                      <p className="">{data?.PhoneNumber}</p>
+                    </div>
+                    <CopyIcon text={data?.PhoneNumber} />
                   </div>
-                  <CopyIcon text={data?.PhoneNumber} />
-                </div>
-                <div className="z">
-                  <div className="">
-                    <h5 className="">Send artisan a mail</h5>
-                    <p className="">{data?.Email}</p>
+                  <div className="z">
+                    <div className="">
+                      <h5 className="">Send artisan a mail</h5>
+                      <p className="">{data?.Email}</p>
+                    </div>
+                    <CopyIcon text={data?.Email} />
                   </div>
-                  <CopyIcon text={data?.Email} />
                 </div>
               </div>
-            </div>
-			</ClickOutsideWrapper>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -2396,32 +2541,36 @@ export const ReactivateStudentComp: React.FC<ITwoActions> = ({
       <FlexAbsoluteModalStyles>
         {!isSuccess && (
           <TwoButtonModalStyles>
-			<ClickOutsideWrapper onClickOutside={cancelModal}>
-            <div className="pop">
-              <div className="up">
-                <div className="x" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
+              <div className="pop">
+                <div className="up">
+                  <div className="x" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Re-activate Student?</h4>
+                  <p>
+                    You are about to re-activate this student and restore it to
+                    its latter glory. Are you sure you want to take this action?
+                  </p>
                 </div>
-                <h4>Re-activate Student?</h4>
-                <p>
-                  You are about to re-activate this student and restore it to
-                  its latter glory. Are you sure you want to take this action?
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button type="button" onClick={reactivate}>
+                    {isLoading ? <ButtonLoader /> : "Re-activate"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" onClick={reactivate}>
-                  {isLoading ? <ButtonLoader /> : "Re-activate"}
-                </button>
-              </div>
-            </div>
-			</ClickOutsideWrapper>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
@@ -2476,28 +2625,28 @@ export const FailureModal: React.FC<IMessageModal> = ({
   const router = useRouter();
   return (
     <OneButtonModalStyles $isError={true}>
-		<ClickOutsideWrapper onClickOutside={cancelModal}>
-      <div className="pop">
-        <div className="up">
-          {hasCancel && (
-            <div className="x" onClick={cancelModal}>
-              {" "}
-              <XIcon />
+      <ClickOutsideWrapper onClickOutside={cancelModal}>
+        <div className="pop">
+          <div className="up">
+            {hasCancel && (
+              <div className="x" onClick={cancelModal}>
+                {" "}
+                <XIcon />
+              </div>
+            )}
+            <div className="l">
+              <TryAgainIcon />
             </div>
-          )}
-          <div className="l">
-            <TryAgainIcon />
+            <h4>{head}</h4>
+            <p>{msg}</p>
           </div>
-          <h4>{head}</h4>
-          <p>{msg}</p>
+          <div className="down">
+            <button type="button" onClick={navigationFunction}>
+              {navigationText}
+            </button>
+          </div>
         </div>
-        <div className="down">
-          <button type="button" onClick={navigationFunction}>
-            {navigationText}
-          </button>
-        </div>
-      </div>
-	  </ClickOutsideWrapper>
+      </ClickOutsideWrapper>
     </OneButtonModalStyles>
   );
 };

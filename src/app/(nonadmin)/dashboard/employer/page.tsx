@@ -33,16 +33,16 @@ import { Paginator } from "@/components/fme/paginator/Paginator";
 const EmployerHome = () => {
   
   const router=useRouter()
-  console.log(1)
+
 
   const [employerStats,setEmployerStats]=useState<IEmployerStats|null>(null)
   const [data,setData]= useState<IEmployerData[]|null>(null)
   const [user,setUser]=useState<IUser|null>(null)
 
-  console.log(1)
+
 	useEffect(() => {
 		let token = Cookies.get("token");
-    console.log(token)
+
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -72,7 +72,6 @@ const EmployerHome = () => {
 			})
 			.catch((error) => console.log(error));
 	}, []);
-  console.log(data)
 
   const [pageNo, setPageNo] = useState(1);
   const itemsPerPage = 5;

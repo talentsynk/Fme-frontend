@@ -31,7 +31,7 @@ import { ButtonLoader } from "@/components/recovery/style";
 const PostAJob = () => {
 	const [showJobModal, setShowJobModal] = useState(false);
 	const cancelModal=()=>{
-		console.log(1)
+	
 	  }
 	  interface ICate{
 		Id:number;
@@ -54,7 +54,7 @@ const PostAJob = () => {
 			.then((res) => {
         
 				const data = res.data.Categories;
-				console.log(data)
+				
 				setCate(data);
 			})
 			.catch((error) => console.log(error));
@@ -127,7 +127,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 		// setForm({ ...form, LocalGovernment: name });
 		setLga(name);
 		setShowLGADropdown(false);
-		console.log(lgas)
+	
 		
 	};
 
@@ -157,7 +157,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 			Responsibilities: formData.Responsibilities,
 		  };
 		  
-		  console.log("Data being sent to backend:", jobData);
+		
 	  
 		  const response = await axios.post(
 			`${BACKEND_URL}/job/create-job`,
@@ -168,7 +168,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 			  },
 			}
 		  );
-		  console.log("Job posted successfully", response.data);
+		
 		  setShowJobModal(true);
 		} catch (error) {
 		  console.error("Error posting job", error);
@@ -254,6 +254,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 												</div>
 												{showJobTypeDropdown && (
 													<div className="profile-dropdown z-50 bg-red-800">
+														
 														{jobTypes.map((ele, index) => (
 															<StateCompStyles $isSelected={jobType === ele} key={index} onClick={() => handleJobTypesSelection(ele)}>
 																<p>{ele}</p>
