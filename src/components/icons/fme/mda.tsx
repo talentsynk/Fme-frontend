@@ -553,8 +553,7 @@ const CopyStyles = styled.div`
 export const CopyIcon: React.FC<ICopy> = ({ text }) => {
   const [isCopied, setIsCopied] = useState(false);
   const handleCopy = () => {
-    //copy logic
-    console.log(text);
+
     CopyToClipboard(text);
     setIsCopied(true);
   };

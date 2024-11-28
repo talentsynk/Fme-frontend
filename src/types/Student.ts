@@ -10,4 +10,5 @@ export interface IStudentCompData {
 	StudentID: string;
 	Gender: string;
 	PhoneNumber: string;
+	CreatedAt?:string;
 }

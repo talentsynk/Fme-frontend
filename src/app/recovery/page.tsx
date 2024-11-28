@@ -69,7 +69,7 @@ export default function AccountRecovery() {
           Email: email,
         });
         if (data) {
-          console.log(data); // comment out later, i am using this to check the otp for testing purposes
+          // comment out later, i am using this to check the otp for testing purposes
           Cookies.set("otpRequestTime", new Date().toISOString());
           setCountdownStarted(true);
           setFormStep(1);
@@ -109,9 +109,6 @@ export default function AccountRecovery() {
           Otp: userOtp,
         });
         if (data) {
-          // console.log(data);
-          // otp verification expires in 5 mins
-          // console.log(data);
           let inSetTime = new Date(new Date().getTime() + 5 * 60 * 1000);
           Cookies.set("otp", "otp is set", { expires: inSetTime });
           Cookies.set("email", email);
@@ -154,7 +151,7 @@ export default function AccountRecovery() {
   const handleOtpExpiration = useCallback(() => {
     setHasOtpExpired(true);
   }, [setHasOtpExpired]);
-  
+
   return (
     <>
       <Head>

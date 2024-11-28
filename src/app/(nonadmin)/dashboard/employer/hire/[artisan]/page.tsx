@@ -1,26 +1,28 @@
-interface IArtisan{
-  AverageRating:number;
-  BusinessDescription:string;
-  BusinessName:string;
-  ID:number;
-  Skill:string;
+"use client"
+interface IArtisan {
+  AverageRating: number;
+  BusinessDescription: string;
+  BusinessName: string;
+  ID: number;
+  Skill: string;
+  FirstName: string;
+  LastName: string;
 }
-interface IStats{
-  rating:any;
-  total_job_recommendations:number;
-  total_jobs_completed:number;
+interface IStats {
+  rating: any;
+  total_job_recommendations: number;
+  total_jobs_completed: number;
 }
-interface IReviews{
+interface IReviews {
+  CreatedAt: string;
+  Rating: number;
+  EmployerID: number;
+  Description: string;
+  FirstName: string;
+  LastName: string;
+}
 
-  CreatedAt:string;
-  Rating:number;
-  EmployerID:number;
-  Description:string;
-  FirstName:string;
-  LastName:string;
-}
-"use client";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { BACKEND_URL } from "@/lib/config";
 import { ContactCard, SmallRedIcon } from "@/components/landing/faqs/Svgs";
@@ -61,20 +63,23 @@ import { JobGridListAlt, SimilarCompGridList } from "../../../artisan/style";
 import { ArtisanProfileTabSwitches } from "@/components/employer/data";
 import { HireArtisanComp } from "@/components/fme/students/modal";
 import { AirplaneIcon } from "@/components/landing/faqs/Svgs";
-import { CloseHireArtisanComp,SelectArtisanComp,HireProfessionalComp } from "@/components/fme/students/modal";
+import {
+  CloseHireArtisanComp,
+  SelectArtisanComp,
+  HireProfessionalComp,
+} from "@/components/fme/students/modal";
 
 const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
-  const lol=params.artisan
+  const lol = params.artisan;
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
   );
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [showHireArtisanModal, setShowHireArtisanModal] = useState(false);
   const [showHireSelectModal, setShowHireSelectModal] = useState(false);
-  const [showHireProfessionalModal, setShowHireProfessionalModal] = useState(false);
-  const cancelModal=()=>{
-    console.log(1)
-  }
+  const [showHireProfessionalModal, setShowHireProfessionalModal] =
+    useState(false);
+  const cancelModal = () => {};
   const [currentTab, setCurrentTab] = useState(
     artisanTabSwitches.find((ele) => ele.isSelected)?.text
   );
@@ -89,44 +94,41 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
     setArtisanTabSwitches(newTabSwitches);
   };
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [data,setData]= useState<IArtisan|null>(null)
-  const [stats,setStats]= useState<IStats|null>(null)
-  const [reviews,setReviews]= useState<IReviews[]|null>(null)
+  const [data, setData] = useState<IArtisan | null>(null);
+  const [stats, setStats] = useState<IStats | null>(null);
+  const [reviews, setReviews] = useState<IReviews[] | null>(null);
   useEffect(() => {
-		let token = Cookies.get("token");
-    
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		axios
-			.get(`${BACKEND_URL}/artisan/profile-stats/${lol}`, config)
-			.then((res) => {
-       console.log(res)
-				const data = res.data;
-				setStats(data);
-			})
-			.catch((error) => console.log(error));
-		axios
-			.get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
-			.then((res) => {
-       
-				const data = res.data.ratings;
-				setReviews(data);
-			})
-			.catch((error) => console.log(error));
-      
-		axios
-			.get(`${BACKEND_URL}/artisan/${lol}`, config)
-			.then((res) => {
-        console.log(res)
-				const data = res.data.artisan;
-				setData(data);
-			})
-			.catch((error) => console.log(error));
-	}, []);
-  
+    let token = Cookies.get("token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(`${BACKEND_URL}/artisan/profile-stats/${lol}`, config)
+      .then((res) => {
+        const data = res.data;
+        setStats(data);
+      })
+      .catch((error) => console.log(error));
+    axios
+      .get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
+      .then((res) => {
+        const data = res.data.ratings;
+        setReviews(data);
+      })
+      .catch((error) => console.log(error));
+
+    axios
+      .get(`${BACKEND_URL}/artisan/${lol}`, config)
+      .then((res) => {
+        const data = res.data.artisan;
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const handleModalAction = () => {
     // Here you should update the job status based on the modal's action
     // setHiringStatus(prevState => !prevState); // Toggle the job status
@@ -147,7 +149,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
     // setHiringStatus(prevState => !prevState); // Toggle the job status
     setShowHireProfessionalModal(false);
   };
-  console.log(data)
+
   return (
     <EmployerDetailPageStyle>
       <PaddedSectionStyles>
@@ -167,10 +169,16 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                 height={120}
                 alt="avatar"
               /> */}
-              <p>{data?.BusinessName.slice(0, 2).toUpperCase()}</p>
+              <p>
+                {data?.FirstName?.toUpperCase()?.[0]}{" "}
+                {data?.LastName?.toUpperCase()?.[0]}
+              </p>
             </div>
             <div className="one">
-              <h2> {data?.BusinessName}</h2>
+              <h2>
+                {" "}
+                {data?.FirstName?.toUpperCase()} {data?.LastName?.toUpperCase()}
+              </h2>
             </div>
             <VerifiedBadge>
               <GreenTick />
@@ -193,7 +201,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                         <div className="no">
                           <p>{ele.text}</p>
                           <div className="num">
-                            <span>{reviews&&reviews.length}</span>
+                            <span>{reviews && reviews.length}</span>
                           </div>
                         </div>
                         {ele.isSelected && (
@@ -224,7 +232,8 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
                 </div> */}
                 <JobGridListAlt>
                   {currentTab == "Recommendations" &&
-                    reviews && reviews?.map((ele, index) => (
+                    reviews &&
+                    reviews?.map((ele, index) => (
                       <ReviewComp key={index} {...ele} />
                     ))}
                 </JobGridListAlt>
@@ -271,13 +280,42 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string } }) => {
     <button onClick={() => setShowHireSelectModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Select Professional</p><AirplaneIcon /></button>
                 </div> */}
                 <div className=" flex gap-1">
-    <button onClick={() => setShowHireArtisanModal(true)} className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"> <p className="">Contact Professional</p><AirplaneIcon /></button>
-                    {/* <div onClick={() => setShowHireArtisanModal(true)} className=" flex justify-center items-center w-12 h-12 rounded-[12px] bg-[#E7F6EC] "><ContactCard /></div> */}
+                  <button
+                    onClick={() => setShowHireArtisanModal(true)}
+                    className=" rounded-md  gap-2 text-sm font-bold text-white bg-[#00932E] md:w-[90%] md:h-[48px] w-[90%] h-[40px] flex justify-center items-center"
+                  >
+                    {" "}
+                    <p className="">Contact Professional</p>
+                    <AirplaneIcon />
+                  </button>
+                  {/* <div onClick={() => setShowHireArtisanModal(true)} className=" flex justify-center items-center w-12 h-12 rounded-[12px] bg-[#E7F6EC] "><ContactCard /></div> */}
                 </div>
-                {showHireSelectModal && <SelectArtisanComp handleModAction={handleSelectAction} cancelModal={() => setShowHireSelectModal(false)} />}
-                {showSuspendModal && <CloseHireArtisanComp handleModAction={handleModAction} cancelModal={() => setShowSuspendModal(false)} />}
-                {showHireProfessionalModal && <HireProfessionalComp artisanId={data?.ID} handleModAction={handleProfessionalAction} cancelModal={() => setShowHireProfessionalModal(false)} />}
-  {showHireArtisanModal && <HireArtisanComp artisanId={data?.ID} handleModalAction={handleModalAction} cancelModal={() => setShowHireArtisanModal(false)} />}
+                {showHireSelectModal && (
+                  <SelectArtisanComp
+                    handleModAction={handleSelectAction}
+                    cancelModal={() => setShowHireSelectModal(false)}
+                  />
+                )}
+                {showSuspendModal && (
+                  <CloseHireArtisanComp
+                    handleModAction={handleModAction}
+                    cancelModal={() => setShowSuspendModal(false)}
+                  />
+                )}
+                {showHireProfessionalModal && (
+                  <HireProfessionalComp
+                    artisanId={data?.ID}
+                    handleModAction={handleProfessionalAction}
+                    cancelModal={() => setShowHireProfessionalModal(false)}
+                  />
+                )}
+                {showHireArtisanModal && (
+                  <HireArtisanComp
+                    artisanId={data?.ID}
+                    handleModalAction={handleModalAction}
+                    cancelModal={() => setShowHireArtisanModal(false)}
+                  />
+                )}
               </div>
             </div>
           </div>

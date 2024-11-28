@@ -66,7 +66,7 @@ const EmployersProfile = () => {
 		// setForm({ ...form, LocalGovernment: name });
 		setLga(name);
 		setShowLGADropdown(false);
-		console.log(lgas)
+	
 		
 	};
 

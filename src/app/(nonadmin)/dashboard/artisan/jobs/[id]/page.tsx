@@ -116,8 +116,6 @@ const requirementsArray = data?.Requirements
         }
       );
       setSaveStatus(response.status)
-
-      console.log('Job saved successfully:', response.data);
       // Handle success (e.g., show a message to the user)
     } catch (error) {
       console.error('Error saving job:', error);
@@ -145,7 +143,7 @@ const requirementsArray = data?.Requirements
       );
       setStatus(response.status)
 
-      console.log('Job application submitted:', response);
+    
     
 
     } catch (error) {
@@ -155,7 +153,7 @@ const requirementsArray = data?.Requirements
       setApplyLoading(false); 
     }
   };
-console.log(data)
+
 
 
   return (

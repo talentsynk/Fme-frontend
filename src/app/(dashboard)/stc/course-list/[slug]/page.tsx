@@ -29,7 +29,7 @@ export default function Slug() {
 
 		const [selectedGraphOption, setSelectedGraphOption] = useState(MDACourseGraphOptions.find((ele) => ele.isSelected === true));
 
-	console.log(courseID);
+
 	const [Course, setCourse] = useState<ICourse | null>(null);
 
 	useEffect(() => {
@@ -45,14 +45,13 @@ export default function Slug() {
 			.then((res) => {
 				const data = res.data;
 				setCourse(data);
-				console.log(data);
-				console.log(Course);
+				
 			
 			})
 			.catch((error) => console.log(error));
 	}, []);
 
-	console.log(Course);
+
 
 	const GridCard = () => {
 	

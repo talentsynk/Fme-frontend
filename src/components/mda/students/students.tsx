@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IStudentData, StudentItemDropdownList, IStudentDropdownFunc } from "../../fme/students/data";
 import { NocenterStyles } from "@/components/fme/stc/styles";
 import { MdaItemComp } from "@/components/fme/mda/mda";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 import {
 	CheckboxStyle,
 	DropdownOptionsStyle,
@@ -50,13 +51,14 @@ export const StudentTableRow: React.FC<IStudentCompData> = ({ FirstName, LastNam
 		} else if (action === "Re-activate Student") {
 			setShowActivateModal(true);
 		}
+		setShowDropdown(false);
 	};
 
 	const { selectedStudentId } = useAppSelector(mdaSelector);
 	// set dispatch
 	const dispatch = useAppDispatch();
 	const handleSelectOptions = () => {
-		setShowDropdown(!showDropdown);
+		setShowDropdown(true);
 		if (selectedStudentId === ID) {
 			dispatch(setSelectedStudentId(null));
 		} else {
@@ -83,13 +85,43 @@ export const StudentTableRow: React.FC<IStudentCompData> = ({ FirstName, LastNam
 			<td>
 				<p>{StateOfResidence.toUpperCase()} STATE</p>
 			</td>
-			<td className="drop">
+			{/* <td className="drop">
 				<StatusComp $isActive={IsActive} />
+				<ClickOutsideWrapper onClickOutside={() => setShowDropdown(false)}>
 				<TableDropdownStyles className="igris">
 					<div className="head" onClick={handleSelectOptions}>
 						<ThreedotsIcon />
 					</div>
 					{selectedStudentId === ID && (
+						<DropdownOptionsStyle>
+							
+							<div className="options">
+								{studentItemList.map((ele, index) => (
+									<MdaItemComp
+										key={index}
+										isSelected={ele.isSelected}
+										text={!IsActive && ele.text === "Suspend Student" ? "Re-activate Student" : ele.text}
+										hasBorder={ele.hasBorder}
+										handleSelect={() => handleSelectItem(!IsActive && ele.text === "Suspend Student" ? "Re-activate Student" : ele.text)}
+									/>
+								))}
+							</div>
+						</DropdownOptionsStyle>
+					)}
+				</TableDropdownStyles>
+				</ClickOutsideWrapper>
+				{showDetails && <StudentsDetailModal cancelModal={() => setShowdetails(false)} />}
+				{showSuspendModal && <SuspendStudentComp cancelModal={() => setShowSuspendModal(false)} />}
+				{showActiveModal && <ReactivateStudentComp cancelModal={() => setShowActivateModal(false)} />}
+			</td> */}
+			<td className="drop">
+				<StatusComp $isActive={IsActive} />
+				<ClickOutsideWrapper onClickOutside={() => setShowDropdown(false)}>
+				<TableDropdownStyles className="igris">
+					<div className="head" onClick={handleSelectOptions}>
+						<ThreedotsIcon />
+					</div>
+					{selectedStudentId === ID && showDropdown && (
 						<DropdownOptionsStyle>
 							<div className="options">
 								{studentItemList.map((ele, index) => (
@@ -105,6 +137,7 @@ export const StudentTableRow: React.FC<IStudentCompData> = ({ FirstName, LastNam
 						</DropdownOptionsStyle>
 					)}
 				</TableDropdownStyles>
+				</ClickOutsideWrapper>
 				{showDetails && <StudentsDetailModal cancelModal={() => setShowdetails(false)} />}
 				{showSuspendModal && <SuspendStudentComp cancelModal={() => setShowSuspendModal(false)} />}
 				{showActiveModal && <ReactivateStudentComp cancelModal={() => setShowActivateModal(false)} />}

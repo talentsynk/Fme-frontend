@@ -192,7 +192,7 @@ export default function Login() {
       pwd2Error.text !== ""
     ) {
       // call signup API
-      console.log(form);
+     
     }
   };
 

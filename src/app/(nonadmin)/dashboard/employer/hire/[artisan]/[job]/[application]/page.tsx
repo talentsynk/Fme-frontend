@@ -69,11 +69,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
   const lol=params.artisan
   const lols=params.job
   const lolz=params.application
-  //empty business name for artisans
-  //student datta should be empty array not null
-  //to hiire a professional direct, the hire professional endpoint requires a job id
-  //the images of the similar artisans when goin through the hire artisan should not be that wite guy
-  console.log(lol,lols,lolz)
+
   const [artisanTabSwitches, setArtisanTabSwitches] = useState(
     ArtisanProfileTabSwitches
   );
@@ -82,7 +78,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
   const [showHireSelectModal, setShowHireSelectModal] = useState(false);
   const [showHireProfessionalModal, setShowHireProfessionalModal] = useState(false);
   const cancelModal=()=>{
-    console.log(1)
+   
   }
   const [currentTab, setCurrentTab] = useState(
     artisanTabSwitches.find((ele) => ele.isSelected)?.text
@@ -103,7 +99,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
   const [reviews,setReviews]= useState<IReviews[]|null>(null)
   useEffect(() => {
 		let token = Cookies.get("token");
-    
+  
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -112,7 +108,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
 		axios
 			.get(`${BACKEND_URL}/artisan/profile-stats/${lol}`, config)
 			.then((res) => {
-       console.log(res)
+      
 				const data = res.data;
 				setStats(data);
 			})
@@ -129,7 +125,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
 		axios
 			.get(`${BACKEND_URL}/artisan/${lol}`, config)
 			.then((res) => {
-        console.log(res)
+   
 				const data = res.data.artisan;
 				setData(data);
 			})
@@ -156,7 +152,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
     // setHiringStatus(prevState => !prevState); // Toggle the job status
     setShowHireProfessionalModal(false);
   };
-  console.log(data)
+
   return (
     <EmployerDetailPageStyle>
       <PaddedSectionStyles>

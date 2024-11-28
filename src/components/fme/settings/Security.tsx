@@ -30,7 +30,7 @@ const Security = () => {
  };
 
  const handleSubmit = () => {
-    console.log(securityData);
+ 
     setNum(2);
  };
 

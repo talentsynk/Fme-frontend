@@ -48,8 +48,8 @@ export default function Home() {
           <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />
         </div>
         <div className=" animate-fadeIn  flex flex-col md:flex-row ">
-          <Image src="/images/landing/hero1.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
-          <Image src="/images/landing/hero2.png" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
+          <Image src="/images/landing/fme1.jpg" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
+          <Image src="/images/landing/fme1.jpg" width={721} height={350} alt="endorsement pictures" className=" flex-1" />
         </div>
         <div className=" flex flex-col md:flex-row space-y-2 p-8 justify-between py-16">
           <div className="text-white flex-1 space-y-6">
@@ -58,7 +58,7 @@ export default function Home() {
             <p className=" text-[18px] text-center md:text-left py-2 md:py-0 leading-[24px] font-normal">To truly drive transformation in Nigeria, it is essential to incorporate skills throughout the entire education sector. The council&apos;s efforts will be pivotal in achieving this ambitious goal.</p>
           </div>
           <div className=" flex-1 flex justify-end">
-          <Image src="/images/fourth.png" width={512} height={468} alt="endorsement pictures" />
+          <Image src="/images/landing/fme3.jpg" width={512} height={468} alt="endorsement pictures" />
           </div>
         </div>
        </div>

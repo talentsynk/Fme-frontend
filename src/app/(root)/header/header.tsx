@@ -1,72 +1,98 @@
-'use client'
-import { Cancel, Hamburger } from '@/components/landing/faqs/Svgs';
-import './HeaderStyle.css'
-import Image from 'next/image'
+"use client";
+import { Cancel, Hamburger } from "@/components/landing/faqs/Svgs";
+import "./HeaderStyle.css";
+import Image from "next/image";
 import Link from "next/link";
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from "react";
 // import { useRouter } from 'next/router'
-import { usePathname } from 'next/navigation'
-
+import { usePathname } from "next/navigation";
 
 export const RootHeader = () => {
-    const pathname = usePathname()
-    console.log(pathname)
-    console.log(1)
-    // const router = useRouter()
-    const [showNav,setShowNav]=useState(false)
-    // const navRef = useRef<HTMLElement | null>(null);
-    const ShowNav = () => {
-        setShowNav(true)
-    }
-    const ShowNavv = () => {
-        setShowNav(false)
-    }
-    // useEffect(() => {
-    //     if (pathname === '/faqs') {
-    //         document.body.style.backgroundColor = '#E7F6EC'; // Blue color
-    //     } else if (pathname === '/about') {
-    //         document.body.style.backgroundColor = '#E7F6EC'; // Blue color
-    //     } else {
-    //         document.body.style.backgroundColor = '#ffffff'; // Default color
-    //     }
-    // }, [pathname])
-    return ( 
-        
-        <header className="flex items-center p-2 md:px-8 md:py-6">
-            <Link href="/" className="flex flex-1 items-center gap-1">
-                <Image src="/images/image 7 (1).svg" width={61} height={46} alt="" />
-                <h5 className="text-[#00932E] font-bold text-[12px] md:text-[16px]">NATIONAL SKILLS<br /> INFORMATION CENTER</h5>
+  const pathname = usePathname();
+
+
+  // const router = useRouter()
+  const [showNav, setShowNav] = useState(false);
+  // const navRef = useRef<HTMLElement | null>(null);
+  const ShowNav = () => {
+    setShowNav(true);
+  };
+  const ShowNavv = () => {
+    setShowNav(false);
+  };
+
+  return (
+    <section className="bg-[#E7F6EC] p-4 ">
+      <header className="flex items-center p-2 md:px-8 md:py-6 md:w-1/2  mx-auto bg-[#00932E] rounded-lg">
+        <Link href="/" className="flex flex-1 items-center gap-1">
+          <Image src="/images/image 7 (1).svg" width={61} height={46} alt="" />
+          <h5 className="text-[#fff] font-bold text-[12px] md:text-[16px]">
+            NATIONAL SKILLS
+            <br /> INFORMATION CENTER
+          </h5>
+        </Link>
+        <nav
+          className={`flex-col ${
+            !showNav ? "md:flex hidden" : "flex"
+          } space-y-4 md:space-y-0 md:flex-row flex-1 justify-between`}
+        >
+          <ul className="flex flex-col md:flex-row md:gap-12 md:items-center text-[#8c8c8c] md:text-[#fff]">
+            <li
+              className={`hover:font-bold hover:bg-[#00932E]   rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${
+                pathname === "/faqs"
+                  ? "text-[#00932E] md:border-b-4 font-bold md:border-[#00932E]"
+                  : ""
+              }`}
+            >
+              <Link href="/faqs">FAQs</Link>
+            </li>
+            <li
+              className={`hover:font-bold hover:bg-[#00932E] rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${
+                pathname === "/about"
+                  ? "text-[#00932E] md:border-b-4 font-bold md:border-[#00932E]"
+                  : ""
+              }`}
+            >
+              <Link href="/about">About</Link>
+            </li>
+          </ul>
+          <div className="flex flex-col md:flex-row gap-2 space-y-4 md:space-y-0 md:items-center">
+            <Link
+              href="/auth/login"
+              className="w-fit  rounded-md px-4 py-2 font-semibold text-sm text-[#00932E] bg-white border border-solid border-[#00932E]"
+            >
+              Login
             </Link>
-            <nav className={`flex-col ${!showNav ? 'md:flex hidden' : 'flex'} space-y-4 md:space-y-0 md:flex-row flex-1 justify-between`}>
-                <ul className="flex flex-col md:flex-row md:gap-12 md:items-center">
-                    <li className={`md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${pathname === '/faqs' ? 'text-[#00932E] md:border-b-4 font-bold md:border-[#00932E]' : ''}`}>
-                        <Link href="/faqs">FAQs</Link>
-                    </li>
-                    <li className={`md:hover:text-[#00932E] hover:bg-[#00932E] md:hover:bg-white  rounded-md md:rounded-none p-2 md:p-2 hover:text-white ${pathname === '/about' ? 'text-[#00932E] md:border-b-4 font-bold md:border-[#00932E]' : ''}`}>
-                        <Link href="/about">About</Link>
-                    </li>
-                </ul>
-                <div className="flex flex-col md:flex-row gap-2 space-y-4 md:space-y-0 md:items-center">
-                    <Link href="/auth/login" className="w-fit  rounded-md px-4 py-2 font-semibold text-sm text-[#00932E] bg-white border border-solid border-[#00932E]">Login</Link>
-                    <Link href="/auth/signup"><button className="w-fit rounded-md px-4 py-2 font-semibold text-sm text-white bg-[#00932E]">Signup</button></Link>
-                </div>
-                <div className=" flex md:hidden gap-2 justify-center p-2 border-t-2 border-b-0 border-l-0  border-r-0 border border-t-[#EBEDEF]">
-                    <h6 className="">Powered by</h6>
-                    <Image src="/images/landing/Coderina Logo PNG 2.svg" width={100} height={100} alt="" />
-                </div>
-            </nav>
-            {!showNav ? (
-                <div onClick={ShowNav} className="flex gap-2 items-center md:hidden rounded-md px-3 py-1.5 font-semibold text-sm text-white bg-[#00932E] ml-auto">
-                    <Hamburger />
-                    <h6 className=" text-[12px] md:text-[16px]">Menu</h6>
-                </div>
-            ) : (
-                <div className='flex md:hidden px-4 py-2 ml-auto' onClick={ShowNavv}>
-                    <Cancel />
-                </div>
-            )}
-        </header>
-   
-     );
-}
- 
+            <Link href="/auth/signup">
+              <button className="w-fit rounded-md px-4 py-2 font-semibold text-sm text-white bg-[#00932E]">
+                Signup
+              </button>
+            </Link>
+          </div>
+          <div className=" flex md:hidden gap-2 justify-center p-2 border-t-2 border-b-0 border-l-0  border-r-0 border border-t-[#EBEDEF]">
+            <h6 className="">Powered by</h6>
+            <Image
+              src="/images/landing/Coderina Logo PNG 2.svg"
+              width={100}
+              height={100}
+              alt=""
+            />
+          </div>
+        </nav>
+        {!showNav ? (
+          <div
+            onClick={ShowNav}
+            className="flex gap-2 items-center md:hidden rounded-md px-3 py-1.5 font-semibold text-sm text-white bg-[#00932E] ml-auto"
+          >
+            <Hamburger />
+            <h6 className=" text-[12px] md:text-[16px]">Menu</h6>
+          </div>
+        ) : (
+          <div className="flex md:hidden px-4 py-2 ml-auto" onClick={ShowNavv}>
+            <Cancel />
+          </div>
+        )}
+      </header>
+    </section>
+  );
+};
