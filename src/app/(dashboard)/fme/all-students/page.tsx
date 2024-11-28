@@ -340,6 +340,7 @@ export default function Home() {
           studentsListDuplicate
         );
         setStudentsListDuplicate(sortedMDAData);
+        // console.log(studentsListDuplicate);
       } else if (id == "-1" && studentsListDuplicate !== null) {
         const sortedMDAData = sortStudentListDataAlphabetically(
           studentsListDuplicate,
@@ -412,6 +413,8 @@ export default function Home() {
       if (response.status !== 200) {
         throw new Error("Failed to upload CSV data");
       }
+
+      console.log("CSV data uploaded successfully");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // Handle Axios specific errors
@@ -490,7 +493,6 @@ export default function Home() {
       setJobLoading(false); // Stop loading once the download is complete
     }
   };
-  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <>
@@ -510,7 +512,7 @@ export default function Home() {
               <ColoredArrowDown />
             </AngleDownStyles>
           </button>
-
+		  
           {showDropdown && (
             <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
               <div
@@ -534,7 +536,7 @@ export default function Home() {
               </label>
             </div>
           )}
-
+		  
           {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
           {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
           <button

@@ -34,7 +34,6 @@ export default function Slug() {
 			.get(`${BACKEND_URL}/course/1/top-5-mda`, config)
 			.then((res) => {
 				const data=res.data
-			
 			})
 			.catch((error) => console.log(error));
 	});

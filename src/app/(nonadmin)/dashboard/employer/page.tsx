@@ -42,7 +42,6 @@ const EmployerHome = () => {
 
 	useEffect(() => {
 		let token = Cookies.get("token");
-
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,

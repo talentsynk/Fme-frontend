@@ -272,6 +272,15 @@ export const UserLoginStyles = styled.div`
       color: var(--Success-600, #04802e);
     }
   }
+  .split {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    .form-ele{
+    width: 48%;
+    }
+  }
   input[type="password"] {
     color: var(--Grey-900, var(--text-style, #101928));
     font-size: 0.875rem;
@@ -311,6 +320,13 @@ export const UserLoginStyles = styled.div`
       font-style: normal;
       font-weight: 700;
       line-height: 1.25rem; /* 142.857% */
+    }
+  }
+  @media (max-width: 500px) {
+    .split {
+      .form-ele {
+        width: 100%;
+      }
     }
   }
 `;

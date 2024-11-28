@@ -13,7 +13,7 @@ import {
   StateCompStyles,
   StatesDropdownStyles,
 } from "@/components/fme/mda/styles";
-import { NinIcon, PhoneIcon } from "@/components/icons/auth";
+import { EmployerIcon, NinIcon, PhoneIcon } from "@/components/icons/auth";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 import {
   CheckedIcon,
@@ -41,6 +41,8 @@ interface IForm {
   nin: string;
   state: string;
   lga: string;
+  cacRegNo : string;
+  companyName : string;
 }
 export default function Signup() {
   const router = useRouter();
@@ -54,6 +56,8 @@ export default function Signup() {
     nin: "",
     state: "",
     lga: "",
+    cacRegNo : "",
+    companyName : ""
   });
 
   // For Email
@@ -61,6 +65,8 @@ export default function Signup() {
   const [lname, setLname] = useState<string>("");
   const [phonenumber, setPhoneNumber] = useState<string>("");
   const [nin, setNin] = useState<string>("");
+  const [cacReg, setCacReg] = useState<string>("");
+  const [companyName, setCompanyName] = useState<string>("");
 
   const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<Ierror>({
@@ -128,6 +134,22 @@ export default function Signup() {
         setForm({ ...form, lname: value });
         setLNameError({ active: false, text: "" });
       }
+    } else if (id === "cac") {
+      setCacReg(value);
+      if (value.length < 5) {
+        setCacError({ active: true, text: "CAC number is too short" });
+      } else {
+        setForm({ ...form, cacRegNo: value });
+        setCacError({ active: false, text: "" });
+      }
+    }  else if (id === "companyName") {
+      setCompanyName(value);
+      if (value.length < 1 ) {
+        setCompanyNameError({ active: true, text: "Company Name cannot be empty" });
+      } else {
+        setForm({ ...form, companyName: value });
+        setCompanyNameError({ active: false, text: "" });
+      }
     }
   };
   const handleNumberChange = (
@@ -185,12 +207,27 @@ export default function Signup() {
     active: false,
     text: "",
   });
+  const [cacError, setCacError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+  const [companyNameError, setCompanyNameError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
+
 
   // for states
   const [state, setState] = useState("");
   const [states, setStates] = useState(States);
 
   const [showStateDropdown, setShowStateDropdown] = useState(false);
+
+  const [showOrgDropdown, setShowOrgDropdown] = useState(false);
+  const [options, setOptions] = useState([true, false]);
+
+  const [selectedOption, setSelectedOption] = useState(false);
+
   const handleStateSelection = (name: string) => {
     setForm({ ...form, state: name });
     setState(name);
@@ -260,6 +297,8 @@ export default function Signup() {
       nin: "",
       state: "",
       lga: "",
+      cacRegNo : "",
+      companyName : ""
     });
     setEmail("");
     setFname("");
@@ -268,6 +307,8 @@ export default function Signup() {
     setPhoneNumber("");
     setState("");
     setNin("");
+    setCacReg("");
+    setCompanyName("");
   };
   const handleSubmit1 = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -279,6 +320,22 @@ export default function Signup() {
       form.state !== "" &&
       form.nin !== ""
     ) {
+      if(selectedOption && cacError.active){
+        toast.error("Please enter a valid CAC registration number");
+        return;
+      }
+      if(selectedOption && companyNameError.active){
+        toast.error("Please enter a valid Company Name");
+        return;
+      }
+      if(selectedOption && !form.companyName){
+        toast.error("Please enter a valid Company Name");
+        return;
+      }
+      if(selectedOption && !form.cacRegNo){
+        toast.error("Please enter a valid CAC registration number");
+        return;
+      }
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
@@ -299,6 +356,9 @@ export default function Signup() {
           State: form.state,
           LGA: form.lga,
           Password: form.pwd,
+          IsCompany : selectedOption,
+          CompanyCAC : form.cacRegNo,
+          CompanyName : form.companyName
         };
         setIsLoading(true);
         const { data } = await axios.post(
@@ -319,7 +379,7 @@ export default function Signup() {
         // reset password field
         setPwd("");
         setPwd2("");
-        setForm({...form,pwd : ""});
+        setForm({ ...form, pwd: "" });
         if (error.response) {
           toast.error(`${error.response.data.message}`);
         } else {
@@ -571,7 +631,7 @@ export default function Signup() {
             </div>
             <div className="form-ele">
               <label htmlFor="lga">L.G.A (Local Government Area)</label>
-              <StatesDropdownStyles>
+              <StatesDropdownStyles style={{zIndex : 5}}>
                 <div
                   className="head"
                   onClick={() => setShowLGADropdown(!showLGADropdown)}
@@ -604,6 +664,97 @@ export default function Signup() {
                 )}
               </StatesDropdownStyles>
             </div>
+            <div className="form-ele split">
+              <div className="form-ele">
+                <label htmlFor="state">Register as Organization</label>
+                <StatesDropdownStyles className="max" style={{zIndex : 1}}>
+                  <div
+                    className="head"
+                    onClick={() => setShowOrgDropdown(!showOrgDropdown)}
+                  >
+                    <>
+                    <p className="state-name">{selectedOption ? "True" : "False"}</p>
+                    </>
+                    <AngleDownStyles $isSelected={showOrgDropdown}>
+                      <AngleDown />
+                    </AngleDownStyles>
+                  </div>
+                  {showOrgDropdown && (
+                    <div className="dropdown">
+                      {options.map((ele, index) => (
+                        <StateCompStyles
+                          $isSelected={selectedOption == ele}
+                          key={index}
+                          onClick={() => {
+                            setSelectedOption(ele);
+                            setShowOrgDropdown(false);
+                          }}
+                        >
+                          <p>{ele ? "True" : "False"}</p>
+                        </StateCompStyles>
+                      ))}
+                    </div>
+                  )}
+                </StatesDropdownStyles>
+              </div>
+              <div className="form-ele">
+                <label htmlFor="fname">CAC Registration Number</label>
+                <div className="inp">
+                  <input
+                    type="text"
+                    name="cacRegNo"
+                    value={cacReg}
+                    placeholder="Enter Registration Number"
+                    onChange={(e) => handleNameChange(e, "cac")}
+                    className={cacError.active ? "error-bdr" : ""}
+                  />
+                  <div className="ind">
+                    {cacError.active === false && cacReg === "" && (
+                      <EmployerIcon />
+                    )}
+                    {cacError.active === false && cacReg !== "" && <CheckedIcon />}
+                    {cacError.active === true && <FormErrorIcon />}
+                  </div>
+                  <p
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                    className={ninError.active ? "error-msg" : "correct"}
+                  >
+                    {ninError.text}
+                  </p>
+                </div>
+              </div>
+            </div>
+              { selectedOption &&
+                <div className="form-ele">
+                <label htmlFor="fname">Company Name</label>
+                <div className="inp">
+                  <input
+                    type="text"
+                    name="lname"
+                    placeholder="Enter Company Name"
+                    value={companyName}
+                    onChange={(e) => handleNameChange(e, "companyName")}
+                    className={companyNameError.active ? "error-bdr" : ""}
+                  />
+                  <div className="ind">
+                    {companyNameError.active === false && lname !== "" && (
+                      <CheckedIcon />
+                    )}
+                    {companyNameError.active === true && <FormErrorIcon />}
+                  </div>
+                  <p
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                    className={companyNameError.active ? "error-msg" : "correct"}
+                  >
+                    {companyNameError.text}
+                  </p>
+                </div>
+              </div>
+              }
           </div>
           <div className="btn">
             <button

@@ -71,7 +71,6 @@ const JobApplication: React.FC<IJob> = ({
   };
   useEffect(() => {
     let token = Cookies.get("token");
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,

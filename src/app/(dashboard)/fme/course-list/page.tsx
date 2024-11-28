@@ -228,7 +228,7 @@ export default function Home() {
     }
   };
 
-  console.log(Courses);
+  // console.log(Courses);
   // const Items = courseListDuplicate && courseListDuplicate?.map((course) => <CourseCard key={course.Id.toString()} id={course.Id} name={course.Name} />);
 
   const CurrentCourse = () => {
@@ -345,8 +345,8 @@ export default function Home() {
                   activeIcon={ele.activeIcon}
                   text={ele.text}
                   isSelected={ele.isSelected}
-                  handleFilterFunc={() =>
-                    console.log("I will handle Filter/Sort")
+                  handleFilterFunc={() =>{}
+                    // console.log("I will handle Filter/Sort")
                   }
                   handleClick={() => handleClickFilterBtns(ele.text)}
                 />
