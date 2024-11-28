@@ -383,7 +383,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 		) {
 			// call createMDA API
 			const token = Cookies.get("token");
-			console.log(token)
+			""
 			const config = {
 				headers: {
 					Authorization: `Bearer ${token}`,

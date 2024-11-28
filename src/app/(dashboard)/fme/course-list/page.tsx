@@ -94,7 +94,7 @@ export default function Home() {
   const [filterBtns, setFilterBtns] = useState(FilterBtns);
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + 35;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = mockArray.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(mockArray.length / 35);
   const handlePageClick = (event: any) => {
@@ -228,7 +228,7 @@ export default function Home() {
     }
   };
 
-  console.log(Courses);
+  // console.log(Courses);
   // const Items = courseListDuplicate && courseListDuplicate?.map((course) => <CourseCard key={course.Id.toString()} id={course.Id} name={course.Name} />);
 
   const CurrentCourse = () => {
@@ -345,8 +345,8 @@ export default function Home() {
                   activeIcon={ele.activeIcon}
                   text={ele.text}
                   isSelected={ele.isSelected}
-                  handleFilterFunc={() =>
-                    console.log("I will handle Filter/Sort")
+                  handleFilterFunc={() =>{}
+                    // console.log("I will handle Filter/Sort")
                   }
                   handleClick={() => handleClickFilterBtns(ele.text)}
                 />

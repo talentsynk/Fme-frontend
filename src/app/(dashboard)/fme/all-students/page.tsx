@@ -340,7 +340,7 @@ export default function Home() {
           studentsListDuplicate
         );
         setStudentsListDuplicate(sortedMDAData);
-        console.log(studentsListDuplicate);
+        // console.log(studentsListDuplicate);
       } else if (id == "-1" && studentsListDuplicate !== null) {
         const sortedMDAData = sortStudentListDataAlphabetically(
           studentsListDuplicate,

@@ -103,7 +103,7 @@ const ArtisanDetailPage = ({ params }: { params: { artisan: string, job: string,
   const [reviews,setReviews]= useState<IReviews[]|null>(null)
   useEffect(() => {
 		let token = Cookies.get("token");
-    console.log(token)
+    
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,

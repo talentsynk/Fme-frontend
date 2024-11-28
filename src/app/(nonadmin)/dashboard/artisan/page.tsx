@@ -48,7 +48,7 @@ export default function ArtisansHome(){
   console.log(1)
 	useEffect(() => {
 		let token = Cookies.get("token");
-    console.log(token)
+    
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,

@@ -89,7 +89,7 @@ export default function Home() {
 
 	useEffect(() => {
 		let token = Cookies.get("token");
-		console.log(token)
+		
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
