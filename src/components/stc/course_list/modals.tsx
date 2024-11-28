@@ -48,6 +48,7 @@ import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 
 import Cookies from "js-cookie";
 import { BACKEND_URL } from "@/lib/config";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface IOneButtonModal {
 	cancelModal: () => void;
@@ -125,8 +126,8 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				},
 			};
 			const response = await axios.get(`${BACKEND_URL}/category/all`, config);
-			// Assuming the API response is an array of state names
-			console.log(response.data);
+
+			
 			setCourses(response.data.Categories);
 		} catch (error) {
 			console.error("Error fetching courses:", error);
@@ -150,7 +151,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					Description: form.Description,
 					CategoryID: form.CategoryID,
 				};
-				console.log("Request Body:", body);
+				
 				setIsLoading(true);
 				const { data } = await axios.post(`${BACKEND_URL}/course/create`, body, config);
 				if (data) {
@@ -182,6 +183,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 			{isSuccess == false && (
 				<NewMdaAbsoluteStyles>
 					<div className="form">
+						<ClickOutsideWrapper onClickOutside={cancelModal}>
 						<NewMdaFormStyles className="bd">
 							<div className="fl">
 								<div className="form-head">
@@ -271,6 +273,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 								</div>
 							</form>
 						</NewMdaFormStyles>
+						</ClickOutsideWrapper>
 					</div>
 				</NewMdaAbsoluteStyles>
 			)}

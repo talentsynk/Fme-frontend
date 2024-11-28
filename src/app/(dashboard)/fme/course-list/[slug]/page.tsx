@@ -34,7 +34,7 @@ export default function Slug() {
 			.get(`${BACKEND_URL}/course/1/top-5-mda`, config)
 			.then((res) => {
 				const data=res.data
-				console.log(data)
+			
 			})
 			.catch((error) => console.log(error));
 	});
@@ -45,7 +45,7 @@ export default function Slug() {
 
 	const courseID = searchParams.get("course");
 
-	console.log(courseID);
+
 	const [Course, setCourse] = useState<ICourse | null>(null);
 
 	useEffect(() => {
@@ -61,14 +61,14 @@ export default function Slug() {
 			.then((res) => {
 				const data = res.data;
 				setCourse(data);
-				console.log(data);
-				console.log(Course);
+			;
+	
 			
 			})
 			.catch((error) => console.log(error));
 	}, []);
 
-	// console.log(Course);
+
 
 	const GridCard = () => {
 		

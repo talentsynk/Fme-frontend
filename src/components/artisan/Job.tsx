@@ -7,6 +7,7 @@ import { States } from "../fme/mda/data";
 import { XIcon } from "../icons/sidebar";
 import { truncateString } from "@/utils/truncateString";
 import { useRouter } from "next/navigation";
+import ClickOutsideWrapper from "../auth/wrapper";
 
 export interface IJob {
   Id: string;
@@ -56,7 +57,7 @@ export const JobComp: React.FC<ISimilarJobs> = ({
 
     return daysAgo;
 };
-console.log(CreatedAt)
+
 const lol= getDaysAgo(CreatedAt)
   return (
     <JobCompStyles>
@@ -128,6 +129,7 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
 
   return (
     <LocationModalStyle>
+      <ClickOutsideWrapper onClickOutside={closeModal}>
       <div className="one">
         <div className="x" onClick={closeModal}>
           <XIcon />
@@ -199,6 +201,7 @@ export const SelectLocationModal: React.FC<ILocationModal> = ({
           Clear Filter
         </button>
       </div>
+      </ClickOutsideWrapper>
     </LocationModalStyle>
   );
 };

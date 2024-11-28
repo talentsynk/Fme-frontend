@@ -14,6 +14,7 @@ import {
   TryAgainIcon,
 } from "@/components/icons/fme/mda";
 import { XIcon } from "@/components/icons/sidebar";
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 import {
   CheckedIcon,
   EmailIcon,
@@ -190,7 +191,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             text: error.response.data.error,
           });
         } else {
-          console.log(error);
+        
           setOtherError({
             active: true,
             text: error.message,
@@ -206,6 +207,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       {isSuccess == false && (
         <NewMdaAbsoluteStyles>
           <div className="form">
+          <ClickOutsideWrapper onClickOutside={cancelModal}>
             <NewMdaFormStyles className="bd">
               <div className="fl">
                 <div className="form-head">
@@ -370,6 +372,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                 </div>
               </form>
             </NewMdaFormStyles>
+            </ClickOutsideWrapper>
           </div>
         </NewMdaAbsoluteStyles>
       )}

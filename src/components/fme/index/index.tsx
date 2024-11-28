@@ -80,13 +80,13 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
       .then((res) => {
         if (res.data) {
           if (option === "Courses") {
-            console.log(res.data.coursePercentages);
+         
             setData(res.data.coursePercentages);
           } else if (option === "MDAs") {
-            console.log(res.data.top5mdas);
+         
             setData(res.data.top5mdas);
           } else {
-            console.log(res.data);
+        
             setData(res.data.top5stcs);
           }
           setIsLoading(false);

@@ -6,9 +6,9 @@ interface IJob {
   JobType: string;
   Description: string;
   Amount: string;
-  Status?:string;
-  CreatedAt?:string|undefined;
-  Location?:string;
+  Status?: string;
+  CreatedAt?: string | undefined;
+  Location?: string;
 }
 
 import Cookies from "js-cookie";
@@ -53,14 +53,12 @@ const ArtisanJobs = () => {
   const [pageNo, setPageNo] = useState(1);
   const [showCancel, setShowCancel] = useState(false);
 
- 
-
   const handleTabSwitch = (tabIndex: number) => {
     const newMdaTabSwitches = artisanTabSwitches.map((ele) => {
       return { ...ele, isSelected: tabIndex == ele.tabIndex };
     });
     setArtisanTabSwitches(newMdaTabSwitches);
-    fetchContractJobs
+    fetchContractJobs;
     // Make an API call based on the selected tab
     switch (tabIndex) {
       case 0:
@@ -88,27 +86,23 @@ const ArtisanJobs = () => {
     setQuery(e.target.value);
   };
 
-
-
   const CancelQuerySearch = () => {
     setQuery("");
     setQueryError({ active: false, text: "" });
     setShowCancel(false);
   };
-interface ILol{
-  text:string;
-  isSelected:boolean;
-  id:string;
-  hasBorder?:boolean
-}
+  interface ILol {
+    text: string;
+    isSelected: boolean;
+    id: string;
+    hasBorder?: boolean;
+  }
   const [showSortDropdown, setShowSortDropdown] = useState(false);
-  const [sortItemDropdownList, setSortItemDropdownList] = useState<ILol[]>(
-    [
-      { text: "Last 24 hours", isSelected: false, id: "0" },
-      { text: "Last 7 days", isSelected: false, id: "1" },
-      { text: "Last 30 days", isSelected: false, id: "2" },
-    ]
-  );
+  const [sortItemDropdownList, setSortItemDropdownList] = useState<ILol[]>([
+    { text: "Last 24 hours", isSelected: false, id: "0" },
+    { text: "Last 7 days", isSelected: false, id: "1" },
+    { text: "Last 30 days", isSelected: false, id: "2" },
+  ]);
 
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [data, setData] = useState<IJob[] | null>(null);
@@ -134,7 +128,6 @@ interface ILol{
   const itemsPerPage = 5;
   const startIndex = (pageNo - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  
 
   const fetchAllJobs = async () => {
     const config = {
@@ -192,32 +185,47 @@ interface ILol{
   const filteredJobs = data?.filter((job) =>
     job.JobTitle.toLowerCase().includes(query.toLowerCase())
   );
-  console.log(filteredJobs)
-  const paginatedData = filteredJobs&&filteredJobs.slice(startIndex, endIndex);
-  
-  const [artisanTabSwitches, setArtisanTabSwitches] =
-  useState([
-    { text: "All jobs", tabIndex: 0, isSelected: true,len:filteredJobs&& filteredJobs.length },
-    { text: "Part-time jobs", tabIndex: 1, isSelected: false,len:filteredJobs&& filteredJobs.length },
-    { text: "Full-time jobs", tabIndex: 2, isSelected: false,len:filteredJobs&& filteredJobs.length },
+
+  const paginatedData =
+    filteredJobs && filteredJobs.slice(startIndex, endIndex);
+
+  const [artisanTabSwitches, setArtisanTabSwitches] = useState([
+    {
+      text: "All jobs",
+      tabIndex: 0,
+      isSelected: true,
+      len: filteredJobs && filteredJobs.length,
+    },
+    {
+      text: "Part-time jobs",
+      tabIndex: 1,
+      isSelected: false,
+      len: filteredJobs && filteredJobs.length,
+    },
+    {
+      text: "Full-time jobs",
+      tabIndex: 2,
+      isSelected: false,
+      len: filteredJobs && filteredJobs.length,
+    },
   ]);
 
   const handleSelect = async (selectedId: string) => {
     // Map the dropdown options to `days_ago` values
     const daysAgoMap: { [key: string]: number } = {
-      "0": 1,  // Last 24 hours
-      "1": 7,  // Last 7 days
+      "0": 1, // Last 24 hours
+      "1": 7, // Last 7 days
       "2": 30, // Last 30 days
     };
-  
+
     const daysAgo = daysAgoMap[selectedId];
-  
+
     const config = {
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
     };
-  
+
     try {
       const res = await axios.get(
         `${BACKEND_URL}/job/all?days_ago=${daysAgo}`,
@@ -228,7 +236,7 @@ interface ILol{
     } catch (error) {
       console.error("Error fetching filtered jobs by date:", error);
     }
-  
+
     // Update the sort dropdown state to reflect the selected option
     const updatedDropdownList = sortItemDropdownList.map((item) => ({
       ...item,
@@ -236,32 +244,35 @@ interface ILol{
     }));
     setSortItemDropdownList(updatedDropdownList);
   };
-  
+
   const fetchJobsByLocation = async (state: string, lga: string) => {
     try {
       // Get the authorization token from cookies
-      const token = Cookies.get('token'); // Replace 'authToken' with the actual cookie name where the token is stored
-  
+      const token = Cookies.get("token"); // Replace 'authToken' with the actual cookie name where the token is stored
+
       // Make the request with the authorization header
-      const response = await axios.get(`${BACKEND_URL}/job/all?state=${state}`, {
-        headers: {
-          Authorization: `Bearer ${token}` // Pass the token in the Authorization header
+      const response = await axios.get(
+        `${BACKEND_URL}/job/all?state=${state}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          },
         }
-      });
-  
+      );
+
       setData(response.data.jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
   };
-  
+
   // Function to handle location filter application
   const handleLocationFilter = (state: string, lga: string) => {
     fetchJobsByLocation(state, lga);
     setShowLocationModal(false); // Close the modal after applying the filter
   };
-  
-  console.log(filteredJobs)
+
+  filteredJobs;
 
   return (
     <ArtisanJobPageStyle>
@@ -342,8 +353,8 @@ interface ILol{
                     </button>
                     {showLocationModal && (
                       <SelectLocationModal
-                      closeModal={() => setShowLocationModal(false)}
-                      applyFilter={handleLocationFilter}
+                        closeModal={() => setShowLocationModal(false)}
+                        applyFilter={handleLocationFilter}
                       />
                     )}
                   </div>
@@ -403,16 +414,16 @@ interface ILol{
           </JobGridList>
           <Paginator
             value={pageNo}
-           incrementFunc={() => {
-    if (data && endIndex < data.length) {
-      setPageNo(pageNo + 1);
-    }
-  }}
+            incrementFunc={() => {
+              if (data && endIndex < data.length) {
+                setPageNo(pageNo + 1);
+              }
+            }}
             decrementFunc={() => {
-          if (pageNo > 1) {
-            setPageNo(pageNo - 1);
-          }
-        }}
+              if (pageNo > 1) {
+                setPageNo(pageNo - 1);
+              }
+            }}
           />
         </div>
       </PaddedSectionStyles>

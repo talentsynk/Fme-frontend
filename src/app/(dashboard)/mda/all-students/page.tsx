@@ -1,20 +1,32 @@
 "use client";
 import { Ierror } from "@/app/recovery/page";
 import {
-	SearchAndResultStyle,
-	StatListItemStyle,
-	StatListStyle,
-	TabSwitchStyle,
-	TopStyles,
-	WhiteContainer,
-	TableStyles,
-	SortOptionsStyle,
+  SearchAndResultStyle,
+  StatListItemStyle,
+  StatListStyle,
+  TabSwitchStyle,
+  TopStyles,
+  WhiteContainer,
+  TableStyles,
+  SortOptionsStyle,
 } from "@/components/fme/mda/styles";
 import { NoDataStyles } from "@/components/fme/mda/styles";
 import { AngleDownStyles } from "@/components/icons/header";
 import { ColoredArrowDown } from "@/components/icons/fme/main";
-import { IStudentData, StudentData, StudentsTabSwitches } from "@/components/fme/students/data";
-import { ActiveIcon, CancelInputIcon, InactiveIcon, MagnifyingGlassIcon, PlusIcon, TotalIcon, UploadIcon } from "@/components/icons/fme/mda";
+import {
+  IStudentData,
+  StudentData,
+  StudentsTabSwitches,
+} from "@/components/fme/students/data";
+import {
+  ActiveIcon,
+  CancelInputIcon,
+  InactiveIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  TotalIcon,
+  UploadIcon,
+} from "@/components/icons/fme/mda";
 import { sortStudentListDataAlphabetically } from "@/utils/sortData";
 import { SortItemDropdownList } from "@/components/fme/mda/data";
 import { motion } from "framer-motion";
@@ -25,7 +37,12 @@ import { FilterBtns } from "@/components/fme/mda/data";
 import { FilterBtnComp, MdaItemComp } from "@/components/fme/mda/mda";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import axios from "axios";
-import { setUnchangedStudentsList, setSelectedStudentId, mdaSelector, setFakeNewStudentId } from "@/redux/mda/mdaSlice";
+import {
+  setUnchangedStudentsList,
+  setSelectedStudentId,
+  mdaSelector,
+  setFakeNewStudentId,
+} from "@/redux/mda/mdaSlice";
 import Cookies from "js-cookie";
 import { IStudentCompData } from "@/types/Student";
 import Skeleton from "react-loading-skeleton";
@@ -34,332 +51,378 @@ import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
 import { BACKEND_URL } from "@/lib/config";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
-import Papa from 'papaparse';
+import Papa from "papaparse";
 import { WhiteDown } from "@/components/landing/faqs/Svgs";
 
 export default function Home() {
-	
-	const [showCancel, setShowCancel] = useState(false);
-	const [studentTabSwitches, setStudentTabSwitches] = useState(StudentsTabSwitches);
-	const [total, setTotal] = useState({
-		totalStudents: 0,
-		totalActive: 0,
-		totalInactive: 0,
-	});
-	const { unchangedStudentsList, fakeNewStudentId } = useAppSelector(mdaSelector);
-	const dispatch = useAppDispatch();
-	const [studentsListDuplicate, setStudentsListDuplicate] = useState<IStudentCompData[] | null>(null);
+  const [showCancel, setShowCancel] = useState(false);
+  const [studentTabSwitches, setStudentTabSwitches] =
+    useState(StudentsTabSwitches);
+  const [total, setTotal] = useState({
+    totalStudents: 0,
+    totalActive: 0,
+    totalInactive: 0,
+  });
+  const { unchangedStudentsList, fakeNewStudentId } =
+    useAppSelector(mdaSelector);
+  const dispatch = useAppDispatch();
+  const [studentsListDuplicate, setStudentsListDuplicate] = useState<
+    IStudentCompData[] | null
+  >(null);
 
-	const handleTabSwitch = (tabIndex: number) => {
-		const newMdaTabSwitches = studentTabSwitches.map((ele) => {
-			return { ...ele, isSelected: tabIndex == ele.tabIndex };
-		});
-		setStudentTabSwitches(newMdaTabSwitches);
+  const handleTabSwitch = (tabIndex: number) => {
+    const newMdaTabSwitches = studentTabSwitches.map((ele) => {
+      return { ...ele, isSelected: tabIndex == ele.tabIndex };
+    });
+    setStudentTabSwitches(newMdaTabSwitches);
 
-		const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-		if (tabIndex == 0) {
-			if (sortStatus && studentList !== null) {
-				const sortedStudentListData = sortStudentListDataAlphabetically(studentList, sortStatus == "-1");
-				setStudentsListDuplicate(sortedStudentListData);
-			} else {
-				setStudentsListDuplicate(studentList);
-			}
-		} else if (tabIndex == 1) {
-			const newStudentsList = studentList?.filter((ele) => ele.IsActive);
-			if (newStudentsList) {
-				if (sortStatus) {
-					const sortedStudentsData = sortStudentListDataAlphabetically(newStudentsList, sortStatus == "-1");
-					setStudentsListDuplicate(sortedStudentsData);
-				} else {
-					setStudentsListDuplicate(newStudentsList);
-				}
-			}
-		} else if (tabIndex == 2) {
-			const newStudentsList = studentList?.filter((ele) => ele.IsActive == false);
-			if (newStudentsList) {
-				if (sortStatus) {
-					const sortedStudentsData = sortStudentListDataAlphabetically(newStudentsList, sortStatus == "-1");
-					setStudentsListDuplicate(sortedStudentsData);
-				} else {
-					setStudentsListDuplicate(newStudentsList);
-				}
-			}
-		}
-	};
+    const sortStatus = sortItemDropdownList.find(
+      (ele) => ele.isSelected == true
+    )?.id;
+    if (tabIndex == 0) {
+      if (sortStatus && studentList !== null) {
+        const sortedStudentListData = sortStudentListDataAlphabetically(
+          studentList,
+          sortStatus == "-1"
+        );
+        setStudentsListDuplicate(sortedStudentListData);
+      } else {
+        setStudentsListDuplicate(studentList);
+      }
+    } else if (tabIndex == 1) {
+      const newStudentsList = studentList?.filter((ele) => ele.IsActive);
+      if (newStudentsList) {
+        if (sortStatus) {
+          const sortedStudentsData = sortStudentListDataAlphabetically(
+            newStudentsList,
+            sortStatus == "-1"
+          );
+          setStudentsListDuplicate(sortedStudentsData);
+        } else {
+          setStudentsListDuplicate(newStudentsList);
+        }
+      }
+    } else if (tabIndex == 2) {
+      const newStudentsList = studentList?.filter(
+        (ele) => ele.IsActive == false
+      );
+      if (newStudentsList) {
+        if (sortStatus) {
+          const sortedStudentsData = sortStudentListDataAlphabetically(
+            newStudentsList,
+            sortStatus == "-1"
+          );
+          setStudentsListDuplicate(sortedStudentsData);
+        } else {
+          setStudentsListDuplicate(newStudentsList);
+        }
+      }
+    }
+  };
 
-	useEffect(() => {
-		let token = Cookies.get("token");
-		console.log(token)
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		axios
-			.get(`${BACKEND_URL}/student/all`, config)
-			.then((res) => {
-				const data = res.data.students;
-				setStudentList(data);
-				setStudentsListDuplicate(data);
-				// store data in redux so it can reused across components for easy lookup
-				dispatch(setUnchangedStudentsList(data));
-				dispatch(setSelectedStudentId(null));
-				const maxStudentId = data.reduce((max: number, obj: IStudentCompData) => Math.max(max, obj.ID), 0);
-				dispatch(setFakeNewStudentId(maxStudentId));
-			})
-			.catch((error) => console.log(error));
+  useEffect(() => {
+    let token = Cookies.get("token");
 
-		axios
-			.get(`${BACKEND_URL}/student/all?active=true`, config)
-			.then((res) => {
-				const activeStudents = res.data;
-				console.log(activeStudents);
-				axios
-					.get(`${BACKEND_URL}/student/all?active=false`, config)
-					.then((res) => {
-						const inactiveStudents = res.data;
-						console.log(inactiveStudents);
-						const totalActive = activeStudents?.students? activeStudents?.students.length:0;
-						const totalInactive = inactiveStudents?.students!==null? inactiveStudents?.students.length:0;
-						const totalStudents = totalActive + totalInactive;
-						console.log(totalActive,totalInactive)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(`${BACKEND_URL}/student/all`, config)
+      .then((res) => {
+        const data = res.data.students;
+        setStudentList(data);
+        setStudentsListDuplicate(data);
+        // store data in redux so it can reused across components for easy lookup
+        dispatch(setUnchangedStudentsList(data));
+        dispatch(setSelectedStudentId(null));
+        const maxStudentId = data.reduce(
+          (max: number, obj: IStudentCompData) => Math.max(max, obj.ID),
+          0
+        );
+        dispatch(setFakeNewStudentId(maxStudentId));
+      })
+      .catch((error) => console.log(error));
 
-						setTotal({
-							totalStudents: totalStudents,
-							totalActive: totalActive,
-							totalInactive: totalInactive,
-						});
-					})
-					.catch((error) => {
-						console.error("Error fetching inactive students:", error);
-					});
-			})
-			.catch((error) => {
-				console.error("Error fetching active students:", error);
-			});
-	}, [dispatch, fakeNewStudentId]);
+    axios
+      .get(`${BACKEND_URL}/student/all?active=true`, config)
+      .then((res) => {
+        const activeStudents = res.data;
 
-	useEffect(() => {
-		setStudentList(unchangedStudentsList);
-		setStudentsListDuplicate(unchangedStudentsList);
-		dispatch(setSelectedStudentId(null));
-		setStudentTabSwitches(StudentsTabSwitches);
-		let token = Cookies.get("token");
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		// handle suspend and activate here
+        axios
+          .get(`${BACKEND_URL}/student/all?active=false`, config)
+          .then((res) => {
+            const inactiveStudents = res.data;
 
-		axios
-			.get(`${BACKEND_URL}/student/all?active=true`, config)
-			.then((res) => {
-				const activeStudents = res.data;
-				axios
-					.get(`${BACKEND_URL}/student/all?active=false`, config)
-					.then((res) => {
-						const inactiveStudents = res.data;
+            const totalActive = activeStudents?.students
+              ? activeStudents?.students.length
+              : 0;
+            const totalInactive =
+              inactiveStudents?.students !== null
+                ? inactiveStudents?.students.length
+                : 0;
+            const totalStudents = totalActive + totalInactive;
 
-						const totalActive = activeStudents?.students? activeStudents?.students.length:0;
-						const totalInactive = inactiveStudents?.students!==null? inactiveStudents?.students.length:0;
-						const totalStudents = totalActive + totalInactive;
+            setTotal({
+              totalStudents: totalStudents,
+              totalActive: totalActive,
+              totalInactive: totalInactive,
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching inactive students:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching active students:", error);
+      });
+  }, [dispatch, fakeNewStudentId]);
 
-						setTotal({
-							totalStudents: totalStudents,
-							totalActive: totalActive,
-							totalInactive: totalInactive,
-						});
-					})
-					.catch((error) => {
-						console.error("Error fetching inactive students:", error);
-					});
-			})
-			.catch((error) => {
-				console.error("Error fetching active students:", error);
-			});
-	}, [unchangedStudentsList]);
+  useEffect(() => {
+    setStudentList(unchangedStudentsList);
+    setStudentsListDuplicate(unchangedStudentsList);
+    dispatch(setSelectedStudentId(null));
+    setStudentTabSwitches(StudentsTabSwitches);
+    let token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    // handle suspend and activate here
 
-	const [showNewStudentFormModal, setShowNewStudentFormModal] = useState(false);
-	// for search
-	const [query, setQuery] = useState("");
-	const [queryError, setQueryError] = useState<Ierror>({
-		active: false,
-		text: "",
-	});
+    axios
+      .get(`${BACKEND_URL}/student/all?active=true`, config)
+      .then((res) => {
+        const activeStudents = res.data;
+        axios
+          .get(`${BACKEND_URL}/student/all?active=false`, config)
+          .then((res) => {
+            const inactiveStudents = res.data;
 
-	const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		if (value.trim().length < 1) {
-			setQueryError({ active: true, text: "Query cannot be empty" });
-			setQuery(value);
-		} else {
-			setQuery(value);
-			setQueryError({ active: false, text: "Press enter to search" });
-		}
-	};
+            const totalActive = activeStudents?.students
+              ? activeStudents?.students.length
+              : 0;
+            const totalInactive =
+              inactiveStudents?.students !== null
+                ? inactiveStudents?.students.length
+                : 0;
+            const totalStudents = totalActive + totalInactive;
 
-	const CancelQuerySearch = () => {
-		setQuery("");
-		setQueryError({ active: false, text: "" });
-		// return stcList and listDuplicate to default - might involve calling the api
-		const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-		if (sortStatus && unchangedStudentsList !== null) {
-			const sortedSTCData = sortStudentListDataAlphabetically(unchangedStudentsList, sortStatus == "-1");
-			setStudentsListDuplicate(sortedSTCData);
-			setStudentList(unchangedStudentsList);
-		} else {
-			setStudentsListDuplicate(unchangedStudentsList);
-			setStudentList(unchangedStudentsList);
-		}
-		setShowCancel(false);
-	};
-	// student data
-	const [studentList, setStudentList] = useState<IStudentCompData[] | null>(null);
-	// stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
+            setTotal({
+              totalStudents: totalStudents,
+              totalActive: totalActive,
+              totalInactive: totalInactive,
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching inactive students:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching active students:", error);
+      });
+  }, [unchangedStudentsList]);
 
-	// for dynamic student data
-	// const [studentListDuplicate, setStudentListDuplicate] = useState<IStudentCompData[] | null>(null);
+  const [showNewStudentFormModal, setShowNewStudentFormModal] = useState(false);
+  // for search
+  const [query, setQuery] = useState("");
+  const [queryError, setQueryError] = useState<Ierror>({
+    active: false,
+    text: "",
+  });
 
-	const handleSearch = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault(); // Prevent default form submission
-		if (query.trim().length >= 1) {
-			// filter from the unchanged stc list
-			const newStudentList = unchangedStudentsList?.filter((ele) => ele.LastName.toLowerCase().includes(query.toLowerCase()));
-			if (newStudentList && newStudentList.length > 0) {
-				// set sort filter to default;
-				const sortStatus = sortItemDropdownList.find((ele) => ele.isSelected == true)?.id;
-				if (sortStatus) {
-					const sortedStudentData = sortStudentListDataAlphabetically(newStudentList, sortStatus == "-1");
-					setStudentsListDuplicate(sortedStudentData);
-					setStudentList(newStudentList);
-				} else {
-					setStudentsListDuplicate(newStudentList);
-					setStudentList(newStudentList);
-				}
-			} else {
-				setQueryError({
-					active: true,
-					text: "Name not found! Please check your spelling",
-				});
-			}
-		}
-	};
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.trim().length < 1) {
+      setQueryError({ active: true, text: "Query cannot be empty" });
+      setQuery(value);
+    } else {
+      setQuery(value);
+      setQueryError({ active: false, text: "Press enter to search" });
+    }
+  };
 
-	// filter and sort
-	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-	const [showSortDropdown, setShowSortDropdown] = useState(false);
-	const [sortItemDropdownList, setSortItemDropdownList] = useState(SortItemDropdownList);
+  const CancelQuerySearch = () => {
+    setQuery("");
+    setQueryError({ active: false, text: "" });
+    // return stcList and listDuplicate to default - might involve calling the api
+    const sortStatus = sortItemDropdownList.find(
+      (ele) => ele.isSelected == true
+    )?.id;
+    if (sortStatus && unchangedStudentsList !== null) {
+      const sortedSTCData = sortStudentListDataAlphabetically(
+        unchangedStudentsList,
+        sortStatus == "-1"
+      );
+      setStudentsListDuplicate(sortedSTCData);
+      setStudentList(unchangedStudentsList);
+    } else {
+      setStudentsListDuplicate(unchangedStudentsList);
+      setStudentList(unchangedStudentsList);
+    }
+    setShowCancel(false);
+  };
+  // student data
+  const [studentList, setStudentList] = useState<IStudentCompData[] | null>(
+    null
+  );
+  // stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
 
-	const [filterBtns, setFilterBtns] = useState(FilterBtns);
-	const handleClickFilterBtns = (text: string) => {
-		const newFilterBtns = filterBtns.map((ele) => {
-			return { ...ele, isSelected: ele.text == text };
-		});
-		if (text == "Sort") {
-			setShowFilterDropdown(!showFilterDropdown);
-			setShowSortDropdown(!showSortDropdown);
-		}
-		setFilterBtns(newFilterBtns);
-	};
+  // for dynamic student data
+  // const [studentListDuplicate, setStudentListDuplicate] = useState<IStudentCompData[] | null>(null);
 
-	const handleSelectSortDropdownItem = (id: string | undefined) => {
-		if (id) {
-			const newMdaList = sortItemDropdownList.map((ele) => {
-				return { ...ele, isSelected: ele.id === id };
-			});
-			if (id == "1" && studentsListDuplicate !== null) {
-				const sortedMDAData = sortStudentListDataAlphabetically(studentsListDuplicate);
-				setStudentsListDuplicate(sortedMDAData);
-				console.log(studentsListDuplicate);
-			} else if (id == "-1" && studentsListDuplicate !== null) {
-				const sortedMDAData = sortStudentListDataAlphabetically(studentsListDuplicate, true);
-				setStudentsListDuplicate(sortedMDAData);
-			} else if (id == "0") {
-				setStudentsListDuplicate(studentList);
-				setFilterBtns(FilterBtns);
-			}
-			setSortItemDropdownList(newMdaList);
-			setShowSortDropdown(false);
-		}
-	};
-	const [showDropdown, setShowDropdown] = useState(false);
-	const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
-	const [fileError, setFileError] = useState<string | null>(null);
-	const [uploading, setUploading] = useState(false);
-	const toggleDropdown = () => {
-		setShowDropdown(!showDropdown);
-	  };
-	const toggleDownloadDropdown = () => {
-		setShowDownloadDropdown(!showDownloadDropdown);
-	  };
-	  const handleAddStudentClick = () => {
-		setShowNewStudentFormModal(true);
-		setShowDropdown(false); // Close dropdown after action
-	  };
-	  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		const MAX_SIZE = 5 * 1024 * 1024; // 5 MB limit
-	
-		if (file && file.size > MAX_SIZE) {
-		  setFileError('File size exceeds 5 MB limit.');
-		} else {
-		  setFileError(null);
-		  if (file) {
-			uploadCSVData(file);
-		  }
-		}
-	  };
-	
-	const uploadCSVData = async (file: File) => {
-		setUploading(true);
-		try {
-		  const formData = new FormData();
-		  formData.append('file', file);
-	
-		  const token = Cookies.get("token");
-	
-		  const response = await axios.post(
-			`${BACKEND_URL}/student/create-mda-csv`,
-			formData,
-			{
-			  headers: {
-				'Content-Type': 'multipart/form-data',
-				Authorization: `Bearer ${token}`
-			  }
-			}
-		  );
-	
-		  if (response.status !== 200) {
-			throw new Error('Failed to upload CSV data');
-		  }
-	
-		  console.log('CSV data uploaded successfully');
-		} catch (error) {
-		  if (axios.isAxiosError(error)) {
-			// Handle Axios specific errors
-			console.error('Axios error response:', error.response);
-		  } else {
-			// Handle other errors
-			console.error('Error uploading CSV data:', error);
-		  }
-		  setFileError('Failed to upload CSV data');
-		} finally {
-		  setUploading(false);
-		}
-	  };
-	  const [loading, setLoading] = useState(false);
-const handleDownload = async () => {
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission
+    if (query.trim().length >= 1) {
+      // filter from the unchanged stc list
+      const newStudentList = unchangedStudentsList?.filter((ele) =>
+        ele.LastName.toLowerCase().includes(query.toLowerCase())
+      );
+      if (newStudentList && newStudentList.length > 0) {
+        // set sort filter to default;
+        const sortStatus = sortItemDropdownList.find(
+          (ele) => ele.isSelected == true
+        )?.id;
+        if (sortStatus) {
+          const sortedStudentData = sortStudentListDataAlphabetically(
+            newStudentList,
+            sortStatus == "-1"
+          );
+          setStudentsListDuplicate(sortedStudentData);
+          setStudentList(newStudentList);
+        } else {
+          setStudentsListDuplicate(newStudentList);
+          setStudentList(newStudentList);
+        }
+      } else {
+        setQueryError({
+          active: true,
+          text: "Name not found! Please check your spelling",
+        });
+      }
+    }
+  };
+
+  // filter and sort
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [sortItemDropdownList, setSortItemDropdownList] =
+    useState(SortItemDropdownList);
+
+  const [filterBtns, setFilterBtns] = useState(FilterBtns);
+  const handleClickFilterBtns = (text: string) => {
+    const newFilterBtns = filterBtns.map((ele) => {
+      return { ...ele, isSelected: ele.text == text };
+    });
+    if (text == "Sort") {
+      setShowFilterDropdown(!showFilterDropdown);
+      setShowSortDropdown(!showSortDropdown);
+    }
+    setFilterBtns(newFilterBtns);
+  };
+
+  const handleSelectSortDropdownItem = (id: string | undefined) => {
+    if (id) {
+      const newMdaList = sortItemDropdownList.map((ele) => {
+        return { ...ele, isSelected: ele.id === id };
+      });
+      if (id == "1" && studentsListDuplicate !== null) {
+        const sortedMDAData = sortStudentListDataAlphabetically(
+          studentsListDuplicate
+        );
+        setStudentsListDuplicate(sortedMDAData);
+      } else if (id == "-1" && studentsListDuplicate !== null) {
+        const sortedMDAData = sortStudentListDataAlphabetically(
+          studentsListDuplicate,
+          true
+        );
+        setStudentsListDuplicate(sortedMDAData);
+      } else if (id == "0") {
+        setStudentsListDuplicate(studentList);
+        setFilterBtns(FilterBtns);
+      }
+      setSortItemDropdownList(newMdaList);
+      setShowSortDropdown(false);
+    }
+  };
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const toggleDownloadDropdown = () => {
+    setShowDownloadDropdown(!showDownloadDropdown);
+  };
+  const handleAddStudentClick = () => {
+    setShowNewStudentFormModal(true);
+    setShowDropdown(false);
+
+  };
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB limit
+
+    if (file && file.size > MAX_SIZE) {
+      setFileError("File size exceeds 5 MB limit.");
+    } else {
+      setFileError(null);
+      if (file) {
+        uploadCSVData(file);
+      }
+    }
+  };
+
+  const uploadCSVData = async (file: File) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const token = Cookies.get("token");
+
+      const response = await axios.post(
+        `${BACKEND_URL}/student/create-mda-csv`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to upload CSV data");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios specific errors
+        console.error("Axios error response:", error.response);
+      } else {
+        // Handle other errors
+        console.error("Error uploading CSV data:", error);
+      }
+      setFileError("Failed to upload CSV data");
+    } finally {
+      setUploading(false);
+    }
+  };
+  const [loading, setLoading] = useState(false);
+  const handleDownload = async () => {
     setLoading(true); // Set loading to true while downloading
 
     // Get the token from cookies
-    const token = Cookies.get('token'); 
+    const token = Cookies.get("token");
 
     try {
       const response = await axios({
-        url: 'https://fme-backend-version-1.onrender.com/mda/download-csv',
-        method: 'GET',
-        responseType: 'blob', // Important to download the file
+        url: "https://fme-backend-version-1.onrender.com/mda/download-csv",
+        method: "GET",
+        responseType: "blob", // Important to download the file
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -367,243 +430,288 @@ const handleDownload = async () => {
 
       // Create a blob URL for the downloaded file
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'students.csv'); // Name the file
+      link.setAttribute("download", "students.csv"); // Name the file
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (error) {
-      console.error('Download failed:', error);
+      console.error("Download failed:", error);
     } finally {
       setLoading(false); // Stop loading once the download is complete
     }
   };
-  const [jobLoading,setJobLoading]= useState(false)
+  const [jobLoading, setJobLoading] = useState(false);
   const handleJobDownload = async () => {
-	  setJobLoading(true); // Set loading to true while downloading
-  
-	  // Get the token from cookies
-	  const token = Cookies.get('token'); 
-  
-	  try {
-		const response = await axios({
-		  url: 'https://fme-backend-version-1.onrender.com/artisan/download-data',
-		  method: 'GET',
-		  responseType: 'blob', // Important to download the file
-		  headers: {
-			Authorization: `Bearer ${token}`,
-		  },
-		});
-  
-		// Create a blob URL for the downloaded file
-		const url = window.URL.createObjectURL(new Blob([response.data]));
-		const link = document.createElement('a');
-		link.href = url;
-		link.setAttribute('download', 'students.csv'); // Name the file
-		document.body.appendChild(link);
-		link.click();
-		link.remove();
-	  } catch (error) {
-		console.error('Download failed:', error);
-	  } finally {
-		  setJobLoading(false); // Stop loading once the download is complete
-	  }
-	};
-	console.log(studentsListDuplicate)
+    setJobLoading(true); // Set loading to true while downloading
 
-	return (
-		<>
-			<TopStyles>
-				<div className="text">
-					<h1>Students List</h1>
-					<p>Take a look at your policies and the new policy to see what is covered</p>
-				</div>
-				<div className="buttons">
-					<button type="button" className="add" onClick={toggleDropdown}>
-						<PlusIcon />
-						<span>Add New Student</span>
-						<AngleDownStyles $isSelected={showDropdown}>
-                  <ColoredArrowDown />
-                </AngleDownStyles>
-					</button>
-					{showDropdown && (
-        <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-          <div 
-            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
-            onClick={handleAddStudentClick}
-          >
-            Add Student Manually
-          </div>
-          
-		  <label htmlFor="file-upload" className="cursor-pointer">
-  <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
-    <span>Upload CSV</span>
-  </div>
-  <input 
-    id="file-upload" 
-    type="file" 
-    accept=".csv" 
-    className="hidden" 
-    onChange={handleFileUpload}
-  />
-</label>
+    // Get the token from cookies
+    const token = Cookies.get("token");
+
+    try {
+      const response = await axios({
+        url: "https://fme-backend-version-1.onrender.com/artisan/download-data",
+        method: "GET",
+        responseType: "blob", // Important to download the file
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Create a blob URL for the downloaded file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "students.csv"); // Name the file
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      setJobLoading(false); // Stop loading once the download is complete
+    }
+  };
+
+  return (
+    <>
+      <TopStyles>
+        <div className="text">
+          <h1>Students List</h1>
+          <p>
+            Take a look at your policies and the new policy to see what is
+            covered
+          </p>
         </div>
-      )}
-	   {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
-      {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
-					<button type="button" className="import" onClick={toggleDownloadDropdown} disabled={loading}>
-						<UploadIcon />
-						<span>Download</span>
-						<AngleDownStyles $isSelected={showDownloadDropdown}>
-                  <WhiteDown />
-				  </AngleDownStyles>
-					</button>
-		
-				</div>
-				{showDownloadDropdown && (
-        <div className="absolute mt-32 right-0 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-          <div 
-            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
-            onClick={handleDownload}
+        <div className="buttons">
+          <button type="button" className="add" onClick={toggleDropdown}>
+            <PlusIcon />
+            <span>Add New Student</span>
+            <AngleDownStyles $isSelected={showDropdown}>
+              <ColoredArrowDown />
+            </AngleDownStyles>
+          </button>
+          {showDropdown && (
+            <div className="absolute mt-32 mr-32 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+              <div
+                className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer"
+                onClick={handleAddStudentClick}
+              >
+                Add Student Manually
+              </div>
+
+              <label htmlFor="file-upload" className="cursor-pointer">
+                <div className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer">
+                  <span>Upload CSV</span>
+                </div>
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept=".csv"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                />
+              </label>
+            </div>
+          )}
+          {fileError && <div className="text-red-500 mt-2">{fileError}</div>}
+          {uploading && <div className="text-blue-500 mt-2">Uploading...</div>}
+          <button
+            type="button"
+            className="import"
+            onClick={toggleDownloadDropdown}
+            disabled={loading}
           >
-            Training Data
-          </div>
-		  <div 
-            className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer" 
-            onClick={handleJobDownload}
-          >
-            Marketplace Data
-          </div>
+            <UploadIcon />
+            <span>Download</span>
+            <AngleDownStyles $isSelected={showDownloadDropdown}>
+              <WhiteDown />
+            </AngleDownStyles>
+          </button>
         </div>
-      )}
-			</TopStyles>
-			<WhiteContainer>
-				<StatListStyle>
-					<StatListItemStyle>
-						<div className="stat">
-							<span>Total No of Students</span>
-							<p>{total.totalStudents === null ? <Skeleton /> : total.totalStudents}</p>
-						</div>
-						<TotalIcon />
-					</StatListItemStyle>
-					<StatListItemStyle>
-						<div className="stat">
-							<span>Active Students</span>
-							<p>{total.totalActive === null ? <Skeleton /> : total.totalActive}</p>
-						</div>
-						<ActiveIcon />
-					</StatListItemStyle>
-					<StatListItemStyle>
-						<div className="stat">
-							<span>Inactive Students</span>
-							<p>{total.totalInactive === null ? <Skeleton /> : total.totalInactive}</p>
-						</div>
-						<InactiveIcon />
-					</StatListItemStyle>
-				</StatListStyle>
-				<SearchAndResultStyle>
-					<div className="searchbar">
-						<div className="input">
-							<div className="glass">
-								<MagnifyingGlassIcon />
-							</div>
-							<form onSubmit={handleSearch}>
-								<input
-									type="text"
-									name="query"
-									id=""
-									placeholder="Search All Students"
-									value={query}
-									className={queryError.active ? "error-bdr" : ""}
-									onChange={handleQueryChange}
-									onFocus={() => setShowCancel(true)}
-								/>
-							</form>
+        {showDownloadDropdown && (
+          <div className="absolute mt-32 right-0 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+            <div
+              className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer"
+              onClick={handleDownload}
+            >
+              Training Data
+            </div>
+            <div
+              className="px-4 py-2 hover:bg-[#00932e] hover:text-white font-semibold rounded-[4px] cursor-pointer"
+              onClick={handleJobDownload}
+            >
+              Marketplace Data
+            </div>
+          </div>
+        )}
+      </TopStyles>
+      <WhiteContainer>
+        <StatListStyle>
+          <StatListItemStyle>
+            <div className="stat">
+              <span>Total No of Students</span>
+              <p>
+                {total.totalStudents === null ? (
+                  <Skeleton />
+                ) : (
+                  total.totalStudents
+                )}
+              </p>
+            </div>
+            <TotalIcon />
+          </StatListItemStyle>
+          <StatListItemStyle>
+            <div className="stat">
+              <span>Active Students</span>
+              <p>
+                {total.totalActive === null ? <Skeleton /> : total.totalActive}
+              </p>
+            </div>
+            <ActiveIcon />
+          </StatListItemStyle>
+          <StatListItemStyle>
+            <div className="stat">
+              <span>Inactive Students</span>
+              <p>
+                {total.totalInactive === null ? (
+                  <Skeleton />
+                ) : (
+                  total.totalInactive
+                )}
+              </p>
+            </div>
+            <InactiveIcon />
+          </StatListItemStyle>
+        </StatListStyle>
+        <SearchAndResultStyle>
+          <div className="searchbar">
+            <div className="input">
+              <div className="glass">
+                <MagnifyingGlassIcon />
+              </div>
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  name="query"
+                  id=""
+                  placeholder="Search All Students"
+                  value={query}
+                  className={queryError.active ? "error-bdr" : ""}
+                  onChange={handleQueryChange}
+                  onFocus={() => setShowCancel(true)}
+                />
+              </form>
 
-							{showCancel && (
-								<div className="abs" onClick={CancelQuerySearch}>
-									<CancelInputIcon isError={queryError.active} />
-								</div>
-							)}
-							<p className={`msg ${queryError.active ? "error" : "correct"}`}>{queryError.text}</p>
-						</div>
-						<div className="filsort">
-							{/* filterBtns includes both Sort & Filter */}
-							{filterBtns.map((ele, index) => (
-								<FilterBtnComp
-									key={index}
-									icon={ele.icon}
-									activeIcon={ele.activeIcon}
-									text={ele.text}
-									isSelected={ele.isSelected}
-									handleFilterFunc={() => {}}
-									handleClick={() => handleClickFilterBtns(ele.text)}
-								/>
-							))}
-							{showSortDropdown && (
-								<SortOptionsStyle>
-									<div className="options">
-										{sortItemDropdownList.map((ele, index) => (
-											<MdaItemComp
-												key={index}
-												id={ele.id}
-												isSelected={ele.isSelected}
-												text={ele.text}
-												hasBorder={ele.hasBorder}
-												handleSelect={() => handleSelectSortDropdownItem(ele.id)}
-											/>
-										))}
-									</div>
-								</SortOptionsStyle>
-							)}
-						</div>
-					</div>
-
-					<div className="pad">
-						<div className="options">
-							{studentTabSwitches.map((ele, index) => (
-								<TabSwitchStyle key={index} $tabIndex={ele.tabIndex} $isSelected={ele.isSelected} onClick={() => handleTabSwitch(ele.tabIndex)}>
-									<div className="no">
-										<p>{ele.text}</p>
-										{ele.isSelected && studentsListDuplicate && (
-											<div className="num">
-												<span>{studentsListDuplicate?.length}</span>
-											</div>
-										)}
-									</div>
-									{ele.isSelected && <motion.div className="underline" layoutId="underline"></motion.div>}
-								</TabSwitchStyle>
-							))}
-						</div>
-					</div>
-					<div className="pad scroll">
-						<div className="result">
-							<TableStyles>
-								<thead>
-									<tr>
-										<th>STUDENT PROFILE</th>
-										<th>STUDENT ID</th>
-										<th>COURSES TAKEN</th>
-										<th>ADDRESS</th>
-										<th className="faint">STATUS</th>
-									</tr>
-								</thead>
-								<tbody>
-									{studentsListDuplicate && studentsListDuplicate.map((ele, index) => <StudentTableRow key={index} {...ele} />)}
-									{studentsListDuplicate === null && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => <TRSkeleton key={index} />)}
-								</tbody>
-							</TableStyles>
-							{studentsListDuplicate !== null && studentsListDuplicate?.length === 0 && (
-                <NoDataStyles>
-                  <h2>No Data Found</h2>
-                </NoDataStyles>
+              {showCancel && (
+                <div className="abs" onClick={CancelQuerySearch}>
+                  <CancelInputIcon isError={queryError.active} />
+                </div>
               )}
-						</div>
-					</div>
-				</SearchAndResultStyle>
-			</WhiteContainer>
-			{showNewStudentFormModal && <NewStudentModal cancelModal={() => setShowNewStudentFormModal(false)} />}
-		</>
-	);
+              <p className={`msg ${queryError.active ? "error" : "correct"}`}>
+                {queryError.text}
+              </p>
+            </div>
+            <div className="filsort">
+              {/* filterBtns includes both Sort & Filter */}
+              {filterBtns.map((ele, index) => (
+                <FilterBtnComp
+                  key={index}
+                  icon={ele.icon}
+                  activeIcon={ele.activeIcon}
+                  text={ele.text}
+                  isSelected={ele.isSelected}
+                  handleFilterFunc={() => {}}
+                  handleClick={() => handleClickFilterBtns(ele.text)}
+                />
+              ))}
+              {showSortDropdown && (
+                <SortOptionsStyle>
+                  <div className="options">
+                    {sortItemDropdownList.map((ele, index) => (
+                      <MdaItemComp
+                        key={index}
+                        id={ele.id}
+                        isSelected={ele.isSelected}
+                        text={ele.text}
+                        hasBorder={ele.hasBorder}
+                        handleSelect={() =>
+                          handleSelectSortDropdownItem(ele.id)
+                        }
+                      />
+                    ))}
+                  </div>
+                </SortOptionsStyle>
+              )}
+            </div>
+          </div>
+
+          <div className="pad">
+            <div className="options">
+              {studentTabSwitches.map((ele, index) => (
+                <TabSwitchStyle
+                  key={index}
+                  $tabIndex={ele.tabIndex}
+                  $isSelected={ele.isSelected}
+                  onClick={() => handleTabSwitch(ele.tabIndex)}
+                >
+                  <div className="no">
+                    <p>{ele.text}</p>
+                    {ele.isSelected && studentsListDuplicate && (
+                      <div className="num">
+                        <span>{studentsListDuplicate?.length}</span>
+                      </div>
+                    )}
+                  </div>
+                  {ele.isSelected && (
+                    <motion.div
+                      className="underline"
+                      layoutId="underline"
+                    ></motion.div>
+                  )}
+                </TabSwitchStyle>
+              ))}
+            </div>
+          </div>
+          <div className="pad scroll">
+            <div className="result">
+              <TableStyles>
+                <thead>
+                  <tr>
+                    <th>STUDENT PROFILE</th>
+                    <th>STUDENT ID</th>
+                    <th>COURSES TAKEN</th>
+                    <th>ADDRESS</th>
+                    <th className="faint">STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {studentsListDuplicate &&
+                    studentsListDuplicate.map((ele, index) => (
+                      <StudentTableRow key={index} {...ele} />
+                    ))}
+                  {studentsListDuplicate === null &&
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele, index) => (
+                      <TRSkeleton key={index} />
+                    ))}
+                </tbody>
+              </TableStyles>
+              {studentsListDuplicate !== null &&
+                studentsListDuplicate?.length === 0 && (
+                  <NoDataStyles>
+                    <h2>No Data Found</h2>
+                  </NoDataStyles>
+                )}
+            </div>
+          </div>
+        </SearchAndResultStyle>
+      </WhiteContainer>
+      {showNewStudentFormModal && (
+        <NewStudentModal
+          cancelModal={() => setShowNewStudentFormModal(false)}
+        />
+      )}
+    </>
+  );
 }

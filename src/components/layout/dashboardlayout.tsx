@@ -38,7 +38,7 @@ export const GenericDasboardLayout = ({
   const role = Cookies.get("userRole");
   const token = Cookies.get("token");
   useEffect(() => {
-    // console.log(role,token);
+  
     // update the permissions to this dashboard
     if (role === undefined && token === undefined) {
       //when the session ends
@@ -111,7 +111,7 @@ export const UserDashboardLayout = ({
   const dispatch = useAppDispatch();
   const { isSessionExpired } = useAppSelector(authSelector);
   useEffect(() => {
-    // console.log(role,token);
+ 
     // update the permissions to this dashboard
     if (role === undefined && token === undefined) {
       //when the session ends

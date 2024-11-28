@@ -199,7 +199,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             text: error.response.data.error,
           });
         } else {
-          console.log(error);
+      
           setOtherError({
             active: true,
             text: error.message,

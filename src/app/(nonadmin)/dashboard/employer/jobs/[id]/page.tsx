@@ -39,7 +39,7 @@ import { useRouter } from "next/navigation";
 
 const JobDetailPage = ({ params }: { params: { id: string } }) => {
   const lol=params.id
-  console.log(lol)
+
   const [HiringStatus, setHiringStatus] = useState<boolean|null>(null);
   const router = useRouter();
   const [data, setData] = useState<IEmployerData|null>(null);
@@ -48,7 +48,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 	useEffect(() => {
 		let token = Cookies.get("token");
 		let role = Cookies.get("userRole");
-    console.log(role)
+  
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 			})
 			.catch((error) => console.log(error));
 	}, []);
-  console.log(data)
+
   
   const responsibilitiesArray = data?.Responsibilities
     .split("\n")

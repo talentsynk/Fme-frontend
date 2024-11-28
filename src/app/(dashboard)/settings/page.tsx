@@ -81,7 +81,7 @@ export default function Home() {
       .get(`${BACKEND_URL}/mda/profile`, { headers })
       .then((response) => {
         setUserData(response.data);
-        console.log("Response data:", response.data);
+     
       })
       .catch((error) => {
         console.error("Error:", error);

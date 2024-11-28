@@ -22,7 +22,7 @@ import { GreyArrowRight } from '@/components/icons/artisan/icons'
 import JobApplication from '@/components/employer/JobApplication'
 
 const JobApplications = ({ params }: { params: { id: string } }) => {
-  console.log(params.id)
+
   const lol=params.id
   const [data,setData]=useState<IApplication[]|null>(null)
   const [filteredData, setFilteredData] = useState<IApplication[]|null>([]);
@@ -58,7 +58,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
     const handleFilterChange = (filter:string) => {
       setSelectedFilter(filter);
     };
-    console.log(data)
+
     
   
   return (

@@ -130,7 +130,7 @@ export default function Login() {
           Email: form.email,
           Password: form.pwd,
         };
-        // console.log(body);
+       
         setIsLoading(true);
         const { data } = await axios.post(`${BACKEND_URL}/user/login`, body);
         if (data) {
@@ -181,7 +181,7 @@ export default function Login() {
             text: error.message,
           });
         }
-        // console.log(error);
+       
         setIsLoading(false);
       }
     }

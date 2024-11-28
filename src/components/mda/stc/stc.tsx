@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import ClickOutsideWrapper from "@/components/auth/wrapper";
 import { ThreedotsIcon } from "@/components/icons/fme/mda";
 import { ReactivateStcComp, StcDetailModal, SuspendStcComp } from "./modal";
 import { mdaSelector, setSelectedStcId } from "@/redux/mda/mdaSlice";
@@ -44,12 +44,13 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
     }else if(action === "Re-activate STC"){
       setShowActivateModal(true);
     }
+    setShowDropdown(false)
   };
   const { selectedStcId } = useAppSelector(mdaSelector);
   // set dispatch
   const dispatch = useAppDispatch();
   const handleSelectOptions = () => {
-    setShowDropdown(!showDropdown);
+    setShowDropdown(true);
     if (selectedStcId === id) {
       dispatch(setSelectedStcId(null));
     } else {
@@ -81,11 +82,12 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
       </td>
       <td className="drop">
         <StatusComp $isActive={isActive} />
+        <ClickOutsideWrapper onClickOutside={() => setShowDropdown(false)}>
         <TableDropdownStyles>
           <div className="head" onClick={handleSelectOptions}>
             <ThreedotsIcon />
           </div>
-          {selectedStcId === id  && (
+          {selectedStcId === id  && showDropdown && (
             <DropdownOptionsStyle>
               <div className="options">
                 {stcItemList.map((ele, index) => (
@@ -101,6 +103,7 @@ export const STCTableRow: React.FC<ISTCCompData> = ({
             </DropdownOptionsStyle>
           )}
         </TableDropdownStyles>
+        </ClickOutsideWrapper>
         {showDetails && (
           <StcDetailModal cancelModal={() => setShowdetails(false)} />
         )}

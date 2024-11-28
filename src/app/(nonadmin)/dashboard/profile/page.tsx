@@ -85,7 +85,7 @@ const ArtisanProfile = () => {
 		// setForm({ ...form, LocalGovernment: name });
 		setLga(name);
 		setShowLGADropdown(false);
-		console.log(lgas)
+
 		
 	};
 
@@ -103,7 +103,7 @@ const [userRole,setUserRole]=useState<string|undefined>("")
 	useEffect(()=>{
 		let role = Cookies.get("userRole");
 		setUserRole(role)
-		console.log(role)
+	
 	  },[])
 
 	const [formData, setFormData] = useState({
