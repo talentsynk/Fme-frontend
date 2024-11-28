@@ -47,62 +47,9 @@ export default function ArtisansHome() {
   const [userData, setUserData] = useState<IUser | null>(null);
 
   const router = useRouter();
-<<<<<<< HEAD
-  const [data,setData]= useState<IEmployerData[]|null>(null)
-  const [savedData,setSavedData]= useState<ISavedData[]|null>(null)
-  const [artisanStats,setArtisanStats]=useState<IArtisanStats|null>(null)
-  console.log(1)
-	useEffect(() => {
-		let token = Cookies.get("token");
-    
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-		axios
-			.get(`${BACKEND_URL}/artisan/job-stats`, config)
-			.then((res) => {
-        
-				const data = res.data;
-				setArtisanStats(data)
-			})
-			.catch((error) => console.log(error));
-		axios
-			.get(`${BACKEND_URL}/job/applied-jobs`, config)
-			.then((res) => {
-        
-				const data = res.data.jobs;
-				setData(data);
-			})
-			.catch((error) => console.log(error));
-		axios
-			.get(`${BACKEND_URL}/job/saved-jobs`, config)
-			.then((res) => {
-        
-				const data = res.data.jobs;
-				setSavedData(data);
-			})
-			.catch((error) => console.log(error));
-		axios
-			.get(`${BACKEND_URL}/artisan/me`, config)
-			.then((res) => {
-        
-				const data = res.data.artisan;
-				setUserData(data);
-			})
-			.catch((error) => console.log(error));
-	}, []);
-  console.log(userData)
- 
-  
-  
-const  [showProfile,setShowProfile]=useState(true)
-=======
   const [data, setData] = useState<IEmployerData[] | null>(null);
   const [savedData, setSavedData] = useState<ISavedData[] | null>(null);
   const [artisanStats, setArtisanStats] = useState<IArtisanStats | null>(null);
->>>>>>> d914e5d35c011101d68e4ffbe286a36282bb0c7b
 
   useEffect(() => {
     let token = Cookies.get("token");

@@ -73,11 +73,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
       const [stats,setStats]=useState<IStats|null>(null)
       useEffect(() => {
         let token = Cookies.get("token");
-<<<<<<< HEAD
-        
-=======
   
->>>>>>> d914e5d35c011101d68e4ffbe286a36282bb0c7b
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
