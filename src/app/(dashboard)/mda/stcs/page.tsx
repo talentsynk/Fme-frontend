@@ -300,7 +300,7 @@ export default function Home() {
   
       try {
         const response = await axios({
-          url: 'https://fme-backend-version-1.onrender.com/stc/download-csv',
+          url: `${BACKEND_URL}/stc/download-csv`,
           method: 'GET',
           responseType: 'blob', // Important to download the file
           headers: {

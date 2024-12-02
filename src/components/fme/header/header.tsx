@@ -35,6 +35,7 @@ import {
 } from "@/components/icons/header";
 import { PoweredByStyles } from "@/components/layout/style";
 import { CoderinaLogo } from "@/app/recovery/style";
+import { BACKEND_URL } from "@/lib/config";
 
 export const DashboardHeader = () => {
   const [links, setLinks] = useState(DesktopDropdownLinks);
@@ -276,7 +277,7 @@ const [data,setData]=useState<IData|null>(null)
         if (role === 'EMPLOYER') {
           // API call for EMPLOYER
           const response = await axios.get(
-            'https://fme-backend-version-1.onrender.com/employer/get-employer',
+            `${BACKEND_URL}/employer/get-employer`,
             { headers }
           );
        
@@ -284,7 +285,7 @@ const [data,setData]=useState<IData|null>(null)
         } else {
           // API call for ARTISAN
           const response = await axios.get(
-            'https://fme-backend-version-1.onrender.com/artisan/me',
+            `${BACKEND_URL}/artisan/me`,
             { headers }
           );
          

@@ -1783,7 +1783,7 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
       const response = await axios.get(
-        `https://fme-backend-version-1.onrender.com/job/applicants/decline/${ApplicationId}`, // Adjust URL as needed
+        `${BACKEND_URL}/job/applicants/decline/${ApplicationId}`, // Adjust URL as needed
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -1920,7 +1920,7 @@ export const SelectArtisanComp: React.FC<ITwoActions> = ({
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
       const response = await axios.get(
-        `https://fme-backend-version-1.onrender.com/job/applicants/short-list/${ApplicationId}`, // Adjust URL as needed
+        `${BACKEND_URL}/job/applicants/short-list/${ApplicationId}`, // Adjust URL as needed
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -2147,7 +2147,7 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
       const response = await axios.post(
-        "https://fme-backend-version-1.onrender.com/job/hire",
+        `${BACKEND_URL}/job/hire`,
         requestData,
         {
           headers: {
@@ -2264,12 +2264,12 @@ export const DownloadDataComp: React.FC<ITwoActions> = ({
 
     const apiEndpoint =
       role === "FME"
-        ? `https://fme-backend-version-1.onrender.com/student/download-csv` // API for FME
+        ? `${BACKEND_URL}/student/download-csv` // API for FME
         : role === "MDA"
-        ? `https://fme-backend-version-1.onrender.com/student/download-csv` // API for MDA
+        ? `${BACKEND_URL}/student/download-csv` // API for MDA
         : role === "STC"
-        ? `https://fme-backend-version-1.onrender.com/student/download-csv` // API for STC
-        : `https://fme-backend-version-1.onrender.com/student/download-csv`; // Default API for other roles
+        ? `${BACKEND_URL}/student/download-csv` // API for STC
+        : `${BACKEND_URL}/student/download-csv`; // Default API for other roles
     // Dummy API for artisan
 
     try {

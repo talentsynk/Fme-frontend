@@ -440,7 +440,7 @@ export default function Home() {
 
     try {
       const response = await axios({
-        url: "https://fme-backend-version-1.onrender.com/student/download-csv",
+        url: `${BACKEND_URL}/student/download-csv`,
         method: "GET",
         responseType: "blob", // Important to download the file
         headers: {
@@ -471,7 +471,7 @@ export default function Home() {
 
     try {
       const response = await axios({
-        url: "https://fme-backend-version-1.onrender.com/artisan/download-data",
+        url: `${BACKEND_URL}/artisan/download-data`,
         method: "GET",
         responseType: "blob", // Important to download the file
         headers: {
