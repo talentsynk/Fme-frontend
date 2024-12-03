@@ -27,6 +27,7 @@ import { CourseCardSkeleton } from "@/components/fme/skeleton/CourseCardSkeleton
 import { NoDataStyles } from "@/components/fme/mda/styles";
 import { WhiteArrowLeft, WhiteArrowRight } from "@/components/icons/main";
 import ClickOutsideWrapper from "@/components/auth/wrapper";
+import { toast } from "react-toastify";
 // the first page on the fme dashboard
 
 export default function Home() {
@@ -50,6 +51,16 @@ export default function Home() {
       }[]
     | null
   >(null);
+
+  const [studentResidenceLists, setStudentResidenceLists] = useState<
+    | {
+        StateOfResidence: string;
+        EnrolledStudent: number;
+        GraduatedStudent: number;
+      }[]
+    | null
+  >(null);
+
   const [colorGroup, setColorGroup] = useState(ColorGroup);
   const [graphOptions, setGraphOptions] = useState(GraphOptions);
   const [selectedGraphOption, setSelectedGraphOption] = useState(
@@ -66,7 +77,11 @@ export default function Home() {
     setShowOptions(false);
   };
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
-  // task left: work on add New Mda and Stc, plug in the APIs on wednesday
+
+  const [isLoadingResidence, setIsLoadingResidence] = useState<boolean | null>(
+    null
+  );
+
   useEffect(() => {
     const token = Cookies.get("token");
     const config = {
@@ -98,7 +113,26 @@ export default function Home() {
           setIsLoading(false);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {console.log(error);
+        setIsLoading(false);
+        toast.error("An error occured while fetching data");
+      });
+
+    setIsLoadingResidence(true);
+    axios
+      .get(`${BACKEND_URL}/student/residence-statistics`, config)
+      .then((res) => {
+        if (res.data) {
+          setStudentResidenceLists(res.data["residence-distribution"]);
+          setIsLoadingResidence(true);
+          // console.log(res.data["residence-distribution"]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoadingResidence(false);
+        toast.error("An error occured while fetching data");
+      });
   }, []);
 
   // slider
@@ -108,7 +142,7 @@ export default function Home() {
     if (containerRef.current) {
       containerRef.current.scrollBy({
         left: scrollOffset,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   };
@@ -169,75 +203,76 @@ export default function Home() {
         </div>
         <div className="course-stat">
           <div className="head">
-            <h4>Course Statistics</h4>
+            <h4>State of Residence Info</h4>
           </div>
-          <div className="cont" ref={containerRef} >
-            <div className="coursecards" >
-              {courseLists &&
-                courseLists.map((ele, index) => (
+          <div className="cont" ref={containerRef}>
+            <div className="coursecards">
+              {studentResidenceLists &&
+                studentResidenceLists.map((ele, index) => (
                   <STCCourseCard
                     key={index}
-                    name={ele.CourseName}
-                    noGraduated={ele.CertifiedCount}
-                    noEnrolled={ele.TotalStudents}
+                    name={ele.StateOfResidence}
+                    noGraduated={ele.GraduatedStudent}
+                    noEnrolled={ele.EnrolledStudent}
                     $bgColor={colorGroup[index % 5].lightColor}
                     $lightColor={colorGroup[index % 5].bgColor}
                     $thickColor={colorGroup[index % 5].thickColor}
                   />
                 ))}
-              {courseLists === null &&
-                isLoading &&
+              {studentResidenceLists === null &&
+                isLoadingResidence &&
                 [1, 2, 3, 4, 5, 6].map((ele, index) => (
                   <CourseCardSkeleton key={index} />
                 ))}
-              {courseLists === null && isLoading === false && (
+              {studentResidenceLists === null && isLoadingResidence === false && (
                 <NoDataStyles>
                   {" "}
-                  <h2>No Courses Found</h2>
+                  <h2>No State residency info Found</h2>
                 </NoDataStyles>
               )}
             </div>
           </div>
-          {courseLists && <div className="slide-r">
-            <button type="button" onClick={() => handleScroll(150)}>
-              <WhiteArrowRight />{" "}
-            </button>
-          </div>}
-         {courseLists &&  <div className="slide-l">
-            <button type="button" onClick={() => handleScroll(-150)}>
-              <WhiteArrowLeft /> {" "}
-            </button>
-          </div>}
+          {courseLists && (
+            <div className="slide-r">
+              <button type="button" onClick={() => handleScroll(150)}>
+                <WhiteArrowRight />{" "}
+              </button>
+            </div>
+          )}
+          {courseLists && (
+            <div className="slide-l">
+              <button type="button" onClick={() => handleScroll(-150)}>
+                <WhiteArrowLeft />{" "}
+              </button>
+            </div>
+          )}
         </div>
         <div className="summary">
           <div className="head">
             <h4>Statistics</h4>
-              <ClickOutsideWrapper onClickOutside={() => setShowOptions(false)}>
-            <div className="dropdown">
-              <div
-                className="dd-head"
-                onClick={() => setShowOptions(true)}
-              >
-                <p>{selectedGraphOption?.name}</p>
-                <AngleDownStyles $isSelected={showOptions}>
-                  <ColoredArrowDown />
-                </AngleDownStyles>
-              </div>
-              {showOptions && (
-                <div className="options">
-                  {graphOptions.map((ele, index) => (
-                    <div
-                      key={index}
-                      className="option"
-                      onClick={() => handleSelectOption(ele.name)}
-                    >
-                      <p>{ele.name}</p>
-                      {ele.isSelected && <TickIcon />}
-                    </div>
-                  ))}
+            <ClickOutsideWrapper onClickOutside={() => setShowOptions(false)}>
+              <div className="dropdown">
+                <div className="dd-head" onClick={() => setShowOptions(true)}>
+                  <p>{selectedGraphOption?.name}</p>
+                  <AngleDownStyles $isSelected={showOptions}>
+                    <ColoredArrowDown />
+                  </AngleDownStyles>
                 </div>
-              )}
-            </div>
+                {showOptions && (
+                  <div className="options">
+                    {graphOptions.map((ele, index) => (
+                      <div
+                        key={index}
+                        className="option"
+                        onClick={() => handleSelectOption(ele.name)}
+                      >
+                        <p>{ele.name}</p>
+                        {ele.isSelected && <TickIcon />}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </ClickOutsideWrapper>
           </div>
           <div className="graph">
