@@ -199,7 +199,6 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             text: error.response.data.error,
           });
         } else {
-      
           setOtherError({
             active: true,
             text: error.message,
@@ -215,171 +214,173 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
       {isSuccess == false && (
         <NewMdaAbsoluteStyles>
           <div className="form">
-          <ClickOutsideWrapper onClickOutside={cancelModal}>
-            <NewMdaFormStyles className="bd">
-              <div className="fl">
-                <div className="form-head">
-                  <h3>Add New STC</h3>
-                  <p>Fill in the necessary details to add a new STC</p>
+            <ClickOutsideWrapper onClickOutside={cancelModal}>
+              <NewMdaFormStyles className="bd">
+                <div className="fl">
+                  <div className="form-head">
+                    <h3>Add New STC</h3>
+                    <p>Fill in the necessary details to add a new STC</p>
+                  </div>
+                  <IconWrapper onClick={cancelModal}>
+                    <XIcon />
+                  </IconWrapper>
                 </div>
-                <IconWrapper onClick={cancelModal}>
-                  <XIcon />
-                </IconWrapper>
-              </div>
-              <form className="form" onSubmit={handleCreateStc}>
-                <div className="form-input">
-                  <div className="form-ele">
-                    <label htmlFor="name">Registered Name</label>
-                    <div className="inp">
-                      <input
-                        type="text"
-                        name="name"
-                        value={name}
-                        className={nameError.active ? "error-bdr" : ""}
-                        onChange={(e) => handleInput(e, "name")}
-                        placeholder="Please type in STC’s registered name"
-                      />
-                      <div className="abs">
-                        {nameError.active === false &&
-                          nameError.text === "" && <NameIcon />}
-                        {nameError.active === false &&
-                          nameError.text !== "" && <CheckedIcon />}
-                        {nameError.active === true && <FormErrorIcon />}
+                <form className="form" onSubmit={handleCreateStc}>
+                  <div className="form-input">
+                    <div className="form-ele">
+                      <label htmlFor="name">Registered Name</label>
+                      <div className="inp">
+                        <input
+                          type="text"
+                          name="name"
+                          value={name}
+                          className={nameError.active ? "error-bdr" : ""}
+                          onChange={(e) => handleInput(e, "name")}
+                          placeholder="Please type in STC’s registered name"
+                        />
+                        <div className="abs">
+                          {nameError.active === false &&
+                            nameError.text === "" && <NameIcon />}
+                          {nameError.active === false &&
+                            nameError.text !== "" && <CheckedIcon />}
+                          {nameError.active === true && <FormErrorIcon />}
+                        </div>
+                        <p
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
+                          className={nameError.active ? "error-msg" : "correct"}
+                        >
+                          {nameError.text}
+                        </p>
                       </div>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="email">Email Address</label>
+                      <div className="inp">
+                        <input
+                          type="email"
+                          name="email"
+                          value={email}
+                          onChange={handleEmailChange}
+                          placeholder="Please type in STC’s email address"
+                          className={emailError.active ? "error-bdr" : ""}
+                          autoComplete="email"
+                        />
+                        <div className="abs">
+                          {emailError.active === false &&
+                            emailError.text === "" && <EmailIcon />}
+                          {emailError.active === false &&
+                            emailError.text !== "" && <CheckedIcon />}
+                          {emailError.active === true && <FormErrorIcon />}
+                        </div>
+                        <p
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
+                          className={
+                            emailError.active ? "error-msg" : "correct"
+                          }
+                        >
+                          {emailError.text}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="address">Address</label>
+                      <div className="inp">
+                        <input
+                          type="text"
+                          name="address"
+                          id=""
+                          value={address}
+                          onChange={(e) => handleInput(e, "address")}
+                          className={addressError.active ? "error-bdr" : ""}
+                          placeholder="Please type in STC’s address here"
+                        />
+                        <div className="abs">
+                          {addressError.active === false &&
+                            addressError.text === "" && <LocationIcon />}
+                          {addressError.active === false &&
+                            addressError.text !== "" && <CheckedIcon />}
+                          {addressError.active === true && <FormErrorIcon />}
+                        </div>
+                        <p
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
+                          className={
+                            addressError.active ? "error-msg" : "correct"
+                          }
+                        >
+                          {addressError.text}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-ele">
+                    <label htmlFor="address">State of Operation</label>
+                    <StatesDropdownStyles>
+                      <div
+                        className="head"
+                        onClick={() => setShowDropdown(!showDropdown)}
+                      >
+                        <>
+                          {state == "" ? (
+                            <p className="placeholder">
+                              Please select STC’s state of operation
+                            </p>
+                          ) : (
+                            <p className="state-name">{state}</p>
+                          )}
+                        </>
+                        <AngleDownStyles $isSelected={showDropdown}>
+                          <AngleDown />
+                        </AngleDownStyles>
+                      </div>
+                      {showDropdown && (
+                        <div className="dropdown">
+                          {states.map((ele, index) => (
+                            <StateCompStyles
+                              $isSelected={state == ele.name}
+                              key={index}
+                              onClick={() => handleStateSelection(ele.name)}
+                            >
+                              <p>{ele.name}</p>
+                            </StateCompStyles>
+                          ))}
+                        </div>
+                      )}
+                    </StatesDropdownStyles>
+                    {otherError.active && (
                       <p
                         role="alert"
                         aria-live="assertive"
                         aria-atomic="true"
-                        className={nameError.active ? "error-msg" : "correct"}
+                        className="error-msg"
                       >
-                        {nameError.text}
+                        {otherError.text}
                       </p>
-                    </div>
-                  </div>
-                  <div className="form-ele">
-                    <label htmlFor="email">Email Address</label>
-                    <div className="inp">
-                      <input
-                        type="email"
-                        name="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        placeholder="Please type in STC’s email address"
-                        className={emailError.active ? "error-bdr" : ""}
-                        autoComplete="email"
-                      />
-                      <div className="abs">
-                        {emailError.active === false &&
-                          emailError.text === "" && <EmailIcon />}
-                        {emailError.active === false &&
-                          emailError.text !== "" && <CheckedIcon />}
-                        {emailError.active === true && <FormErrorIcon />}
-                      </div>
-                      <p
-                        role="alert"
-                        aria-live="assertive"
-                        aria-atomic="true"
-                        className={emailError.active ? "error-msg" : "correct"}
-                      >
-                        {emailError.text}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="form-ele">
-                    <label htmlFor="address">Address</label>
-                    <div className="inp">
-                      <input
-                        type="text"
-                        name="address"
-                        id=""
-                        value={address}
-                        onChange={(e) => handleInput(e, "address")}
-                        className={addressError.active ? "error-bdr" : ""}
-                        placeholder="Please type in STC’s address here"
-                      />
-                      <div className="abs">
-                        {addressError.active === false &&
-                          addressError.text === "" && <LocationIcon />}
-                        {addressError.active === false &&
-                          addressError.text !== "" && <CheckedIcon />}
-                        {addressError.active === true && <FormErrorIcon />}
-                      </div>
-                      <p
-                        role="alert"
-                        aria-live="assertive"
-                        aria-atomic="true"
-                        className={
-                          addressError.active ? "error-msg" : "correct"
-                        }
-                      >
-                        {addressError.text}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-ele">
-                  <label htmlFor="address">State of Operation</label>
-                  <StatesDropdownStyles>
-                    <div
-                      className="head"
-                      onClick={() => setShowDropdown(!showDropdown)}
-                    >
-                      <>
-                        {state == "" ? (
-                          <p className="placeholder">
-                            Please select STC’s state of operation
-                          </p>
-                        ) : (
-                          <p className="state-name">{state}</p>
-                        )}
-                      </>
-                      <AngleDownStyles $isSelected={showDropdown}>
-                        <AngleDown />
-                      </AngleDownStyles>
-                    </div>
-                    {showDropdown && (
-                      <div className="dropdown">
-                        {states.map((ele, index) => (
-                          <StateCompStyles
-                            $isSelected={state == ele.name}
-                            key={index}
-                            onClick={() => handleStateSelection(ele.name)}
-                          >
-                            <p>{ele.name}</p>
-                          </StateCompStyles>
-                        ))}
-                      </div>
                     )}
-                  </StatesDropdownStyles>
-                  {otherError.active && (
-                    <p
-                      role="alert"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                      className="error-msg"
+                  </div>
+                  <div className="btn-m">
+                    <button
+                      type="submit"
+                      disabled={
+                        nameError.text == "" ||
+                        emailError.text == "" ||
+                        addressError.text == "" ||
+                        nameError.active !== false ||
+                        addressError.active !== false ||
+                        emailError.active !== false ||
+                        state == ""
+                      }
                     >
-                      {otherError.text}
-                    </p>
-                  )}
-                </div>
-                <div className="btn-m">
-                  <button
-                    type="submit"
-                    disabled={
-                      nameError.text == "" ||
-                      emailError.text == "" ||
-                      addressError.text == "" ||
-                      nameError.active !== false ||
-                      addressError.active !== false ||
-                      emailError.active !== false ||
-                      state == ""
-                    }
-                  >
-                    {isLoading ? <ButtonLoader /> : "Create STC"}
-                  </button>
-                </div>
-              </form>
-            </NewMdaFormStyles>
+                      {isLoading ? <ButtonLoader /> : "Create STC"}
+                    </button>
+                  </div>
+                </form>
+              </NewMdaFormStyles>
             </ClickOutsideWrapper>
           </div>
         </NewMdaAbsoluteStyles>
@@ -566,6 +567,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
     active: false,
     text: "",
   });
+  const [reason, setReason] = useState("");
 
   const suspend = async () => {
     // make Suspend MDA API call to suspend MDA\
@@ -581,8 +583,9 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
     if (userId) {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(
+        const { data } = await axios.post(
           `${BACKEND_URL}/user/suspend/${userId}`,
+          { Reason: reason },
           config
         );
         if (data) {
@@ -623,30 +626,43 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <ClickOutsideWrapper onClickOutside={cancelModal}>
-            <div className="pop">
-              <div className="up">
-                <div className="x" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+              <div className="pop">
+                <div className="up">
+                  <div className="x" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Suspend STC?</h4>
+                  <p>
+                    Are you sure you want to suspend this STC? It will no longer
+                    be visible and not able to take any course for.
+                  </p>
+                  <div className="inp">
+                    <input
+                      type="text"
+                      name="reason"
+                      placeholder="Reason for suspension"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <h4>Suspend STC?</h4>
-                <p>
-                  Are you sure you want to suspend this STC? It will no longer
-                  be visible and not able to take any course for.
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button type="button" onClick={suspend}>
+                    {isLoading ? <ButtonLoader /> : "Suspend STC"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" onClick={suspend}>
-                  {isLoading ? <ButtonLoader /> : "Suspend STC"}
-                </button>
-              </div>
-            </div>
             </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
@@ -751,30 +767,34 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <ClickOutsideWrapper onClickOutside={cancelModal}>
-            <div className="pop">
-              <div className="up">
-                <div className="x" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+              <div className="pop">
+                <div className="up">
+                  <div className="x" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Re-activate STC?</h4>
+                  <p>
+                    Are you sure you want to suspend this STC? It will no longer
+                    be visible and not able to take any course for.
+                  </p>
                 </div>
-                <h4>Re-activate STC?</h4>
-                <p>
-                  Are you sure you want to suspend this STC? It will no longer
-                  be visible and not able to take any course for.
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button type="button" onClick={reactivate}>
+                    {isLoading ? <ButtonLoader /> : "Re-activate STC"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" onClick={reactivate}>
-                  {isLoading ? <ButtonLoader /> : "Re-activate STC"}
-                </button>
-              </div>
-            </div>
             </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}

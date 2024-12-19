@@ -35,7 +35,14 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { BackBtn } from "@/components/recovery/recovery";
-import { Dispatch, FormEvent, SetStateAction, ReactNode, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { StatusComp } from "./mda";
 import { Ierror } from "@/app/recovery/page";
@@ -55,6 +62,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
 import ClickOutsideWrapper from "@/components/auth/wrapper";
+import { log } from "console";
 
 interface IOneButtonModal {
   cancelModal: () => void;
@@ -199,7 +207,6 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             text: error.response.data.error,
           });
         } else {
-     
           setOtherError({
             active: true,
             text: error.message,
@@ -211,177 +218,179 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
   };
 
   const router = useRouter();
- 
+
   return (
     <>
       {isSuccess == false && (
         <NewMdaAbsoluteStyles>
           <div className="form">
             <ClickOutsideWrapper onClickOutside={cancelModal}>
-            <NewMdaFormStyles className="bd">
-              <div className="fl">
-                <div className="form-head">
-                  <h3>Add New MDA</h3>
-                  <p>Fill in the necessary details to add a new MDA</p>
+              <NewMdaFormStyles className="bd">
+                <div className="fl">
+                  <div className="form-head">
+                    <h3>Add New MDA</h3>
+                    <p>Fill in the necessary details to add a new MDA</p>
+                  </div>
+                  <IconWrapper onClick={cancelModal}>
+                    <XIcon />
+                  </IconWrapper>
                 </div>
-                <IconWrapper onClick={cancelModal}>
-                  <XIcon />
-                </IconWrapper>
-              </div>
-              <form className="form" onSubmit={handleCreateMda}>
-                <div className="form-input">
-                  <div className="form-ele">
-                    <label htmlFor="name">Registered Name</label>
-                    <div className="inp">
-                      <input
-                        type="text"
-                        name="name"
-                        value={name}
-                        className={nameError.active ? "error-bdr" : ""}
-                        onChange={(e) => handleInput(e, "name")}
-                        placeholder="Please type in MDA’s registered name"
-                      />
-                      <div className="abs">
-                        {nameError.active === false &&
-                          nameError.text === "" && <NameIcon />}
-                        {nameError.active === false &&
-                          nameError.text !== "" && <CheckedIcon />}
-                        {nameError.active === true && <FormErrorIcon />}
+                <form className="form" onSubmit={handleCreateMda}>
+                  <div className="form-input">
+                    <div className="form-ele">
+                      <label htmlFor="name">Registered Name</label>
+                      <div className="inp">
+                        <input
+                          type="text"
+                          name="name"
+                          value={name}
+                          className={nameError.active ? "error-bdr" : ""}
+                          onChange={(e) => handleInput(e, "name")}
+                          placeholder="Please type in MDA’s registered name"
+                        />
+                        <div className="abs">
+                          {nameError.active === false &&
+                            nameError.text === "" && <NameIcon />}
+                          {nameError.active === false &&
+                            nameError.text !== "" && <CheckedIcon />}
+                          {nameError.active === true && <FormErrorIcon />}
+                        </div>
+                        <p
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
+                          className={nameError.active ? "error-msg" : "correct"}
+                        >
+                          {nameError.text}
+                        </p>
                       </div>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="email">Email Address</label>
+                      <div className="inp">
+                        <input
+                          type="email"
+                          name="email"
+                          value={email}
+                          onChange={handleEmailChange}
+                          placeholder="Please type in MDA’s email address"
+                          className={emailError.active ? "error-bdr" : ""}
+                          autoComplete="email"
+                        />
+                        <div className="abs">
+                          {emailError.active === false &&
+                            emailError.text === "" && <EmailIcon />}
+                          {emailError.active === false &&
+                            emailError.text !== "" && <CheckedIcon />}
+                          {emailError.active === true && <FormErrorIcon />}
+                        </div>
+                        <p
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
+                          className={
+                            emailError.active ? "error-msg" : "correct"
+                          }
+                        >
+                          {emailError.text}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="form-ele">
+                      <label htmlFor="address">Address</label>
+                      <div className="inp">
+                        <input
+                          type="text"
+                          name="address"
+                          id=""
+                          value={address}
+                          onChange={(e) => handleInput(e, "address")}
+                          className={addressError.active ? "error-bdr" : ""}
+                          placeholder="Please type in MDA’s address here"
+                        />
+                        <div className="abs">
+                          {addressError.active === false &&
+                            addressError.text === "" && <LocationIcon />}
+                          {addressError.active === false &&
+                            addressError.text !== "" && <CheckedIcon />}
+                          {addressError.active === true && <FormErrorIcon />}
+                        </div>
+                        <p
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
+                          className={
+                            addressError.active ? "error-msg" : "correct"
+                          }
+                        >
+                          {addressError.text}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-ele">
+                    <label htmlFor="address">State of Operation</label>
+                    <StatesDropdownStyles>
+                      <div
+                        className="head"
+                        onClick={() => setShowDropdown(!showDropdown)}
+                      >
+                        <>
+                          {state == "" ? (
+                            <p className="placeholder">
+                              Please select MDA’s state of operation
+                            </p>
+                          ) : (
+                            <p className="state-name">{state}</p>
+                          )}
+                        </>
+                        <AngleDownStyles $isSelected={showDropdown}>
+                          <AngleDown />
+                        </AngleDownStyles>
+                      </div>
+                      {showDropdown && (
+                        <div className="dropdown">
+                          {states.map((ele, index) => (
+                            <StateCompStyles
+                              $isSelected={state == ele.name}
+                              key={index}
+                              onClick={() => handleStateSelection(ele.name)}
+                            >
+                              <p>{ele.name}</p>
+                            </StateCompStyles>
+                          ))}
+                        </div>
+                      )}
+                    </StatesDropdownStyles>
+                    {otherError.active && (
                       <p
                         role="alert"
                         aria-live="assertive"
                         aria-atomic="true"
-                        className={nameError.active ? "error-msg" : "correct"}
+                        className="error-msg"
                       >
-                        {nameError.text}
+                        {otherError.text}
                       </p>
-                    </div>
-                  </div>
-                  <div className="form-ele">
-                    <label htmlFor="email">Email Address</label>
-                    <div className="inp">
-                      <input
-                        type="email"
-                        name="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        placeholder="Please type in MDA’s email address"
-                        className={emailError.active ? "error-bdr" : ""}
-                        autoComplete="email"
-                      />
-                      <div className="abs">
-                        {emailError.active === false &&
-                          emailError.text === "" && <EmailIcon />}
-                        {emailError.active === false &&
-                          emailError.text !== "" && <CheckedIcon />}
-                        {emailError.active === true && <FormErrorIcon />}
-                      </div>
-                      <p
-                        role="alert"
-                        aria-live="assertive"
-                        aria-atomic="true"
-                        className={emailError.active ? "error-msg" : "correct"}
-                      >
-                        {emailError.text}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="form-ele">
-                    <label htmlFor="address">Address</label>
-                    <div className="inp">
-                      <input
-                        type="text"
-                        name="address"
-                        id=""
-                        value={address}
-                        onChange={(e) => handleInput(e, "address")}
-                        className={addressError.active ? "error-bdr" : ""}
-                        placeholder="Please type in MDA’s address here"
-                      />
-                      <div className="abs">
-                        {addressError.active === false &&
-                          addressError.text === "" && <LocationIcon />}
-                        {addressError.active === false &&
-                          addressError.text !== "" && <CheckedIcon />}
-                        {addressError.active === true && <FormErrorIcon />}
-                      </div>
-                      <p
-                        role="alert"
-                        aria-live="assertive"
-                        aria-atomic="true"
-                        className={
-                          addressError.active ? "error-msg" : "correct"
-                        }
-                      >
-                        {addressError.text}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-ele">
-                  <label htmlFor="address">State of Operation</label>
-                  <StatesDropdownStyles>
-                    <div
-                      className="head"
-                      onClick={() => setShowDropdown(!showDropdown)}
-                    >
-                      <>
-                        {state == "" ? (
-                          <p className="placeholder">
-                            Please select MDA’s state of operation
-                          </p>
-                        ) : (
-                          <p className="state-name">{state}</p>
-                        )}
-                      </>
-                      <AngleDownStyles $isSelected={showDropdown}>
-                        <AngleDown />
-                      </AngleDownStyles>
-                    </div>
-                    {showDropdown && (
-                      <div className="dropdown">
-                        {states.map((ele, index) => (
-                          <StateCompStyles
-                            $isSelected={state == ele.name}
-                            key={index}
-                            onClick={() => handleStateSelection(ele.name)}
-                          >
-                            <p>{ele.name}</p>
-                          </StateCompStyles>
-                        ))}
-                      </div>
                     )}
-                  </StatesDropdownStyles>
-                  {otherError.active && (
-                    <p
-                      role="alert"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                      className="error-msg"
+                  </div>
+                  <div className="btn-m">
+                    <button
+                      type="submit"
+                      disabled={
+                        nameError.text == "" ||
+                        emailError.text == "" ||
+                        addressError.text == "" ||
+                        nameError.active !== false ||
+                        addressError.active !== false ||
+                        emailError.active !== false ||
+                        state == ""
+                      }
                     >
-                      {otherError.text}
-                    </p>
-                  )}
-                </div>
-                <div className="btn-m">
-                  <button
-                    type="submit"
-                    disabled={
-                      nameError.text == "" ||
-                      emailError.text == "" ||
-                      addressError.text == "" ||
-                      nameError.active !== false ||
-                      addressError.active !== false ||
-                      emailError.active !== false ||
-                      state == ""
-                    }
-                  >
-                    {isLoading ? <ButtonLoader /> : "Create MDA"}
-                  </button>
-                </div>
-              </form>
-            </NewMdaFormStyles>
+                      {isLoading ? <ButtonLoader /> : "Create MDA"}
+                    </button>
+                  </div>
+                </form>
+              </NewMdaFormStyles>
             </ClickOutsideWrapper>
           </div>
         </NewMdaAbsoluteStyles>
@@ -454,9 +463,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                   </IconWrapper>
                   <div className="title">Total No of Courses</div>
                   <div className="numer">
-                    <p>
-                      {mdaDetails.CourseCount ? mdaDetails.CourseCount : 0}
-                    </p>
+                    <p>{mdaDetails.CourseCount ? mdaDetails.CourseCount : 0}</p>
                     <GraphIcon />
                   </div>
                 </div>
@@ -545,7 +552,7 @@ interface ITwoActions {
 
 export const SuspendMdaComp: React.FC<ITwoActions> = ({
   handleModalAction,
-  cancelModal
+  cancelModal,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -553,6 +560,8 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
     active: false,
     text: "",
   });
+  const [reason, setReason] = useState("");
+
   const { unchangedMdaList, selectedMdaId } = useAppSelector(fmeSelector);
   const dispatch = useAppDispatch();
   const suspend = async () => {
@@ -563,12 +572,16 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
         Authorization: `Bearer ${token}`,
       },
     };
-    const userId = unchangedMdaList?.find((ele) => ele.Id === selectedMdaId)?.UserId;
+    const userId = unchangedMdaList?.find(
+      (ele) => ele.Id === selectedMdaId
+    )?.UserId;
     if (userId) {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(
+        // console.log({reason});  
+        const { data } = await axios.post(
           `${BACKEND_URL}/user/suspend/${userId}`,
+          {"Reason" : reason},
           config
         );
         if (data) {
@@ -604,42 +617,54 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
     }
   };
   const router = useRouter();
- 
+
   return (
     <>
       <FlexAbsoluteModalStyles>
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <ClickOutsideWrapper onClickOutside={cancelModal}>
-            <div className="pop">
-              <div className="up">
-                <div className="x" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+              <div className="pop">
+                <div className="up">
+                  <div className="x" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Suspend MDA?</h4>
+                  <p>
+                    Are you sure you want to suspend this MDA? It will no longer
+                    be visible and not able to take any course for.
+                  </p>
+                  <div className="inp">
+                    <input
+                      type="text"
+                      name="reason"
+                      placeholder="Reason for suspension"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <h4>Suspend MDA?</h4>
-                <p>
-                  Are you sure you want to suspend this MDA? It will no longer
-                  be visible and not able to take any course for.
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button type="button" onClick={suspend}>
+                    {isLoading ? <ButtonLoader /> : "Suspend MDA"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" onClick={suspend}>
-                  {isLoading ? <ButtonLoader /> : "Suspend MDA"}
-                </button>
-              </div>
-            </div>
-        </ClickOutsideWrapper>
+            </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
         {isSuccess && (
-          
           <SuccessModal
             head="MDA has been successfully suspended !"
             msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
@@ -651,7 +676,6 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
             }
             // navigationFunction={() => router.push("/fme")}
           />
-          
         )}
         {msgError.active && (
           <FailureModal
@@ -687,50 +711,52 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
   });
   const reactivate = async () => {
     // make Reactivate MDA API call to activate MDA
-     const token = Cookies.get("token");
-     const config = {
-       headers: {
-         Authorization: `Bearer ${token}`,
-       },
-     };
-     const userId = unchangedMdaList?.find((ele) => ele.Id === selectedMdaId)?.UserId;
-     if (userId) {
-       try {
-         setIsLoading(true);
-         const { data } = await axios.get(
-           `${BACKEND_URL}/user/activate/${userId}`,
-           config
-         );
-         if (data) {
-           if (unchangedMdaList !== null) {
-             const newMdalist = unchangedMdaList.map((ele) => {
-               return {
-                 ...ele,
-                 is_active: ele.Id === selectedMdaId ? true : ele.is_active,
-               };
-             });
-             setIsLoading(false);
-             dispatch(setUnchangedMdaList(newMdalist));
-             setIsSuccess(true);
-           }
-         }
-       } catch (error: any) {
-         setIsLoading(false);
-         if (error.response) {
-           // if the server responds with an error msg
-           setMsgError({
-             active: true,
-             text: error.response.data.message,
-           });
-           // error.response.data.message
-         } else {
-           setMsgError({
-             active: true,
-             text: error.message,
-           });
-         }
-       }
-     }
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const userId = unchangedMdaList?.find(
+      (ele) => ele.Id === selectedMdaId
+    )?.UserId;
+    if (userId) {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(
+          `${BACKEND_URL}/user/activate/${userId}`,
+          config
+        );
+        if (data) {
+          if (unchangedMdaList !== null) {
+            const newMdalist = unchangedMdaList.map((ele) => {
+              return {
+                ...ele,
+                is_active: ele.Id === selectedMdaId ? true : ele.is_active,
+              };
+            });
+            setIsLoading(false);
+            dispatch(setUnchangedMdaList(newMdalist));
+            setIsSuccess(true);
+          }
+        }
+      } catch (error: any) {
+        setIsLoading(false);
+        if (error.response) {
+          // if the server responds with an error msg
+          setMsgError({
+            active: true,
+            text: error.response.data.message,
+          });
+          // error.response.data.message
+        } else {
+          setMsgError({
+            active: true,
+            text: error.message,
+          });
+        }
+      }
+    }
   };
   const router = useRouter();
   return (
@@ -739,30 +765,34 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
         {!isSuccess && !msgError.active && (
           <TwoButtonModalStyles>
             <ClickOutsideWrapper onClickOutside={cancelModal}>
-            <div className="pop">
-              <div className="up">
-                <div className="x" onClick={cancelModal}>
-                  {" "}
-                  <ErrorIconWrapper>
-                    <ErrorAlertIcon />
-                  </ErrorIconWrapper>
-                  <XIcon />
+              <div className="pop">
+                <div className="up">
+                  <div className="x" onClick={cancelModal}>
+                    {" "}
+                    <ErrorIconWrapper>
+                      <ErrorAlertIcon />
+                    </ErrorIconWrapper>
+                    <XIcon />
+                  </div>
+                  <h4>Re-activate MDA?</h4>
+                  <p>
+                    Are you sure you want to suspend this MDA? It will no longer
+                    be visible and not able to take any course for.
+                  </p>
                 </div>
-                <h4>Re-activate MDA?</h4>
-                <p>
-                  Are you sure you want to suspend this MDA? It will no longer
-                  be visible and not able to take any course for.
-                </p>
+                <div className="down">
+                  <button
+                    type="button"
+                    onClick={cancelModal}
+                    className="cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button type="button" onClick={reactivate}>
+                    {isLoading ? <ButtonLoader /> : "Re-activate"}
+                  </button>
+                </div>
               </div>
-              <div className="down">
-                <button type="button" onClick={cancelModal} className="cancel">
-                  Cancel
-                </button>
-                <button type="button" onClick={reactivate}>
-                  {isLoading ? <ButtonLoader /> : "Re-activate"}
-                </button>
-              </div>
-            </div>
             </ClickOutsideWrapper>
           </TwoButtonModalStyles>
         )}
@@ -779,7 +809,7 @@ export const ReactivateMdaComp: React.FC<ITwoActions> = ({
             }
           />
         )}
-          {msgError.active && (
+        {msgError.active && (
           <FailureModal
             cancelModal={() =>
               setMsgError({
@@ -821,24 +851,24 @@ export const SuccessModal: React.FC<IMessageModal> = ({
   return (
     <OneButtonModalStyles>
       <ClickOutsideWrapper onClickOutside={cancelModal}>
-      <div className="pop">
-        <div className="up">
-          {hasCancel && (
-            <div className="x" onClick={cancelModal}>
-              {" "}
-              <XIcon />
-            </div>
-          )}
-          <div className="l">{icon ? icon : <LargeCheckedIcon />}</div>
-          <h4>{head}</h4>
-          <p>{msg}</p>
+        <div className="pop">
+          <div className="up">
+            {hasCancel && (
+              <div className="x" onClick={cancelModal}>
+                {" "}
+                <XIcon />
+              </div>
+            )}
+            <div className="l">{icon ? icon : <LargeCheckedIcon />}</div>
+            <h4>{head}</h4>
+            <p>{msg}</p>
+          </div>
+          <div className="down">
+            <button type="button" onClick={navigationFunction}>
+              {navigationText}
+            </button>
+          </div>
         </div>
-        <div className="down">
-          <button type="button" onClick={navigationFunction}>
-            {navigationText}
-          </button>
-        </div>
-      </div>
       </ClickOutsideWrapper>
     </OneButtonModalStyles>
   );
@@ -856,26 +886,26 @@ export const FailureModal: React.FC<IMessageModal> = ({
   return (
     <OneButtonModalStyles $isError={true}>
       <ClickOutsideWrapper onClickOutside={cancelModal}>
-      <div className="pop">
-        <div className="up">
-          {hasCancel && (
-            <div className="x" onClick={cancelModal}>
-              {" "}
-              <XIcon />
+        <div className="pop">
+          <div className="up">
+            {hasCancel && (
+              <div className="x" onClick={cancelModal}>
+                {" "}
+                <XIcon />
+              </div>
+            )}
+            <div className="l">
+              <TryAgainIcon />
             </div>
-          )}
-          <div className="l">
-            <TryAgainIcon />
+            <h4>{head}</h4>
+            <p>{msg}</p>
           </div>
-          <h4>{head}</h4>
-          <p>{msg}</p>
+          <div className="down">
+            <button type="button" onClick={navigationFunction}>
+              {navigationText}
+            </button>
+          </div>
         </div>
-        <div className="down">
-          <button type="button" onClick={navigationFunction}>
-            {navigationText}
-          </button>
-        </div>
-      </div>
       </ClickOutsideWrapper>
     </OneButtonModalStyles>
   );
