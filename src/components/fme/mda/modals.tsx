@@ -581,7 +581,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
         // console.log({reason});  
         const { data } = await axios.post(
           `${BACKEND_URL}/user/suspend/${userId}`,
-          {"Reason" : reason},
+          {Reason : reason},
           config
         );
         if (data) {
