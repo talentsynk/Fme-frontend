@@ -957,27 +957,27 @@ export const TwoButtonModalStyles = styled.div`
         cursor: pointer;
       }
       display: flex;
-      flex-direction:row;
+      flex-direction: row;
       align-items: center;
       justify-content: space-between;
     }
-    .z{
-      border-radius:10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background-color:#E7F6EC;
-      margin-block:8px;
-      padding:1rem;
-      h5{
-        color:black;
-        font-weight:700;
-        line-height:24px
+    .z {
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #e7f6ec;
+      margin-block: 8px;
+      padding: 1rem;
+      h5 {
+        color: black;
+        font-weight: 700;
+        line-height: 24px;
       }
-      p{
-        font-weight:500;
-        color:black;
-        font-size:12px;
+      p {
+        font-weight: 500;
+        color: black;
+        font-size: 12px;
       }
     }
     .l {
@@ -1000,6 +1000,14 @@ export const TwoButtonModalStyles = styled.div`
       line-height: 1.25rem; /* 142.857% */
     }
   }
+  .inp {
+    input {
+      border: 1px solid #d0d5dd;
+      width: 100%;
+      height: 3rem;
+      padding: 1rem;
+    }
+  }
   .down {
     border-top: 1px solid #eaecf0;
     padding: 1.5rem 1.5rem 1.5rem 1.5rem;
@@ -1018,17 +1026,17 @@ export const TwoButtonModalStyles = styled.div`
       font-weight: 700;
       line-height: 1.25rem; /* 142.857% */
     }
-    .btnn{
-      background:#00932E
+    .btnn {
+      background: #00932e;
     }
-    #btnn{
-      background:#00932E
+    #btnn {
+      background: #00932e;
     }
-    .downn{
-      padding-block:0;
+    .downn {
+      padding-block: 0;
     }
-    .btnn{
-      background-color:#00923E;
+    .btnn {
+      background-color: #00923e;
     }
     .cancel {
       color: #111;
@@ -1246,7 +1254,6 @@ export const StatesDropdownStyles = styled.div`
     border: 1px solid #e4e7ec;
     background: #fff;
     padding: 1rem 0.5rem 1rem 1rem;
-   
   }
   .profile-dropdown {
     // position: absolute;
@@ -1260,8 +1267,7 @@ export const StatesDropdownStyles = styled.div`
     border: 1px solid #e4e7ec;
     background: #fff;
     padding: 1rem 0.5rem 1rem 1rem;
-    z-index:999999999;
-    
+    z-index: 999999999;
   }
 `;
 
