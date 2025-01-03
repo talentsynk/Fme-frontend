@@ -420,6 +420,7 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
     unchangedMdaList?.find((ele) => ele.Id == selectedMdaId)
   );
   useEffect(() => {
+    // console.log(mdaDetails);
     setMdaDetails(unchangedMdaList?.find((ele) => ele.Id == selectedMdaId));
   }, [unchangedMdaList, selectedMdaId]);
   return (
@@ -501,6 +502,14 @@ export const MdaDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                     <StatusComp $isActive={mdaDetails.is_active} />
                   </div>
                 </div>
+                {!mdaDetails.is_active && (
+                  <div className="dx">
+                    <div className="name">
+                      <span>Reason For Suspension</span>
+                      <p className="text-red-500">{mdaDetails.SuspendReason}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="r-3">
@@ -578,10 +587,10 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
     if (userId) {
       try {
         setIsLoading(true);
-        // console.log({reason});  
+        // console.log({reason});
         const { data } = await axios.post(
           `${BACKEND_URL}/user/suspend/${userId}`,
-          {Reason : reason},
+          { Reason: reason },
           config
         );
         if (data) {
