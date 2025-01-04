@@ -602,6 +602,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
               return {
                 ...ele,
                 is_active: ele.Id === selectedStcId ? false : ele.is_active,
+                SuspendReason : reason
               };
             });
             setIsLoading(false);
