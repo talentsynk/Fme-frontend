@@ -506,6 +506,14 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                     <StatusComp $isActive={stcDetails.is_active} />
                   </div>
                 </div>
+                {!stcDetails.is_active && (
+                  <div className="dx">
+                    <div className="name">
+                      <span>Reason For Suspension</span>
+                      <p className="text-red-500">{stcDetails.SuspendReason}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="r-3">

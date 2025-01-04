@@ -10,4 +10,5 @@ export interface IMDACompData {
     stc_count ?: number;
     student_count ?: number;
     CourseCount ?: number;
+    SuspendReason ?: string;
 }

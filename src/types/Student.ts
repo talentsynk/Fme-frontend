@@ -11,4 +11,5 @@ export interface IStudentCompData {
 	Gender: string;
 	PhoneNumber: string;
 	CreatedAt?:string;
+	SuspendReason ?: string;
 }

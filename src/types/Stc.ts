@@ -9,6 +9,7 @@ export interface ISTCCompData {
     is_active: boolean;
     student_count ?: number;
     CourseCount ?: number;
+    SuspendReason ?: string;
     CertifiedStudentCount ?: number;
     NonCertifedStudentCount ?: number;
 }
