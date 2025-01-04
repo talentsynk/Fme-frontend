@@ -599,6 +599,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({
               return {
                 ...ele,
                 is_active: ele.Id === selectedMdaId ? false : ele.is_active,
+                SuspendReason : reason
               };
             });
             setIsLoading(false);
