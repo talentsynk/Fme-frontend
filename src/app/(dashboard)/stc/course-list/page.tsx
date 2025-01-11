@@ -1,7 +1,5 @@
 "use client";
-interface MyComponentProps {
-	currentItems: number[];
-}
+
 import { NewMdaModal } from "@/components/stc/course_list/modals";
 
 import axios from "axios";
@@ -23,10 +21,7 @@ import { stcSelector, setFakeNewCourseId, setSelectedCourseId, setUnchangedCours
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { ICourseCompData } from "@/types/Course";
 import "react-loading-skeleton/dist/skeleton.css";
-// export const metadata: Metadata = {
-//   title: "dashboard",
-//   description: "dashboard for setting courses",
-// };
+
 const mockArray = [
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
 	40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56,
@@ -56,9 +51,7 @@ export default function Home() {
 				dispatch(setUnchangedCoursesList(data));
 				dispatch(setSelectedCourseId(null));
 
-				// store data in redux so it can reused across components for easy lookup
-				// dispatch(setUnchangedMdaList(data));
-				// dispatch(setSelectedMdaId(null));
+				
 				const maxMdaId = data.reduce((max: number, obj: ICourseCompData) => Math.max(max, obj.Id), 0);
 				dispatch(setFakeNewCourseId(maxMdaId));
 			})
@@ -70,12 +63,7 @@ export default function Home() {
 	const [itemOffset, setItemOffset] = useState(0);
 	const endOffset = itemOffset + 35;
 	
-	const currentItems = mockArray.slice(itemOffset, endOffset);
-	const pageCount = Math.ceil(mockArray.length / 35);
-	const handlePageClick = (event: any) => {
-		const newOffset = (event.selected * 35) % mockArray.length;
-		setItemOffset(newOffset);
-	};
+
 	const [showNewMdaFormModal, setShowNewMdaFormModal] = useState(false);
 	const [query, setQuery] = useState("");
 	const [queryError, setQueryError] = useState<Ierror>({
@@ -84,19 +72,12 @@ export default function Home() {
 	});
 	// student data
 	const [courseList, setCourseList] = useState<ICourseData[] | null>(null);
-	// stores the unchanged student initial data, this is useful to prevent multiple API calls when no data is changing
-
-	// for dynamic student data
+	
 	const [courseListDuplicate, setCourseListDuplicate] = useState<ICourseData[] | null>(null);
 	const [showCancel, setShowCancel] = useState(false);
 	const [courseTabSwitches, setCourseTabSwitches] = useState(CoursesTabSwitches);
 
-	const handleTabSwitch = (tabIndex: number) => {
-		const newMdaTabSwitches = courseTabSwitches.map((ele) => {
-			return { ...ele, isSelected: tabIndex == ele.tabIndex };
-		});
-		setCourseTabSwitches(newMdaTabSwitches);
-	};
+
 
 	const handleSearch = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -184,7 +165,7 @@ export default function Home() {
 	};
 
 
-	// const Items = courseListDuplicate && courseListDuplicate?.map((course) => <CourseCard key={course.Id.toString()} id={course.Id} name={course.Name} />);
+	
 
 	const CurrentCourse = () => {
 		const [activeDiv, setActiveDiv] = useState(1);
@@ -199,14 +180,7 @@ export default function Home() {
 					<p className=" text-sm ">Current Course List</p>
 					{activeDiv === 1 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">{courseListDuplicate?.length}</div>}
 				</div>
-				{/* <div
-					className={`flex gap-1 p-4 cursor-pointer ${
-						activeDiv === 2 ? "text-[#00932E] border-b-2 border-b-[#00932E] font-bold" : "text-[#344054] border-inherit"
-					}`}
-					onClick={() => setActiveDiv(2)}>
-					<p className=" text-sm">Analytics of all Course</p>
-					{activeDiv === 2 && <div className=" text-[12px] font-medium bg-[#E7F6EC] rounded-[10px] py-1 px-2">4</div>}
-				</div> */}
+				
 			</div>
 		);
 	};

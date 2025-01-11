@@ -497,6 +497,14 @@ export const StcDetailModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
                     <StatusComp $isActive={stcDetails.is_active} />
                   </div>
                 </div>
+                {!stcDetails.is_active && (
+                  <div className="dx">
+                    <div className="name">
+                      <span>Reason For Suspension</span>
+                      <p className="text-red-500">{stcDetails.SuspendReason}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="r-3">
@@ -550,6 +558,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
   cancelModal,
   handleModalAction,
 }) => {
+  const [reason, setReason] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const { selectedStcId, unchangedStcList } = useAppSelector(mdaSelector);
   const dispatch = useAppDispatch();
@@ -573,8 +582,10 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
     if (userId) {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(
-          `${BACKEND_URL}/user/suspend/${userId}`,    //update endpoint
+        // console.log({reason});
+        const { data } = await axios.post(
+          `${BACKEND_URL}/user/suspend/${userId}`,
+          { Reason: reason },
           config
         );
         if (data) {
@@ -628,6 +639,15 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
                   Are you sure you want to suspend this STC? It will no longer
                   be visible and not able to take any course for.
                 </p>
+                <div className="inp">
+                    <input
+                      type="text"
+                      name="reason"
+                      placeholder="Reason for suspension"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    />
+                  </div>
               </div>
               <div className="down">
                 <button type="button" onClick={cancelModal} className="cancel">

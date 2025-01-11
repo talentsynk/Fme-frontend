@@ -1683,6 +1683,7 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({ cancelModal, handle
 export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleModalAction }) => {
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [reason, setReason] = useState("");
 	const [msgError, setMsgError] = useState<Ierror>({
 		active: false,
 		text: "",
@@ -1704,8 +1705,13 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 		const userId = unchangedStudentsList?.find((ele) => ele.ID === selectedStudentId)?.UserID;
 		if (userId) {
 			try {
-				setIsLoading(true);
-				const { data } = await axios.get(`${BACKEND_URL}/user/suspend/${userId}`, config);
+			  setIsLoading(true);
+			  // console.log({reason});
+			  const { data } = await axios.post(
+				`${BACKEND_URL}/user/suspend/${userId}`,
+				{ Reason: reason },
+				config
+			  );
 				if (data) {
 					if (unchangedStudentsList !== null) {
 						const newMdalist = unchangedStudentsList.map((ele) => {
@@ -1755,6 +1761,15 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 								</div>
 								<h4>Suspend Student?</h4>
 								<p>Are you sure you want to suspend this Student? It will no longer be visible and not able to take any course for.</p>
+								<div className="inp">
+                    <input
+                      type="text"
+                      name="reason"
+                      placeholder="Reason for suspension"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    />
+                  </div>
 							</div>
 							<div className="down">
 								<button type="button" onClick={cancelModal} className="cancel">
