@@ -1935,6 +1935,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
   handleModalAction,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+const [reason, setReason] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [msgError, setMsgError] = useState<Ierror>({
     active: false,
@@ -1962,8 +1963,10 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
     if (userId) {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(
+        // console.log({reason});
+        const { data } = await axios.post(
           `${BACKEND_URL}/user/suspend/${userId}`,
+          { Reason: reason },
           config
         );
         if (data) {
@@ -2018,6 +2021,15 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
                   Are you sure you want to suspend this Student? It will no
                   longer be visible and not able to take any course for.
                 </p>
+                <div className="inp">
+                    <input
+                      type="text"
+                      name="reason"
+                      placeholder="Reason for suspension"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    />
+                  </div>
               </div>
               <div className="down">
                 <button type="button" onClick={cancelModal} className="cancel">

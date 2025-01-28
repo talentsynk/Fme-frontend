@@ -70,6 +70,7 @@ export default function AccountRecovery() {
         });
         if (data) {
           // comment out later, i am using this to check the otp for testing purposes
+          console.log(data)
           Cookies.set("otpRequestTime", new Date().toISOString());
           setCountdownStarted(true);
           setFormStep(1);
