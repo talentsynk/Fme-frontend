@@ -189,7 +189,7 @@ export const LogoutModal: React.FC<ILogoutActionsModal> = ({
             </div>
             <h4>Done performing your duties for the day?</h4>
             <p>
-              Already tired of today's work? You deserve some rest. Have a lovely day!
+              Already tired of today&apos;s work? You deserve some rest. Have a lovely day!
             </p>
           </div>
           <div className="down">
