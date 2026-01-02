@@ -283,7 +283,7 @@ export default function AccountRecovery() {
           <FlexAbsoluteModalStyles>
             <SuccessModal
               head="Your Password was changed successfully!"
-              msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+              msg="Password changed, Have a lovely day!"
               cancelModal={() => {}}
               icon={<CreationSuccessIcon />}
               hasCancel={false}

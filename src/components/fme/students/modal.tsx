@@ -1108,7 +1108,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           <FlexAbsoluteModalStyles>
             <SuccessModal
               head="New Student has been successfully created !"
-              msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+              msg="Thank you for creating a new student. Have a lovely day!"
               cancelModal={cancelModal}
               icon={<CreationSuccessIcon />}
               hasCancel={true}
@@ -1416,7 +1416,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="Student has been successfully suspended !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="You have successfully suspended a student. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={
@@ -1885,7 +1885,7 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="Artisan has been successfully declined !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="You declined an Artisan successfully. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={redirectToDashboard}
@@ -2021,7 +2021,7 @@ export const SelectArtisanComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="Artisan has been successfully selected !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="Wow! you have selected an artisan. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={redirectToDashboard}
@@ -2102,7 +2102,7 @@ export const PostJobComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="Student has been successfully suspended !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="You suspended a student successfully. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={
@@ -2457,7 +2457,7 @@ export const HireArtisanComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="Student has been successfully suspended !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="The student has been suspended successfully. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={
@@ -2589,7 +2589,7 @@ export const ReactivateStudentComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="Student has been successfully re-activated !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="You have re-activated the student successfully. Have a lovely day!"
             cancelModal={() => window.location.reload()}
             hasCancel={true}
             navigationFunction={

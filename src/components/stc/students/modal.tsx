@@ -1341,7 +1341,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				<FlexAbsoluteModalStyles>
 					<SuccessModal
 						head="New Student has been successfully created !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						msg="Now that you have created a new student successfully, ave a lovely day!"
 						cancelModal={cancelModal}
 						icon={<CreationSuccessIcon />}
 						hasCancel={true}
@@ -1785,7 +1785,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({ cancelModal, handleM
 				{isSuccess && (
 					<SuccessModal
 						head="Student has been successfully suspended !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						msg="Now that you have successfully suspended a student, have a lovely day!"
 						cancelModal={cancelModal}
 						hasCancel={true}
 						navigationFunction={handleModalAction ? handleModalAction : cancelModal}
@@ -1897,7 +1897,7 @@ export const ReactivateStudentComp: React.FC<ITwoActions> = ({ cancelModal, hand
 				{isSuccess && (
 					<SuccessModal
 						head="Student has been successfully re-activated !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						msg="Wow, you have successfully re-activated a student. Have a lovely day!"
 						cancelModal={() => window.location.reload()}
 						hasCancel={true}
 						navigationFunction={handleModalAction ? handleModalAction : cancelModal}

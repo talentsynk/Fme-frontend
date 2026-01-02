@@ -281,7 +281,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				<FlexAbsoluteModalStyles>
 					<SuccessModal
 						head="New Course has been successfully created !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						msg="The new course was created successfully. Have a lovely day!"
 						cancelModal={cancelModal}
 						icon={<CreationSuccessIcon />}
 						navigationText="Go back to Dashboard"
@@ -430,7 +430,7 @@ export const SuspendMdaComp: React.FC<ITwoActions> = ({ cancelModal, handleModal
 				{isSuccess && (
 					<SuccessModal
 						head="MDA has been successfully suspended !"
-						msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+						msg="The MDA was suspended successfully. Have a lovely day!"
 						cancelModal={cancelModal}
 						navigationText="Go back to Dashboard"
 						hasCancel={true}

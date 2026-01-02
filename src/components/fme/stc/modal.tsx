@@ -389,7 +389,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         <FlexAbsoluteModalStyles>
           <SuccessModal
             head="New STC has been successfully created !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="A new STC has been created successfully. Have a lovely day!"
             cancelModal={cancelModal}
             icon={<CreationSuccessIcon />}
             hasCancel={true}
@@ -678,7 +678,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="STC has been successfully suspended !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="Now you have successfully suspended an STC. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={
@@ -810,7 +810,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
         {isSuccess && (
           <SuccessModal
             head="STC has been successfully re-activated !"
-            msg="Some other message that may be necessary here we’ll think of something. Have a lovely day!"
+            msg="Thank you for re-activating an STC. Have a lovely day!"
             cancelModal={cancelModal}
             hasCancel={true}
             navigationFunction={
