@@ -1555,6 +1555,7 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
     unchangedStudentsList?.find((ele) => ele.ID == selectedStudentId)
   );
   useEffect(() => {
+    console.log(studentDetails);
     setStudentDetails(
       unchangedStudentsList?.find((ele) => ele.ID == selectedStudentId)
     );
@@ -1964,10 +1965,12 @@ const [reason, setReason] = useState("");
       try {
         setIsLoading(true);
         // console.log({reason});
-        const { data } = await axios.post(
+        const { data } = await axios.get(
           `${BACKEND_URL}/user/suspend/${userId}`,
-          { Reason: reason },
-          config
+          {
+            params : { Reason: reason },
+          ...config
+          }
         );
         if (data) {
           if (unchangedStudentsList !== null) {

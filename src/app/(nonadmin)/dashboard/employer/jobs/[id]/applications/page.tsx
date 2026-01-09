@@ -76,7 +76,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
 </div>
       <div className=" space-y-2 my-4">
       <h3 className=" text-[#191B1C] text-2xl leading-9 font-bold px-4">Applicants({data&&data?.length})</h3>
-<p className=" text-[#626C70] text-sm font-medium leading-5 px-4">Here is all your Relik analytics overview</p>
+<p className=" text-[#626C70] text-sm font-medium leading-5 px-4">Here is all your analytics overview</p>
       </div>
       <section className="flex flex-col md:flex-row gap-2 mt-4">
 

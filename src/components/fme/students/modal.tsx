@@ -1328,10 +1328,12 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
       try {
         setIsLoading(true);
 
-        const { data } = await axios.post(
+        const { data } = await axios.get(
           `${BACKEND_URL}/user/suspend/${userId}`,
-          { Reason: reason },
-          config
+          {
+            params : { Reason: reason },
+          ...config
+          }
         );
 
         if (data) {
