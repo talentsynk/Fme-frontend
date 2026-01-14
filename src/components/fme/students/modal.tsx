@@ -41,7 +41,7 @@ import {
   StatesDropdownStyles,
   TwoButtonModalStyles,
 } from "../mda/styles";
-import { StatusComp } from "../mda/mda";
+import { HasGraduatedStatusComp, StatusComp } from "../mda/mda";
 import {
   CertifiedStudentIcon,
   UncertifiedStudentIcon,
@@ -1214,6 +1214,13 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
 
                 <div className="dx">
                   <div className="name">
+                    <span>Has Graduated?</span>
+                    <HasGraduatedStatusComp $isActive={studentDetails.IsGraduated} />
+                  </div>
+                </div>
+                
+                <div className="dx">
+                  <div className="name">
                     <span>Status</span>
                     <StatusComp $isActive={studentDetails.IsActive} />
                   </div>
@@ -1245,19 +1252,21 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
                 )}
               </div>
             </div>
-            <div className="r-3">
-              <h4>Graduate Student</h4>
-              <div className="btnn">
-                <button
-                  type="button"
-                  className=""
-                  onClick={() => setShowGraduateModal(true)}
-                >
-                  <SuspendIcon />
-                  <p>Graduate Student</p>
-                </button>
+            {!studentDetails.IsGraduated && (
+              <div className="r-3">
+                <h4>Graduate Student</h4>
+                <div className="btnn">
+                  <button
+                    type="button"
+                    className=""
+                    onClick={() => setShowGraduateModal(true)}
+                  >
+                    <SuspendIcon />
+                    <p>Graduate Student</p>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </MDADetailStyle>
       )}
@@ -1331,8 +1340,8 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
         const { data } = await axios.get(
           `${BACKEND_URL}/user/suspend/${userId}`,
           {
-            params : { Reason: reason },
-          ...config
+            params: { Reason: reason },
+            ...config,
           }
         );
 
@@ -1526,7 +1535,7 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({
     if (selectedStudentId) {
       try {
         setIsLoading(true);
-    
+
         const { data } = await axios.post(
           `${BACKEND_URL}/student/graduate-student/${selectedStudentId}`,
           form,
@@ -1679,7 +1688,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({
             Authorization: `Bearer ${token}`,
           },
         });
-   
+
         setIsSuccess(true);
       }
     } catch (error) {
@@ -1806,7 +1815,6 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({
         }
       );
 
-    
       if (response.status === 200) {
         setIsSuccess(true);
       } else {
@@ -2148,7 +2156,6 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
 
   const router = useRouter();
 
- 
   const hireArtisan = async () => {
     setIsLoading(true);
 
@@ -2157,7 +2164,6 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
       JobId: JobId, // Replace with the actual JobId
       ArtisanId: artisanId,
     };
-   
 
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
@@ -2273,7 +2279,6 @@ export const DownloadDataComp: React.FC<ITwoActions> = ({
 
   const router = useRouter();
 
- 
   const hireArtisan = async () => {
     setIsLoading(true);
 

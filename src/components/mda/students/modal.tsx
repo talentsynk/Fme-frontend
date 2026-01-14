@@ -41,7 +41,7 @@ import {
   StatesDropdownStyles,
   TwoButtonModalStyles,
 } from "@/components/fme/mda/styles";
-import { StatusComp } from "@/components/fme/mda/mda";
+import { HasGraduatedStatusComp, StatusComp } from "@/components/fme/mda/mda";
 import {
   CertifiedStudentIcon,
   UncertifiedStudentIcon,
@@ -448,7 +448,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           NationalIdentityNumber: form.NationalIdentityNumber,
           IsDisabled: disability ? true : false,
         };
-        
+
         setIsLoading(true);
         const { data } = await axios.post(
           `${BACKEND_URL}/student/create-mda`,
@@ -477,7 +477,6 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
             text: error.response.data.error,
           });
         } else {
-      
           setOtherError({
             active: true,
             text: error.message,
@@ -1617,13 +1616,6 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
                   </div>
                   <CopyIcon text={studentDetails.PhoneNumber} />
                 </div>
-                {/* <div className="dx">
-									<div className="name">
-										<span>Student Address</span>
-										<p className="nm">1, Ajanaku street, Agege, Lagos State.</p>
-									</div>
-									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
-								</div> */}
                 <div className="dx">
                   <div className="name">
                     <span>State of Residence</span>
@@ -1645,6 +1637,13 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
 									</div>
 									<CopyIcon text="124, Oyediran Estate, Lagos, Nigeria, 5432" />
 								</div> */}
+                <div className="dx">
+                  <div className="name">
+                    <span>Has Graduated?</span>
+                    <HasGraduatedStatusComp $isActive={studentDetails.IsGraduated} />
+                  </div>
+                </div>
+
                 <div className="dx">
                   <div className="name">
                     <span>Status</span>
@@ -1678,19 +1677,21 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
                 )}
               </div>
             </div>
-            <div className="r-3">
-              <h4>Graduate Student</h4>
-              <div className="btnn">
-                <button
-                  type="button"
-                  className=""
-                  onClick={() => setShowGraduateModal(true)}
-                >
-                  <SuspendIcon />
-                  <p>Graduate Student</p>
-                </button>
+            {!studentDetails.IsGraduated && (
+              <div className="r-3">
+                <h4>Graduate Student</h4>
+                <div className="btnn">
+                  <button
+                    type="button"
+                    className=""
+                    onClick={() => setShowGraduateModal(true)}
+                  >
+                    <SuspendIcon />
+                    <p>Graduate Student</p>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </MDADetailStyle>
       )}
@@ -1936,7 +1937,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
   handleModalAction,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
-const [reason, setReason] = useState("");
+  const [reason, setReason] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [msgError, setMsgError] = useState<Ierror>({
     active: false,
@@ -1968,8 +1969,8 @@ const [reason, setReason] = useState("");
         const { data } = await axios.get(
           `${BACKEND_URL}/user/suspend/${userId}`,
           {
-            params : { Reason: reason },
-          ...config
+            params: { Reason: reason },
+            ...config,
           }
         );
         if (data) {
@@ -2025,14 +2026,14 @@ const [reason, setReason] = useState("");
                   longer be visible and not able to take any course for.
                 </p>
                 <div className="inp">
-                    <input
-                      type="text"
-                      name="reason"
-                      placeholder="Reason for suspension"
-                      value={reason}
-                      onChange={(e) => setReason(e.target.value)}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="reason"
+                    placeholder="Reason for suspension"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                  />
+                </div>
               </div>
               <div className="down">
                 <button type="button" onClick={cancelModal} className="cancel">

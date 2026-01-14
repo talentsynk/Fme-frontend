@@ -41,7 +41,7 @@ import {
   StatesDropdownStyles,
   TwoButtonModalStyles,
 } from "@/components/fme/mda/styles";
-import { StatusComp } from "@/components/fme/mda/mda";
+import { HasGraduatedStatusComp, StatusComp } from "@/components/fme/mda/mda";
 import {
   CertifiedStudentIcon,
   UncertifiedStudentIcon,
@@ -1636,6 +1636,14 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
 
                 <div className="dx">
                   <div className="name">
+                    <span>Has Graduated?</span>
+                    <HasGraduatedStatusComp
+                      $isActive={studentDetails.IsGraduated}
+                    />
+                  </div>
+                </div>
+                <div className="dx">
+                  <div className="name">
                     <span>Status</span>
                     <StatusComp $isActive={studentDetails.IsActive} />
                   </div>
@@ -1667,19 +1675,21 @@ export const StudentsDetailModal: React.FC<IOneButtonModal> = ({
                 )}
               </div>
             </div>
-            <div className="r-3">
-              <h4>Graduate Student</h4>
-              <div className="btnn">
-                <button
-                  type="button"
-                  className=""
-                  onClick={() => setShowGraduateModal(true)}
-                >
-                  <SuspendIcon />
-                  <p>Graduate Student</p>
-                </button>
+            {!studentDetails.IsGraduated && (
+              <div className="r-3">
+                <h4>Graduate Student</h4>
+                <div className="btnn">
+                  <button
+                    type="button"
+                    className=""
+                    onClick={() => setShowGraduateModal(true)}
+                  >
+                    <SuspendIcon />
+                    <p>Graduate Student</p>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </MDADetailStyle>
       )}

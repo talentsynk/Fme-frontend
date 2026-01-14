@@ -6,6 +6,7 @@ export interface IStudentCompData {
 	CoursesTaken: string;
 	Email: string;
 	IsActive: boolean;
+	IsGraduated : boolean;
 	UserID: number;
 	StudentID: string;
 	Gender: string;

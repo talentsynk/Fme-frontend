@@ -167,6 +167,14 @@ export const StatusComp: React.FC<IStatusStyles> = ({ $isActive }) => {
   );
 };
 
+export const HasGraduatedStatusComp: React.FC<IStatusStyles> = ({ $isActive }) => {
+  return (
+    <StatusStyles $isActive={$isActive} className="istatus">
+      <p>{$isActive ? "Yes" : "No"}</p>
+    </StatusStyles>
+  );
+};
+
 export const MdaItemComp: React.FC<IMdaDropdownFunc> = ({
   text,
   handleSelect,
