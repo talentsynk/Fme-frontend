@@ -136,7 +136,7 @@ export const States: IState[] = [
   { name: "Bayelsa" },
   { name: "Benue" },
   { name: "Borno" },
-  { name: "Cross River" },
+  { name: "Cross-River" },
   { name: "Delta" },
   { name: "Ebonyi" },
   { name: "Edo" },

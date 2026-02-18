@@ -229,6 +229,7 @@ export default function Signup() {
   const [selectedOption, setSelectedOption] = useState(false);
 
   const handleStateSelection = (name: string) => {
+    console.log(name);
     setForm({ ...form, state: name });
     setState(name);
     setLga(""); // when a new state is selected, it sets the lga selected to empty
