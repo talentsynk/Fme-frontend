@@ -6,7 +6,7 @@ This is a [Next.js](https://nextjs.org/) (v14) project bootstrapping a modern, r
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 The project utilizes the following core technologies:
 - **Framework**: [Next.js v14](https://nextjs.org/) (App Router)
@@ -57,7 +57,7 @@ Ensure you have the following installed on your local machine before continuing:
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 Clone this repository to your local machine:
@@ -93,7 +93,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions to the FME Skills Database Platform! If you're a developer reading this, here's how you can get started:
 
@@ -119,7 +119,7 @@ git push origin feature/your-feature-name
 
 ---
 
-## 📄 Scripts
+## Scripts
 
 - `npm run dev`: Starts the application in development mode.
 - `npm run build`: Builds the application for production.
@@ -128,7 +128,7 @@ git push origin feature/your-feature-name
 
 ---
 
-## 🌐 Learn More
+## Learn More
 
 To learn more about the tools driving this frontend, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs)
