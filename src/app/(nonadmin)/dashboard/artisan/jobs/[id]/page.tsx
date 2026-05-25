@@ -1,3 +1,4 @@
+"use client";
 interface IEmployerData{
   Status:string;
   Skills:string;
@@ -25,7 +26,6 @@ interface ISimilarJobs{
       Status: string;
 }
 
-"use client";
 import { CompleteJob } from "@/components/landing/faqs/Svgs";
 import { FlexAbsoluteModalStyles } from "@/components/fme/mda/styles";
 import { ReviewModal } from "@/components/artisan/Employer";

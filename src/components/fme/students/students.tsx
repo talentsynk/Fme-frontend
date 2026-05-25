@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { IStudentData, StudentItemDropdownList, IStudentDropdownFunc } from "./data";
 import { NocenterStyles } from "../stc/styles";

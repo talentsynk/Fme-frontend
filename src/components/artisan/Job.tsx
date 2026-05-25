@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { StateCompStyles, StatesDropdownStyles } from "../fme/mda/styles";
 import { SmallBriefCaseIcon, TinyLocationIcon } from "../icons/artisan/icons";

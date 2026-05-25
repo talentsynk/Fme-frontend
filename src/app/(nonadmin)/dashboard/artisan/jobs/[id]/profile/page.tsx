@@ -1,3 +1,4 @@
+"use client";
 interface IEmployerProfile{
     Id: number;
     FirstName: string;
@@ -42,7 +43,6 @@ interface IReview{
   LastName:string;
 }
 
-'use client'
 import { useState,useEffect } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";

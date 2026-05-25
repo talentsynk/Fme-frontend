@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { ArrowLeft } from "../icons/recovery";
 import { BackBtnStyles } from "./style";

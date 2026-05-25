@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import ClickOutsideWrapper from "@/components/auth/wrapper";
 import { ThreedotsIcon } from "@/components/icons/fme/mda";

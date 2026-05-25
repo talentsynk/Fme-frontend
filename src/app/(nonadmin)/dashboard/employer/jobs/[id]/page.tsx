@@ -1,3 +1,4 @@
+"use client";
 interface IEmployerData{
   Status:string;
   Skills:string;
@@ -15,7 +16,7 @@ interface IEmployerData{
   CreatedAt:string;
   ApplicationStatus:string
 }
-"use client";
+
 import { FlexAbsoluteModalStyles } from "@/components/fme/mda/styles";
 import { ReviewModal } from "@/components/artisan/Employer";
 import { JobDetailPageStyle } from "@/components/artisan/Jobdetails/style";

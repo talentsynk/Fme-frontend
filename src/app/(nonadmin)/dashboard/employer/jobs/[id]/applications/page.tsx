@@ -1,3 +1,4 @@
+"use client";
 interface IApplication{
   ApplicationId:number;
   JobId:number;
@@ -11,7 +12,7 @@ interface IApplication{
   JobApplicationDate:string;
 
 }
-'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import { useEffect,useState } from 'react'

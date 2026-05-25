@@ -1,3 +1,4 @@
+"use client";
 interface IEmployerData{
   JobTitle:string;
   Description:string;
@@ -17,7 +18,7 @@ interface IUser{
   LastName:string;
   PhoneNumber:string;
 }
-'use client'
+
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import axios from "axios";

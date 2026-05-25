@@ -1,3 +1,4 @@
+"use client";
 import { Letter } from '@/app/(dashboard)/support/Icons';
 import { useState } from 'react';
 import Image from 'next/image';

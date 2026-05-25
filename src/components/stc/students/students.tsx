@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { IStudentData, StudentItemDropdownList, IStudentDropdownFunc } from "../../fme/students/data";
 import { NocenterStyles } from "@/components/fme/stc/styles";

@@ -1,3 +1,4 @@
+"use client";
 import { CopyToClipboard } from "@/utils/copyText";
 import { useState } from "react";
 import styled, { css } from "styled-components";

@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ILinkFunc } from "./data";
 import { LinkCompStyles, LogoutModalStyles, SidebarStyles } from "./style";

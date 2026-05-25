@@ -1,3 +1,4 @@
+"use client";
 interface IArtisan{
   AverageRating:number;
   BusinessDescription:string;
@@ -21,7 +22,6 @@ interface IReviews{
   FirstName:string;
   LastName:string;
 }
-"use client";
 import { useState,useEffect } from "react";
 import Cookies from "js-cookie";
 import { ContactCard, SmallRedIcon } from "@/components/landing/faqs/Svgs";

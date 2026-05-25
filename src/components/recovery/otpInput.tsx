@@ -1,3 +1,4 @@
+"use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { OtpCompStyles } from "./style";
 import OTPInput from "react-otp-input";

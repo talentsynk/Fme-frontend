@@ -70,7 +70,7 @@ export default function Home() {
           ENDORSED BY THE{" "}
         </h5>
         <div className=" animate-fadeIn   flex justify-center my-2">
-          <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" />
+          <Image src="/images/image 7 (1).svg" width={106} height={80} alt="" style={{ height: "auto", width: "auto" }} />
         </div>
         <div className=" animate-fadeIn  flex flex-col md:flex-row ">
           <Image
@@ -79,6 +79,7 @@ export default function Home() {
             height={350}
             alt="endorsement pictures"
             className=" flex-1"
+            style={{ height: "auto", width: "100%" }}
           />
           <Image
             src="/images/landing/fme1.jpg"
@@ -86,6 +87,7 @@ export default function Home() {
             height={350}
             alt="endorsement pictures"
             className=" flex-1"
+            style={{ height: "auto", width: "100%" }}
           />
         </div>
         <div className=" flex flex-col md:flex-row space-y-2 p-8 justify-between py-16">
@@ -109,6 +111,7 @@ export default function Home() {
               width={512}
               height={468}
               alt="endorsement pictures"
+              style={{ height: "auto", width: "100%" }}
             />
           </div>
         </div>

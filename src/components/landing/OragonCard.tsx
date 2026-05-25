@@ -1,3 +1,4 @@
+"use client";
 interface OragonCard{
   JobTitle:string;
   Description:string;
@@ -29,7 +30,7 @@ interface ISavedData{
   Location?:string
   Status:string;
 }
-'use client'
+
 import {useState,useEffect} from 'react'
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';

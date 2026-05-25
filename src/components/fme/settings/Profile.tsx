@@ -1,3 +1,4 @@
+"use client";
 import { useState,useEffect } from "react";
 import { Letter } from "@/app/(dashboard)/support/Icons";
 import Cookies from "js-cookie";

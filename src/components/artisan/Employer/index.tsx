@@ -1,3 +1,4 @@
+"use client";
 interface IArtisan {
   AverageRating: number;
   BusinessDescription: string;
