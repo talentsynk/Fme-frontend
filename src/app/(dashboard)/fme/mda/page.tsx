@@ -40,7 +40,6 @@ import {
   setUnchangedMdaList,
 } from "@/redux/fme/fmeSlice";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import { IMDACompData } from "@/types/Mda";
 import Skeleton from "react-loading-skeleton";
@@ -132,7 +131,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/mda/get-all-mdas?page=${pageNo}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/mda/get-all-mdas?page=${pageNo}`, config)
       .then((res) => {
         const data = res.data.mdas;
         setMdaList(data);
@@ -149,7 +148,7 @@ export default function Home() {
       .catch((error) => console.log(error));
 
     axios
-      .get(`${BACKEND_URL}/mda/total-mda`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/mda/total-mda`, config)
       .then((res) => {
         const { total_active_mda, total_mda, total_inactive_mda } = res.data;
         setTotal({
@@ -176,7 +175,7 @@ export default function Home() {
     // handle suspend and activate here
 
     axios
-      .get(`${BACKEND_URL}/mda/total-mda`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/mda/total-mda`, config)
       .then((res) => {
         const { total_active_mda, total_mda, total_inactive_mda } = res.data;
         setTotal({
@@ -316,7 +315,7 @@ export default function Home() {
 
     try {
       const response = await axios({
-        url: `${BACKEND_URL}/mda/download-csv`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/mda/download-csv`,
         method: "GET",
         responseType: "blob", // Important to download the file
         headers: {

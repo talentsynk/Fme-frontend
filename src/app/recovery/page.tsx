@@ -21,7 +21,6 @@ import { useRouter } from "next/navigation";
 import { ButtonLoader } from "@/components/recovery/style";
 import { validateEmail } from "@/utils/validateEmail";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import { useAppDispatch } from "@/redux/hooks/hooks";
 
@@ -65,7 +64,7 @@ export default function AccountRecovery() {
       //when there's no error msg
       try {
         setIsSendLoading(true);
-        const { data } = await axios.post(`${BACKEND_URL}/user/otp/request`, {
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/otp/request`, {
           Email: email,
         });
         if (data) {
@@ -103,7 +102,7 @@ export default function AccountRecovery() {
       //when there's no error msg
       try {
         setIsLoading(true);
-        const { data } = await axios.post(`${BACKEND_URL}/user/otp/verify`, {
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/otp/verify`, {
           Email: email,
           Otp: userOtp,
         });

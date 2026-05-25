@@ -55,7 +55,6 @@ import {
   setUnchangedStudentsList,
 } from "@/redux/stc/stcSlice";
 import { formatDate } from "@/utils/formatDate";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
@@ -319,7 +318,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.get(`${BACKEND_URL}/course/all`, config);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/all`, config);
 
       setCourses(response.data.course);
     } catch (error) {
@@ -335,7 +334,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         },
       };
       const response = await axios.get(
-        `${BACKEND_URL}/student/disabilities`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/disabilities`,
         config
       );
 
@@ -448,7 +447,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/student/create-stc`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/create-stc`,
           body,
           config
         );
@@ -1798,7 +1797,7 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({
       try {
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/student/graduate-student/${selectedStudentId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/graduate-student/${selectedStudentId}`,
           form,
           config
         );
@@ -1966,7 +1965,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
         setIsLoading(true);
         // console.log({reason});
         const { data } = await axios.get(
-          `${BACKEND_URL}/user/suspend/${userId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/suspend/${userId}`,
           {
             params: { Reason: reason },
             ...config,
@@ -2105,7 +2104,7 @@ export const ReactivateStudentComp: React.FC<ITwoActions> = ({
       try {
         setIsLoading(true);
         const { data } = await axios.get(
-          `${BACKEND_URL}/user/activate/${userId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/activate/${userId}`,
           config
         );
         if (data) {

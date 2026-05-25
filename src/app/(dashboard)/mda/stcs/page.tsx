@@ -40,7 +40,6 @@ import { sortSTCDataAlphabetically } from "@/utils/sortData";
 import { motion } from "framer-motion";
 import { FormEvent, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -130,7 +129,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-all-mda-stc?page=${pageNo}`, config) //change endpoint to stc
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stc/get-all-mda-stc?page=${pageNo}`, config) //change endpoint to stc
       .then((res) => {
         const data = res.data.stcs; //change this to stc
         setStcList(data);
@@ -148,7 +147,7 @@ export default function Home() {
       .catch((error) => console.log(error));
 
     axios
-      .get(`${BACKEND_URL}/stc/get-mda-total`, config) // change to stc endpoint
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stc/get-mda-total`, config) // change to stc endpoint
       .then((res) => {
         const { total_active_stc, total_stc, total_inactive_stc } = res.data;
         setTotal({
@@ -172,7 +171,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/stc/get-mda-total`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stc/get-mda-total`, config)
       .then((res) => {
         const { total_active_stc, total_stc, total_inactive_stc } = res.data;
         setTotal({
@@ -300,7 +299,7 @@ export default function Home() {
   
       try {
         const response = await axios({
-          url: `${BACKEND_URL}/stc/download-csv`,
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/stc/download-csv`,
           method: 'GET',
           responseType: 'blob', // Important to download the file
           headers: {

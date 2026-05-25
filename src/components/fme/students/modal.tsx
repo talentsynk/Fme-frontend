@@ -55,7 +55,6 @@ import {
   setUnchangedStudentsList,
 } from "@/redux/fme/fmeSlice";
 import { formatDate } from "@/utils/formatDate";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
@@ -323,7 +322,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.get(`${BACKEND_URL}/course/all`, config);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/all`, config);
       // Assuming the API response is an array of state names
       setCourses(response.data.course);
     } catch (error) {
@@ -339,7 +338,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         },
       };
       const response = await axios.get(
-        `${BACKEND_URL}/student/disabilities`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/disabilities`,
         config
       );
       // Assuming the API response is an array of state names
@@ -450,7 +449,7 @@ export const NewStudentModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/student/create-fme`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/create-fme`,
           body,
           config
         );
@@ -1338,7 +1337,7 @@ export const SuspendStudentComp: React.FC<ITwoActions> = ({
         setIsLoading(true);
 
         const { data } = await axios.get(
-          `${BACKEND_URL}/user/suspend/${userId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/suspend/${userId}`,
           {
             params: { Reason: reason },
             ...config,
@@ -1537,7 +1536,7 @@ export const GraduateStudentComp: React.FC<ITwoActions> = ({
         setIsLoading(true);
 
         const { data } = await axios.post(
-          `${BACKEND_URL}/student/graduate-student/${selectedStudentId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/graduate-student/${selectedStudentId}`,
           form,
           config
         );
@@ -1674,7 +1673,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({
 
       if (HiringStatus) {
         // Reopen job application
-        const response = await axios.get(`${BACKEND_URL}/job/close/${id}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/close/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -1683,7 +1682,7 @@ export const CloseJobComp: React.FC<ITwoActions> = ({
         setIsSuccess(true);
       } else {
         // Close job application
-        const response = await axios.get(`${BACKEND_URL}/job/open/${id}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/open/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -1807,7 +1806,7 @@ export const CloseHireArtisanComp: React.FC<ITwoActions> = ({
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
       const response = await axios.get(
-        `${BACKEND_URL}/job/applicants/decline/${ApplicationId}`, // Adjust URL as needed
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/applicants/decline/${ApplicationId}`, // Adjust URL as needed
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -1943,7 +1942,7 @@ export const SelectArtisanComp: React.FC<ITwoActions> = ({
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
       const response = await axios.get(
-        `${BACKEND_URL}/job/applicants/short-list/${ApplicationId}`, // Adjust URL as needed
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/applicants/short-list/${ApplicationId}`, // Adjust URL as needed
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -2168,7 +2167,7 @@ export const HireProfessionalComp: React.FC<ITwoActions> = ({
     try {
       const token = Cookies.get("token"); // Assuming the token is stored as 'token' in cookies
       const response = await axios.post(
-        `${BACKEND_URL}/job/hire`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/hire`,
         requestData,
         {
           headers: {
@@ -2284,12 +2283,12 @@ export const DownloadDataComp: React.FC<ITwoActions> = ({
 
     const apiEndpoint =
       role === "FME"
-        ? `${BACKEND_URL}/student/download-csv` // API for FME
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/download-csv` // API for FME
         : role === "MDA"
-        ? `${BACKEND_URL}/student/download-csv` // API for MDA
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/download-csv` // API for MDA
         : role === "STC"
-        ? `${BACKEND_URL}/student/download-csv` // API for STC
-        : `${BACKEND_URL}/student/download-csv`; // Default API for other roles
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/download-csv` // API for STC
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/download-csv`; // Default API for other roles
     // Dummy API for artisan
 
     try {
@@ -2417,7 +2416,7 @@ export const HireArtisanComp: React.FC<ITwoActions> = ({
       },
     };
     axios
-      .get(`${BACKEND_URL}/artisan/contact/${artisanId}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/contact/${artisanId}`, config)
       .then((res) => {
         const data = res.data.contact;
 
@@ -2521,7 +2520,7 @@ export const ReactivateStudentComp: React.FC<ITwoActions> = ({
       try {
         setIsLoading(true);
         const { data } = await axios.get(
-          `${BACKEND_URL}/user/activate/${userId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/activate/${userId}`,
           config
         );
         if (data) {

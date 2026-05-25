@@ -23,7 +23,6 @@ import { LargeSVGBg, TagStyle } from "@/components/artisan/style";
 import { useSearchParams } from 'next/navigation'
 import { useState,useEffect } from "react";
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import { CompleteJob } from "@/components/landing/faqs/Svgs";
 import { CloseJobComp, SuspendStudentComp } from "@/components/fme/students/modal";
@@ -55,7 +54,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/job/general/${lol}`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/general/${lol}`, config)
 			.then((res) => {
 				const data = res.data;
         setHiringStatus(res.data.HiringStatus)

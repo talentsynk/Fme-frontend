@@ -18,7 +18,6 @@ import {
 import { BackBtn } from "@/components/recovery/recovery";
 import { ButtonLoader } from "@/components/recovery/style";
 import { roles } from "@/constants/roleList";
-import { BACKEND_URL } from "@/lib/config";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
@@ -132,7 +131,7 @@ export default function Login() {
         };
        
         setIsLoading(true);
-        const { data } = await axios.post(`${BACKEND_URL}/user/login`, body);
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`, body);
         if (data) {
           setIsLoading(false);
           if (data.role == 1 || data.role == 2 || data.role == 3) {

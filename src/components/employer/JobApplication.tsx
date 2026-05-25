@@ -6,7 +6,6 @@ import Image from "next/image";
 import { SmallVerified } from "../landing/faqs/Svgs";
 import Link from "next/link";
 import { ContactCard, AirplaneIcon } from "../landing/faqs/Svgs";
-import { BACKEND_URL } from "@/lib/config";
 import { HireProfessionalComp, HireArtisanComp } from "../fme/students/modal";
 
 interface IArtisan {
@@ -78,7 +77,7 @@ const JobApplication: React.FC<IJob> = ({
     };
 
     axios
-      .get(`${BACKEND_URL}/artisan/${ArtisanId}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/${ArtisanId}`, config)
       .then((res) => {
         const data = res.data.artisan;
         setData(data);

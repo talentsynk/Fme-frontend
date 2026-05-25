@@ -16,7 +16,6 @@ import { MdaItemComp } from "@/components/fme/mda/mda";
 import { SearchAndResultStyle, SortOptionsStyle, TopStyles } from "@/components/fme/mda/styles";
 import { CourseItemSkeleton } from "@/components/fme/skeleton/CourseItemSkeleton";
 import { CancelInputIcon, MagnifyingGlassIcon, PlusIcon, UploadIcon } from "@/components/icons/fme/mda";
-import { BACKEND_URL } from "@/lib/config";
 import { mdaSelector, setFakeNewCourseId, setSelectedCourseId, setUnchangedCoursesList } from "@/redux/mda/mdaSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { ICourseCompData } from "@/types/Course";
@@ -41,7 +40,7 @@ export default function Home() {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/course/all`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/all`, config)
 			.then((res) => {
 				const data = res.data.course;
 				setCourses(data);

@@ -49,7 +49,6 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/config";
 import { GreyArrowRight } from "@/components/icons/artisan/icons";
 import { SmallRedIcon } from "@/components/landing/faqs/Svgs";
 import { RecommendArtisans } from "@/components/landing/faqs/Svgs";
@@ -80,7 +79,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           },
         };
         axios
-          .get(`${BACKEND_URL}/employer/similar/${lol}`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/similar/${lol}`, config)
           .then((res) => {
       
             const data = res.data.employers;
@@ -89,7 +88,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           .catch((error) => console.log(error));
           
         axios
-          .get(`${BACKEND_URL}/employer/profile-stats/${lol}`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/profile-stats/${lol}`, config)
           .then((res) => {
            
             const data = res.data;
@@ -98,7 +97,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           .catch((error) => console.log(error));
 
           axios
-          .get(`${BACKEND_URL}/employer/${lol}`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/${lol}`, config)
           .then((res) => {
             
             const data = res.data.employer;
@@ -107,7 +106,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           .catch((error) => console.log(error));
           
         axios
-          .get(`${BACKEND_URL}/employer/jobs/${lol}`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/jobs/${lol}`, config)
           .then((res) => {
             
             const data = res.data.jobs;
@@ -116,7 +115,7 @@ const EmployersProfile = ({ params }: { params: { id: string } }) => {
           .catch((error) => console.log(error));
 
         axios
-          .get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/ratings/${lol}`, config)
           .then((res) => {
             
             const data = res.data.ratings;

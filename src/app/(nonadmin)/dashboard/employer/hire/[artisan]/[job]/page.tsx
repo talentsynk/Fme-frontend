@@ -22,7 +22,6 @@ interface IReviews {
 
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "@/lib/config";
 import { ContactCard, SmallRedIcon } from "@/components/landing/faqs/Svgs";
 import axios from "axios";
 import {
@@ -110,14 +109,14 @@ const ArtisanDetailPage = ({
       },
     };
     axios
-      .get(`${BACKEND_URL}/artisan/profile-stats/${lol}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/profile-stats/${lol}`, config)
       .then((res) => {
         const data = res.data;
         setStats(data);
       })
       .catch((error) => console.log(error));
     axios
-      .get(`${BACKEND_URL}/artisan/ratings/${lol}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/ratings/${lol}`, config)
       .then((res) => {
         const data = res.data.ratings;
         setReviews(data);
@@ -125,7 +124,7 @@ const ArtisanDetailPage = ({
       .catch((error) => console.log(error));
 
     axios
-      .get(`${BACKEND_URL}/artisan/${lol}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/${lol}`, config)
       .then((res) => {
         const data = res.data.artisan;
         setData(data);

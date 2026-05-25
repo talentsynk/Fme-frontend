@@ -1,7 +1,6 @@
 "use client";
 import { BackSvg, CertifiedStudent, MDA, STC, TotalStudent } from "@/components/fme/course_list/Svg";
 import { CourseBarChartComp } from "@/components/fme/index";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -31,7 +30,7 @@ export default function Slug() {
 		// test api call
 		// setIsLoading(true);
 		axios
-			.get(`${BACKEND_URL}/course/1/top-5-mda`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/1/top-5-mda`, config)
 			.then((res) => {
 				const data=res.data
 			})
@@ -56,7 +55,7 @@ export default function Slug() {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/course/details/${courseID}`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/details/${courseID}`, config)
 			.then((res) => {
 				const data = res.data;
 				setCourse(data);

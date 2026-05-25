@@ -1,1 +1,0 @@
-export const BACKEND_URL = "https://197.159.78.114";

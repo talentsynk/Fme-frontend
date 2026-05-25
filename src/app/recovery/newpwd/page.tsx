@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 import { isStrongPassword } from "@/utils/validatePwd";
 import { Ierror } from "../page";
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import { ButtonLoader } from "@/components/recovery/style";
 import { SuccessModal } from "@/components/fme/mda/modals";
@@ -109,7 +108,7 @@ export default function AccountRecovery() {
         setIsLoading(true);
         const email = Cookies.get("email");
         const { data } = await axios.post(
-          `${BACKEND_URL}/user/changepassword`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/changepassword`,
           {
             Email: email,
             Password: pwd1,

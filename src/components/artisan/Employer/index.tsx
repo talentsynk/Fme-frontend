@@ -31,7 +31,6 @@ import { truncateString } from "@/utils/truncateString";
 import { useRouter } from "next/navigation";
 import { VerifiedTick } from "@/components/landing/faqs/Svgs";
 import ClickOutsideWrapper from "@/components/auth/wrapper";
-import { BACKEND_URL } from "@/lib/config";
 
 export const SimilarComp = () => {
   const router = useRouter();
@@ -250,8 +249,8 @@ export const ReviewModal: React.FC<IReviewModal> = ({
     // Conditionally select API endpoint based on role
     const apiEndpoint =
       role === "employer"
-        ? `${BACKEND_URL}/job/rate/${id}` // Dummy API for employer
-        : `${BACKEND_URL}/job/rate/employer/${id}`; // Dummy API for artisan
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/rate/${id}` // Dummy API for employer
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/rate/employer/${id}`; // Dummy API for artisan
 
     try {
       const response = await axios.post(apiEndpoint, body, {

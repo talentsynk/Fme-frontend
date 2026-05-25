@@ -22,7 +22,6 @@ import {
   FormErrorIcon,
 } from "@/components/icons/recovery";
 import { ButtonLoader } from "@/components/recovery/style";
-import { BACKEND_URL } from "@/lib/config";
 import { validateEmail } from "@/utils/validateEmail";
 import { isStrongPassword } from "@/utils/validatePwd";
 import axios from "axios";
@@ -363,7 +362,7 @@ export default function Signup() {
         };
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/employer/create-employer`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/create-employer`,
           body
         );
         if (data) {

@@ -39,7 +39,6 @@ import {
 } from "@/redux/mda/mdaSlice";
 import { truncateString } from "@/utils/truncateString";
 import { formatDate } from "@/utils/formatDate";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ButtonLoader } from "@/components/recovery/style";
@@ -168,7 +167,7 @@ export const NewStcModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
         };
         setIsLoading(true);
         const { data } = await axios.post(
-          `${BACKEND_URL}/stc/create-mda-stc`, // change this to the actual Mda create Stc endpoint
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/stc/create-mda-stc`, // change this to the actual Mda create Stc endpoint
           body,
           config
         );
@@ -584,7 +583,7 @@ export const SuspendStcComp: React.FC<ITwoActions> = ({
         setIsLoading(true);
         // console.log({reason});
         const { data } = await axios.get(
-          `${BACKEND_URL}/user/suspend/${userId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/suspend/${userId}`,
           {
             params : { Reason: reason },
           ...config
@@ -722,7 +721,7 @@ export const ReactivateStcComp: React.FC<ITwoActions> = ({
       try {
         setIsLoading(true);
         const { data } = await axios.get(
-          `${BACKEND_URL}/user/activate/${userId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/activate/${userId}`,
           config
         );
         if (data) {

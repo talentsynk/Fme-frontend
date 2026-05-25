@@ -15,7 +15,6 @@ import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { BACKEND_URL } from "@/lib/config";
 import { Banner } from "@/components/artisan/comps";
 import { ArtisanJobPageStyle, JobGridList } from "../style";
 import {
@@ -115,7 +114,7 @@ const ArtisanJobs = () => {
       },
     };
     axios
-      .get(`${BACKEND_URL}/job/all`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all`, config)
       .then((res) => {
         const data = res.data.jobs;
         setData(data);
@@ -137,7 +136,7 @@ const ArtisanJobs = () => {
     };
 
     try {
-      const res = await axios.get(`${BACKEND_URL}/job/all`, config);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all`, config);
       const data = res.data.jobs;
       setData(data);
     } catch (error) {
@@ -154,7 +153,7 @@ const ArtisanJobs = () => {
 
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/job/all?job_type=full-time`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all?job_type=full-time`,
         config
       );
       const data = res.data.jobs;
@@ -173,7 +172,7 @@ const ArtisanJobs = () => {
 
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/job/all?job_type=part-time`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all?job_type=part-time`,
         config
       );
       const data = res.data.jobs;
@@ -228,7 +227,7 @@ const ArtisanJobs = () => {
 
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/job/all?days_ago=${daysAgo}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all?days_ago=${daysAgo}`,
         config
       );
       const data = res.data.jobs;
@@ -252,7 +251,7 @@ const ArtisanJobs = () => {
 
       // Make the request with the authorization header
       const response = await axios.get(
-        `${BACKEND_URL}/job/all?state=${state}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/all?state=${state}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Pass the token in the Authorization header

@@ -32,7 +32,6 @@ import {
   MagnifyingGlassIcon,
   PlusIcon,
 } from "@/components/icons/fme/mda";
-import { BACKEND_URL } from "@/lib/config";
 import {
   fmeSelector,
   setFakeNewCourseId,
@@ -64,7 +63,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/course/all`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/all`, config)
       .then((res) => {
         const data = res.data.course;
         setCourses(data);

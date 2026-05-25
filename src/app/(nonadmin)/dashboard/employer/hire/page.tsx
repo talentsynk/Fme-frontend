@@ -27,7 +27,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "@/lib/config";
 import { Ierror } from "@/app/recovery/page";
 import { MdaItemComp } from "@/components/fme/mda/mda";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
@@ -91,7 +90,7 @@ const HireArtisan = () => {
 
       // Make the request with the authorization header
       const response = await axios.get(
-        `${BACKEND_URL}/artisan/all?state=${state}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/all?state=${state}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
@@ -125,7 +124,7 @@ const HireArtisan = () => {
 
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/artisan/all?rating_sort=${daysAgo}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/all?rating_sort=${daysAgo}`,
         config
       );
       const data = res.data.artisans;
@@ -153,7 +152,7 @@ const HireArtisan = () => {
       },
     };
     axios
-      .get(`${BACKEND_URL}/artisan/all`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/all`, config)
       .then((res) => {
         const data = res.data.artisans;
         setData(data);

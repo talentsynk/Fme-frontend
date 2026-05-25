@@ -23,7 +23,6 @@ import { Bag,WhiteBag } from "@/components/landing/faqs/Svgs";
 import Link from "next/link";
 import { GreyArrowRight } from "@/components/icons/artisan/icons";
 import { PostJobComp } from "@/components/fme/students/modal";
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import { ButtonLoader } from "@/components/recovery/style";
 
@@ -50,7 +49,7 @@ const PostAJob = () => {
 		};
 
 		axios
-			.get(`${BACKEND_URL}/category/all`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category/all`, config)
 			.then((res) => {
         
 				const data = res.data.Categories;
@@ -160,7 +159,7 @@ const [categories,setCategories]=useState(["engineering","plumbing"]);
 		
 	  
 		  const response = await axios.post(
-			`${BACKEND_URL}/job/create-job`,
+			`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/create-job`,
 			jobData,
 			{
 			  headers: {

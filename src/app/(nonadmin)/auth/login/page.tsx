@@ -10,7 +10,6 @@ import {
 } from "@/components/icons/recovery";
 import { ButtonLoader } from "@/components/recovery/style";
 import { roles } from "@/constants/roleList";
-import { BACKEND_URL } from "@/lib/config";
 import { setSessionExpiration } from "@/redux/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks/hooks";
 import { validateEmail } from "@/utils/validateEmail";
@@ -97,7 +96,7 @@ export default function Login() {
           Password: form.pwd,
         };
         setIsLoading(true);
-        const { data } = await axios.post(`${BACKEND_URL}/user/login`, body);
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`, body);
         if (data) {
           setIsLoading(false);
           if (data.role == 5 || data.role == 6) {

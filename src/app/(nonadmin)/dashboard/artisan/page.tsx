@@ -30,7 +30,6 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { BACKEND_URL } from "@/lib/config";
 import ProgressBar from "@/components/artisan/ProgressBar";
 import { OragonCard, SavedOragonCard } from "@/components/landing/OragonCard";
 import {
@@ -59,28 +58,28 @@ export default function ArtisansHome() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/artisan/job-stats`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/job-stats`, config)
       .then((res) => {
         const data = res.data;
         setArtisanStats(data);
       })
       .catch((error) => console.log(error));
     axios
-      .get(`${BACKEND_URL}/job/applied-jobs`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/applied-jobs`, config)
       .then((res) => {
         const data = res.data.jobs;
         setData(data);
       })
       .catch((error) => console.log(error));
     axios
-      .get(`${BACKEND_URL}/job/saved-jobs`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/saved-jobs`, config)
       .then((res) => {
         const data = res.data.jobs;
         setSavedData(data);
       })
       .catch((error) => console.log(error));
     axios
-      .get(`${BACKEND_URL}/artisan/me`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/me`, config)
       .then((res) => {
         const data = res.data.artisan;
         setUserData(data);

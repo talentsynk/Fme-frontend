@@ -17,7 +17,6 @@ import Link from 'next/link'
 import { useEffect,useState } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { BACKEND_URL } from '@/lib/config'
 import { GreyArrowRight } from '@/components/icons/artisan/icons'
 import JobApplication from '@/components/employer/JobApplication'
 
@@ -38,7 +37,7 @@ const JobApplications = ({ params }: { params: { id: string } }) => {
       };
   
       // Modify the API call based on the selected filter
-      let apiUrl = `${BACKEND_URL}/job/applicants/${lol}`;
+      let apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/applicants/${lol}`;
       if (selectedFilter === "Selected") {
         apiUrl += "?status=selected";
       } else if (selectedFilter === "Declined") {

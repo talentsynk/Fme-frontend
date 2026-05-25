@@ -40,7 +40,6 @@ import {
 } from "@/components/icons/artisan/icons";
 import { PaddedSectionStyles } from "@/components/layout/style";
 import { GreenButtonLoader } from '@/components/recovery/style';
-import { BACKEND_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -66,7 +65,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 		};
 
 		axios
-			.get(`${BACKEND_URL}/job/similar/${lol}`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/similar/${lol}`, config)
 			.then((res) => {
         
 				const data = res.data.jobs;
@@ -76,7 +75,7 @@ const JobDetailPage = ({ params }: { params: { id: string } }) => {
 			.catch((error) => console.log(error));
 
 		axios
-			.get(`${BACKEND_URL}/job/${lol}`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/${lol}`, config)
 			.then((res) => {
        
 				const data = res.data;
@@ -104,7 +103,7 @@ const requirementsArray = data?.Requirements
     setLoading(true); // Set loading 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/job/save/${data?.Id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/save/${data?.Id}`,
         {
           job_id: data?.Id, 
           action: 'save',
@@ -130,7 +129,7 @@ const requirementsArray = data?.Requirements
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/job/apply/${data?.Id}`, 
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/job/apply/${data?.Id}`, 
         {
           job_id: data?.Id, 
           action: 'apply',

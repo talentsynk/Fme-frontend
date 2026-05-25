@@ -6,7 +6,6 @@ import Profile from "@/components/fme/settings/Profile";
 import Security from "@/components/fme/settings/Security";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/config";
 import { Letter } from "../support/Icons";
 
 export default function Home() {
@@ -78,7 +77,7 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/mda/profile`, { headers })
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/mda/profile`, { headers })
       .then((response) => {
         setUserData(response.data);
      

@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from "react";
 import { IconWrapper, TickIcon } from "@/components/icons/fme/mda";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/config";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { BarChartComp, CourseItem } from "@/components/fme/index";
@@ -90,7 +89,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/dashboard/summary`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard/summary`, config)
       .then((res) => {
         if (res.data.response) {
           const { TotalStcs, TotalMdas, TotalStudents } = res.data.response;
@@ -106,7 +105,7 @@ export default function Home() {
     // simulating get-request for the top course tracker API
     setIsLoading(true);
     axios
-      .get(`${BACKEND_URL}/dashboard/course-percentage`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard/course-percentage`, config)
       .then((res) => {
         if (res.data) {
           setCourseLists(res.data.coursePercentages);
@@ -120,7 +119,7 @@ export default function Home() {
 
     setIsLoadingResidence(true);
     axios
-      .get(`${BACKEND_URL}/student/residence-statistics`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/student/residence-statistics`, config)
       .then((res) => {
         if (res.data) {
           setStudentResidenceLists(res.data["residence-distribution"]);

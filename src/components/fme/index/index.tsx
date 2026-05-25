@@ -17,7 +17,6 @@ import {
 import { CourseGraphPlots, IGraphplots } from "./data";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import { truncateString } from "@/utils/truncateString";
 import { NoDataStyles } from "../mda/styles";
@@ -76,7 +75,7 @@ export const BarChartComp: React.FC<IBarchartComp> = ({ option, api }) => {
     // test api call
     setIsLoading(true);
     axios
-      .get(`${BACKEND_URL}/${api}`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${api}`, config)
       .then((res) => {
         if (res.data) {
           if (option === "Courses") {
@@ -158,7 +157,7 @@ export const CourseBarChartComp: React.FC<IBarchartComp> = ({ option, api }) => 
 		// test api call
 		setIsLoading(true);
 		axios
-			.get(`${BACKEND_URL}/${api}`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${api}`, config)
 			.then((res) => {
 				if (res.data) {
 					setData(CourseGraphPlots);

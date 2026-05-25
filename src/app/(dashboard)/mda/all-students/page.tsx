@@ -48,7 +48,6 @@ import { IStudentCompData } from "@/types/Student";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { TRSkeleton } from "@/components/fme/skeleton/TrSkeleton";
-import { BACKEND_URL } from "@/lib/config";
 import { Paginator } from "@/components/fme/paginator/Paginator";
 import { setPageNo } from "@/redux/mda/mdaSlice";
 import Papa from "papaparse";
@@ -128,7 +127,7 @@ export default function Home() {
       },
     };
     axios
-      .get(`${BACKEND_URL}/student/all`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/student/all`, config)
       .then((res) => {
         const data = res.data.students;
         setStudentList(data);
@@ -145,12 +144,12 @@ export default function Home() {
       .catch((error) => console.log(error));
 
     axios
-      .get(`${BACKEND_URL}/student/all?active=true`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/student/all?active=true`, config)
       .then((res) => {
         const activeStudents = res.data;
 
         axios
-          .get(`${BACKEND_URL}/student/all?active=false`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/student/all?active=false`, config)
           .then((res) => {
             const inactiveStudents = res.data;
 
@@ -192,11 +191,11 @@ export default function Home() {
     // handle suspend and activate here
 
     axios
-      .get(`${BACKEND_URL}/student/all?active=true`, config)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/student/all?active=true`, config)
       .then((res) => {
         const activeStudents = res.data;
         axios
-          .get(`${BACKEND_URL}/student/all?active=false`, config)
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/student/all?active=false`, config)
           .then((res) => {
             const inactiveStudents = res.data;
 
@@ -384,7 +383,7 @@ export default function Home() {
       const token = Cookies.get("token");
 
       const response = await axios.post(
-        `${BACKEND_URL}/student/create-mda-csv`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/student/create-mda-csv`,
         formData,
         {
           headers: {
@@ -419,7 +418,7 @@ export default function Home() {
 
     try {
       const response = await axios({
-        url: `${BACKEND_URL}/mda/download-csv`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/mda/download-csv`,
         method: "GET",
         responseType: "blob", // Important to download the file
         headers: {
@@ -450,7 +449,7 @@ export default function Home() {
 
     try {
       const response = await axios({
-        url: `${BACKEND_URL}/artisan/download-data`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/artisan/download-data`,
         method: "GET",
         responseType: "blob", // Important to download the file
         headers: {

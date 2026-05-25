@@ -35,7 +35,6 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
-import { BACKEND_URL } from '@/lib/config';
 import { Clock, GreenClock, LLocation, Padlock, Star, Tick,SmallRedIcon, CircleTick } from './faqs/Svgs'
 import { ButtonLoader, GreenButtonLoader } from '../recovery/style';
 

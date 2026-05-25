@@ -47,7 +47,6 @@ import { validateEmail } from "@/utils/validateEmail";
 import { AngleDown, AngleDownStyles } from "@/components/icons/header";
 
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "@/lib/config";
 import ClickOutsideWrapper from "@/components/auth/wrapper";
 
 interface IOneButtonModal {
@@ -125,7 +124,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			};
-			const response = await axios.get(`${BACKEND_URL}/category/all`, config);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category/all`, config);
 			
 			setCourses(response.data.Categories);
 		} catch (error) {
@@ -152,7 +151,7 @@ export const NewMdaModal: React.FC<IOneButtonModal> = ({ cancelModal }) => {
 				};
 				
 				setIsLoading(true);
-				const { data } = await axios.post(`${BACKEND_URL}/course/create`, body, config);
+				const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/course/create`, body, config);
 				if (data) {
 					setIsLoading(false);
 					// update fakeMdaId

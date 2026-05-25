@@ -22,7 +22,6 @@ import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { BACKEND_URL } from "@/lib/config";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { EmployersOragonCard } from "@/components/landing/OragonCard";
@@ -48,7 +47,7 @@ const EmployerHome = () => {
 			},
 		};
 		axios
-			.get(`${BACKEND_URL}/employer/dash-stats`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/dash-stats`, config)
 			.then((res) => {
        
 				
@@ -57,14 +56,14 @@ const EmployerHome = () => {
 			.catch((error) => console.log(error));
 
 		axios
-			.get(`${BACKEND_URL}/job/my-jobs`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/job/my-jobs`, config)
 			.then((res) => {
 				const data = res.data.jobs;
 				setData(data);
 			})
 			.catch((error) => console.log(error));
 		axios
-			.get(`${BACKEND_URL}/employer/get-employer`, config)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employer/get-employer`, config)
 			.then((res) => {
 				const data = res.data.employer;
 				setUser(data);
